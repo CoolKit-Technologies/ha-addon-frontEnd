@@ -20,6 +20,26 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin }) => {
     const [account, setAccount] = React.useState('');
     const [password, setPassword] = React.useState('');
 
+    // 验证表单，通过返回 true；否则返回 false
+    const verify = (): boolean => {
+        if (country === '') {
+            message.warning('Please select your country');
+            return false;
+        }
+
+        if (account === '') {
+            message.warning('Please input your phone number or email');
+            return false;
+        }
+
+        if (password === '') {
+            message.warning('Please input your password');
+            return false;
+        }
+
+        return true;
+    };
+
     return (
         <Modal
             title="Login"
@@ -59,6 +79,10 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin }) => {
                 <Button
                     type="primary"
                     onClick={async () => {
+                        // 验证后登录
+                        if (!verify())
+                            return;
+
                         setLoading(true);
                         const res = await login({
                             country,
