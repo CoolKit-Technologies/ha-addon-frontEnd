@@ -32,7 +32,9 @@ const DeviceList: React.FC<DeviceListProps> = ({ tableData, onDel, onStatChange 
         {
             title: 'Name',
             dataIndex: 'name',
-            key: 'name'
+            render: (value, record, index) => {
+                return record.type === DeviceType.UNSUPPORT ? <Text style={{color: '#939393'}}>{value}</Text> : <Text>{value}</Text>
+            }
         },
         {
             title: 'ID',

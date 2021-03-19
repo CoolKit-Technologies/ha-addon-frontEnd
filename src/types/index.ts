@@ -35,3 +35,13 @@ export interface DeviceInfo {
     enabled: boolean;
     type: DeviceType;
 }
+
+// HTTP 请求方法
+export type HttpMethod = 'GET' | 'POST';
+
+// HTTP 请求响应
+export interface HttpResponse {
+    error: number;
+    msg: string;
+    data: any;
+}
