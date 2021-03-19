@@ -21,7 +21,8 @@ export enum DeviceType {
 
 // 用户信息
 export interface UserInfo {
-    username: string;
+    phoneNumber?: string;
+    email?: string;
 }
 
 // 列表的设备信息

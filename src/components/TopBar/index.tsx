@@ -4,7 +4,6 @@ import { ReloadOutlined, CaretLeftOutlined, CheckOutlined, CloseOutlined, DownOu
 import LoginTab from '@/components/LoginTab';
 import styles from './index.less';
 import { IconState, DeviceInfo } from '@/types';
-import { getList } from '@/api';
 
 const { Text } = Typography;
 const { confirm } = Modal;
@@ -85,15 +84,15 @@ const TopBar: React.FC<TopBarProps> = ({ onRefresh, onLogout }) => {
                     if (iconState === IconState.ENABLE) {
                         // 刷新设备列表
                         setIconState(IconState.LOADING);
-                        const res = await getList();
-                        if (res.error !== 0) {
-                            message.error('Get device failed');
-                            setIconState(IconState.FAIL);
-                        } else {
-                            message.success('Get device success');
-                            setIconState(IconState.SUCCESS);
-                            onRefresh(res.data);
-                        }
+                        //const res = await getList();
+                        //if (res.error !== 0) {
+                            //message.error('Get device failed');
+                            //setIconState(IconState.FAIL);
+                        //} else {
+                            //message.success('Get device success');
+                            //setIconState(IconState.SUCCESS);
+                            //onRefresh(res.data);
+                        //}
                         setTimeout(() => {
                             setIconState(IconState.ENABLE);
                         }, 3000);
@@ -113,7 +112,13 @@ const TopBar: React.FC<TopBarProps> = ({ onRefresh, onLogout }) => {
                     // 用户登录成功
                     setIsLogin(true);
                     setIconState(IconState.ENABLE);
-                    setUsername(data.username);
+                    // 有手机显示手机，没有手机显示邮箱
+                    if (data.phoneNumber) {
+                        setUsername(data.phoneNumber);
+                    }
+                    if (data.email) {
+                        setUsername(data.email);
+                    }
                 }}
             />
         </div>

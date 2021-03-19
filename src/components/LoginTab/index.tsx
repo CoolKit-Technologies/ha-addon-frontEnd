@@ -84,19 +84,26 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin }) => {
                             return;
 
                         setLoading(true);
-                        const res = await login({
-                            country,
-                            account,
+                        const params: any = {
+                            lang: 'en',
+                            countryCode: country,
                             password
-                        });
+                        };
+                        if (account.indexOf('@') === -1) {
+                            params.phoneNumber = `${country}${account.trim()}`;
+                        } else {
+                            params.email = account.trim();
+                        }
+
+                        const res = await login(params);
                         setLoading(false);
                         if (res.error !== 0) {
-                            message.error('Login failed');
+                            message.error(`Login failed, ${res.msg}`);
                         } else {
                             message.success('Login success');
                             setTimeout(() => {
                                 onClose();
-                                onLogin(res.data);
+                                onLogin(res.data.user);
                             }, 1000);
                         }
                     }}

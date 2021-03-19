@@ -12,7 +12,13 @@ export async function login(params: {
     email?: string;
     password: string;
     lang: 'cn' | 'en';
-}): Promise<HttpResponse> {
+}): Promise<{
+    error: number;
+    msg: string;
+    data: {
+        user: UserInfo;
+    };
+}> {
     return await sendRequest('POST', '/api/user/login', params);
 }
 
