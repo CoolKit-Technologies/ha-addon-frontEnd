@@ -1,6 +1,6 @@
 import React from 'react';
-import TopBar from '../components/TopBar';
-import DeviceList from '../components/DeviceList';
+import TopBar from '@/components/TopBar';
+import DeviceList from '@/components/DeviceList';
 import styles from './index.less';
 import { DeviceInfo, DeviceType } from '@/types';
 import _ from 'lodash';

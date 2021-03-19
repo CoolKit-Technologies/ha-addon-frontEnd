@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserInfo, DeviceInfo } from '../types';
+import { UserInfo, DeviceInfo } from '@/types';
 
 interface Response {
     error: number;

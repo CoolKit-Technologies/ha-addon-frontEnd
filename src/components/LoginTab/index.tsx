@@ -2,8 +2,8 @@ import React from 'react';
 import { Modal, Input, Button, Typography, Select, message } from 'antd';
 import { UserOutlined, EnvironmentOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './index.less';
-import { login } from '../../api';
-import { UserInfo } from '../../types';
+import { login } from '@/api';
+import { UserInfo } from '@/types';
 
 const { Text, Link } = Typography;
 const { Option } = Select;

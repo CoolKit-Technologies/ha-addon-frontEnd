@@ -10,9 +10,9 @@ export enum IconState {
 // 设备类型
 export enum DeviceType {
     // real
-    T_DIY = 1,      // DIY 设备
-    T_LAN = 2,      // 局域网设备
-    T_CLOUD = 4,    // 云设备
+    DIY = 1,      // DIY 设备
+    LAN = 2,      // 局域网设备
+    CLOUD = 4,    // 云设备
 
     SUPPORT,        // 支持的设备
     UNSUPPORT,      // 不支持的设备

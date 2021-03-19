@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Menu, Dropdown, Typography, Modal, message } from 'antd';
 import { ReloadOutlined, CaretLeftOutlined, CheckOutlined, CloseOutlined, DownOutlined } from '@ant-design/icons';
-import LoginTab from '../LoginTab';
+import LoginTab from '@/components/LoginTab';
 import styles from './index.less';
 import { IconState, DeviceInfo } from '@/types';
-import { getList } from '../../api';
+import { getList } from '@/api';
 
 const { Text } = Typography;
 const { confirm } = Modal;
