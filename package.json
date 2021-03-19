@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "dependencies": {
+    "@ant-design/pro-layout": "^5.0.12",
+    "@material-ui/core": "^4.11.3",
+    "@umijs/preset-react": "1.x",
+    "@umijs/test": "^3.2.20",
+    "axios": "^0.21.1",
+    "lint-staged": "^10.0.7",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "umi": "^3.2.20",
+    "yorkie": "^2.0.0"
+  }
+}

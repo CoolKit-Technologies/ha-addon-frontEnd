@@ -1,0 +1,23 @@
+.container {
+    background-color: rgba(111, 111, 255, 0.1);
+}
+
+.op-item {
+    display: flex;
+    align-items: center;
+
+    .del-icon {
+        padding: 4px 2px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: color 300ms;
+    }
+    .del-icon:hover {
+        color: tomato;
+    }
+
+}
+
+.op-item > *:not(:last-child) {
+    margin-right: 12px;
+}

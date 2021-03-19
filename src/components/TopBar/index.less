@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+
+    .left {
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-btn {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: white;
+        border-radius: 50%;
+        transition: background-color 500ms;
+    }
+
+    .icon-btn-disable {
+        background-color: #bbb;
+        cursor: not-allowed;
+    }
+
+    .icon-btn-enable,
+    .icon-btn-loading {
+        background-color: #797979;
+        cursor: pointer;
+    }
+
+    .icon-btn-enable:hover {
+        box-shadow: 0 0 12px 2px #ccc;
+    }
+
+    .icon-btn-loading {
+        cursor: default;
+    }
+
+    .icon-btn-success {
+        background-color: #52c41a;
+    }
+
+    .icon-btn-fail {
+        background-color: #f5222d;
+    }
+
+    .hint h1 {
+        font-size: 20px;
+        margin: 0;
+        color: #797979;
+        padding-left: 14px;
+    }
+}
