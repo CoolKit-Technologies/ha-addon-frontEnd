@@ -4,64 +4,51 @@ import DeviceList from '@/components/DeviceList';
 import styles from './index.less';
 import { DeviceInfo, DeviceType } from '@/types';
 import _ from 'lodash';
+import { getDeviceList, changeDeviceStatus } from '@/api';
 
 const App: React.FC = () => {
-    const [tableData, setTableData] = React.useState<DeviceInfo[]>([
-        {
-            key: '1',
-            name: 'Single Socket 401',
-            id: '60423DC',
-            ip: '192.168.10.3',
-            vendor: 'SONOFF',
-            model: 'SG-SK-TSA-CN',
-            enabled: true,
-            type: DeviceType.SUPPORT
-        },
-        {
-            key: '2',
-            name: 'Double Socket 402',
-            id: '6KFG423',
-            ip: '192.168.10.111',
-            vendor: 'Coolkit',
-            model: 'DB-TK-GCD-EN',
-            enabled: false,
-            type: DeviceType.SUPPORT
-        },
-        {
-            key: '3',
-            name: 'Power K3',
-            id: 'PKK301',
-            ip: '192.168.10.89',
-            vendor: 'Coolkit',
-            model: 'DB-PP-DL-EN',
-            enabled: true,
-            type: DeviceType.LOGIN_SUPPORT
-        },
-        {
-            key: '4',
-            name: 'WiFi Controller',
-            id: 'PKK301',
-            ip: '192.168.10.70',
-            vendor: 'TUYA',
-            model: 'DB-PP-DL-EN',
-            enabled: false,
-            type: DeviceType.UNSUPPORT
-        }
-    ]);
+    const [isLogin, setIsLogin] = React.useState(false);
+    const [tableData, setTableData] = React.useState<DeviceInfo[]>([]);
+
+    React.useEffect(() => {
+        getDeviceList({ type: 'init' })
+            .then((res) => {
+                if (res.error === 0) {
+                    // done
+                    console.log(res.data);
+                    setTableData(res.data);
+                } else {
+                    // fail
+                }
+            });
+    }, []);
 
     return (
         <div className={styles['container']}>
             <div className={styles['wrapper']}>
-                <TopBar onRefresh={(data) => setTableData(data)} onLogout={() => setTableData([])} />
+                <TopBar
+                    isLogin={isLogin}
+                    onRefresh={(data) => setTableData(data)}
+                    onLogout={() => {
+                        setIsLogin(false);
+                        setTableData([]);
+                    }}
+                    onLogin={() => {
+                        setIsLogin(true);
+                    }}
+                />
                 <DeviceList
+                    isLogin={isLogin}
                     tableData={tableData}
                     onDel={(index) => {
                         const copy = _.cloneDeep(tableData);
                         copy.splice(index, 1);
                         setTableData(copy);
                     }}
-                    onStatChange={(stat) => {
-                        console.log(stat);
+                    onStatChange={async (deviceId, stat) => {
+                        await changeDeviceStatus({ id: deviceId, disabled: !stat });
+                        const res = await getDeviceList({ type: 'init' });
+                        setTableData(res.data);
                     }}
                 />
             </div>

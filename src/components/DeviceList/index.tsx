@@ -5,19 +5,21 @@ import { ColumnProps } from 'antd/lib/table';
 import styles from './index.less';
 import { DeviceInfo, DeviceType } from '@/types';
 import TableCellHint from '@/components/TableCellHint';
+import { deviceIsSupport, deviceIsLoginAva } from '@/utils';
 
 const { Text } = Typography;
 const { confirm } = Modal;
 
 interface DeviceListProps {
+    isLogin: boolean;
     tableData: DeviceInfo[];
     onDel: (index: number) => void;
-    onStatChange: (stat: boolean) => void;
+    onStatChange: (deviceId: string, stat: boolean) => void;
 }
 
-const DeviceList: React.FC<DeviceListProps> = ({ tableData, onDel, onStatChange }) => {
+const DeviceList: React.FC<DeviceListProps> = ({ tableData, isLogin, onDel, onStatChange }) => {
     const renderContent = (value: any, record: DeviceInfo) => {
-        if (record.type === DeviceType.SUPPORT) {
+        if (deviceIsSupport(1)) {
             return <Text>{value}</Text>
         } else {
             return {
@@ -31,17 +33,33 @@ const DeviceList: React.FC<DeviceListProps> = ({ tableData, onDel, onStatChange 
     const columns: ColumnProps<DeviceInfo>[] = [
         {
             title: 'Name',
-            dataIndex: 'name',
+            dataIndex: 'deviceName',
             render: (value, record, index) => {
-                return record.type === DeviceType.UNSUPPORT ? <Text style={{color: '#939393'}}>{value}</Text> : <Text>{value}</Text>
+                let tag: JSX.Element = <></>;
+
+                switch (record.type) {
+                    case DeviceType.DIY:
+                        tag = <span>DIY</span>;
+                        break;
+                    case DeviceType.LAN:
+                        tag = <span>LAN</span>;
+                        break;
+                    case DeviceType.CLOUD:
+                        tag = <span>CLOUD</span>;
+                        break;
+                    default:
+                        break;
+                }
+
+                return <Text style={ !deviceIsSupport(1) ? { color: '#939393' } : {} }>{tag} - {value}</Text>;
             }
         },
         {
             title: 'ID',
-            dataIndex: 'id',
+            dataIndex: 'deviceId',
             render: (value, record, index) => {
                 // 登录后支持的设备
-                if (record.type === DeviceType.LOGIN_SUPPORT) {
+                if (deviceIsLoginAva(true, 1)) {
                     return {
                         children: <TableCellHint type="login-support" />,
                         props: {
@@ -51,7 +69,7 @@ const DeviceList: React.FC<DeviceListProps> = ({ tableData, onDel, onStatChange 
                 }
 
                 // 不支持的设备
-                if (record.type === DeviceType.UNSUPPORT) {
+                if (!deviceIsSupport(1)) {
                     return {
                         children: <TableCellHint type="unsupport" />,
                         props: {
@@ -70,7 +88,7 @@ const DeviceList: React.FC<DeviceListProps> = ({ tableData, onDel, onStatChange 
         },
         {
             title: 'Vendor',
-            dataIndex: 'vendor',
+            dataIndex: 'manufacturer',
             render: renderContent
         },
         {
@@ -82,19 +100,19 @@ const DeviceList: React.FC<DeviceListProps> = ({ tableData, onDel, onStatChange 
             title: 'Operation',
             width: 170,
             render: (value, record, index) => {
-                if (record.type === DeviceType.SUPPORT) {
+                if (deviceIsSupport(1)) {
                     return (
                         <div className={styles['op-item']}>
                             <Switch
-                                checked={ record.enabled ? true : false }
-                                onChange={(v) => onStatChange(v)}
+                                checked={ record.disabled ? false : true }
+                                onChange={(v) => onStatChange(record.deviceId, v)}
                             />
-                            <Text>{ record.enabled ? 'Enabled' : 'Disabled' }</Text>
+                            <Text>{ record.disabled ? 'Disabled' : 'Enabled' }</Text>
                             <DeleteOutlined
                                 className={styles['del-icon']}
                                 onClick={() => {
                                     confirm({
-                                        title: `'${record.name}' will be removed from the table temporarily.`,
+                                        title: `'${record.deviceName}' will be removed from the table temporarily.`,
                                         onOk() {
                                             onDel(index);
                                         }

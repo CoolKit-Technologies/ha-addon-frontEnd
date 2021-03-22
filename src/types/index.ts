@@ -13,10 +13,6 @@ export enum DeviceType {
     DIY = 1,      // DIY 设备
     LAN = 2,      // 局域网设备
     CLOUD = 4,    // 云设备
-
-    SUPPORT,        // 支持的设备
-    UNSUPPORT,      // 不支持的设备
-    LOGIN_SUPPORT   // 登录后支持
 }
 
 // 用户信息
@@ -27,14 +23,15 @@ export interface UserInfo {
 
 // 列表的设备信息
 export interface DeviceInfo {
-    key: string;
-    name: string;
-    id: string;
-    ip: string;
-    vendor: string;
-    model: string;
-    enabled: boolean;
-    type: DeviceType;
+    key: string;            // 表格的 key
+    deviceName?: string;    // 设备的名称
+    deviceId: string;       // 设备 ID
+    ip?: string;            // DIY 设备的 IP
+    manufacturer?: string;  // 设备厂商
+    model?: string;         // 设备型号
+    disabled: boolean;      // 设备是否禁用
+    type: DeviceType;       // 设备类型 - type 等于 2 且没有登录；登录了但 uiid 不在范围内
+    uiid?: number;          // 设备分类
 }
 
 // HTTP 请求方法

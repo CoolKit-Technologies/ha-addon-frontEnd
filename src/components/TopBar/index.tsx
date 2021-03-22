@@ -9,14 +9,15 @@ const { Text } = Typography;
 const { confirm } = Modal;
 
 interface TopBarProps {
+    isLogin: boolean;
     onRefresh: (data: DeviceInfo[]) => void;
     onLogout: () => void;
+    onLogin: () => void;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ onRefresh, onLogout }) => {
+const TopBar: React.FC<TopBarProps> = ({ isLogin, onRefresh, onLogout, onLogin }) => {
     const [iconState, setIconState] = React.useState<IconState>(IconState.DISABLE);
     const [username, setUsername] = React.useState('');
-    const [isLogin, setIsLogin] = React.useState(false);
     const [loginTabVisible, setLoginTabVisible] = React.useState(false);
     const menu = (
         <Menu>
@@ -25,9 +26,8 @@ const TopBar: React.FC<TopBarProps> = ({ onRefresh, onLogout }) => {
                     title: 'Do you want to logout?',
                     onOk() {
                         // 用户退出登录
-                        setIsLogin(false);
-                        setIconState(IconState.DISABLE);
                         onLogout();
+                        setIconState(IconState.DISABLE);
                     },
                     okText: 'Yes',
                     cancelText: 'No'
@@ -110,7 +110,7 @@ const TopBar: React.FC<TopBarProps> = ({ onRefresh, onLogout }) => {
                 onClose={() => setLoginTabVisible(false)}
                 onLogin={(data) => {
                     // 用户登录成功
-                    setIsLogin(true);
+                    onLogin();
                     setIconState(IconState.ENABLE);
                     // 有手机显示手机，没有手机显示邮箱
                     if (data.phoneNumber) {
