@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Input, Button, Typography, Select, message } from 'antd';
 import { UserOutlined, EnvironmentOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { login } from '@/api';
 import { UserInfo } from '@/types';
-
+import logoPng from '@/assets/logo.png';
+import regionMapEn from '@/locales/regionMap_en';
+import regionMapZh from '@/locales/regionMap_zh';
+import { connect, FormattedMessage, useIntl } from 'umi';
 const { Text, Link } = Typography;
 const { Option } = Select;
 
 interface LoginTabProps {
-    visible: boolean;       // 登录弹框是否可见
-    onClose: () => void;    // 关闭弹框
-    onLogin: (data: UserInfo) => void;    // 用户登录成功
+    visible: boolean; // 登录弹框是否可见
+    onClose: () => void; // 关闭弹框
+    onLogin: (data: UserInfo) => void; // 用户登录成功
+    language: string;
 }
 
-const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin }) => {
-    const [loading, setLoading] = React.useState(false);
-    const [country, setCountry] = React.useState('');
-    const [account, setAccount] = React.useState('');
-    const [password, setPassword] = React.useState('');
-
+const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin, language }) => {
+    const [loading, setLoading] = useState(false);
+    const [country, setCountry] = useState('');
+    const [account, setAccount] = useState('');
+    const [password, setPassword] = useState('');
+    const [languageList, setLanguageList] = useState(regionMapEn);
+    const { formatMessage } = useIntl();
     // 验证表单，通过返回 true；否则返回 false
     const verify = (): boolean => {
         if (country === '') {
@@ -40,54 +45,71 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin }) => {
         return true;
     };
 
+    useEffect(() => {
+        if (language === 'zh') {
+            setLanguageList(regionMapZh);
+        } else {
+            setLanguageList(regionMapEn);
+        }
+    }, [language]);
+
     return (
-        <Modal
-            title="Login"
-            visible={visible}
-            footer={null}
-            maskClosable={false}
-            onCancel={() => onClose()}
-            width="500px"
-            destroyOnClose
-        >
+        <Modal visible={visible} footer={null} maskClosable={false} onCancel={() => onClose()} width='500px' className={styles.loginModal} destroyOnClose>
             <div className={styles['wrapper']}>
+                <div className={styles.modalHeader}>
+                    <img src={logoPng} alt='' />
+                    <div>{formatMessage({ id: 'app.slogan' })}</div>
+                </div>
                 <Select
                     style={{ width: '100%' }}
                     className={styles['form-cntl']}
-                    placeholder="Country"
+                    placeholder={formatMessage({ id: 'user.login.country.placeholder' })}
                     showSearch
-                    onChange={(e) => setCountry(e as string)}
+                    filterOption={(inputValue, option) => {
+                        const tmp = inputValue.toLocaleLowerCase();
+                        if (~option?.value.indexOf(tmp) || ~(option?.desc as string).toLocaleLowerCase().indexOf(tmp)) {
+                            return true;
+                        }
+                        return false;
+                    }}
+                    onChange={(e) => {
+                        setCountry(e as string);
+                    }}
                 >
-                    <Option value="+1">+1</Option>
-                    <Option value="+23">+23</Option>
-                    <Option value="+86">+86</Option>
+                    {languageList.map((item) => {
+                        const [val, desc] = Object.entries(item)[0];
+                        return (
+                            <Option key={val} desc={desc} value={val}>
+                                {desc} ({val})
+                            </Option>
+                        );
+                    })}
                 </Select>
                 <Input
                     className={styles['form-cntl']}
-                    placeholder="Phone number / Email"
+                    placeholder={formatMessage({ id: 'user.login.username.placeholder' })}
                     prefix={<UserOutlined style={{ paddingRight: '5px' }} />}
                     onChange={(e) => setAccount(e.target.value)}
                     allowClear
                 />
                 <Input.Password
                     className={styles['form-cntl']}
-                    placeholder="Password"
+                    placeholder={formatMessage({ id: 'user.login.password.placeholder' })}
                     prefix={<LockOutlined style={{ paddingRight: '5px' }} />}
                     onChange={(e) => setPassword(e.target.value)}
                     allowClear
                 />
                 <Button
-                    type="primary"
+                    type='primary'
                     onClick={async () => {
                         // 验证后登录
-                        if (!verify())
-                            return;
+                        if (!verify()) return;
 
                         setLoading(true);
                         const params: any = {
                             lang: 'en',
                             countryCode: country,
-                            password
+                            password,
                         };
                         if (account.indexOf('@') === -1) {
                             params.phoneNumber = `${country}${account.trim()}`;
@@ -98,9 +120,9 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin }) => {
                         const res = await login(params);
                         setLoading(false);
                         if (res.error !== 0) {
-                            message.error(`Login failed, ${res.msg}`);
+                            message.error(formatMessage({ id: 'user.login.failed' }, { msg: res.msg }));
                         } else {
-                            message.success('Login success');
+                            message.success(formatMessage({ id: 'user.login.success' }));
                             setTimeout(() => {
                                 onClose();
                                 onLogin(res.data.user);
@@ -109,13 +131,23 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin }) => {
                     }}
                     loading={loading}
                     block
-                >LOG IN</Button>
+                >
+                    {formatMessage({ id: 'user.login' })}
+                </Button>
             </div>
             <div className={styles['hint-text']}>
-                <Text>No account. <Link target="_blank" href="https://bing.com">Download eWeLink App</Link> now.</Text>
+                <Text>
+                    <FormattedMessage id='app.noAcount' />{' '}
+                    <Link target='_blank' href='https://bing.com'>
+                        <FormattedMessage id='app.download' />
+                    </Link>{' '}
+                    <FormattedMessage id='app.now' />
+                </Text>
             </div>
         </Modal>
     );
 };
 
-export default LoginTab;
+export default connect(({ global }: any) => ({
+    language: global.language,
+}))(LoginTab);

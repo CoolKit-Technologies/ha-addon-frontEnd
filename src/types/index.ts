@@ -32,6 +32,7 @@ export interface DeviceInfo {
     disabled: boolean;      // 设备是否禁用
     type: DeviceType;       // 设备类型 - type 等于 2 且没有登录；登录了但 uiid 不在范围内
     uiid?: number;          // 设备分类
+    rssi?: number;          // 信号强度
 }
 
 // HTTP 请求方法

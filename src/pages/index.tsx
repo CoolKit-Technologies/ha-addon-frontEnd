@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TopBar from '@/components/TopBar';
 import DeviceList from '@/components/DeviceList';
 import styles from './index.less';
-import { DeviceInfo, DeviceType } from '@/types';
+import { DeviceInfo } from '@/types';
+import { getDeviceList, changeDeviceStatus, logout, getLanguage } from '@/api';
 import _ from 'lodash';
-import { getDeviceList, changeDeviceStatus } from '@/api';
+import { connect, setLocale } from 'umi';
 
-const App: React.FC = () => {
-    const [isLogin, setIsLogin] = React.useState(false);
-    const [tableData, setTableData] = React.useState<DeviceInfo[]>([]);
+const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguage }) => {
+    const [isLogin, setIsLogin] = useState(false);
+    const [tableData, setTableData] = useState<DeviceInfo[]>([]);
 
-    React.useEffect(() => {
-        getDeviceList({ type: 'init' })
-            .then((res) => {
-                if (res.error === 0) {
-                    // done
-                    console.log(res.data);
-                    setTableData(res.data);
-                } else {
-                    // fail
-                }
-            });
+    useEffect(() => {
+        getDeviceList({ type: 'init' }).then((res) => {
+            if (res.error === 0) {
+                // done
+                setTableData(res.data);
+            } else {
+                // fail
+            }
+        });
+        getLanguage();
     }, []);
 
     return (
@@ -29,17 +29,24 @@ const App: React.FC = () => {
                 <TopBar
                     isLogin={isLogin}
                     onRefresh={(data) => setTableData(data)}
-                    onLogout={() => {
-                        setIsLogin(false);
-                        setTableData([]);
+                    onLogout={async () => {
+                        const { error } = await logout();
+                        if (error === 0) {
+                            setIsLogin(false);
+                            setTableData([]);
+                            window.localStorage.clear();
+                        }
                     }}
-                    onLogin={() => {
+                    onLogin={async () => {
                         setIsLogin(true);
+                        const { data, error } = await getDeviceList({ type: 'init' });
+                        setTableData(data);
                     }}
                 />
                 <DeviceList
                     isLogin={isLogin}
                     tableData={tableData}
+                    setTableData={setTableData}
                     onDel={(index) => {
                         const copy = _.cloneDeep(tableData);
                         copy.splice(index, 1);
@@ -56,4 +63,14 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+export default connect(
+    ({ global }: any) => ({
+        language: global.language,
+    }),
+    (dispatch) => ({
+        getLanguage: () =>
+            dispatch({
+                type: 'global/getLanguage',
+            }),
+    })
+)(App);

@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { UserInfo, DeviceInfo, HttpResponse, HttpMethod } from '@/types';
 
+const apiPrefix = 'api';
+
 /**
  * 用户登录
  * @param params 请求参数
@@ -19,7 +21,14 @@ export async function login(params: {
         user: UserInfo;
     };
 }> {
-    return await sendRequest('POST', '/api/user/login', params);
+    return await sendRequest('POST', `${apiPrefix}/user/login`, params);
+}
+
+export async function logout(): Promise<{
+    error: number;
+    msg: string;
+}> {
+    return await sendRequest('POST', `${apiPrefix}/user/logout`);
 }
 
 /**
@@ -28,12 +37,12 @@ export async function login(params: {
  * @returns 接口返回值
  */
 export async function getDeviceList(params: {
-    type: 'refresh' | 'init';   // init - 页面加载时使用，refresh - 刷新时使用
+    type: 'refresh' | 'init'; // init - 页面加载时使用，refresh - 刷新时使用
 }): Promise<HttpResponse> {
     if (params.type === 'init') {
-        return await sendRequest('GET', '/api/devices', { type: 7 });
+        return await sendRequest('GET', `${apiPrefix}/devices`, { type: 7 });
     } else {
-        return await sendRequest('GET', '/api/devices/refresh', { type: 7 });
+        return await sendRequest('GET', `${apiPrefix}/devices/refresh`, { type: 7 });
     }
 }
 
@@ -42,11 +51,8 @@ export async function getDeviceList(params: {
  * @param params 请求参数
  * @returns 接口返回值
  */
-export async function changeDeviceStatus(params: {
-    id: string;
-    disabled: boolean;
-}): Promise<HttpResponse> {
-    return await sendRequest('POST', '/api/devices/disabled', params);
+export async function changeDeviceStatus(params: { id: string; disabled: boolean }): Promise<HttpResponse> {
+    return await sendRequest('POST', `${apiPrefix}/devices/disabled`, params);
 }
 
 /**
@@ -58,9 +64,10 @@ export async function changeDeviceStatus(params: {
  */
 async function sendRequest(method: HttpMethod, url: string, params?: any): Promise<HttpResponse> {
     const config: AxiosRequestConfig = {
-        baseURL: 'http://192.168.1.115:3000',
+        // todo
+        baseURL: 'http://localhost:3000',
         method,
-        url
+        url,
     };
 
     if (params && method === 'GET') {
@@ -77,21 +84,41 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
             return {
                 error: 0,
                 msg: 'success',
-                data: res.data.data
+                data: res.data.data,
             };
         } else {
             const { error, msg, data } = res.data;
             return {
                 error,
                 msg,
-                data
+                data,
             };
         }
     } catch (e) {
         return {
             error: 500,
             msg: 'axios error',
-            data: {}
+            data: {},
         };
     }
+}
+
+export async function getLanguage(): Promise<{
+    error: number;
+    data: string;
+}> {
+    return await sendRequest('GET', `${apiPrefix}/language`);
+}
+
+export async function updateDeviceName(
+    id: string,
+    newName: string
+): Promise<{
+    error: number;
+    data: string;
+}> {
+    return await sendRequest('POST', `${apiPrefix}/devices/updateName`, {
+        id,
+        newName,
+    });
 }

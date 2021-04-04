@@ -54,4 +54,43 @@
         color: #797979;
         padding-left: 14px;
     }
+
+    .loginIcon {
+        width: 20px;
+        vertical-align: top;
+        margin-right: 4px;
+    }
+}
+
+.logoutModal {
+    :global {
+        .ant-modal-content {
+            overflow: hidden;
+            border-radius: 10px;
+        }
+    }
+    .modalTitle {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .modalBtnBox {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .cancelBtn {
+        background-color: #969696;
+        color: #fff;
+        padding: 0 30px;
+        &:hover {
+            border-color: #969696;
+        }
+    }
+    .confirmBtn {
+        background-color: #2dadfe;
+        color: #fff;
+        padding: 0 30px;
+    }
 }

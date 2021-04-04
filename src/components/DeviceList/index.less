@@ -2,22 +2,49 @@
     background-color: rgba(111, 111, 255, 0.1);
 }
 
+.dataItem {
+    position: relative;
+    .signalIcon {
+        position: absolute;
+        top: -20px;
+        left: -10px;
+    }
+    .icon {
+        margin-right: 8px;
+        width: 32px;
+        height: 32px;
+    }
+}
+
 .op-item {
     display: flex;
     align-items: center;
 
+    .edit-icon {
+        padding: 4px 2px;
+        cursor: pointer;
+        width: 20px;
+        transition: color 300ms;
+    }
+    .edit-icon:hover {
+        color: #1890ff;
+    }
+
     .del-icon {
         padding: 4px 2px;
-        font-size: 18px;
         cursor: pointer;
+        width: 20px;
         transition: color 300ms;
     }
     .del-icon:hover {
         color: tomato;
     }
-
 }
 
-.op-item > *:not(:last-child) {
-    margin-right: 12px;
+.op-item {
+    display: flex;
+    justify-content: space-around;
+    & > *:not(:last-child) {
+        margin-right: 12px;
+    }
 }
