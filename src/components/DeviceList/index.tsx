@@ -71,13 +71,13 @@ const DeviceList: React.FC<DeviceListProps> = ({ tableData, isLogin, onDel, onSt
                     if (record.rssi > -100) {
                         signal = wifi0Icon;
                     }
-                    if (record.rssi > -75) {
+                    if (record.rssi > -80) {
                         signal = wifi1Icon;
                     }
-                    if (record.rssi > -50) {
+                    if (record.rssi > -60) {
                         signal = wifi2Icon;
                     }
-                    if (record.rssi > -40) {
+                    if (record.rssi > -55) {
                         signal = wifi3Icon;
                     }
                 }
