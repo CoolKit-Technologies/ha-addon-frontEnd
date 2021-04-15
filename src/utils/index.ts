@@ -14,7 +14,7 @@ export function deviceIsSupport(device: DeviceInfo): boolean {
         return true;
     }
 
-    const supported = [1, 2, 3, 4, 6, 7, 8, 14, 15, 22, 32, 36, 59, 103];
+    const supported = [1, 2, 3, 4, 6, 7, 8, 14, 15, 22, 32, 36, 59, 77, 103, 112, 113, 114];
     if (device.uiid && ~supported.indexOf(device.uiid)) {
         return true;
     }
