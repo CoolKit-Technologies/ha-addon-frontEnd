@@ -5,7 +5,7 @@ import styles from './index.less';
 import { DeviceInfo } from '@/types';
 import { getDeviceList, changeDeviceStatus, logout, getLanguage } from '@/api';
 import _ from 'lodash';
-import { connect, setLocale } from 'umi';
+import { connect, setLocale, Link, history } from 'umi';
 
 const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguage }) => {
     const [isLogin, setIsLogin] = useState(false);
@@ -58,6 +58,8 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
                         setTableData(res.data);
                     }}
                 />
+                {/*<Link to="/settings">======================== Settings ========================</Link>
+                <button onClick={() => history.push('/settings?id=001')}>go go</button> */}
             </div>
         </div>
     );
