@@ -153,13 +153,15 @@ const DeviceList: React.FC<DeviceListProps> = ({ tableData, isLogin, onDel, onSt
                                 <Switch checked={record.disabled ? false : true} onChange={(v) => onStatChange(record.deviceId, v)} />
                                 <div>{record.disabled ? formatMessage({ id: 'device.disabled' }) : formatMessage({ id: 'device.enable' })}</div>
                             </div>
-                            <EditOutlined
-                                className={styles['edit-icon']}
-                                onClick={() => {
-                                    setEditingDeviceId(record.deviceId);
-                                    setEditingDeviceName(record.deviceName!);
-                                }}
-                            />
+                            {record.type !== 1 ? (
+                                <EditOutlined
+                                    className={styles['edit-icon']}
+                                    onClick={() => {
+                                        setEditingDeviceId(record.deviceId);
+                                        setEditingDeviceName(record.deviceName!);
+                                    }}
+                                />
+                            ) : null}
                             <DeleteOutlined
                                 className={styles['del-icon']}
                                 onClick={() => {
