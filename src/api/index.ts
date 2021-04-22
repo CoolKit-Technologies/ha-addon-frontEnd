@@ -115,8 +115,8 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
     const config: AxiosRequestConfig = {
         // 本地开发时，可替换 baseURL
         // baseURL: 'http://192.168.1.115:3000',
-        // baseURL: 'http://localhost:3000',
-        method,
+        baseURL: 'http://localhost:3000',
+        // method,
         url,
     };
 

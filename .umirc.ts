@@ -10,8 +10,5 @@ export default defineConfig({
         baseSeparator: '-',
     },
     exportStatic: {},
-    routes: [
-        { path: '/', component: '@/pages/index', title: 'Home' },
-        { path: '/settings', component: '@/pages/settings', title: 'Settings' }
-    ],
+    routes: [{ path: '/', component: '@/pages/index', title: 'Home' }],
 });
