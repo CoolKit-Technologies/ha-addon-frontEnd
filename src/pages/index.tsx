@@ -5,6 +5,7 @@ import { DeviceInfo } from '@/types';
 import { getDeviceList, changeDeviceStatus, logout, getLanguage } from '@/api';
 import _ from 'lodash';
 import { connect, setLocale, Link, history } from 'umi';
+import Header from '@/components/Header';
 
 const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguage }) => {
     useEffect(() => {
@@ -13,13 +14,11 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
 
     return (
         <div>
-            <header>heder111111121312312</header>
+            <Header />
             <div className={styles['main-container']}>
                 <div className={styles['ad-box']}></div>
                 <div className={styles['device-box']}>
-                    <div className={styles['device-col']}>
-                        {/* {'List'.map(item=>{<DeviceCard />})} */}
-                    </div>
+                    <div className={styles['device-col']}>{/* {'List'.map(item=>{<DeviceCard />})} */}</div>
                     <div className={styles['device-col']}></div>
                     <div className={styles['device-col']}></div>
                 </div>
