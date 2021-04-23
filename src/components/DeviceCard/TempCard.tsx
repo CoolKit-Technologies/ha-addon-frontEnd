@@ -40,10 +40,14 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode }) => {
             </div>
             <div className={style['double-box']}>
                 <ArcGauge
-                    type="humi"
+                    type="green"
+                    title="Humidity"
+                    content="45%"
                 />
                 <ArcGauge
-                    type="temp"
+                    type="blue"
+                    title="Temperature"
+                    content="73F"
                 />
             </div>
             <div className={style['channel']}>

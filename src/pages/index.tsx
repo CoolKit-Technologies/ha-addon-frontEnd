@@ -41,6 +41,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             </div>
 
             <UnsupportedCard
+                deviceData={{online:true,name:'XXX',type:'cloud'}}
             />
 
             <hr />
