@@ -3,10 +3,19 @@ import React from 'react';
 import { Switch } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
+import { DeviceType } from '@/ts/type';
+import IconFlashOn from '@/assets/svg/flash-on.svg';
+import IconFlashOff from '@/assets/svg/flash-off.svg';
+import IconRefresh from '@/assets/svg/refresh.svg';
+import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
 
 interface IW100CardProps {
-    deviceName: string;
+    deviceData: {
+        online: boolean;
+        type: DeviceType;
+        name: string;
+    };
     channel: {
         stat: boolean;
         name: string;
@@ -17,13 +26,17 @@ interface IW100CardProps {
     }[];
 }
 
-const IW100Card: React.FC<IW100CardProps> = ({ deviceName, channel, ballData }) => {
+const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) => {
     return (
         <div className={style['card']}>
             <div className={style['info-refresh']}>
-                <div className={style['info-icon']}></div>
-                <span className={style['device-name']}>{deviceName}</span>
-                <div className={style['refresh-icon']}></div>
+                <div className={style['info-icon']}>
+                    <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
+                </div>
+                <span className={style['device-name']}>{deviceData.name}</span>
+                <div className={style['refresh-icon']}>
+                    <img src={IconRefresh} width="30" height="30" />
+                </div>
             </div>
             <div className={style['triple-box']}>
                 {
@@ -42,9 +55,13 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceName, channel, ballData }) 
                 }
             </div>
             <div className={style['channel']}>
-                <div className={style['channel-icon']}></div>
+                <div className={style['channel-icon']}>
+                    {
+                        channel.stat ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
+                    }
+                </div>
                 <span className={style['channel-name']}>{channel.name}</span>
-                <Switch />
+                <Switch checked={channel.stat} />
             </div>
         </div>
     );

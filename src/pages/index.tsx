@@ -82,15 +82,15 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             <hr />
 
             <TempCard
-                deviceName="TH10"
+                deviceData={{online:true,type:'diy',name:'TH10'}}
                 channel={{stat:true,name:'bbb'}}
-                mode="auto"
+                mode="AUTO"
             />
 
             <hr />
 
             <DualR3Card
-                deviceName="DualR3 channel 1"
+                deviceData={{online:true,type:'diy',name:'DualR3 channel 1'}}
                 channel={{stat:true,name:'channel'}}
                 voltage="150V"
                 current="1.0A"
@@ -100,7 +100,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             <hr />
 
             <IW100Card
-                deviceName="IW100"
+                deviceData={{online:true,type:'diy',name:'IW100'}}
                 channel={{stat:true,name:'chh'}}
                 ballData={[{title:'Power',content:'231 W'},{title:'Voltage',content:'110 V'},{title:'Current',content:'2.1 A'}]}
             />
