@@ -11,6 +11,7 @@ const SettingModal: React.FC<TypeModalProps> = (props) => {
             <DeviceNameItem></DeviceNameItem>
             <IndicatorLEDItem></IndicatorLEDItem>
             <EnableEntityItem></EnableEntityItem>
+            {props.children}
         </BaseModal>
     );
 };

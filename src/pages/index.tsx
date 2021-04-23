@@ -14,6 +14,10 @@ import CKLiquid from '@/components/Circle/CKLiquid';
 import CKGauge from '@/components/Circle/CKGauge';
 import YellowGauge from '@/components/Circle/YellowGauge';
 import SettingModal from '@/components/Modal/SettingModal';
+import CKLine from '@/components/Circle/CKLine';
+import DeviceDataModal from '@/components/Modal/DeviceDataModal';
+import MultiChannelModal from '../components/Modal/MultiChannelModal';
+import EnvironmentStatus from '@/components/Modal/EnvironmentStatus';
 
 const { Meta } = Card;
 
@@ -110,8 +114,15 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
 
             <CKLiquid value={'111'} />
             <CKGauge percent={0.7} />
-            <YellowGauge percent={0.45} />
+            <YellowGauge value={0.45} />
             <SettingModal visible={false}></SettingModal>
+            {/* <CKLiquid value={'111'} />
+            <CKGauge percent={0.7} />
+            <YellowGauge value={50} /> */}
+            {/* <SettingModal visible></SettingModal> */}
+            {/* <DeviceDataModal visible title={'IW100'} titleAction={<a>Device settings</a>} /> */}
+            {/* <MultiChannelModal visible title='4 Channel Socket/Switch' titleAction={<a>Device settings</a>} /> */}
+            <EnvironmentStatus visible title='Environment Stats'></EnvironmentStatus>
         </div>
     );
 };
