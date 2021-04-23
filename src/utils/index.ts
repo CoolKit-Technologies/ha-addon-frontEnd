@@ -38,6 +38,7 @@ export function deviceIsLoginAva(isLogin: boolean, type: number): boolean {
     return type === DeviceType2.LAN && !isLogin;
 }
 
+// 根据设备类型及设备是否在线返回对应的 icon
 export function getIconByDeviceType(type: DeviceType, online: boolean) {
     if (type === 'cloud') {
         return online ? IconWifiOnline : IconWifiOffline;

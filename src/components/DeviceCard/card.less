@@ -1,6 +1,16 @@
 @deviceNameFontSize: 22px;
 @channelNameFontSize: 16px;
 
+.iconStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+}
+
+/* -------- >8 -------- */
+
 .card {
     padding: 14px;
     border: 1px solid #ddd;
@@ -19,18 +29,14 @@
     margin: 14px 0;
 
     .channel-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 16px;
-        width: 32px;
-        height: 32px;
+        .iconStyle();
         background-color: dodgerblue;
     }
 
     .channel-name {
         flex: 1;
         font-size: @channelNameFontSize;
+        margin-left: 16px;
     }
 }
 .channel:last-child {
@@ -42,18 +48,14 @@
     align-items: center;
 
     .info-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 16px;
-        width: 32px;
-        height: 32px;
+        .iconStyle();
         background-color: #eee;
     }
 
     .device-name {
         flex: 1;
         font-size: 22px;
+        margin-left: 16px;
     }
 }
 
@@ -62,23 +64,18 @@
     align-items: center;
 
     .info-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 16px;
-        width: 32px;
-        height: 32px;
+        .iconStyle();
         background-color: #fcc;
     }
 
     .device-name {
         flex: 1;
         font-size: @deviceNameFontSize;
+        margin-left: 16px;
     }
 
     .refresh-icon {
-        width: 32px;
-        height: 32px;
+        .iconStyle();
         background-color: #ccf;
     }
 }
@@ -130,11 +127,9 @@
 }
 
 .double-box {
-    justify-content: space-between;
-    padding: 0 20px;
+    justify-content: space-around;
 }
 
 .triple-box {
-    justify-content: space-between;
-    padding: 0 10px;
+    justify-content: space-around;
 }

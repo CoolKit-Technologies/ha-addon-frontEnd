@@ -74,7 +74,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             <hr />
 
             <PowerDetCard
-                deviceName="Power Det"
+                deviceData={{online:true,type:'cloud',name:'Power Det'}}
                 channel={{stat:true,name:'hello'}}
                 power={149}
             />
