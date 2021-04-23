@@ -94,6 +94,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
                 channel={{stat:true,name:'channel'}}
                 voltage="150V"
                 current="1.0A"
+                ballData={[{title:'Power',content:'231 W'},{title:'Voltage',content:'110 V'},{title:'Current',content:'2.1 A'}]}
             />
 
             <hr />
@@ -101,6 +102,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             <IW100Card
                 deviceName="IW100"
                 channel={{stat:true,name:'chh'}}
+                ballData={[{title:'Power',content:'231 W'},{title:'Voltage',content:'110 V'},{title:'Current',content:'2.1 A'}]}
             />
 
             <hr />

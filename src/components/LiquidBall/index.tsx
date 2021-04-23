@@ -5,11 +5,11 @@ import { Liquid } from '@ant-design/charts';
 interface LiquidBallProps {
     size: 'small' | 'large';
     type: 'blue' | 'green' | 'yellow';
-    title?: string;
-    content?: string;
+    title: string;
+    content: string;
 }
 
-const LiquidBall: React.FC<LiquidBallProps> = ({ size, type }) => {
+const LiquidBall: React.FC<LiquidBallProps> = ({ size, type, title, content }) => {
     let width = 400, height = 400;
     let outline = {
         border: 1,
@@ -62,6 +62,7 @@ const LiquidBall: React.FC<LiquidBallProps> = ({ size, type }) => {
         color,
         outline,
         percent: 0.38,
+        autoFit: false,
         wave: {
             length: 128
         },
@@ -72,7 +73,7 @@ const LiquidBall: React.FC<LiquidBallProps> = ({ size, type }) => {
                     color: '#c8c8c8'
                 },
                 offsetY: titleOffsetY,
-                formatter: () => 'realtime stat'
+                formatter: () => title
             },
             content: {
                 style: {
@@ -80,7 +81,7 @@ const LiquidBall: React.FC<LiquidBallProps> = ({ size, type }) => {
                     color: '#222'
                 },
                 offsetY: contentOffsetY,
-                formatter: () => '140 V'
+                formatter: () => content
             }
         }
     };

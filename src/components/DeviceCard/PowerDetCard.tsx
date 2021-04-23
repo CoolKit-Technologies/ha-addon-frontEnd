@@ -2,6 +2,7 @@
 import React from 'react';
 import { Switch } from 'antd';
 
+import LiquidBall from '@/components/LiquidBall';
 import style from './card.less';
 
 interface PowerDetCardProps {
@@ -20,6 +21,14 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceName, channel, power 
                 <div className={style['info-icon']}></div>
                 <span className={style['device-name']}>{deviceName}</span>
                 <div className={style['refresh-icon']}></div>
+            </div>
+            <div className={style['single-box']}>
+                <LiquidBall
+                    size="large"
+                    type="blue"
+                    title="Realtime stats"
+                    content="140 W"
+                />
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}></div>
