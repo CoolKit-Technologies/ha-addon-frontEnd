@@ -10,27 +10,77 @@ interface LiquidBallProps {
 }
 
 const LiquidBall: React.FC<LiquidBallProps> = ({ size, type }) => {
-    const width = size === 'small' ? 120 : size === 'large' ? 180 : 400;
-    const height = size === 'small' ? 120 : size === 'large' ? 180 : 400;
-    const color = type === 'blue' ? '#1890FF' : type === 'green' ? '#4ECB73' : type === 'yellow' ? '#FBD437' : '#ccccff';
-    const outline = size === 'small' ? { border: 2, distance: 1 } : size === 'large' ? { border: 2, distance: 2 } : { border: 1, distance: 1 };
+    let width = 400, height = 400;
+    let outline = {
+        border: 1,
+        distance: 1
+    };
+    let color = '#ccf';
+    let titleFontSize = '16px', contentFontSize = '16px';
+    let titleOffsetY = 0, contentOffsetY = 0;
+
+    switch (size) {
+        case 'small':
+            width = height = 120;
+            outline.border = 2;
+            outline.distance = 1;
+            titleFontSize = '12px';
+            contentFontSize = '16px';
+            titleOffsetY = -16;
+            contentOffsetY = -18;
+            break;
+        case 'large':
+            width = height = 160;
+            outline.border = 2;
+            outline.distance = 2;
+            titleFontSize = '14px';
+            contentFontSize = '24px';
+            titleOffsetY = -26;
+            contentOffsetY = -20;
+            break;
+        default:
+            break;
+    }
+
+    switch (type) {
+        case 'blue':
+            color = '#1890FF';
+            break;
+        case 'green':
+            color = '#4ECB73';
+            break;
+        case 'yellow':
+            color = '#FBD437';
+            break;
+        default:
+            break;
+    }
+
     const config = {
         width,
         height,
         color,
         outline,
-        percent: 0.4,
+        percent: 0.38,
         wave: {
             length: 128
         },
         statistic: {
             title: {
-                style: 'font-size:12px; color:rgba(0,0,0,0.45);',
-                formatter: () => 'dame'
+                style: {
+                    fontSize: titleFontSize,
+                    color: '#c8c8c8'
+                },
+                offsetY: titleOffsetY,
+                formatter: () => 'realtime stat'
             },
             content: {
-                style: 'color:#fcc;',
-                formatter: () => 'well well'
+                style: {
+                    fontSize: contentFontSize,
+                    color: '#222'
+                },
+                offsetY: contentOffsetY,
+                formatter: () => '140 V'
             }
         }
     };

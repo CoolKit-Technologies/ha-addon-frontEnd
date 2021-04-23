@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import TopBar from '@/components/TopBar';
 import styles from './index.less';
-import { DeviceInfo } from '@/types';
-import { getDeviceList, changeDeviceStatus, logout, getLanguage } from '@/api';
 import _ from 'lodash';
-import { connect, setLocale, Link, history } from 'umi';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
 import PowerDetCard from '@/components/DeviceCard/PowerDetCard';
 import TempCard from '@/components/DeviceCard/TempCard';
 import DualR3Card from '@/components/DeviceCard/DualR3Card';
 import IW100Card from '@/components/DeviceCard/IW100Card';
 import UnsupportedCard from '@/components/DeviceCard/UnsupportedCard';
+import { connect } from 'umi';
+import { Card } from 'antd';
+import Header from '@/components/Header';
+import CKLiquid from '@/components/Circle/CKLiquid';
+import CKGauge from '@/components/Circle/CKGauge';
+import YellowGauge from '@/components/Circle/YellowGauge';
+import SettingModal from '@/components/Modal/SettingModal';
+
+const { Meta } = Card;
 
 const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguage }) => {
     useEffect(() => {
@@ -19,13 +24,17 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
 
     return (
         <div style={{padding:'30px'}}>
-            <header>heder111111121312312</header>
+            <Header />
             <div className={styles['main-container']}>
-                <div className={styles['ad-box']}></div>
+                <div className={styles['ad-box']}>
+                    {Array.from({ length: 5 }).map((item) => (
+                        <Card cover={<img alt='example' src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' />}>
+                            <Meta title='Card title' description='This is the description' />
+                        </Card>
+                    ))}
+                </div>
                 <div className={styles['device-box']}>
-                    <div className={styles['device-col']}>
-                        {/* {'List'.map(item=>{<DeviceCard />})} */}
-                    </div>
+                    <div className={styles['device-col']}></div>
                     <div className={styles['device-col']}></div>
                     <div className={styles['device-col']}></div>
                 </div>
@@ -96,6 +105,10 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
 
             <hr />
 
+            <CKLiquid value={'111'} />
+            <CKGauge percent={0.7} />
+            <YellowGauge percent={0.45} />
+            <SettingModal visible={false}></SettingModal>
         </div>
     );
 };
