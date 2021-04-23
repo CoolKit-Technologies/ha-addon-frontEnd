@@ -14,26 +14,38 @@ const CKYellowGauge: React.FC<IGauge> = ({ percent }) => {
             subTickLine: { count: 0 },
             label: {
                 formatter: function formatter(text: string, item: any, index: number) {
+                    console.log('text', text, 'item', item, 'index', index);
                     switch (index) {
                         case 1:
-                            return 'Cold';
-                        case 2:
-                            return 'Cool';
-                        case 3:
-                            return 'Warm';
+                            return 'Dry';
                         case 4:
-                            return 'Hot';
+                            return 'Wet';
                         default:
                             return '';
                     }
+                    // switch (text) {
+                    //     case '0.2':
+                    //         return '0.35';
+                    //     case '0.4':
+                    //         return '0.5';
+                    //     case '0.6':
+                    //         return '0.75';
+                    //     default:
+                    //         return '';
+                    // }
+                    // switch (index) {
+                    //     case 1:
+                    //         return 'Dry';
+                    //     case 4:
+                    //         return 'Wet';
+                    //     default:
+                    //         return '';
+                    // }
                 },
             },
         },
 
-        range: {
-            ticks: [percent],
-            color: ['#52C41A', '#F0F2F5'],
-        },
+        range: { color: '#52C41A' },
         indicator: {
             pointer: { style: { stroke: '#52C41A' } },
             pin: { style: { stroke: '#52C41A' } },

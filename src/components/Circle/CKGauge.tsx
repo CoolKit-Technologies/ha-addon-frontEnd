@@ -29,8 +29,7 @@ const CKGauge: React.FC<IGauge> = ({ percent }) => {
             },
         },
         range: {
-            ticks: [percent],
-            color: ['#1890FF', '#F0F2F5'],
+            color: '#1890FF',
         },
         indicator: {
             pointer: { style: { stroke: '#1890FF' } },
@@ -50,6 +49,9 @@ const CKGauge: React.FC<IGauge> = ({ percent }) => {
             content: {
                 style: {
                     fontSize: '20px',
+                },
+                formatter: function formatter() {
+                    return '73℉';
                 },
             },
         },
