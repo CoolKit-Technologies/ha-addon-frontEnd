@@ -27,7 +27,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             </div>
             <CKLiquid value={'111'} />
             <CKGauge percent={0.7} />
-            <YellowGauge percent={0.45} />
+            <YellowGauge value={50} />
         </div>
     );
 };

@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Gauge } from '@ant-design/charts';
 
 interface IGauge {
-    percent: number;
+    value: number;
 }
-const CKYellowGauge: React.FC<IGauge> = ({ percent }) => {
+function transferHumiditye(humidity: number) {
+    return humidity / 100;
+}
+const CKYellowGauge: React.FC<IGauge> = ({ value }) => {
     const config = {
         width: 400,
         height: 400,
-        percent: percent,
+        percent: transferHumiditye(value),
         axis: {
             tickCount: 0,
             subTickLine: { count: 0 },

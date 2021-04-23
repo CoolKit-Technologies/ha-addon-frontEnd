@@ -4,6 +4,7 @@ import { Gauge } from '@ant-design/charts';
 interface IGauge {
     percent: number;
 }
+
 const CKGauge: React.FC<IGauge> = ({ percent }) => {
     const config = {
         width: 400,
