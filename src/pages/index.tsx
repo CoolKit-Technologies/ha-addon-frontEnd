@@ -46,29 +46,29 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             <hr />
 
             <SocketSwitchCard
-                deviceName="1 Channel Socket"
+                deviceData={{name:'1 Channel Switch',type:'cloud',online:true}}
                 channels={[{name:'channel 1',stat:true}]}
             />
 
             <hr/>
 
             <SocketSwitchCard
-                deviceName="2 Channel Socket"
-                channels={[{name:'channel 1',stat:true},{name:'channel2',stat:true}]}
+                deviceData={{name:'1 Channel Switch',type:'diy',online:false}}
+                channels={[{name:'channel 1',stat:true},{name:'channel 2',stat:true}]}
             />
 
             <hr />
 
             <SocketSwitchCard
-                deviceName="3 Channel Socket"
-                channels={[{name:'channel 1',stat:true},{name:'channel2',stat:true},{name:'channel 3',stat:false}]}
+                deviceData={{name:'1 Channel Switch',type:'lan',online:true}}
+                channels={[{name:'channel 1',stat:true},{name:'channel 2',stat:true},{name:'channel 3',stat:false}]}
             />
 
             <hr />
 
             <SocketSwitchCard
-                deviceName="4 Channel Socket"
-                channels={[{name:'channel 1',stat:true},{name:'channel2',stat:true},{name:'channel 3',stat:true},{name:'channel 4',stat:true}]}
+                deviceData={{name:'1 Channel Switch',type:'lan',online:false}}
+                channels={[{name:'channel 1',stat:true},{name:'channel 2',stat:true},{name:'channel 3',stat:true},{name:'channel 4',stat:true}]}
             />
 
             <hr />

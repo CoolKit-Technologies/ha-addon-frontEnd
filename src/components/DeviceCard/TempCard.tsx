@@ -2,6 +2,7 @@
 import React from 'react';
 import { Switch } from 'antd';
 
+import ArcGauge from '@/components/ArcGauge';
 import style from './card.less';
 
 interface TempCardProps {
@@ -22,6 +23,14 @@ const TempCard: React.FC<TempCardProps> = ({ deviceName, channel, mode }) => {
                 <div className={style['info-icon']}></div>
                 <span className={style['device-name']}>{deviceName}</span>
                 <div className={style['refresh-icon']}></div>
+            </div>
+            <div className={style['double-box']}>
+                <ArcGauge
+                    type="humi"
+                />
+                <ArcGauge
+                    type="temp"
+                />
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}></div>
