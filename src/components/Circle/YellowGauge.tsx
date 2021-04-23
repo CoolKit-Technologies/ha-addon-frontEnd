@@ -17,7 +17,7 @@ const CKYellowGauge: React.FC<IGauge> = ({ value }) => {
             subTickLine: { count: 0 },
             label: {
                 formatter: function formatter(text: string, item: any, index: number) {
-                    console.log('text', text, 'item', item, 'index', index);
+                    // console.log('text', text, 'item', item, 'index', index);
                     switch (index) {
                         case 1:
                             return 'Dry';
