@@ -6,7 +6,9 @@ import { getDeviceList, changeDeviceStatus, logout, getLanguage } from '@/api';
 import _ from 'lodash';
 import { connect, setLocale, Link, history } from 'umi';
 import Header from '@/components/Header';
-
+import CKLiquid from '@/components/Circle/index';
+import CKGauge from '@/components/Circle/CKGauge';
+import YellowGauge from '@/components/Circle/YellowGauge';
 const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguage }) => {
     useEffect(() => {
         getLanguage();
@@ -23,6 +25,9 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
                     <div className={styles['device-col']}></div>
                 </div>
             </div>
+            <CKLiquid value={'111'} />
+            <CKGauge percent={0.75} />
+            <YellowGauge percent={0.45} />
         </div>
     );
 };
