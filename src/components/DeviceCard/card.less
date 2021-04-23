@@ -1,0 +1,113 @@
+@deviceNameFontSize: 22px;
+@channelNameFontSize: 16px;
+
+.card {
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 4px 2px #eee;
+
+    p {
+        margin-bottom: 0;
+    }
+}
+
+.channel {
+    display: flex;
+    background-color: #ddd;
+    align-items: center;
+    margin: 14px 0;
+
+    .channel-icon {
+        width: 32px;
+        height: 32px;
+        background-color: dodgerblue;
+    }
+
+    .channel-name {
+        flex: 1;
+        font-size: @channelNameFontSize;
+    }
+}
+.channel:last-child {
+    margin-bottom: 0;
+}
+
+.info-switch {
+    display: flex;
+    align-items: center;
+
+    .info-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #eee;
+    }
+
+    .device-name {
+        flex: 1;
+        font-size: 22px;
+    }
+}
+
+.info-refresh {
+    display: flex;
+    align-items: center;
+
+    .info-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #fcc;
+    }
+
+    .device-name {
+        flex: 1;
+        font-size: @deviceNameFontSize;
+    }
+
+    .refresh-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #ccf;
+    }
+}
+
+.vol-cur-data {
+    display: flex;
+
+    p {
+        margin-bottom: 0;
+    }
+
+    .divided {
+        width: 2px;
+        background-color: #aaa;
+        margin: 10px 20px;
+    }
+
+    .vol {
+        flex: 1;
+
+        .key {
+            text-align: right;
+        }
+
+        .value {
+            text-align: right;
+            font-size: 26px;
+        }
+    }
+
+    .cur {
+        flex: 1;
+
+        .value {
+            font-size: 26px;
+        }
+    }
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    color: tomato;
+}
