@@ -6,17 +6,15 @@ import IndicatorLEDItem from './components/IndicatorLEDItem';
 import PowerState from './components/PowerStateItem';
 import EnableEntityItem from './components/EnableEntityItem/index';
 import TypeModalProps from '@/ts/type/TypeModal';
-
+import styles from './base.less';
 const ChannelModal: React.FC<TypeModalProps> = (props) => {
-    // useEffect(() => {
-    //     console.log('inching', props);
-    // });
+
     return (
         <BaseModal {...props}>
             <DeviceNameItem></DeviceNameItem>
             <IndicatorLEDItem></IndicatorLEDItem>
-            <InchingMode></InchingMode>
-            <PowerState></PowerState>
+            <InchingMode style={styles['mrgB10']}></InchingMode>
+            <PowerState style={styles['mrgB10']}></PowerState>
             <EnableEntityItem></EnableEntityItem>
         </BaseModal>
     );

@@ -16,12 +16,13 @@ import YellowGauge from '@/components/Circle/YellowGauge';
 import SettingModal from '@/components/Modal/SettingModal';
 import CKLine from '@/components/Circle/CKLine';
 import DeviceDataModal from '@/components/Modal/DeviceDataModal';
-import MultiChannelModal from '../components/Modal/MultiChannelModal';
+import MultiChannelSettingModal from '../components/Modal/MultiChannelSettingModal';
 import EnvironmentStatus from '@/components/Modal/EnvironmentStatus';
 import ChannelModal from '@/components/Modal/ChannelModal';
 import PowerDetectionModal from '@/components/Modal/PowerDetectionModal';
 import PowerDetectionSocketModal from '@/components/Modal/PowerDetectionSocketModal';
 import EModalType from '../ts/Enum/EModalType';
+import MultiDeviceSettingModal from '@/components/Modal/MultiDeviceSettingModal';
 
 const { Meta } = Card;
 
@@ -141,16 +142,16 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
             <CKGauge percent={0.7} />
             <YellowGauge value={0.45} />
             {/* <SettingModal visible={false}></SettingModal> */}
-            {/* <CKLiquid value={'111'} />
-            <CKGauge percent={0.7} />
-            <YellowGauge value={50} /> */}
-            <SettingModal visible title='aa' type={EModalType.MULTI}></SettingModal>
+            {/* <CKGauge percent={0.7} /> */}
+            {/* <YellowGauge value={50} /> */}
+            {/* 多通道 */}
+            {/* <MultiDeviceSettingModal visible title='4 channel'></MultiDeviceSettingModal> */} 
+            {/* 单通道 */}
             {/* <ChannelModal visible title='1 Channel Socket/Switch'></ChannelModal> */}
-            {/* <DeviceDataModal visible title={'IW100'} titleAction={<a>Device settings</a>} /> */}
-            {/* <MultiChannelModal visible title='4 Channel Socket/Switch' titleAction={<a>Device settings</a>} /> */}
-            {/* <PowerDetectionModal visible title='Power detection Socket' titleAction={<a>State</a>}></PowerDetectionModal> */}
-            {/* <EnvironmentStatus visible title='Environment Stats'></EnvironmentStatus> */}
-            {/* <PowerDetectionSocketModal visible></PowerDetectionSocketModal> */}
+            {/* 功率检测单通道 */}
+            {/* <PowerDetectionModal visible title='Power detection Socket'></PowerDetectionModal> */}
+            {/* 功率检测插座过载警告 & 多功能双通道电量检测开关 */}
+            <PowerDetectionSocketModal visible title='IW100'></PowerDetectionSocketModal>
         </div>
     );
 };
