@@ -1,4 +1,5 @@
-import { ModalProps } from 'antd';
+import { ModalProps, SwitchProps } from 'antd';
 import { ReactNode } from 'react';
-type TypeModalProps = ModalProps & { titleAction?: ReactNode };
+import EModalType from '../Enum/EModalType';
+type TypeModalProps = ModalProps & { titleAction?: ReactNode; type?: EModalType | null };
 export default TypeModalProps;
