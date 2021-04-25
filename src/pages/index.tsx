@@ -28,6 +28,20 @@ const { Meta } = Card;
 const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguage }) => {
     useEffect(() => {
         // getLanguage();
+
+        // dev
+        const source = new EventSource('http://localhost:3000/api/stream');
+        // Prod
+        // const source = new EventSource('api/stream');
+        source.addEventListener('open', () => {
+            console.log('连接建立成功');
+        });
+        source.addEventListener('message', (e) => {
+            console.log(e);
+        });
+        return () => {
+            source.close();
+        };
     }, []);
 
     return (
