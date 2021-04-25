@@ -23,7 +23,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
     }, []);
 
     return (
-        <div style={{padding:'30px'}}>
+        <div>
             <Header />
             <div className={styles['main-container']}>
                 <div className={styles['ad-box']}>
@@ -40,7 +40,7 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
                 </div>
             </div>
 
-            <UnsupportedCard
+            {/* <UnsupportedCard
                 deviceData={{online:true,name:'XXX',type:'cloud'}}
             />
 
@@ -106,12 +106,12 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
                 ballData={[{title:'Power',content:'231 W'},{title:'Voltage',content:'110 V'},{title:'Current',content:'2.1 A'}]}
             />
 
-            <hr />
+            <hr /> */}
 
-            <CKLiquid value={'111'} />
+            {/* <CKLiquid value={'111'} />
             <CKGauge percent={0.7} />
             <YellowGauge percent={0.45} />
-            <SettingModal visible={false}></SettingModal>
+            <SettingModal visible={false}></SettingModal> */}
         </div>
     );
 };

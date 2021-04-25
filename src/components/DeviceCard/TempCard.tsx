@@ -28,14 +28,27 @@ interface TempCardProps {
 
 const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode }) => {
     return (
-        <div className={style['card']}>
+        <div
+            className={style['card']}
+            onClick={() => {
+                console.log('you click card');
+            }}
+        >
             <div className={style['info-refresh']}>
                 <div className={style['info-icon']}>
                     <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
                 </div>
                 <span className={style['device-name']}>{deviceData.name}</span>
                 <div className={style['refresh-icon']}>
-                    <img src={IconRefresh} width="30" height="30" />
+                    <img
+                        src={IconRefresh}
+                        width="30"
+                        height="30"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('you click refresh');
+                        }}
+                    />
                 </div>
             </div>
             <div className={style['double-box']}>
@@ -64,7 +77,13 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode }) => {
                     }
                 </div>
                 <span className={style['channel-name']}>{channel.name}</span>
-                <Switch checked={channel.stat} />
+                <Switch
+                    checked={channel.stat}
+                    onChange={(v, e) => {
+                        e.stopPropagation();
+                        console.log('you click channel');
+                    }}
+                />
             </div>
         </div>
     );

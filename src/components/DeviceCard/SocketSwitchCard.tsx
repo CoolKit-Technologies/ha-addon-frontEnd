@@ -22,7 +22,12 @@ interface SocketSwitchCardProps {
 
 const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channels }) => {
     return (
-        <div className={style['card']}>
+        <div
+            className={style['card']}
+            onClick={() => {
+                console.log('click card');
+            }}
+        >
             <div className={style['info-switch']}>
                 <div className={style['info-icon']}>
                     <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
@@ -30,7 +35,10 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 <span className={style['device-name']}>{deviceData.name}</span>
                 {
                     // 总开关（单通道开关／插座没有总开关）
-                    channels.length === 1 ? null : <Switch checked={channels.filter((chan) => chan.stat).length === channels.length} />
+                    channels.length === 1 ? null : <Switch checked={channels.filter((chan) => chan.stat).length === channels.length} onChange={(v, e) => {
+                        e.stopPropagation();
+                        console.log('You click the total');
+                    }} />
                 }
             </div>
             {
@@ -44,7 +52,13 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                                 }
                             </div>
                             <span className={style['channel-name']}>{channel.name}</span>
-                            <Switch checked={channel.stat} />
+                            <Switch
+                                checked={channel.stat}
+                                onChange={(v, e) => {
+                                    e.stopPropagation();
+                                    console.log(`You click #${i} channel`);
+                                }}
+                            />
                         </div>
                     );
                 })

@@ -30,14 +30,27 @@ interface DualR3CardProps {
 
 const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, current, ballData }) => {
     return (
-        <div className={style['card']}>
+        <div
+            className={style['card']}
+            onClick={() => {
+                console.log('you click card');
+            }}
+        >
             <div className={style['info-refresh']}>
                 <div className={style['info-icon']}>
                     <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
                 </div>
                 <span className={style['device-name']}>{deviceData.name}</span>
                 <div className={style['refresh-icon']}>
-                    <img src={IconRefresh} width="30" height="30" />
+                    <img
+                        src={IconRefresh}
+                        width="30"
+                        height="30"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('you click refresh');
+                        }}
+                    />
                 </div>
             </div>
             <div className={style['triple-box']}>
@@ -74,7 +87,13 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                     }
                 </div>
                 <span className={style['channel-name']}>{channel.name}</span>
-                <Switch checked={channel.stat} />
+                <Switch
+                    checked={channel.stat}
+                    onClick={(v, e) => {
+                        e.stopPropagation();
+                        console.log('you click channel');
+                    }}
+                />
             </div>
         </div>
     );
