@@ -3,20 +3,13 @@ import TypeModalProps from '@/ts/type/TypeModal';
 import BaseModal from './BaseModal';
 import DeviceNameItem from './components/DeviceNameItem';
 import IndicatorLEDItem from './components/IndicatorLEDItem';
-import PowerState from './components/PowerStateItem';
+import InterlockMode from './components/InterlockMode';
 import EnableEntityItem from './components/EnableEntityItem';
-import InchingMode from './components/InchingModeItem';
+import MultiChannelSettingModal from './MultiChannelSettingModal';
 import styles from './base.less';
-import DeviceData from './DeviceData';
-/**
- * 单通道
- * 恒温湿改装件
- * 功率检测插座过载告警
- * 多功能双通道电量检测开关
- */
-const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
+const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
     const [action, setAction] = useState(true);
-    const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Status</a>);
+    const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Channel settings</a>);
     const [visible, setVisible] = useState(true);
     function onCancel() {
         setVisible(false);
@@ -27,7 +20,7 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
     }
     function deviceSetting() {
         setAction(true);
-        setTitleAction(<a onClick={channelSetting}>Status</a>);
+        setTitleAction(<a onClick={channelSetting}>Channel settings</a>);
     }
     return (
         <BaseModal {...props} titleAction={titleAction} visible={visible} onCancel={onCancel}>
@@ -35,14 +28,13 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
                 <div>
                     <DeviceNameItem></DeviceNameItem>
                     <IndicatorLEDItem></IndicatorLEDItem>
-                    <PowerState style={styles['mrgB10']}></PowerState>
-                    <InchingMode style={styles['mrgB10']}></InchingMode>
+                    <InterlockMode></InterlockMode>
                     <EnableEntityItem></EnableEntityItem>
                 </div>
             ) : (
-                <DeviceData />
+                <MultiChannelSettingModal />
             )}
         </BaseModal>
     );
 };
-export default PowerDetectionSocketModal;
+export default MultiDeviceSettingModal;

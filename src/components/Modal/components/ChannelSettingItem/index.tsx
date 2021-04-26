@@ -10,7 +10,7 @@ const ChannelSetting: React.FC = () => {
             <div className={styles['magTB']}>
                 <InchingMode />
             </div>
-            <PowerState />
+            <PowerState style={styles['magB30']} />
         </div>
     );
 };

@@ -1,16 +1,15 @@
 import React from 'react';
 import ChannelSetting from './components/ChannelSettingItem';
 import BaseModal from './BaseModal';
-import TypeModalProps from '@/ts/type/TypeModal';
 
-const MultiChannelModal: React.FC<TypeModalProps> = (props) => {
+const MultiChannelSettingModal: React.FC = (props) => {
     return (
-        <BaseModal {...props}>
+        <div>
             <ChannelSetting />
             <ChannelSetting />
             <ChannelSetting />
             <ChannelSetting />
-        </BaseModal>
+        </div>
     );
 };
-export default MultiChannelModal;
+export default MultiChannelSettingModal;
