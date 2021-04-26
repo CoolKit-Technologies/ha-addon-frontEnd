@@ -19,4 +19,5 @@ export interface DeviceInfo {
     online: boolean;        // 是否在线
     params: any;            // 设备参数
     tags: any;              // 通道名
+    apikey?: string;        // 设备的 apikey
 }
