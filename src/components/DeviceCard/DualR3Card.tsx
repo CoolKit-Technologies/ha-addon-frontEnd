@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
-import { DeviceType } from '@/ts/type';
+import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';

@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
-import { DeviceType } from '@/ts/type';
+import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
@@ -17,7 +17,7 @@ interface IW100CardProps {
         name: string;
     };
     channel: {
-        stat: boolean;
+        stat: 'on' | 'off';
         name: string;
     };
     ballData: {
@@ -70,12 +70,12 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>
                     {
-                        channel.stat ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
+                        channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
                     }
                 </div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
-                    checked={channel.stat}
+                    checked={channel.stat === 'on'}
                     onChange={(v, e) => {
                         e.stopPropagation();
                         console.log('you click channel');

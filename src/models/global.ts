@@ -1,6 +1,7 @@
 import { getLocale, setLocale } from 'umi';
 import { getLanguage } from '@/api';
 import IResponse from '@/types/interface/IResponse';
+import { DeviceInfo } from '@/types';
 
 type TypeState = {
     language: string;
@@ -10,6 +11,7 @@ export default {
     namespace: 'global',
     state: {
         language: 'en',
+        deviceList: [] as DeviceInfo[],
     } as TypeState,
     effects: {
         *getLanguage(_: any, { put, call }: any) {

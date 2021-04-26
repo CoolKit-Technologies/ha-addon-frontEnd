@@ -1,42 +1,10 @@
-import { DeviceInfo, DeviceType as DeviceType2 } from '@/types';
-import { DeviceType } from '@/ts/type';
+import { DeviceType, DeviceInfo } from '@/types/device';
 import IconDiyOnline from '@/assets/svg/diy-online.svg';
 import IconDiyOffline from '@/assets/svg/diy-offline.svg';
 import IconLanOnline from '@/assets/svg/lan-online.svg';
 import IconLanOffline from '@/assets/svg/lan-offline.svg';
 import IconWifiOnline from '@/assets/svg/wifi-online.svg';
 import IconWifiOffline from '@/assets/svg/wifi-offline.svg';
-
-/**
- * 判断设备是否被支持
- * @param uiid 设备的 uiid
- * @returns 是否支持设备
- */
-export function deviceIsSupport(device: DeviceInfo): boolean {
-    if (device.type === 1) {
-        return true;
-    }
-
-    if (device.type === 2 && device.deviceName && device.manufacturer) {
-        return true;
-    }
-
-    const supported = [1, 2, 3, 4, 6, 7, 8, 14, 15, 22, 32, 36, 59, 77, 103, 112, 113, 114];
-    if (device.uiid && ~supported.indexOf(device.uiid)) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * 判断设备登录后是否被支持
- * @param isLogin 用户是否登录
- * @param type 设备类型
- * @returns 是否登录后支持
- */
-export function deviceIsLoginAva(isLogin: boolean, type: number): boolean {
-    return type === DeviceType2.LAN && !isLogin;
-}
 
 // 根据设备类型及设备是否在线返回对应的 icon
 export function getIconByDeviceType(type: DeviceType, online: boolean) {
@@ -47,4 +15,44 @@ export function getIconByDeviceType(type: DeviceType, online: boolean) {
     } else {
         return online ? IconLanOnline : IconLanOffline;
     }
+}
+
+// 根据 uiid 判断设备是否为 开关／插座
+export function isSocketSwitchDevice(uiid: number): boolean {
+    const uiids = [1, 2, 3, 4, 6, 7, 8, 9, 14, 77, 78, 107, 112, 113, 114];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 根据 uiid 判断设备是否为 恒温恒湿
+export function isTempDevice(uiid: number): boolean {
+    const uiids = [15];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 根据 uiid 判断设备是否为 IW100
+export function isIW100Device(uiid: number): boolean {
+    const uiids = [32];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 根据 uiid 判断设备是否为 DualR3
+export function isDualR3(uiid: number): boolean {
+    const uiids = [126];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 根据 uiid 判断设备是否为 PowerDet
+export function isPowerDet(uiid: number): boolean {
+    const uiids = [5];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 根据数字返回字符的设备类型
+export function deviceTypeMap(type: number): DeviceType {
+    if (type === 1)
+        return 'diy';
+    else if (type === 2)
+        return 'lan';
+    else
+        return 'cloud';
 }

@@ -11,8 +11,8 @@ interface ArcGaugeProps {
 const ArcGauge: React.FC<ArcGaugeProps> = ({ type, title, content }) => {
     const MAIN_COLOR = type === 'green' ? '#52C41A' : '#1890FF';
     const config = {
-        width: 180,
-        height: 180,
+        width: 150,
+        height: 150,
         percent: 0.3,
         autoFix: false,
         axis: {

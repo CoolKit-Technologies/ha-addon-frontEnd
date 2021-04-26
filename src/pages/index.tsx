@@ -8,7 +8,7 @@ import DualR3Card from '@/components/DeviceCard/DualR3Card';
 import IW100Card from '@/components/DeviceCard/IW100Card';
 import UnsupportedCard from '@/components/DeviceCard/UnsupportedCard';
 import { connect } from 'umi';
-import { Card } from 'antd';
+import { Card, Button } from 'antd';
 import Header from '@/components/Header';
 import CKLiquid from '@/components/Circle/CKLiquid';
 import CKGauge from '@/components/Circle/CKGauge';
@@ -23,42 +23,140 @@ import PowerDetectionModal from '@/components/Modal/PowerDetectionModal';
 import PowerDetectionSocketModal from '@/components/Modal/PowerDetectionSocketModal';
 import EModalType from '../ts/Enum/EModalType';
 
+import { login, getDeviceList } from '@/api';
+import { DeviceInfo } from '@/types/device';
+import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
+
 const { Meta } = Card;
 
-const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguage }) => {
+const App: React.FC<{ language: string; getLanguage: Function; deviceList: DeviceInfo[]; saveDeviceList:any }> = ({ getLanguage, deviceList, saveDeviceList}) => {
     useEffect(() => {
         // getLanguage();
 
         // dev
-        const source = new EventSource('http://localhost:3000/api/stream');
+        // const source = new EventSource('http://localhost:3000/api/stream');
+        const source = new EventSource('http://192.168.1.115:3000/api/stream');
         // Prod
         // const source = new EventSource('api/stream');
         source.addEventListener('open', () => {
             console.log('连接建立成功');
         });
         source.addEventListener('message', (e) => {
-            console.log(e);
+            console.log(JSON.parse(e.data));
+            saveDeviceList(JSON.parse(e.data));
         });
         return () => {
             source.close();
         };
     }, []);
 
+    console.log(deviceList);
+    const [col1, col2, col3] = _.chunk(deviceList, Math.ceil(deviceList.length / 3));
+
+    const renderDeviceCard = (data: DeviceInfo) => {
+        const { key, uiid, deviceId, deviceName, online } = data;
+        const type = deviceTypeMap(data.type);
+        const name = deviceName || deviceId;
+        const deviceData = {
+            online,
+            type,
+            name
+        };
+        if (isDualR3(uiid)) {
+            return (
+                <DualR3Card
+                    key={deviceId}
+                    deviceData={{online:true,type:'diy',name:'DualR3 channel 1'}}
+                    channel={{stat:true,name:'channel'}}
+                    voltage="150V"
+                    current="1.0A"
+                    ballData={[
+                        { title: 'Power', content: '231 W' },
+                        { title: 'Voltage', content: '110 V' },
+                        { title: 'Current', content: '2.1 A' },
+                    ]}
+                />
+            );
+        } else if (isIW100Device(uiid)) {
+            const { power, voltage, current } = data.params;
+            const ballData = [
+                { title: 'Power', content: `${power}W` },
+                { title: 'Voltage', content: `${voltage}V` },
+                { title: 'Current', content: `${current}A` },
+            ];
+            return <IW100Card key={key} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} ballData={ballData} />;
+        } else if (isPowerDet(uiid)) {
+            return <PowerDetCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} power={149} />;
+        } else if (isSocketSwitchDevice(uiid)) {
+            const channels: {name:string;stat:'on'|'off'}[] = [];
+            if (uiid === 1 && type === 'diy') {                         // 单通道 DIY
+                channels.push({ name: 'channel', stat: data.params.data1.switch });
+            } else if (uiid === 1 || uiid === 6 || uiid === 14) {       // 单通道非 DIY
+                channels.push({ name: 'channel', stat: data.params.switch });
+            } else if (uiid === 77 || uiid === 78 || uiid === 112) {    // 单通道（多通道协议）
+                channels.push({ name: 'channel', stat: data.params.switches[0].switch });
+            } else if (uiid === 2 || uiid === 7 || uiid === 113) {      // 双通道
+                for (let i = 0; i < 2; i++)
+                    if (data.tags)
+                        channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
+                    else
+                        channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+            } else if (uiid === 3 || uiid === 8 || uiid === 114) {      // 三通道
+                for (let i = 0; i < 3; i++)
+                    if (data.tags)
+                        channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
+                    else
+                        channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+            } else if (uiid === 4 || uiid === 9) {                      // 四通道
+                for (let i = 0; i < 4; i++)
+                    if (data.tags)
+                        channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
+                    else
+                        channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+            }
+            return <SocketSwitchCard key={key} deviceData={deviceData} channels={channels} />;
+        } else if (isTempDevice(uiid)) {
+            return <TempCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} mode='AUTO' humi={`${data.params.currentHumidity}%`} temp={`${data.params.currentTemperature}C`} />;
+        } else {
+            return <UnsupportedCard key={key} deviceData={deviceData} />;
+        }
+    };
+
     return (
         <div>
             <Header />
+            <div style={{padding:'20px'}}>
+                <Button onClick={async () => {
+                    console.log('you want sign in');
+                    const res = await login({
+                        countryCode: '+86',
+                        lang: 'en',
+                        password: 'ck2021it.',
+                        phoneNumber: '+8615270260364'
+                    });
+                    console.log(res);
+                }}>Sign in</Button>
+                <Button onClick={() => {
+                    console.log('you want sign out');
+                }}>Sign out</Button>
+                <Button onClick={async () => {
+                    console.log('you want refresh');
+                    const res = await getDeviceList({ type: 'refresh' });
+                    saveDeviceList(res.data);
+                }}>Refresh</Button>
+            </div>
             <div className={styles['main-container']}>
-                <div className={styles['ad-box']}>
+                {/* <div className={styles['ad-box']}>
                     {Array.from({ length: 5 }).map((item) => (
                         <Card cover={<img alt='example' src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' />}>
                             <Meta title='Card title' description='This is the description' />
                         </Card>
                     ))}
-                </div>
+                </div> */}
                 <div className={styles['device-box']}>
-                    <div className={styles['device-col']}></div>
-                    <div className={styles['device-col']}></div>
-                    <div className={styles['device-col']}></div>
+                    <div className={styles['device-col']}>{ col1 ? col1.map((item) => renderDeviceCard(item)) : null }</div>
+                    <div className={styles['device-col']}>{ col2 ? col2.map((item) => renderDeviceCard(item)) : null }</div>
+                    <div className={styles['device-col']}>{ col3 ? col3.map((item) => renderDeviceCard(item)) : null }</div>
                 </div>
             </div>
 
@@ -160,11 +258,19 @@ const App: React.FC<{ language: string; getLanguage: Function }> = ({ getLanguag
 export default connect(
     ({ global }: any) => ({
         language: global.language,
+        deviceList: global.deviceList,
     }),
     (dispatch) => ({
         getLanguage: () =>
             dispatch({
                 type: 'global/getLanguage',
+            }),
+        saveDeviceList: (deviceList: DeviceInfo[]) =>
+            dispatch({
+                type: 'global/save',
+                payload: {
+                    deviceList
+                }
             }),
     })
 )(App);

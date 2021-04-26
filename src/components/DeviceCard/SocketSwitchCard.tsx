@@ -2,7 +2,7 @@
 import React from 'react';
 import { Switch } from 'antd';
 
-import { DeviceType } from '@/ts/type';
+import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import { getIconByDeviceType } from '@/utils';
@@ -15,7 +15,7 @@ interface SocketSwitchCardProps {
         name: string;
     };
     channels: {
-        stat: boolean;
+        stat: 'on' | 'off';
         name: string;
     }[];
 }
@@ -35,7 +35,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 <span className={style['device-name']}>{deviceData.name}</span>
                 {
                     // 总开关（单通道开关／插座没有总开关）
-                    channels.length === 1 ? null : <Switch checked={channels.filter((chan) => chan.stat).length === channels.length} onChange={(v, e) => {
+                    channels.length === 1 ? null : <Switch checked={channels.filter((chan) => chan.stat === 'on').length === channels.length} onChange={(v, e) => {
                         e.stopPropagation();
                         console.log('You click the total');
                     }} />
@@ -48,12 +48,12 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                         <div key={i} className={style['channel']}>
                             <div className={style['channel-icon']}>
                                 {
-                                    channel.stat ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
+                                    channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
                                 }
                             </div>
                             <span className={style['channel-name']}>{channel.name}</span>
                             <Switch
-                                checked={channel.stat}
+                                checked={channel.stat === 'on'}
                                 onChange={(v, e) => {
                                     e.stopPropagation();
                                     console.log(`You click #${i} channel`);

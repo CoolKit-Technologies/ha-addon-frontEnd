@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch } from 'antd';
 
 import ArcGauge from '@/components/ArcGauge';
-import { DeviceType } from '@/ts/type';
+import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
@@ -18,15 +18,15 @@ interface TempCardProps {
         name: string;
     };
     channel: {
-        stat: boolean;
+        stat: 'on' | 'off';
         name: string;
     };
     mode: string;
-    humi?: string;
-    temp?: string;
+    humi: string;
+    temp: string;
 }
 
-const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode }) => {
+const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp }) => {
     return (
         <div
             className={style['card']}
@@ -55,12 +55,12 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode }) => {
                 <ArcGauge
                     type="green"
                     title="Humidity"
-                    content="45%"
+                    content={humi}
                 />
                 <ArcGauge
                     type="blue"
                     title="Temperature"
-                    content="73F"
+                    content={temp}
                 />
             </div>
             <div className={style['channel']}>
@@ -73,12 +73,12 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode }) => {
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>
                     {
-                        channel.stat ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
+                        channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
                     }
                 </div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
-                    checked={channel.stat}
+                    checked={channel.stat === 'on'}
                     onChange={(v, e) => {
                         e.stopPropagation();
                         console.log('you click channel');
