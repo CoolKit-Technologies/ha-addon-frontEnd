@@ -16,6 +16,8 @@ interface SocketSwitchCardProps {
         online: boolean;
         type: DeviceType;
         name: string;
+        model: string;
+        fwVersion: string;
     };
     channels: {
         stat: 'on' | 'off';

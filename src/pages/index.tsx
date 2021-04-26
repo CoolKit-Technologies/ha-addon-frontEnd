@@ -117,7 +117,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                     else
                         channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
             }
-            return <SocketSwitchCard key={key} deviceData={{ apikey: `${data.apikey}`, ...deviceData }} channels={channels} />;
+            return <SocketSwitchCard key={key} deviceData={{ apikey: data.apikey, model: data.model, fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
         } else if (isTempDevice(uiid)) {
             return <TempCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} mode='AUTO' humi={`${data.params.currentHumidity}%`} temp={`${data.params.currentTemperature}C`} />;
         } else {
