@@ -6,7 +6,7 @@ import styles from './base.less';
 const { TabPane } = Tabs;
 const DeviceData: React.FC = (props) => {
     return (
-        <Tabs defaultActiveKey='statistic' className={styles['ant-tabs-nav-list']}>
+        <Tabs defaultActiveKey='statistic' animated={{inkBar: true, tabPane: false}} className={styles['ant-tabs-nav-list']}>
             <TabPane tab='Realtime stats' key='statistic' className={styles['ant-tabs-tab']}>
                 <StatisticData />
             </TabPane>

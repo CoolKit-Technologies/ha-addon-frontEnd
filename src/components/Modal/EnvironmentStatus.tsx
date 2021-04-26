@@ -4,11 +4,11 @@ import TemperatureUnit from './components/EnvironmentItem';
 import TypeModalProps from '../../ts/type/TypeModal';
 import DeviceNameItem from './components/DeviceNameItem';
 import EnableEntityItem from './components/EnableEntityItem';
-
-const EnvironmentStatus: React.FC<TypeModalProps> = (props) => {
+import { IDeviceName } from '../../types/interface/IModal';
+const EnvironmentStatus: React.FC<IDeviceName> = (props) => {
     return (
         <div>
-            <DeviceNameItem />
+            <DeviceNameItem name={props.name} />
             <TemperatureUnit />
             <EnableEntityItem></EnableEntityItem>
         </div>

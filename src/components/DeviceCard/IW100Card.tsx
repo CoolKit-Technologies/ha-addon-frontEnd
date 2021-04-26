@@ -1,5 +1,5 @@
 // 功率检测插座
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
@@ -9,6 +9,8 @@ import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
+import PowerDetectionSocketModal from '../Modal/PowerDetectionSocketModal';
+
 
 interface IW100CardProps {
     deviceData: {
@@ -27,11 +29,16 @@ interface IW100CardProps {
 }
 
 const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    function onCancel() {
+        setModalVisible(false);
+    }
     return (
         <div
             className={style['card']}
             onClick={() => {
                 console.log('you click card');
+                setModalVisible(true);
             }}
         >
             <div className={style['info-refresh']}>
@@ -42,8 +49,8 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
-                        width="30"
-                        height="30"
+                        width='30'
+                        height='30'
                         onClick={(e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
@@ -52,27 +59,13 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                 </div>
             </div>
             <div className={style['triple-box']}>
-                {
-                    // 三个一排的水波球
-                    ballData.map((data, i) => {
-                        return (
-                            <LiquidBall
-                                key={i}
-                                size="small"
-                                type={i === 0 ? 'blue' : i === 1 ? 'green' : i === 2 ? 'yellow' : 'blue'}
-                                title={data.title}
-                                content={data.content}
-                            />
-                        );
-                    })
-                }
+                {// 三个一排的水波球
+                ballData.map((data, i) => {
+                    return <LiquidBall key={i} size='small' type={i === 0 ? 'blue' : i === 1 ? 'green' : i === 2 ? 'yellow' : 'blue'} title={data.title} content={data.content} />;
+                })}
             </div>
             <div className={style['channel']}>
-                <div className={style['channel-icon']}>
-                    {
-                        channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
-                    }
-                </div>
+                <div className={style['channel-icon']}>{channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
@@ -82,6 +75,8 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                     }}
                 />
             </div>
+            <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} title={deviceData.name} />
+
         </div>
     );
 };

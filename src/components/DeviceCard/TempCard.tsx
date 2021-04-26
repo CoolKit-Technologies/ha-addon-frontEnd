@@ -1,5 +1,5 @@
 // 恒温恒湿改装件
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch } from 'antd';
 
 import ArcGauge from '@/components/ArcGauge';
@@ -10,6 +10,7 @@ import IconRefresh from '@/assets/svg/refresh.svg';
 import IconTune from '@/assets/svg/tune.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
+import ConstantTempAndHumiModal from '../Modal/ConstantTempAndHumiModal';
 
 interface TempCardProps {
     deviceData: {
@@ -27,11 +28,16 @@ interface TempCardProps {
 }
 
 const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    function onCancel() {
+        setModalVisible(false);
+    }
     return (
         <div
             className={style['card']}
             onClick={() => {
                 console.log('you click card');
+                setModalVisible(true);
             }}
         >
             <div className={style['info-refresh']}>
@@ -42,8 +48,8 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
-                        width="30"
-                        height="30"
+                        width='30'
+                        height='30'
                         onClick={(e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
@@ -52,16 +58,8 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 </div>
             </div>
             <div className={style['double-box']}>
-                <ArcGauge
-                    type="green"
-                    title="Humidity"
-                    content={humi}
-                />
-                <ArcGauge
-                    type="blue"
-                    title="Temperature"
-                    content={temp}
-                />
+                <ArcGauge type='green' title='Humidity' content={humi} />
+                <ArcGauge type='blue' title='Temperature' content={temp} />
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>
@@ -71,11 +69,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 <span>{mode}</span>
             </div>
             <div className={style['channel']}>
-                <div className={style['channel-icon']}>
-                    {
-                        channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
-                    }
-                </div>
+                <div className={style['channel-icon']}>{channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
@@ -85,6 +79,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                     }}
                 />
             </div>
+            <ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} />
         </div>
     );
 };

@@ -257,7 +257,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             {/* 功率检测单通道 */}
             {/* <PowerDetectionModal visible title='Power detection Socket'></PowerDetectionModal> */}
             {/* 功率检测插座过载警告 & 多功能双通道电量检测开关 */}
-            <PowerDetectionSocketModal visible title='IW100'></PowerDetectionSocketModal>
+            {/* <PowerDetectionSocketModal visible title='IW100'></PowerDetectionSocketModal> */}
             {/* 恒温恒湿改装件 */}
             {/* <ConstantTempAndHumiModal visible title='TH Switch' /> */}
         </div>

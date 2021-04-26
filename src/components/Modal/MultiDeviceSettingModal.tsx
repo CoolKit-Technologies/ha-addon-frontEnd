@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import TypeModalProps from '@/ts/type/TypeModal';
 import BaseModal from './BaseModal';
 import DeviceNameItem from './components/DeviceNameItem';
@@ -10,10 +10,7 @@ import styles from './base.less';
 const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
     const [action, setAction] = useState(true);
     const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Channel settings</a>);
-    const [visible, setVisible] = useState(true);
-    function onCancel() {
-        setVisible(false);
-    }
+
     function channelSetting() {
         setAction(false);
         setTitleAction(<a onClick={deviceSetting}>Device settings</a>);
@@ -22,17 +19,20 @@ const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
         setAction(true);
         setTitleAction(<a onClick={channelSetting}>Channel settings</a>);
     }
+    // useEffect(() => {
+    //     console.log('props', props);
+    // });
     return (
-        <BaseModal {...props} titleAction={titleAction} visible={visible} onCancel={onCancel}>
+        <BaseModal {...props} titleAction={titleAction} destroyOnClose={true}>
             {action ? (
                 <div>
-                    <DeviceNameItem></DeviceNameItem>
+                    <DeviceNameItem name={props.title}></DeviceNameItem>
                     <IndicatorLEDItem></IndicatorLEDItem>
                     <InterlockMode></InterlockMode>
                     <EnableEntityItem></EnableEntityItem>
                 </div>
             ) : (
-                <MultiChannelSettingModal />
+                props.tags && <MultiChannelSettingModal tags={props.tags} />
             )}
         </BaseModal>
     );
