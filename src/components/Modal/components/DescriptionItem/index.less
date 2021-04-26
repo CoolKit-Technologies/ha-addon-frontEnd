@@ -3,6 +3,18 @@
     .col {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
+    }
+    :global {
+        .ant-statistic-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ant-statistic-content-suffix {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 400;
+        }
     }
 }

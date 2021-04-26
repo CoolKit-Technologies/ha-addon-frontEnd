@@ -5,8 +5,8 @@ import DeviceNameItem from './components/DeviceNameItem';
 import IndicatorLEDItem from './components/IndicatorLEDItem';
 import PowerState from './components/PowerStateItem';
 import EnableEntityItem from './components/EnableEntityItem';
-import DeviceDataModal from './DeviceDataModal';
-
+import DeviceData from './DeviceData';
+import styles from './base.less';
 /**
  * 功率检测单通道
  * @param props
@@ -33,11 +33,11 @@ const PowerDetectionModal: React.FC<TypeModalProps> = (props) => {
                 <div>
                     <DeviceNameItem></DeviceNameItem>
                     <IndicatorLEDItem></IndicatorLEDItem>
-                    <PowerState></PowerState>
+                    <PowerState style={styles['mrgB10']}></PowerState>
                     <EnableEntityItem></EnableEntityItem>
                 </div>
             ) : (
-                <DeviceDataModal />
+                <DeviceData />
             )}
         </BaseModal>
     );

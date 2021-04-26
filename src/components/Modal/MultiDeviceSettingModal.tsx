@@ -6,7 +6,7 @@ import IndicatorLEDItem from './components/IndicatorLEDItem';
 import InterlockMode from './components/InterlockMode';
 import EnableEntityItem from './components/EnableEntityItem';
 import MultiChannelSettingModal from './MultiChannelSettingModal';
-
+import styles from './base.less';
 const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
     const [action, setAction] = useState(true);
     const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Channel settings</a>);

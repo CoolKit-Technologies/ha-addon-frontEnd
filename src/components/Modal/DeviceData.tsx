@@ -4,7 +4,7 @@ import StatisticData from './components/StatasticItem';
 import HistoryData from './components/History';
 import styles from './base.less';
 const { TabPane } = Tabs;
-const DeviceDataModal: React.FC = (props) => {
+const DeviceData: React.FC = (props) => {
     return (
         <Tabs defaultActiveKey='statistic' className={styles['ant-tabs-nav-list']}>
             <TabPane tab='Realtime stats' key='statistic' className={styles['ant-tabs-tab']}>
@@ -16,4 +16,4 @@ const DeviceDataModal: React.FC = (props) => {
         </Tabs>
     );
 };
-export default DeviceDataModal;
+export default DeviceData;
