@@ -58,6 +58,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         const type = deviceTypeMap(data.type);
         const name = deviceName || deviceId;
         const deviceData = {
+            deviceId,
             online,
             type,
             name

@@ -6,10 +6,12 @@ import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import { getIconByDeviceType } from '@/utils';
+import { updateDeviceByWS, controlDiyDevice } from '@/api';
 import style from './card.less';
 
 interface SocketSwitchCardProps {
     deviceData: {
+        deviceId: string;
         online: boolean;
         type: DeviceType;
         name: string;
@@ -21,6 +23,19 @@ interface SocketSwitchCardProps {
 }
 
 const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channels }) => {
+    const toggle = (v: boolean) => {
+        const { type, deviceId } = deviceData;
+        if (type === 'diy') {
+            controlDiyDevice({
+                id: deviceId,
+                type: 'switch',
+                params: {
+                    state: v ? 'on' : 'off'
+                }
+            });
+        }
+    };
+
     return (
         <div
             className={style['card']}
@@ -57,6 +72,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                                 onChange={(v, e) => {
                                     e.stopPropagation();
                                     console.log(`You click #${i} channel`);
+                                    toggle(v);
                                 }}
                             />
                         </div>
