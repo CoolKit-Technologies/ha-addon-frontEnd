@@ -19,6 +19,7 @@ interface PowerDetCardProps {
         deviceId: string;
         apikey: string;
         model: string;
+        fwVersion: string;
     };
     channel: {
         stat: 'on' | 'off';

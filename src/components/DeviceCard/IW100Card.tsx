@@ -9,12 +9,17 @@ import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
+import { updateDeviceByWS } from '@/api';
 
 interface IW100CardProps {
     deviceData: {
         online: boolean;
         type: DeviceType;
         name: string;
+        deviceId: string;
+        apikey: string;
+        model: string;
+        fwVersion: string;
     };
     channel: {
         stat: 'on' | 'off';
@@ -27,6 +32,17 @@ interface IW100CardProps {
 }
 
 const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) => {
+    const toggle = async (v: boolean) => {
+        const { apikey, deviceId } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                switch: v ? 'on' : 'off'
+            }
+        });
+    };
+
     return (
         <div
             className={style['card']}
@@ -76,9 +92,9 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
-                    onChange={(v, e) => {
+                    onChange={async (v, e) => {
                         e.stopPropagation();
-                        console.log('you click channel');
+                        await toggle(v);
                     }}
                 />
             </div>

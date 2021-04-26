@@ -9,12 +9,17 @@ import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
+import { updateDeviceByWS } from '@/api';
 
 interface DualR3CardProps {
     deviceData: {
         online: boolean;
         type: DeviceType;
         name: string;
+        deviceId: string;
+        apikey: string;
+        model: string;
+        fwVersion: string;
     };
     channel: {
         stat: boolean;
@@ -29,6 +34,16 @@ interface DualR3CardProps {
 }
 
 const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, current, ballData }) => {
+    const toggle = async (v: boolean) => {
+        const { deviceId, apikey } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                switch: v ? 'on' : 'off'
+            }
+        });
+    };
     return (
         <div
             className={style['card']}
@@ -89,9 +104,9 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat}
-                    onClick={(v, e) => {
+                    onClick={async (v, e) => {
                         e.stopPropagation();
-                        console.log('you click channel');
+                        await toggle(v);
                     }}
                 />
             </div>

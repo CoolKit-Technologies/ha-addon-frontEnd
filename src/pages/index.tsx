@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useMemo ,useCallback} from 'react';
+import React, { useEffect } from 'react';
 import styles from './index.less';
 import _ from 'lodash';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
@@ -7,7 +7,7 @@ import TempCard from '@/components/DeviceCard/TempCard';
 import DualR3Card from '@/components/DeviceCard/DualR3Card';
 import IW100Card from '@/components/DeviceCard/IW100Card';
 import UnsupportedCard from '@/components/DeviceCard/UnsupportedCard';
-import { connect,Dispatch } from 'umi';
+import { connect,Dispatch, useParams } from 'umi';
 import { Card, Button } from 'antd';
 import Header from '@/components/Header';
 import CKLiquid from '@/components/Circle/CKLiquid';
@@ -31,10 +31,11 @@ import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice
 
 const { Meta } = Card;
 
-const App: React.FC<{ language: string; getLanguage: Function; deviceList: DeviceInfo[]; saveDeviceList:Function, dispatch: Dispatch; isLogin: boolean; checkUserLogin: Function; }> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList,dispatch}) => {
+const App: React.FC<{ language: string; getLanguage: Function; deviceList: DeviceInfo[]; saveDeviceList:Function, dispatch: Dispatch; isLogin: boolean; checkUserLogin: Function; }> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch}) => {
     useEffect(() => {
         checkUserLogin();
 
+        getDeviceList({ type: 'init' }).then((res) => saveDeviceList(res.data));
         // dispatch({
         //     type:'global/save',
         //     payload:{
@@ -60,7 +61,6 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         };
     }, []);
 
-    console.log(deviceList);
     const [col1, col2, col3] = _.chunk(deviceList, Math.ceil(deviceList.length / 3));
 
     const renderDeviceCard = (data: DeviceInfo) => {
@@ -80,7 +80,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             return (
                 <DualR3Card
                     key={deviceId}
-                    deviceData={{online:true,type:'diy',name:'DualR3 channel 1'}}
+                    deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
                     channel={{stat:true,name:'channel'}}
                     voltage="150V"
                     current="1.0A"
@@ -98,9 +98,9 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                 { title: 'Voltage', content: `${voltage}V` },
                 { title: 'Current', content: `${current}A` },
             ];
-            return <IW100Card key={key} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} ballData={ballData} />;
+            return <IW100Card key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} ballData={ballData} />;
         } else if (isPowerDet(uiid)) {
-            return <PowerDetCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} power="149W" />;
+            return <PowerDetCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} power="149W" />;
         } else if (isSocketSwitchDevice(uiid)) {
             const channels: {name:string;stat:'on'|'off'}[] = [];
             if (uiid === 1 && type === 'diy') {                         // 单通道 DIY
@@ -130,7 +130,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             }
             return <SocketSwitchCard key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
         } else if (isTempDevice(uiid)) {
-            return <TempCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} mode='AUTO' humi={`${data.params.currentHumidity}%`} temp={`${data.params.currentTemperature}C`} />;
+            return <TempCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} mode='AUTO' humi={`${data.params.currentHumidity}%`} temp={`${data.params.currentTemperature}C`} />;
         } else {
             return <UnsupportedCard key={key} deviceData={deviceData} />;
         }
