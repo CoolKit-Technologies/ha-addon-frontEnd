@@ -11,7 +11,7 @@ export interface DeviceInfo {
     deviceId: string;       // 设备 ID
     ip?: string;            // DIY 设备的 IP
     manufacturer?: string;  // 设备厂商
-    model?: string;         // 设备型号
+    model: string;          // 设备型号
     disabled: boolean;      // 设备是否禁用
     type: number;           // 设备类型
     uiid: number;           // 设备分类
@@ -19,4 +19,5 @@ export interface DeviceInfo {
     online: boolean;        // 是否在线
     params: any;            // 设备参数
     tags: any;              // 通道名
+    apikey: string;         // 设备的 apikey
 }

@@ -1,7 +1,8 @@
 import { getLocale, setLocale } from 'umi';
-import { getLanguage } from '@/api';
+import { getLanguage, userIsLogin } from '@/api';
 import IResponse from '@/types/interface/IResponse';
-import { DeviceInfo } from '@/types';
+import { DeviceInfo } from '@/types/device';
+
 
 type TypeState = {
     language: string;
@@ -12,12 +13,13 @@ export default {
     state: {
         language: 'en',
         deviceList: [] as DeviceInfo[],
+        isLogin: false,
     } as TypeState,
     effects: {
         *getLanguage(_: any, { put, call }: any) {
             const res: IResponse<string> = yield call(getLanguage);
             let tmp = 'en';
-            if (res.error === 200 && res.data?.indexOf('zh') === 0) {
+            if (res.error === 0 && res.data?.indexOf('zh') === 0) {
                 tmp = 'zh';
                 setLocale('zh-CN');
                 // setLocale('en-US');
@@ -31,6 +33,24 @@ export default {
                 },
             });
         },
+        *checkUserLogin(_: any, { put, call }: any) {
+            const res: IResponse<{isLogin:boolean}> = yield call(userIsLogin);
+            if (res.error === 0) {
+                yield put({
+                    type: 'save',
+                    payload: {
+                        isLogin: res.data!.isLogin
+                    },
+                });
+            } else {
+                yield put({
+                    type: 'save',
+                    payload: {
+                        isLogin:false
+                    },
+                });
+            }
+        }
     },
     reducers: {
         save(state: TypeState, { payload }: { payload: Partial<TypeState> }) {

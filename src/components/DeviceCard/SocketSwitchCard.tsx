@@ -1,5 +1,5 @@
 // 单通道开关，多通道开关，单通道插座，多通道插座
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Switch } from 'antd';
 
 import { DeviceType } from '@/types/device';
@@ -14,9 +14,12 @@ import MultiDeviceSettingModal from '../Modal/MultiDeviceSettingModal';
 interface SocketSwitchCardProps {
     deviceData: {
         deviceId: string;
+        apikey: string;
         online: boolean;
         type: DeviceType;
         name: string;
+        model: string;
+        fwVersion: string;
     };
     channels: {
         stat: 'on' | 'off';
@@ -30,10 +33,12 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
     function onCancel() {
         setModalVisible(false);
     }
-    const toggle = (v: boolean) => {
-        const { type, deviceId } = deviceData;
+    // 开关一个通道
+    const toggle = async (v: boolean, i: number) => {
+        const { type, deviceId, apikey } = deviceData;
         if (type === 'diy') {
-            controlDiyDevice({
+            // 单通道 DIY 设备
+            await controlDiyDevice({
                 id: deviceId,
                 type: 'switch',
                 params: {
@@ -41,6 +46,45 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 },
             });
         }
+        if (channels.length === 1) {
+            // 单通道设备
+            await updateDeviceByWS({
+                apikey,
+                id: deviceId,
+                params: {
+                    switch: v ? 'on' : 'off',
+                },
+            });
+        }
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                switches: [
+                    {
+                        outlet: i,
+                        switch: v ? 'on' : 'off',
+                    },
+                ],
+            },
+        });
+    };
+
+    // 开关所有通道
+    const totalToggle = async (v: boolean) => {
+        const { apikey, deviceId } = deviceData;
+        const stat = v ? 'on' : 'off';
+        const statList = [];
+        for (let i = 0; i < channels.length; i++) {
+            statList.push({ outlet: i, switch: stat });
+        }
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                switches: statList,
+            },
+        });
     };
 
     return (
@@ -60,9 +104,9 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 channels.length === 1 ? null : (
                     <Switch
                         checked={channels.filter((chan) => chan.stat === 'on').length === channels.length}
-                        onChange={(v, e) => {
+                        onChange={async (v, e) => {
                             e.stopPropagation();
-                            console.log('You click the total');
+                            await totalToggle(v);
                         }}
                     />
                 )}
@@ -75,10 +119,9 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                         <span className={style['channel-name']}>{channel.name}</span>
                         <Switch
                             checked={channel.stat === 'on'}
-                            onChange={(v, e) => {
+                            onChange={async (v, e) => {
                                 e.stopPropagation();
-                                console.log(`You click #${i} channel`);
-                                toggle(v);
+                                await toggle(v, i);
                             }}
                         />
                     </div>

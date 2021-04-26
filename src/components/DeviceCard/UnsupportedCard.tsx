@@ -1,7 +1,7 @@
 // 不支持的设备
 import React from 'react';
 
-import { DeviceType } from '@/ts/type';
+import { DeviceType } from '@/types/device';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
 

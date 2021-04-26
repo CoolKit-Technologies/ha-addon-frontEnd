@@ -11,12 +11,17 @@ import IconTune from '@/assets/svg/tune.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
 import ConstantTempAndHumiModal from '../Modal/ConstantTempAndHumiModal';
+import { updateDeviceByWS } from '@/api';
 
 interface TempCardProps {
     deviceData: {
         online: boolean;
         type: DeviceType;
         name: string;
+        deviceId: string;
+        apikey: string;
+        model: string;
+        fwVersion: string;
     };
     channel: {
         stat: 'on' | 'off';
@@ -32,6 +37,17 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
     function onCancel() {
         setModalVisible(false);
     }
+    const toggle = async (v: boolean) => {
+        const { deviceId, apikey } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                switch: v ? 'on' : 'off'
+            }
+        });
+    };
+
     return (
         <div
             className={style['card']}
@@ -73,9 +89,9 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
-                    onChange={(v, e) => {
+                    onChange={async (v, e) => {
                         e.stopPropagation();
-                        console.log('you click channel');
+                        await toggle(v);
                     }}
                 />
             </div>
