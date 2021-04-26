@@ -9,21 +9,36 @@ import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
+import { updateDeviceByWS } from '@/api';
 
 interface PowerDetCardProps {
     deviceData: {
         online: boolean;
         type: DeviceType;
         name: string;
+        deviceId: string;
+        apikey: string;
+        model: string;
     };
     channel: {
         stat: 'on' | 'off';
         name: string;
     };
-    power: number;
+    power: string;
 }
 
 const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power }) => {
+    const toggle = async (v: boolean) => {
+        const { deviceId, apikey } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                switch: v ? 'on' : 'off'
+            }
+        });
+    };
+
     return (
         <div
             className={style['card']}
@@ -53,7 +68,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                     size="large"
                     type="blue"
                     title="Realtime stats"
-                    content="140 W"
+                    content={power}
                 />
             </div>
             <div className={style['channel']}>
@@ -65,9 +80,9 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
-                    onChange={(v, e) => {
+                    onChange={async (v, e) => {
                         e.stopPropagation();
-                        console.log('you click channel');
+                        await toggle(v);
                     }}
                 />
             </div>

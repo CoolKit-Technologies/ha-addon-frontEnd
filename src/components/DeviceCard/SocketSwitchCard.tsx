@@ -1,5 +1,5 @@
 // 单通道开关，多通道开关，单通道插座，多通道插座
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch } from 'antd';
 
 import { DeviceType } from '@/types/device';

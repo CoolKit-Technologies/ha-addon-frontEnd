@@ -3,6 +3,11 @@ import { UserInfo, HttpResponse, HttpMethod } from '@/types';
 
 const apiPrefix = 'api';
 
+// 判断用户是否登录
+export async function userIsLogin(): Promise<HttpResponse> {
+    return await sendRequest('POST', `${apiPrefix}/user/isLogin`);
+}
+
 /**
  * 用户登录
  * @param params 请求参数

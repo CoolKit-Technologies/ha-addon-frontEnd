@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useMemo ,useCallback} from 'react';
 import styles from './index.less';
 import _ from 'lodash';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
@@ -7,7 +7,7 @@ import TempCard from '@/components/DeviceCard/TempCard';
 import DualR3Card from '@/components/DeviceCard/DualR3Card';
 import IW100Card from '@/components/DeviceCard/IW100Card';
 import UnsupportedCard from '@/components/DeviceCard/UnsupportedCard';
-import { connect } from 'umi';
+import { connect,Dispatch } from 'umi';
 import { Card, Button } from 'antd';
 import Header from '@/components/Header';
 import CKLiquid from '@/components/Circle/CKLiquid';
@@ -25,14 +25,22 @@ import EModalType from '../ts/Enum/EModalType';
 import MultiDeviceSettingModal from '@/components/Modal/MultiDeviceSettingModal';
 import ConstantTempAndHumiModal from '../components/Modal/ConstantTempAndHumiModal';
 
-import { login, getDeviceList } from '@/api';
+import { login, getDeviceList, userIsLogin, logout } from '@/api';
 import { DeviceInfo } from '@/types/device';
 import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
 
 const { Meta } = Card;
 
-const App: React.FC<{ language: string; getLanguage: Function; deviceList: DeviceInfo[]; saveDeviceList:any }> = ({ getLanguage, deviceList, saveDeviceList}) => {
+const App: React.FC<{ language: string; getLanguage: Function; deviceList: DeviceInfo[]; saveDeviceList:Function, dispatch: Dispatch; isLogin: boolean; checkUserLogin: Function; }> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList,dispatch}) => {
     useEffect(() => {
+        checkUserLogin();
+
+        // dispatch({
+        //     type:'global/save',
+        //     payload:{
+        //         isLogin:false
+        //     }
+        // })
         // getLanguage();
 
         // dev
@@ -56,14 +64,17 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
     const [col1, col2, col3] = _.chunk(deviceList, Math.ceil(deviceList.length / 3));
 
     const renderDeviceCard = (data: DeviceInfo) => {
-        const { key, uiid, deviceId, deviceName, online } = data;
+        const { uiid, deviceId, deviceName, online, apikey, model } = data;
+        const key = deviceId;
         const type = deviceTypeMap(data.type);
         const name = deviceName || deviceId;
         const deviceData = {
             deviceId,
             online,
             type,
-            name
+            name,
+            apikey,
+            model
         };
         if (isDualR3(uiid)) {
             return (
@@ -89,7 +100,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             ];
             return <IW100Card key={key} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} ballData={ballData} />;
         } else if (isPowerDet(uiid)) {
-            return <PowerDetCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} power={149} />;
+            return <PowerDetCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} power="149W" />;
         } else if (isSocketSwitchDevice(uiid)) {
             const channels: {name:string;stat:'on'|'off'}[] = [];
             if (uiid === 1 && type === 'diy') {                         // 单通道 DIY
@@ -117,7 +128,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                     else
                         channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
             }
-            return <SocketSwitchCard key={key} deviceData={{ apikey: data.apikey, model: data.model, fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
+            return <SocketSwitchCard key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
         } else if (isTempDevice(uiid)) {
             return <TempCard key={deviceId} deviceData={deviceData} channel={{ stat: data.params.switch, name: 'channel' }} mode='AUTO' humi={`${data.params.currentHumidity}%`} temp={`${data.params.currentTemperature}C`} />;
         } else {
@@ -138,9 +149,12 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                         phoneNumber: '+8615270260364'
                     });
                     console.log(res);
+                    checkUserLogin();
                 }}>Sign in</Button>
-                <Button onClick={() => {
+                <Button onClick={async () => {
                     console.log('you want sign out');
+                    await logout();
+                    checkUserLogin();
                 }}>Sign out</Button>
                 <Button onClick={async () => {
                     console.log('you want refresh');
@@ -161,6 +175,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                     <div className={styles['device-col']}>{ col2 ? col2.map((item) => renderDeviceCard(item)) : null }</div>
                     <div className={styles['device-col']}>{ col3 ? col3.map((item) => renderDeviceCard(item)) : null }</div>
                 </div>
+                <p>login: {isLogin ? 'YES' : 'NO'}</p>
             </div>
 
             {/* <UnsupportedCard
@@ -239,27 +254,6 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             />
 
             <hr /> */}
-
-            {/* <CKLiquid value={'111'} />
-            <CKGauge percent={0.7} />
-            <YellowGauge value={0.45} />
-            {/* <SettingModal visible={false}></SettingModal> */}
-            {/* <CKLiquid value={'111'} />
-            <CKGauge percent={0.7} />
-            <YellowGauge value={50} /> */}
-            {/* <SettingModal visible title='aa' type={EModalType.MULTI}></SettingModal> */}
-            {/* <CKGauge percent={0.7} /> */}
-            {/* <YellowGauge value={50} /> */}
-            {/* 多通道 */}
-            {/* <MultiDeviceSettingModal visible title='4 channel'></MultiDeviceSettingModal>  */}
-            {/* 单通道 */}
-            {/* <ChannelModal visible title='1 Channel Socket/Switch'></ChannelModal> */}
-            {/* 功率检测单通道 */}
-            {/* <PowerDetectionModal visible title='Power detection Socket'></PowerDetectionModal> */}
-            {/* 功率检测插座过载警告 & 多功能双通道电量检测开关 */}
-            {/* <PowerDetectionSocketModal visible title='IW100'></PowerDetectionSocketModal> */}
-            {/* 恒温恒湿改装件 */}
-            {/* <ConstantTempAndHumiModal visible title='TH Switch' /> */}
         </div>
     );
 };
@@ -268,11 +262,16 @@ export default connect(
     ({ global }: any) => ({
         language: global.language,
         deviceList: global.deviceList,
+        isLogin: global.isLogin,
     }),
     (dispatch) => ({
         getLanguage: () =>
             dispatch({
                 type: 'global/getLanguage',
+            }),
+        checkUserLogin: () =>
+            dispatch({
+                type: 'global/checkUserLogin',
             }),
         saveDeviceList: (deviceList: DeviceInfo[]) =>
             dispatch({
@@ -281,5 +280,6 @@ export default connect(
                     deviceList
                 }
             }),
+            dispatch
     })
 )(App);
