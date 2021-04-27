@@ -38,14 +38,19 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
     function onCancel() {
         setModalVisible(false);
     }
+    let modalProps = {
+        deviceId: deviceData.deviceId,
+        deviceName: deviceData.name,
+        apikey: deviceData.apikey,
+    };
     const toggle = async (v: boolean) => {
         const { apikey, deviceId } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
             params: {
-                switch: v ? 'on' : 'off'
-            }
+                switch: v ? 'on' : 'off',
+            },
         });
     };
 
@@ -105,8 +110,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                     disabled={!deviceData.online}
                 />
             </div>
-            <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} title={deviceData.name} />
-
+            <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} destroyOnClose={true} device={modalProps} />
         </div>
     );
 };

@@ -34,14 +34,19 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
     function onCancel() {
         setModalVisible(false);
     }
+    let modalProps = {
+        deviceId: deviceData.deviceId,
+        deviceName: deviceData.name,
+        apikey: deviceData.apikey,
+    };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
             params: {
-                switch: v ? 'on' : 'off'
-            }
+                switch: v ? 'on' : 'off',
+            },
         });
     };
 
@@ -84,12 +89,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                 </div>
             </div>
             <div className={style['single-box']}>
-                <LiquidBall
-                    size="large"
-                    type="blue"
-                    title="Realtime stats"
-                    content={power}
-                />
+                <LiquidBall size='large' type='blue' title='Realtime stats' content={power} />
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>{channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
@@ -103,7 +103,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                     disabled={!deviceData.online}
                 />
             </div>
-            <PowerDetectionModal visible={modalVisible} onCancel={onCancel} title={deviceData.name} />
+            <PowerDetectionModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
         </div>
     );
 };

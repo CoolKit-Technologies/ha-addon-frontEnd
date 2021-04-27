@@ -3,9 +3,19 @@ import { connect, FormattedMessage, useIntl } from 'umi';
 import { EditOutlined } from '@ant-design/icons';
 import { Switch } from 'antd';
 import styles from './index.less';
-
-const EnableEntityItem: React.FC = (props) => {
+import { IComponentProps } from '@/types/interface/IModal';
+import { changeDeviceStatus } from '@/api';
+const EnableEntityItem: React.FC<IComponentProps> = (props) => {
     const { formatMessage } = useIntl();
+    async function changeDeviceState(disabled: boolean) {
+        let params = {
+            id: props.deviceId,
+            disabled: disabled,
+        };
+        console.log(`ML ~ file: index.tsx ~ line 15 ~ changeDeviceState ~ params`, params);
+        const res = await changeDeviceStatus(params);
+        console.log(`ML ~ file: index.tsx ~ line 16 ~ changeDeviceState ~ res`, res);
+    }
     return (
         <div className={styles['form-item']}>
             <div className={styles['label']}>
@@ -13,7 +23,7 @@ const EnableEntityItem: React.FC = (props) => {
                 <span className={styles['tips']}>Disabled entities will not be added to Home Assistant.</span>
             </div>
             <div className={styles['actions']}>
-                <Switch defaultChecked />
+                <Switch onClick={(value) => changeDeviceState(value)} />
             </div>
         </div>
     );

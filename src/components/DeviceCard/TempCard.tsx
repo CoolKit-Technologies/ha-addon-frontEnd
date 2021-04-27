@@ -38,14 +38,19 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
     function onCancel() {
         setModalVisible(false);
     }
+    let modalProps = {
+        deviceId: deviceData.deviceId,
+        deviceName: deviceData.name,
+        apikey: deviceData.apikey,
+    };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
             params: {
-                switch: v ? 'on' : 'off'
-            }
+                switch: v ? 'on' : 'off',
+            },
         });
     };
 
@@ -122,7 +127,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                     disabled={!deviceData.online || mode === 'normal'}
                 />
             </div>
-            <ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} />
+            <ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
         </div>
     );
 };
