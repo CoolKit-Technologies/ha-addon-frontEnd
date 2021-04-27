@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import ChannelSetting from './components/ChannelSettingItem';
-import { IChannel } from '../../types/interface/IModal';
-const MultiChannelSettingModal: React.FC<IChannel> = (props) => {
-    // useEffect(() => {
-    //     console.log('props', props);
-    // });
+import { IModalProps } from '../../types/interface/IModal';
+const MultiChannelSettingModal: React.FC<IModalProps> = (props) => {
     return (
         <div>
-            {props.tags.map((item) => {
-                return <ChannelSetting name={item} />;
-            })}
+            {props.channels &&
+                props.channels.map((item, index) => {
+                    return <ChannelSetting deviceName={props.deviceName} deviceId={props.deviceId} apikey={props.apikey} channelName={item.name} index={index} key={index} />;
+                })}
         </div>
     );
 };

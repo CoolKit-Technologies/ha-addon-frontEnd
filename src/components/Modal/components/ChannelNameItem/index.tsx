@@ -2,21 +2,36 @@ import React, { useState, useEffect, ReactNode } from 'react';
 import { connect, FormattedMessage, useIntl } from 'umi';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import styles from './index.less';
-import { Input } from 'antd';
-import { IChannelName } from '@/types/interface/IModal';
+import { Input, message } from 'antd';
+import { IChannelSetting } from '@/types/interface/IModal';
+import { updateChannelName } from '@/api';
 
-const ChannelNameItem: React.FC<IChannelName> = (props) => {
+const ChannelNameItem: React.FC<IChannelSetting> = (props) => {
     const [channelName, setchannelName] = useState('');
+    const [deviceId, setDeviceId] = useState('');
+    const [index, setIndex] = useState(0);
     const [abled, setAbled] = useState(true);
     const { formatMessage } = useIntl();
 
-    function savechannelName(channelName: string) {
+    async function savechannelName(channelName: string) {
         console.log(`ML ~ file: index.tsx ~ line 12 ~ savechannelName ~ channelName`, channelName);
         //  保存设备名称
+        const params = {
+            id: deviceId,
+            tags: { [index]: channelName },
+        };
+        console.log(`ML ~ file: index.tsx ~ line 23 ~ savechannelName ~ params`, params);
+        const res = await updateChannelName(params);
+        console.log(`ML ~ file: index.tsx ~ line 25 ~ savechannelName ~ res`, res);
+        if (res.error === 0) {
+            message.success('修改成功');
+        }
         setAbled(true);
     }
     useEffect(() => {
-        setchannelName(props.name as string);
+        props.channelName && setchannelName(props.channelName);
+        setDeviceId(props.deviceId);
+        props.index !== undefined && setIndex(props.index);
     }, []);
     return (
         <div className={styles['device-name-item']}>

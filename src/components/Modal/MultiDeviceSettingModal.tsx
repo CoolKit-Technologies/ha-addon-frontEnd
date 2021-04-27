@@ -19,20 +19,17 @@ const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
         setAction(true);
         setTitleAction(<a onClick={channelSetting}>Channel settings</a>);
     }
-    // useEffect(() => {
-    //     console.log('props', props);
-    // });
     return (
-        <BaseModal {...props} titleAction={titleAction} destroyOnClose={true}>
+        <BaseModal {...props} title={props.device.deviceName} titleAction={titleAction} destroyOnClose={true}>
             {action ? (
                 <div>
-                    <DeviceNameItem name={props.title}></DeviceNameItem>
-                    <IndicatorLEDItem></IndicatorLEDItem>
+                    <DeviceNameItem {...props.device}></DeviceNameItem>
+                    <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
                     <InterlockMode></InterlockMode>
-                    <EnableEntityItem></EnableEntityItem>
+                    <EnableEntityItem {...props.device}></EnableEntityItem>
                 </div>
             ) : (
-                props.tags && <MultiChannelSettingModal tags={props.tags} />
+                props.device.channels && <MultiChannelSettingModal {...props.device} />
             )}
         </BaseModal>
     );

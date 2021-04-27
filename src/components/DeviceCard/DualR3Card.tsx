@@ -40,6 +40,11 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
     function onCancel() {
         setModalVisible(false);
     }
+    let modalProps = {
+        deviceId: deviceData.deviceId,
+        deviceName: deviceData.name,
+        apikey: deviceData.apikey,
+    };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
@@ -119,7 +124,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                     }}
                 />
             </div>
-            <PowerDetectionSocketModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} />
+            <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
         </div>
     );
 };
