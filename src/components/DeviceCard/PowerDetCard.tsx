@@ -1,5 +1,5 @@
 // 功率检测单通道插座
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
@@ -9,6 +9,7 @@ import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
+import PowerDetectionModal from '../Modal/PowerDetectionModal';
 import { updateDeviceByWS } from '@/api';
 
 interface PowerDetCardProps {
@@ -29,6 +30,10 @@ interface PowerDetCardProps {
 }
 
 const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    function onCancel() {
+        setModalVisible(false);
+    }
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
@@ -56,6 +61,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
             className={style['card']}
             onClick={() => {
                 console.log('you click card');
+                setModalVisible(true);
             }}
         >
             <div className={style['info-refresh']}>
@@ -85,11 +91,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                 />
             </div>
             <div className={style['channel']}>
-                <div className={style['channel-icon']}>
-                    {
-                        channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
-                    }
-                </div>
+                <div className={style['channel-icon']}>{channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
@@ -99,6 +101,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                     }}
                 />
             </div>
+            <PowerDetectionModal visible={modalVisible} onCancel={onCancel} title={deviceData.name} />
         </div>
     );
 };

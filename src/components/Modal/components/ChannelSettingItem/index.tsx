@@ -1,12 +1,13 @@
 import React from 'react';
-import DeviceNameItem from '../DeviceNameItem';
 import InchingMode from '../InchingModeItem';
 import PowerState from '../PowerStateItem';
 import styles from './index.less';
-const ChannelSetting: React.FC = () => {
+import { IChannelName } from '../../../../types/interface/IModal';
+import ChannelNameItem from '../ChannelNameItem';
+const ChannelSetting: React.FC<IChannelName> = (props) => {
     return (
         <div className={styles['magB10']}>
-            <DeviceNameItem />
+            <ChannelNameItem name={props.name} />
             <div className={styles['magTB']}>
                 <InchingMode />
             </div>

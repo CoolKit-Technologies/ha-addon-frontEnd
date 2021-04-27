@@ -1,5 +1,5 @@
 // 多功能双通道电量检测开关
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
@@ -9,6 +9,7 @@ import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
 import { getIconByDeviceType } from '@/utils';
 import style from './card.less';
+import PowerDetectionSocketModal from '../Modal/PowerDetectionSocketModal';
 import { updateDeviceByWS } from '@/api';
 
 interface DualR3CardProps {
@@ -35,6 +36,10 @@ interface DualR3CardProps {
 }
 
 const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, current, ballData, i }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    function onCancel() {
+        setModalVisible(false);
+    }
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
@@ -65,6 +70,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             className={style['card']}
             onClick={() => {
                 console.log('you click card');
+                setModalVisible(true);
             }}
         >
             <div className={style['info-refresh']}>
@@ -86,20 +92,10 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                 </div>
             </div>
             <div className={style['triple-box']}>
-                {
-                    // 三个一排的水波球
-                    ballData.map((data, i) => {
-                        return (
-                            <LiquidBall
-                                key={i}
-                                size="small"
-                                type={i === 0 ? 'blue' : i === 1 ? 'green' : i === 2 ? 'yellow' : 'blue'}
-                                title={data.title}
-                                content={data.content}
-                            />
-                        );
-                    })
-                }
+                {// 三个一排的水波球
+                ballData.map((data, i) => {
+                    return <LiquidBall key={i} size='small' type={i === 0 ? 'blue' : i === 1 ? 'green' : i === 2 ? 'yellow' : 'blue'} title={data.title} content={data.content} />;
+                })}
             </div>
             <div className={style['vol-cur-data']}>
                 <div className={style['vol']}>
@@ -113,11 +109,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                 </div>
             </div>
             <div className={style['channel']}>
-                <div className={style['channel-icon']}>
-                    {
-                        channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
-                    }
-                </div>
+                <div className={style['channel-icon']}>{channel.stat ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
@@ -127,6 +119,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                     }}
                 />
             </div>
+            <PowerDetectionSocketModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} />
         </div>
     );
 };

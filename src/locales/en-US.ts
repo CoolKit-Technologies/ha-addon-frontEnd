@@ -33,4 +33,6 @@ export default {
     'device.info.needLogin': 'Log in to use this device',
     'device.info.notyou': 'Not your device',
     'device.info.notsupport': 'Temporarily unsupported device',
+    //
+    'channel.name': 'Channel Name',
 };

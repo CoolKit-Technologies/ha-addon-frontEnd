@@ -15,10 +15,7 @@ import styles from './base.less';
 const PowerDetectionModal: React.FC<TypeModalProps> = (props) => {
     const [action, setAction] = useState(true);
     const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Status</a>);
-    const [visible, setVisible] = useState(true);
-    function onCancel() {
-        setVisible(false);
-    }
+
     function channelSetting() {
         setAction(false);
         setTitleAction(<a onClick={deviceSetting}>Device settings</a>);
@@ -28,10 +25,10 @@ const PowerDetectionModal: React.FC<TypeModalProps> = (props) => {
         setTitleAction(<a onClick={channelSetting}>Status</a>);
     }
     return (
-        <BaseModal {...props} titleAction={titleAction} visible={visible} onCancel={onCancel}>
+        <BaseModal {...props} titleAction={titleAction}>
             {action ? (
                 <div>
-                    <DeviceNameItem></DeviceNameItem>
+                    <DeviceNameItem name={props.title}></DeviceNameItem>
                     <IndicatorLEDItem></IndicatorLEDItem>
                     <PowerState style={styles['mrgB10']}></PowerState>
                     <EnableEntityItem></EnableEntityItem>
