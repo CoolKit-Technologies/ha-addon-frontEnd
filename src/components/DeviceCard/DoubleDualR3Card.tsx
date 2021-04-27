@@ -12,6 +12,8 @@ interface DoubleDualR3CardProps {
         apikey: string;
         model: string;
         fwVersion: string;
+        disabled: boolean;
+        params: any;
     };
     channels: {
         stat: 'on' | 'off';
