@@ -89,7 +89,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
 
     return (
         <div
-            className={style['card']}
+            className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('click card');
                 setModalVisible(true);
@@ -108,6 +108,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                             e.stopPropagation();
                             await totalToggle(v);
                         }}
+                        disabled={!deviceData.online}
                     />
                 )}
             </div>
@@ -123,6 +124,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                                 e.stopPropagation();
                                 await toggle(v, i);
                             }}
+                            disabled={!deviceData.online}
                         />
                     </div>
                 );

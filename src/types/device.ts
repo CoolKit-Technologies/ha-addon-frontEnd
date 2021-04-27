@@ -20,4 +20,5 @@ export interface DeviceInfo {
     params: any;            // 设备参数
     tags: any;              // 通道名
     apikey: string;         // 设备的 apikey
+    xindex: number;         // 给 Dual R3 排序用
 }

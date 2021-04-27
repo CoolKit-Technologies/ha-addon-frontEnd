@@ -25,6 +25,7 @@ import EModalType from '../ts/Enum/EModalType';
 import MultiDeviceSettingModal from '@/components/Modal/MultiDeviceSettingModal';
 import ConstantTempAndHumiModal from '../components/Modal/ConstantTempAndHumiModal';
 import DoubleDualR3Card from '@/components/DeviceCard/DoubleDualR3Card';
+import { AccountBookFilled, DownloadOutlined, UserOutlined } from '@ant-design/icons';
 
 import { login, getDeviceList, userIsLogin, logout } from '@/api';
 import { DeviceInfo } from '@/types/device';
@@ -48,7 +49,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             console.log('连接建立成功');
         });
         source.addEventListener('message', (e) => {
-            console.log(JSON.parse(e.data));
+            console.log('sse -> deviceList', JSON.parse(e.data));
             saveDeviceList(JSON.parse(e.data));
         });
         return () => {
@@ -56,7 +57,28 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         };
     }, []);
 
-    const [col1, col2, col3] = _.chunk(deviceList, Math.ceil(deviceList.length / 3));
+    const listCopy = _.cloneDeep(deviceList);
+    for (let i = 0; i < listCopy.length; i++) {
+        if (listCopy[i].uiid === 126) {       // 是否为 Dual R3
+            const item1 = _.cloneDeep(listCopy[i]);
+            const item2 = _.cloneDeep(listCopy[i]);
+            item1.xindex = 0;
+            item2.xindex = 1;
+            listCopy.splice(i, 1, item1, item2);
+            i++;
+        }
+    }
+    const col1 = [];
+    const col2 = [];
+    const col3 = [];
+    for (let i = 0; i < listCopy.length; i++) {
+        if (i % 3 === 0)
+            col1.push(listCopy[i]);
+        else if ((i-1) % 3 === 0)
+            col2.push(listCopy[i]);
+        else if ((i-2) % 3 === 0)
+            col3.push(listCopy[i]);
+    }
 
     const renderDeviceCard = (data: DeviceInfo) => {
         const { uiid, deviceId, deviceName, online, apikey, model } = data;
@@ -72,21 +94,26 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             model
         };
         if (isDualR3(uiid)) {
+            const i = data.xindex;
+            const voltage = data.params[`voltage_0${i}`] / 100 + 'V';
+            const current = data.params[`current_0${i}`] / 100 + 'A';
+            const actPow = data.params[`actPow_0${i}`] / 100 + 'W';
+            const reactPow = data.params[`reactPow_0${i}`] / 100 + 'W';
+            const appPow = data.params[`apparentPow_0${i}`] / 100 + 'W';
+            const ballData = [
+                { title: 'Real power', content: actPow },
+                { title: 'Reactive power', content: reactPow },
+                { title: 'Apparent power', content: appPow },
+            ];
             return (
-                <DoubleDualR3Card
+                <DualR3Card
                     key={deviceId}
                     deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
-                    channels={[{ stat: data.params.switches[0].switch, name: data.tags ? data.tags[0] : 'channel 1' }, { stat: data.params.switches[1].switch, name: data.tags ? data.tags[1] : 'channel 2' }]}
-                    voltages={[`${data.params.voltage_00 / 100}V`, `${data.params.voltage_01 / 100}V`]}
-                    currents={[`${data.params.current_00 / 100}A`, `${data.params.current_01 / 100}A`]}
-                    ballData={[
-                        { title: 'Real power', content: `${data.params.actPow_00 / 100}W` },
-                        { title: 'Reactive power', content: `${data.params.reactPow_00 / 100}W` },
-                        { title: 'Apparent power', content: `${data.params.apparentPow_00 / 100}W` },
-                        { title: 'Real power', content: `${data.params.actPow_01 / 100}W` },
-                        { title: 'Reactive power', content: `${data.params.reactPow_01 / 100}W` },
-                        { title: 'Apparent power', content: `${data.params.apparentPow_01 / 100}W` },
-                    ]}
+                    channel={{ stat: data.params.switches[i].switch, name: data.tags ? data.tags[i] : `channel ${i+1}` }}
+                    voltage={voltage}
+                    current={current}
+                    ballData={ballData}
+                    i={i}
                 />
             );
         } else if (isIW100Device(uiid)) {
@@ -101,6 +128,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             return <PowerDetCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} power="149W" />;
         } else if (isSocketSwitchDevice(uiid)) {
             const channels: {name:string;stat:'on'|'off'}[] = [];
+            let len = 0;
             if (uiid === 1 && type === 'diy') {                         // 单通道 DIY
                 channels.push({ name: 'channel', stat: data.params.data1.switch });
             } else if (uiid === 1 || uiid === 6 || uiid === 14) {       // 单通道非 DIY
@@ -108,24 +136,18 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             } else if (uiid === 77 || uiid === 78 || uiid === 112) {    // 单通道（多通道协议）
                 channels.push({ name: 'channel', stat: data.params.switches[0].switch });
             } else if (uiid === 2 || uiid === 7 || uiid === 113) {      // 双通道
-                for (let i = 0; i < 2; i++)
-                    if (data.tags)
-                        channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
-                    else
-                        channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+                len = 2;
             } else if (uiid === 3 || uiid === 8 || uiid === 114) {      // 三通道
-                for (let i = 0; i < 3; i++)
-                    if (data.tags)
-                        channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
-                    else
-                        channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+                len = 3;
             } else if (uiid === 4 || uiid === 9) {                      // 四通道
-                for (let i = 0; i < 4; i++)
-                    if (data.tags)
-                        channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
-                    else
-                        channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+                len = 4;
             }
+            for (let i = 0; i < len; i++)
+                if (data.tags)
+                    channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
+                else
+                    channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+
             return <SocketSwitchCard key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
         } else if (isTempDevice(uiid)) {
             return <TempCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} mode='AUTO' humi={`${data.params.currentHumidity}%`} temp={`${data.params.currentTemperature}C`} />;
@@ -136,7 +158,17 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
 
     return (
         <div>
-            <Header />
+            <header className={styles['header']}>
+                <div className={styles['title']}>
+                    <h1>eWeLink Smart Home</h1>
+                </div>
+                <div className="control">
+                    <Button size="large" shape="round" icon={<UserOutlined />}>Sign in</Button>
+                    <Button shape="circle" icon={<DownloadOutlined />} size="large" />
+                    <Button shape="circle" icon={<AccountBookFilled />} size="large" />
+                </div>
+            </header>
+
             <div style={{padding:'20px'}}>
                 <Button onClick={async () => {
                     console.log('you want sign in');
@@ -160,6 +192,9 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                     saveDeviceList(res.data);
                 }}>Refresh</Button>
             </div>
+
+
+
             <div className={styles['main-container']}>
                 {/* <div className={styles['ad-box']}>
                     {Array.from({ length: 5 }).map((item) => (

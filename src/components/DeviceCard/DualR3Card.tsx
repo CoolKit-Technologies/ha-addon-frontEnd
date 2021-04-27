@@ -67,7 +67,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
 
     return (
         <div
-            className={style['card']}
+            className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
                 setModalVisible(true);
@@ -86,7 +86,8 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            await refresh(i);
+                            if (deviceData.online)
+                                await refresh(i);
                         }}
                     />
                 </div>
@@ -117,6 +118,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                         e.stopPropagation();
                         await toggle(v);
                     }}
+                    disabled={!deviceData.online}
                 />
             </div>
             <PowerDetectionSocketModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} />

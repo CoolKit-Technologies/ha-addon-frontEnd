@@ -61,7 +61,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
 
     return (
         <div
-            className={style['card']}
+            className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
                 setModalVisible(true);
@@ -80,7 +80,8 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            await refresh();
+                            if (deviceData.online)
+                                await refresh();
                         }}
                     />
                 </div>
@@ -105,6 +106,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                         e.stopPropagation();
                         await toggle(v);
                     }}
+                    disabled={!deviceData.online}
                 />
             </div>
             <ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} />

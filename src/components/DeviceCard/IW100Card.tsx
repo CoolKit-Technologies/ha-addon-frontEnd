@@ -62,7 +62,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
 
     return (
         <div
-            className={style['card']}
+            className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
                 setModalVisible(true);
@@ -81,7 +81,8 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            await refresh();
+                            if (deviceData.online)
+                                await refresh();
                         }}
                     />
                 </div>
@@ -101,6 +102,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                         e.stopPropagation();
                         await toggle(v);
                     }}
+                    disabled={!deviceData.online}
                 />
             </div>
             <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} title={deviceData.name} />

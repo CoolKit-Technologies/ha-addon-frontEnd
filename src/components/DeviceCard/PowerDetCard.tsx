@@ -58,7 +58,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
 
     return (
         <div
-            className={style['card']}
+            className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
                 setModalVisible(true);
@@ -77,7 +77,8 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            await refresh();
+                            if (deviceData.online)
+                                await refresh();
                         }}
                     />
                 </div>
@@ -99,6 +100,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                         e.stopPropagation();
                         await toggle(v);
                     }}
+                    disabled={!deviceData.online}
                 />
             </div>
             <PowerDetectionModal visible={modalVisible} onCancel={onCancel} title={deviceData.name} />
