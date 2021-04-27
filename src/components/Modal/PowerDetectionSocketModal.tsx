@@ -9,8 +9,6 @@ import InchingMode from './components/InchingModeItem';
 import styles from './base.less';
 import DeviceData from './DeviceData';
 /**
- * 单通道
- * 恒温湿改装件
  * 功率检测插座过载告警
  * 多功能双通道电量检测开关
  */
@@ -27,14 +25,14 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
         setTitleAction(<a onClick={channelSetting}>Status</a>);
     }
     return (
-        <BaseModal {...props} titleAction={titleAction}>
+        <BaseModal {...props} titleAction={titleAction} title={props.device.deviceName}>
             {action ? (
                 <div>
-                    <DeviceNameItem name={props.title}></DeviceNameItem>
-                    <IndicatorLEDItem></IndicatorLEDItem>
-                    <PowerState style={styles['mrgB10']}></PowerState>
-                    <InchingMode style={styles['mrgB10']}></InchingMode>
-                    <EnableEntityItem></EnableEntityItem>
+                    <DeviceNameItem {...props.device}></DeviceNameItem>
+                    <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
+                    <PowerState style={styles['mrgB10']} {...props.device}></PowerState>
+                    <InchingMode style={styles['mrgB10']} {...props.device}></InchingMode>
+                    <EnableEntityItem {...props.device}></EnableEntityItem>
                 </div>
             ) : (
                 <DeviceData />

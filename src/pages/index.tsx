@@ -17,7 +17,6 @@ import SettingModal from '@/components/Modal/SettingModal';
 import CKLine from '@/components/Circle/CKLine';
 import DeviceDataModal from '@/components/Modal/DeviceData';
 import MultiChannelSettingModal from '../components/Modal/MultiChannelSettingModal';
-import EnvironmentStatus from '@/components/Modal/EnvironmentStatus';
 import ChannelModal from '@/components/Modal/ChannelModal';
 import PowerDetectionModal from '@/components/Modal/PowerDetectionModal';
 import PowerDetectionSocketModal from '@/components/Modal/PowerDetectionSocketModal';

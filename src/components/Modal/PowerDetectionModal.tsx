@@ -25,13 +25,13 @@ const PowerDetectionModal: React.FC<TypeModalProps> = (props) => {
         setTitleAction(<a onClick={channelSetting}>Status</a>);
     }
     return (
-        <BaseModal {...props} titleAction={titleAction}>
+        <BaseModal {...props} titleAction={titleAction} title={props.device.deviceName}>
             {action ? (
                 <div>
-                    <DeviceNameItem name={props.title}></DeviceNameItem>
-                    <IndicatorLEDItem></IndicatorLEDItem>
-                    <PowerState style={styles['mrgB10']}></PowerState>
-                    <EnableEntityItem></EnableEntityItem>
+                    <DeviceNameItem {...props.device}></DeviceNameItem>
+                    <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
+                    <PowerState style={styles['mrgB10']} {...props.device}></PowerState>
+                    <EnableEntityItem {...props.device}></EnableEntityItem>
                 </div>
             ) : (
                 <DeviceData />

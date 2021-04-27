@@ -29,10 +29,19 @@ interface SocketSwitchCardProps {
 
 const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channels }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    let tags = channels.map((item) => item.name); //通道名称数组
     function onCancel() {
         setModalVisible(false);
     }
+    let modalProps = {
+        deviceId: deviceData.deviceId,
+        deviceName: deviceData.name,
+        apikey: deviceData.apikey,
+        channels: channels.map((item) => {
+            return {
+                name: item.name,
+            };
+        }),
+    };
     // 开关一个通道
     const toggle = async (v: boolean, i: number) => {
         const { type, deviceId, apikey } = deviceData;
@@ -127,10 +136,10 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                     </div>
                 );
             })}
-            {tags.length === 1 ? (
-                <ChannelModal visible={modalVisible} title={deviceData.name} onCancel={onCancel} />
+            {channels.length === 1 ? (
+                <ChannelModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
             ) : (
-                <MultiDeviceSettingModal visible={modalVisible} title={deviceData.name} onCancel={onCancel} tags={tags} />
+                <MultiDeviceSettingModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
             )}
         </div>
     );
