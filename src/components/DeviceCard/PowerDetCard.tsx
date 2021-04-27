@@ -40,6 +40,17 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
         });
     };
 
+    const refresh = async () => {
+        const { apikey, deviceId } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                uiActive: 120
+            }
+        });
+    };
+
     return (
         <div
             className={style['card']}
@@ -57,9 +68,10 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                         src={IconRefresh}
                         width="30"
                         height="30"
-                        onClick={(e) => {
+                        onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
+                            await refresh();
                         }}
                     />
                 </div>

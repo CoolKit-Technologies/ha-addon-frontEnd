@@ -43,6 +43,17 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         });
     };
 
+    const refresh = async () => {
+        const { apikey, deviceId } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                uiActive: 120
+            }
+        });
+    };
+
     return (
         <div
             className={style['card']}
@@ -60,9 +71,10 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                         src={IconRefresh}
                         width="30"
                         height="30"
-                        onClick={(e) => {
+                        onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
+                            await refresh();
                         }}
                     />
                 </div>

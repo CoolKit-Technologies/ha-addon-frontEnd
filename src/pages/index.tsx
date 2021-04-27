@@ -24,6 +24,7 @@ import PowerDetectionSocketModal from '@/components/Modal/PowerDetectionSocketMo
 import EModalType from '../ts/Enum/EModalType';
 import MultiDeviceSettingModal from '@/components/Modal/MultiDeviceSettingModal';
 import ConstantTempAndHumiModal from '../components/Modal/ConstantTempAndHumiModal';
+import DoubleDualR3Card from '@/components/DeviceCard/DoubleDualR3Card';
 
 import { login, getDeviceList, userIsLogin, logout } from '@/api';
 import { DeviceInfo } from '@/types/device';
@@ -36,12 +37,6 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         checkUserLogin();
 
         getDeviceList({ type: 'init' }).then((res) => saveDeviceList(res.data));
-        // dispatch({
-        //     type:'global/save',
-        //     payload:{
-        //         isLogin:false
-        //     }
-        // })
         // getLanguage();
 
         // dev
@@ -78,16 +73,19 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         };
         if (isDualR3(uiid)) {
             return (
-                <DualR3Card
+                <DoubleDualR3Card
                     key={deviceId}
                     deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
-                    channel={{stat:true,name:'channel'}}
-                    voltage="150V"
-                    current="1.0A"
+                    channels={[{ stat: data.params.switches[0].switch, name: data.tags ? data.tags[0] : 'channel 1' }, { stat: data.params.switches[1].switch, name: data.tags ? data.tags[1] : 'channel 2' }]}
+                    voltages={[`${data.params.voltage_00 / 100}V`, `${data.params.voltage_01 / 100}V`]}
+                    currents={[`${data.params.current_00 / 100}A`, `${data.params.current_01 / 100}A`]}
                     ballData={[
-                        { title: 'Power', content: '231 W' },
-                        { title: 'Voltage', content: '110 V' },
-                        { title: 'Current', content: '2.1 A' },
+                        { title: 'Real power', content: `${data.params.actPow_00 / 100}W` },
+                        { title: 'Reactive power', content: `${data.params.reactPow_00 / 100}W` },
+                        { title: 'Apparent power', content: `${data.params.apparentPow_00 / 100}W` },
+                        { title: 'Real power', content: `${data.params.actPow_01 / 100}W` },
+                        { title: 'Reactive power', content: `${data.params.reactPow_01 / 100}W` },
+                        { title: 'Apparent power', content: `${data.params.apparentPow_01 / 100}W` },
                     ]}
                 />
             );
@@ -177,83 +175,6 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                 </div>
                 <p>login: {isLogin ? 'YES' : 'NO'}</p>
             </div>
-
-            {/* <UnsupportedCard
-                deviceData={{online:true,name:'XXX',type:'cloud'}}
-            />
-
-            <hr />
-
-            <SocketSwitchCard deviceData={{ name: '1 Channel Switch', type: 'cloud', online: true }} channels={[{ name: 'channel 1', stat: true }]} />
-
-            <hr />
-
-            <SocketSwitchCard
-                deviceData={{ name: '1 Channel Switch', type: 'diy', online: false }}
-                channels={[
-                    { name: 'channel 1', stat: true },
-                    { name: 'channel 2', stat: true },
-                ]}
-            />
-
-            <hr />
-
-            <SocketSwitchCard
-                deviceData={{ name: '1 Channel Switch', type: 'lan', online: true }}
-                channels={[
-                    { name: 'channel 1', stat: true },
-                    { name: 'channel 2', stat: true },
-                    { name: 'channel 3', stat: false },
-                ]}
-            />
-
-            <hr />
-
-            <SocketSwitchCard
-                deviceData={{ name: '1 Channel Switch', type: 'lan', online: false }}
-                channels={[
-                    { name: 'channel 1', stat: true },
-                    { name: 'channel 2', stat: true },
-                    { name: 'channel 3', stat: true },
-                    { name: 'channel 4', stat: true },
-                ]}
-            />
-
-            <hr />
-
-            <PowerDetCard deviceData={{ online: true, type: 'cloud', name: 'Power Det' }} channel={{ stat: true, name: 'hello' }} power={149} />
-
-            <hr />
-
-            <TempCard deviceData={{ online: true, type: 'diy', name: 'TH10' }} channel={{ stat: true, name: 'bbb' }} mode='AUTO' />
-
-            <hr />
-
-            <DualR3Card
-                deviceData={{ online: true, type: 'diy', name: 'DualR3 channel 1' }}
-                channel={{ stat: true, name: 'channel' }}
-                voltage='150V'
-                current='1.0A'
-                ballData={[
-                    { title: 'Power', content: '231 W' },
-                    { title: 'Voltage', content: '110 V' },
-                    { title: 'Current', content: '2.1 A' },
-                ]}
-            />
-
-            <hr />
-
-            <IW100Card
-                deviceData={{ online: true, type: 'diy', name: 'IW100' }}
-                channel={{ stat: true, name: 'chh' }}
-                ballData={[
-                    { title: 'Power', content: '231 W' },
-                    { title: 'Voltage', content: '110 V' },
-                    { title: 'Current', content: '2.1 A' },
-                ]}
-            />
-
-            <hr /> */}
         </div>
     );
 };

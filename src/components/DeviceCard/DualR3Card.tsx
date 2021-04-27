@@ -22,7 +22,7 @@ interface DualR3CardProps {
         fwVersion: string;
     };
     channel: {
-        stat: boolean;
+        stat: 'on' | 'off';
         name: string;
     };
     voltage: string;
@@ -31,19 +31,35 @@ interface DualR3CardProps {
         title: string;
         content: string;
     }[];
+    i: number;
 }
 
-const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, current, ballData }) => {
+const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, current, ballData, i }) => {
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
             params: {
-                switch: v ? 'on' : 'off'
+                switches: [{ outlet: i, switch: v ? 'on' : 'off' }]
             }
         });
     };
+
+    const refresh = async (i: number) => {
+        const { apikey, deviceId } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                uiActive: {
+                    time: 120,
+                    outlet: i
+                }
+            }
+        });
+    };
+
     return (
         <div
             className={style['card']}
@@ -61,9 +77,10 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                         src={IconRefresh}
                         width="30"
                         height="30"
-                        onClick={(e) => {
+                        onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
+                            await refresh(i);
                         }}
                     />
                 </div>
@@ -98,12 +115,12 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>
                     {
-                        channel.stat ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
+                        channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />
                     }
                 </div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
-                    checked={channel.stat}
+                    checked={channel.stat === 'on'}
                     onClick={async (v, e) => {
                         e.stopPropagation();
                         await toggle(v);

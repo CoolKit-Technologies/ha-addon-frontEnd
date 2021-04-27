@@ -43,6 +43,17 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
         });
     };
 
+    const refresh = async () => {
+        const { apikey, deviceId } = deviceData;
+        await updateDeviceByWS({
+            apikey,
+            id: deviceId,
+            params: {
+                uiActive: 120
+            }
+        });
+    };
+
     return (
         <div
             className={style['card']}
@@ -60,9 +71,10 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                         src={IconRefresh}
                         width="30"
                         height="30"
-                        onClick={(e) => {
+                        onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
+                            await refresh();
                         }}
                     />
                 </div>
