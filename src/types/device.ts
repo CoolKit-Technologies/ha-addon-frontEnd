@@ -21,4 +21,5 @@ export interface DeviceInfo {
     tags: any;              // 通道名
     apikey: string;         // 设备的 apikey
     xindex: number;         // 给 Dual R3 排序用
+    unit: string;           // 恒温恒湿设备的温度单位
 }

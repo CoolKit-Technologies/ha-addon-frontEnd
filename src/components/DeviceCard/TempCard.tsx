@@ -28,11 +28,12 @@ interface TempCardProps {
         name: string;
     };
     mode: string;
+    unit: string;       // 温度单位
     humi: string;
     temp: string;
 }
 
-const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp }) => {
+const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp, unit }) => {
     const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
@@ -58,6 +59,18 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
             }
         });
     };
+
+    // 获取温度
+    const getTempStr = (temp: string, unit: string) => {
+        let postfix = unit === 'c' ? '°C' : '°F';
+        let value = 0;
+        if (unit === 'c') {
+            value = parseFloat(temp);
+        } else {
+            value = parseFloat(temp) * 9 / 5 + 32;
+        }
+        return `${value}${postfix}`;
+    }
 
     return (
         <div
@@ -87,15 +100,15 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 </div>
             </div>
             <div className={style['double-box']}>
-                <ArcGauge type='green' title='Humidity' content={humi} />
-                <ArcGauge type='blue' title='Temperature' content={temp} />
+                <ArcGauge type='green' title='Humidity' content={`${humi}%`} percent={parseFloat(humi) / 100} />
+                <ArcGauge type='blue' title='Temperature' content={getTempStr(temp, unit)} percent={parseFloat(temp) / 40} />
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>
                     <img src={IconTune} />
                 </div>
                 <span className={style['channel-name']}>Mode</span>
-                <span>{mode}</span>
+                <span className={style['channel-value']}>{mode}</span>
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>{channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
@@ -106,7 +119,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                         e.stopPropagation();
                         await toggle(v);
                     }}
-                    disabled={!deviceData.online}
+                    disabled={!deviceData.online || mode === 'normal'}
                 />
             </div>
             <ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} />

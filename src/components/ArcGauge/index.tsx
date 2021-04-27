@@ -6,14 +6,15 @@ interface ArcGaugeProps {
     type: 'green' | 'blue';
     title: string;
     content: string;
+    percent: number;
 }
 
-const ArcGauge: React.FC<ArcGaugeProps> = ({ type, title, content }) => {
+const ArcGauge: React.FC<ArcGaugeProps> = ({ type, title, content, percent }) => {
     const MAIN_COLOR = type === 'green' ? '#52C41A' : '#1890FF';
     const config = {
         width: 150,
         height: 150,
-        percent: 0.3,
+        percent,
         autoFix: false,
         axis: {
             subTickLine: {

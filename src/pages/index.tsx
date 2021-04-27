@@ -24,7 +24,6 @@ import PowerDetectionSocketModal from '@/components/Modal/PowerDetectionSocketMo
 import EModalType from '../ts/Enum/EModalType';
 import MultiDeviceSettingModal from '@/components/Modal/MultiDeviceSettingModal';
 import ConstantTempAndHumiModal from '../components/Modal/ConstantTempAndHumiModal';
-import DoubleDualR3Card from '@/components/DeviceCard/DoubleDualR3Card';
 import { AccountBookFilled, DownloadOutlined, UserOutlined } from '@ant-design/icons';
 
 import { login, getDeviceList, userIsLogin, logout } from '@/api';
@@ -150,7 +149,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
 
             return <SocketSwitchCard key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
         } else if (isTempDevice(uiid)) {
-            return <TempCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} mode='AUTO' humi={`${data.params.currentHumidity}%`} temp={`${data.params.currentTemperature}C`} />;
+            return <TempCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} unit={data.unit} mode={data.params.deviceType} humi={data.params.currentHumidity} temp={data.params.currentTemperature} />;
         } else {
             return <UnsupportedCard key={key} deviceData={deviceData} />;
         }
