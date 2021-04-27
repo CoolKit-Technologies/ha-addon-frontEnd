@@ -22,18 +22,21 @@ interface TempCardProps {
         apikey: string;
         model: string;
         fwVersion: string;
+        disabled: boolean;
+        params: any;
     };
     channel: {
         stat: 'on' | 'off';
         name: string;
     };
     mode: string;
-    unit: string;       // 温度单位
+    unit: string; // 温度单位
     humi: string;
     temp: string;
 }
 
 const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp, unit }) => {
+    console.log(`ML ~ file: TempCard.tsx ~ line 36 ~ deviceData`, deviceData);
     const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
@@ -42,6 +45,8 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         deviceId: deviceData.deviceId,
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
+        disabled: deviceData.disabled,
+        params: deviceData.params,
     };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
@@ -60,8 +65,8 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
             apikey,
             id: deviceId,
             params: {
-                uiActive: 120
-            }
+                uiActive: 120,
+            },
         });
     };
 
@@ -72,10 +77,10 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         if (unit === 'c') {
             value = parseFloat(temp);
         } else {
-            value = parseFloat(temp) * 9 / 5 + 32;
+            value = (parseFloat(temp) * 9) / 5 + 32;
         }
         return `${value}${postfix}`;
-    }
+    };
 
     return (
         <div
@@ -93,13 +98,12 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
-                        width="30"
-                        height="30"
+                        width='30'
+                        height='30'
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            if (deviceData.online)
-                                await refresh();
+                            if (deviceData.online) await refresh();
                         }}
                     />
                 </div>

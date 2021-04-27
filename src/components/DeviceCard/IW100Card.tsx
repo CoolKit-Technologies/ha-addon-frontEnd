@@ -22,6 +22,8 @@ interface IW100CardProps {
         apikey: string;
         model: string;
         fwVersion: string;
+        disabled: boolean;
+        params: any;
     };
     channel: {
         stat: 'on' | 'off';
@@ -42,6 +44,8 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
         deviceId: deviceData.deviceId,
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
+        disabled: deviceData.disabled,
+        params: deviceData.params,
     };
     const toggle = async (v: boolean) => {
         const { apikey, deviceId } = deviceData;
@@ -60,8 +64,8 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
             apikey,
             id: deviceId,
             params: {
-                uiActive: 120
-            }
+                uiActive: 120,
+            },
         });
     };
 
@@ -81,8 +85,8 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
-                        width="30"
-                        height="30"
+                        width='30'
+                        height='30'
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');

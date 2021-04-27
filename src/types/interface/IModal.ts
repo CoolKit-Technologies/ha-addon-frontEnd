@@ -3,20 +3,23 @@ export interface IModalProps {
     deviceId: string;
     deviceName: string;
     apikey: string;
+    disabled: boolean;
     channels?: {
         // 通道
         name: string;
     }[];
-    configure?: {
-        //  通电状态
-        startup: 'on' | 'off' | 'stay';
+    params?: {
+        configure?: {
+            //  通电状态
+            startup: 'on' | 'off' | 'stay';
+        };
+        pulses?: {
+            // 点动
+            pulse: 'on' | 'off';
+            width: number;
+        };
+        sledOnline?: 'on' | 'off'; // led
     };
-    pulses?: {
-        // 点动
-        pulse: 'on' | 'off';
-        width: number;
-    };
-    // sledOnline: 'on' | 'off'; // led
 }
 export interface IComponentProps extends IModalProps {
     style?: string;

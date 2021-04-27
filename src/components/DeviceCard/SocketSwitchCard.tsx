@@ -20,6 +20,8 @@ interface SocketSwitchCardProps {
         name: string;
         model: string;
         fwVersion: string;
+        disabled: boolean;
+        params?: any;
     };
     channels: {
         stat: 'on' | 'off';
@@ -28,6 +30,7 @@ interface SocketSwitchCardProps {
 }
 
 const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channels }) => {
+    console.log(`ML ~ file: SocketSwitchCard.tsx ~ line 32 ~ deviceData`, deviceData);
     const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
@@ -41,6 +44,8 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 name: item.name,
             };
         }),
+        params: deviceData.params,
+        disabled: deviceData.disabled,
     };
     // 开关一个通道
     const toggle = async (v: boolean, i: number) => {
