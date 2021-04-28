@@ -1,5 +1,6 @@
 // 不支持的设备
 import React from 'react';
+import { useIntl } from 'umi';
 
 import { DeviceType } from '@/types/device';
 import { getIconByDeviceType } from '@/utils';
@@ -14,6 +15,7 @@ interface UnsupportedCard {
 }
 
 const UnsupportedCard: React.FC<UnsupportedCard> = ({ deviceData }) => {
+    const { formatMessage } = useIntl();
     return (
         <div className={style['card']}>
             <div className={style['info-switch']}>
@@ -22,7 +24,7 @@ const UnsupportedCard: React.FC<UnsupportedCard> = ({ deviceData }) => {
                 </div>
                 <span className={style['device-name']}>{deviceData.name}</span>
             </div>
-            <p className={style['unsupport-hint']}>Device not supported</p>
+            <p className={style['unsupport-hint']}>{ formatMessage({ id: 'device.card.unsupport.message' }) }</p>
         </div>
     );
 };

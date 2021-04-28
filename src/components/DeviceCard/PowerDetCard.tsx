@@ -1,6 +1,7 @@
 // 功率检测单通道插座
 import React, { useState } from 'react';
 import { Switch,message } from 'antd';
+import { useIntl } from 'umi';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
@@ -32,6 +33,7 @@ interface PowerDetCardProps {
 }
 
 const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power }) => {
+    const { formatMessage } = useIntl();
     const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
@@ -92,7 +94,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                 </div>
             </div>
             <div className={style['single-box']}>
-                <LiquidBall size='large' type='blue' title='Realtime stats' content={power} />
+                <LiquidBall size='large' type='blue' title={formatMessage({ id: 'device.card.realtime.stats' })} content={power} />
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>{channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>

@@ -1,6 +1,7 @@
 // 恒温恒湿改装件
 import React, { useState } from 'react';
 import { Switch, message } from 'antd';
+import { useIntl } from 'umi';
 
 import ArcGauge from '@/components/ArcGauge';
 import { DeviceType } from '@/types/device';
@@ -36,6 +37,7 @@ interface TempCardProps {
 }
 
 const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp, unit }) => {
+    const { formatMessage } = useIntl();
     const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
@@ -108,14 +110,14 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 </div>
             </div>
             <div className={style['double-box']}>
-                <ArcGauge type='green' title='Humidity' content={`${humi}%`} percent={parseFloat(humi) / 100} />
-                <ArcGauge type='blue' title='Temperature' content={getTempStr(temp, unit)} percent={parseFloat(temp) / 40} />
+                <ArcGauge type='green' title={formatMessage({ id: 'device.card.humidity' })} content={`${humi}%`} percent={parseFloat(humi) / 100} />
+                <ArcGauge type='blue' title={formatMessage({ id: 'device.card.temperature' })} content={getTempStr(temp, unit)} percent={parseFloat(temp) / 40} />
             </div>
             <div className={style['channel']}>
                 <div className={style['channel-icon']}>
                     <img src={IconTune} />
                 </div>
-                <span className={style['channel-name']}>Mode</span>
+                <span className={style['channel-name']}>{ formatMessage({ id: 'device.card.mode' }) }</span>
                 <span className={style['channel-value']}>{mode}</span>
             </div>
             <div className={style['channel']}>

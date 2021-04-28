@@ -1,6 +1,7 @@
 // 计量图
 import React from 'react';
 import { Gauge } from '@ant-design/charts';
+import { useIntl } from 'umi';
 
 interface ArcGaugeProps {
     type: 'green' | 'blue';
@@ -10,6 +11,7 @@ interface ArcGaugeProps {
 }
 
 const ArcGauge: React.FC<ArcGaugeProps> = ({ type, title, content, percent }) => {
+    const { formatMessage } = useIntl();
     const MAIN_COLOR = type === 'green' ? '#52C41A' : '#1890FF';
     const config = {
         width: 150,
@@ -23,17 +25,17 @@ const ArcGauge: React.FC<ArcGaugeProps> = ({ type, title, content, percent }) =>
             label: {
                 formatter: (text: string, item: any, i: number) => {
                     if (type === 'green' && i === 1) {
-                        return 'Dry';
+                        return formatMessage({ id: 'device.card.dry' });
                     } else if (type === 'green' && i === 4) {
-                        return 'Wet';
+                        return formatMessage({ id: 'device.card.wet' });
                     } else if (type === 'blue' && i === 1) {
-                        return 'Cold';
+                        return formatMessage({ id: 'device.card.cold' });
                     } else if (type === 'blue' && i === 2) {
-                        return 'Cool';
+                        return formatMessage({ id: 'device.card.cool' });
                     } else if (type === 'blue' && i === 3) {
-                        return 'Warm';
+                        return formatMessage({ id: 'device.card.warm' });
                     } else if (type === 'blue' && i === 4) {
-                        return 'Hot';
+                        return formatMessage({ id: 'device.card.hot' });
                     } else {
                         return '';
                     }

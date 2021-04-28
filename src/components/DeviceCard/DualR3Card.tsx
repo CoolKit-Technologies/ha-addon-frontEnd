@@ -1,6 +1,7 @@
 // 多功能双通道电量检测开关
 import React, { useState } from 'react';
 import { Switch, message } from 'antd';
+import { useIntl } from 'umi';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
@@ -38,6 +39,7 @@ interface DualR3CardProps {
 }
 
 const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, current, ballData, i }) => {
+    const { formatMessage } = useIntl();
     const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
@@ -108,12 +110,12 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             </div>
             <div className={style['vol-cur-data']}>
                 <div className={style['vol']}>
-                    <p className={style['key']}>Voltage</p>
+                    <p className={style['key']}>{ formatMessage({ id: 'device.card.voltage' }) }</p>
                     <p className={style['value']}>{voltage}</p>
                 </div>
                 <div className={style['divided']}></div>
                 <div className={style['cur']}>
-                    <p className={style['key']}>Current</p>
+                    <p className={style['key']}>{ formatMessage({ id: 'device.card.current' }) }</p>
                     <p className={style['value']}>{current}</p>
                 </div>
             </div>
