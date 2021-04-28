@@ -4,7 +4,7 @@ import { connect, Dispatch, useIntl } from 'umi';
 import { Card, Button, Menu, Dropdown } from 'antd';
 import { QuestionOutlined, ExportOutlined, EllipsisOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
 
-import { login, getDeviceList, logout } from '@/api';
+import { login, getDeviceList, logout, getHaToken } from '@/api';
 import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
 import { DeviceInfo } from '@/types/device';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
@@ -23,6 +23,16 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
     const { formatMessage } = useIntl();
 
     useEffect(() => {
+        let code = '';
+        let index = 0;
+        if ((index = window.location.search.indexOf('code=')) !== -1) {
+            code = window.location.search.slice(index+5);
+            getHaToken({
+                code,
+                clientId: window.location.origin
+            });
+        }
+
         checkUserLogin();
         getDeviceList({ type: 'init' }).then((res) => saveDeviceList(res.data));
         getLanguage();
@@ -48,15 +58,17 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
     const menu = (
         <Menu>
             { isLogin ? (
-                <Menu.Item icon={<ExportOutlined/>}>
-                    <span onClick={async () => {
+                <Menu.Item style={{ display: 'flex', alignItems: 'center' }}>
+                    <ExportOutlined style={{ fontSize: '16px' }} />
+                    <div style={{ fontSize: '16px', padding: '0 12px' }} onClick={async () => {
                         await logout();
                         checkUserLogin();
-                    }}>{formatMessage({ id: 'header.signout' })}</span>
+                    }}>{formatMessage({ id: 'header.signout' })}</div>
                 </Menu.Item>
             ) : null }
-            <Menu.Item icon={<QuestionOutlined/>}>
-                <span onClick={() => {}}>{formatMessage({ id: 'header.feedback' })}</span>
+            <Menu.Item style={{ display: 'flex', alignItems: 'center' }}>
+                <QuestionOutlined style={{ fontSize: '16px' }} />
+                <div style={{ fontSize: '16px', padding: '0 12px' }} onClick={() => {}}>{formatMessage({ id: 'header.feedback' })}</div>
             </Menu.Item>
         </Menu>
     );

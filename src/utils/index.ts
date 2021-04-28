@@ -56,3 +56,15 @@ export function deviceTypeMap(type: number): DeviceType {
     else
         return 'cloud';
 }
+
+// 阿甲的方法
+export const genAuthorizeUrl = (hassUrl: string, clientId: string, redirectUrl: string, state?: string) => {
+    let authorizeUrl = `${hassUrl}/auth/authorize?response_type=code&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+
+    authorizeUrl += `&client_id=${encodeURIComponent(clientId)}`;
+
+    if (state) {
+        authorizeUrl += `&state=${encodeURIComponent(state)}`;
+    }
+    return authorizeUrl;
+};

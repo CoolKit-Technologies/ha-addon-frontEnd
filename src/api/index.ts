@@ -1,11 +1,20 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { UserInfo, HttpResponse, HttpMethod } from '@/types';
+import { genAuthorizeUrl } from '@/utils';
 
 const apiPrefix = 'api';
 
 // 判断用户是否登录
 export async function userIsLogin(): Promise<HttpResponse> {
     return await sendRequest('POST', `${apiPrefix}/user/isLogin`);
+}
+
+// 获取 HA 的 token
+export async function getHaToken(params: {
+    code: string;
+    clientId: string;
+}): Promise<HttpResponse> {
+    return await sendRequest('POST', `${apiPrefix}/user/auth`, params);
 }
 
 /**
@@ -144,7 +153,8 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
         const res = await axios(config);
         // 重定向到 HA 授权
         if (res.data.error === 302) {
-            window.location = res.data.data;
+            const origin = window.location.origin;
+            window.location = genAuthorizeUrl(res.data.data, origin, origin);
         }
 
         if (res.data.error === 0) {

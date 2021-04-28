@@ -114,7 +114,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 </div>
                 <span className={style['device-name']}>{deviceData.name}</span>
                 {// 总开关（单通道开关／插座没有总开关）
-                channels.length === 1 ? null : (
+                (channels.length === 1 || deviceData.params.lock === 1) ? null : (
                     <Switch
                         checked={channels.filter((chan) => chan.stat === 'on').length === channels.length}
                         onChange={async (v, e) => {
