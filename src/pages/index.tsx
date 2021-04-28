@@ -67,7 +67,8 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
     const col2 = [];
     const col3 = [];
     for (let i = 0; i < listCopy.length; i++) {
-        if (listCopy[i].uiid === 126) {       // 是否为 Dual R3
+        if (listCopy[i].uiid === 126) {
+            // 是否为 Dual R3
             const item1 = _.cloneDeep(listCopy[i]);
             const item2 = _.cloneDeep(listCopy[i]);
             item1.xindex = 0;
@@ -77,17 +78,14 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         }
     }
     for (let i = 0; i < listCopy.length; i++) {
-        if (i % 3 === 0)
-            col1.push(listCopy[i]);
-        else if ((i-1) % 3 === 0)
-            col2.push(listCopy[i]);
-        else if ((i-2) % 3 === 0)
-            col3.push(listCopy[i]);
+        if (i % 3 === 0) col1.push(listCopy[i]);
+        else if ((i - 1) % 3 === 0) col2.push(listCopy[i]);
+        else if ((i - 2) % 3 === 0) col3.push(listCopy[i]);
     }
 
     // 卡片渲染
     const renderDeviceCard = (data: DeviceInfo) => {
-        const { uiid, deviceId, deviceName, online, apikey, model } = data;
+        const { uiid, deviceId, deviceName, online, apikey, model, params, disabled } = data;
         const key = deviceId;
         const type = deviceTypeMap(data.type);
         const name = deviceName || deviceId;
@@ -97,7 +95,9 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             type,
             name,
             apikey,
-            model
+            model,
+            params,
+            disabled,
         };
         if (isDualR3(uiid)) {
             const i = data.xindex;
@@ -133,7 +133,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         } else if (isPowerDet(uiid)) {
             return <PowerDetCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: formatMessage({ id: 'device.card.channel.single' }) }} power={`${data.params.power}W`} />;
         } else if (isSocketSwitchDevice(uiid)) {
-            const channels: {name:string;stat:'on'|'off'}[] = [];
+            const channels: { name: string; stat: 'on' | 'off' }[] = [];
             let len = 0;
             if (uiid === 1 && type === 'diy') {                         // 单通道 DIY
                 channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.data1.switch });
@@ -143,9 +143,11 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                 channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.switches[0].switch });
             } else if (uiid === 2 || uiid === 7 || uiid === 113) {      // 双通道
                 len = 2;
-            } else if (uiid === 3 || uiid === 8 || uiid === 114) {      // 三通道
+            } else if (uiid === 3 || uiid === 8 || uiid === 114) {
+                // 三通道
                 len = 3;
-            } else if (uiid === 4 || uiid === 9) {                      // 四通道
+            } else if (uiid === 4 || uiid === 9) {
+                // 四通道
                 len = 4;
             }
             for (let i = 0; i < len; i++)
@@ -180,31 +182,41 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                 </div>
             </header>
 
-            <div style={{padding:'20px'}}>
-                <Button onClick={async () => {
-                    console.log('you want sign in');
-                    const res = await login({
-                        countryCode: '+86',
-                        lang: 'en',
-                        password: 'ck2021it.',
-                        phoneNumber: '+8615270260364'
-                    });
-                    console.log(res);
-                    checkUserLogin();
-                }}>Sign in</Button>
-                <Button onClick={async () => {
-                    console.log('you want sign out');
-                    await logout();
-                    checkUserLogin();
-                }}>Sign out</Button>
-                <Button onClick={async () => {
-                    console.log('you want refresh');
-                    const res = await getDeviceList({ type: 'refresh' });
-                    saveDeviceList(res.data);
-                }}>Refresh</Button>
+            <div style={{ padding: '20px' }}>
+                <Button
+                    onClick={async () => {
+                        console.log('you want sign in');
+                        const res = await login({
+                            countryCode: '+86',
+                            lang: 'en',
+                            password: 'ck2021it.',
+                            phoneNumber: '+8615270260364',
+                        });
+                        console.log(res);
+                        checkUserLogin();
+                    }}
+                >
+                    Sign in
+                </Button>
+                <Button
+                    onClick={async () => {
+                        console.log('you want sign out');
+                        await logout();
+                        checkUserLogin();
+                    }}
+                >
+                    Sign out
+                </Button>
+                <Button
+                    onClick={async () => {
+                        console.log('you want refresh');
+                        const res = await getDeviceList({ type: 'refresh' });
+                        saveDeviceList(res.data);
+                    }}
+                >
+                    Refresh
+                </Button>
             </div>
-
-
 
             <div className={styles['main-container']}>
                 {/* <div className={styles['ad-box']}>
@@ -215,9 +227,9 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                     ))}
                 </div> */}
                 <div className={styles['device-box']}>
-                    <div className={styles['device-col']}>{ col1 ? col1.map((item) => renderDeviceCard(item)) : null }</div>
-                    <div className={styles['device-col']}>{ col2 ? col2.map((item) => renderDeviceCard(item)) : null }</div>
-                    <div className={styles['device-col']}>{ col3 ? col3.map((item) => renderDeviceCard(item)) : null }</div>
+                    <div className={styles['device-col']}>{col1 ? col1.map((item) => renderDeviceCard(item)) : null}</div>
+                    <div className={styles['device-col']}>{col2 ? col2.map((item) => renderDeviceCard(item)) : null}</div>
+                    <div className={styles['device-col']}>{col3 ? col3.map((item) => renderDeviceCard(item)) : null}</div>
                 </div>
                 <p>login: {isLogin ? 'YES' : 'NO'}</p>
             </div>
@@ -249,9 +261,9 @@ export default connect(
             dispatch({
                 type: 'global/save',
                 payload: {
-                    deviceList
-                }
+                    deviceList,
+                },
             }),
-            dispatch
+        dispatch,
     })
 )(App);

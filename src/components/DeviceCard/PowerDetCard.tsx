@@ -1,6 +1,6 @@
 // 功率检测单通道插座
 import React, { useState } from 'react';
-import { Switch } from 'antd';
+import { Switch,message } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
@@ -21,6 +21,8 @@ interface PowerDetCardProps {
         apikey: string;
         model: string;
         fwVersion: string;
+        disabled: boolean;
+        params: any;
     };
     channel: {
         stat: 'on' | 'off';
@@ -38,6 +40,8 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
         deviceId: deviceData.deviceId,
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
+        disabled: deviceData.disabled,
+        params: deviceData.params,
     };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
@@ -56,8 +60,8 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
             apikey,
             id: deviceId,
             params: {
-                uiActive: 120
-            }
+                uiActive: 120,
+            },
         });
     };
 
@@ -66,7 +70,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
-                setModalVisible(true);
+                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
@@ -77,13 +81,12 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
-                        width="30"
-                        height="30"
+                        width='30'
+                        height='30'
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            if (deviceData.online)
-                                await refresh();
+                            if (deviceData.online) await refresh();
                         }}
                     />
                 </div>

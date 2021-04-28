@@ -52,49 +52,56 @@ export async function getDeviceList(params: {
 }
 
 // 根据设备的 deviceid 获取设备信息
-export async function getDeviceById(params: { id: string; }) {
+export async function getDeviceById(params: { id: string }) {
     return await sendRequest('GET', `${apiPrefix}/devices/device`, params);
 }
 
 // 与 WebSocket 有关的接口
 export async function updateDeviceByWS(params: {
-    id: string;         // 设备的 deviceid
-    apikey: string;     // 设备的 apikey
-    params: any;        // 控制参数
+    id: string; // 设备的 deviceid
+    apikey: string; // 设备的 apikey
+    params: any; // 控制参数
 }): Promise<HttpResponse> {
     return await sendRequest('POST', `${apiPrefix}/devices/proxy2ws`, params);
 }
 
 export async function upgradeDeviceByWS(params: {
-    id: string;         // 设备的 deviceid
-    apikey: string;     // 设备的 apikey
-    params: any;        // 更新的参数
+    id: string; // 设备的 deviceid
+    apikey: string; // 设备的 apikey
+    params: any; // 更新的参数
 }) {
     return await sendRequest('POST', `${apiPrefix}/devices/device/upgrade`, params);
 }
 
 // 修改设备名称
 export async function updateDeviceName(params: {
-    id: string;         // 设备的 deviceid
-    newName: string;    // 设备的新名称
+    id: string; // 设备的 deviceid
+    newName: string; // 设备的新名称
 }): Promise<HttpResponse> {
     return await sendRequest('POST', `${apiPrefix}/devices/updateName`, params);
 }
 
 // 修改通道名称
 export async function updateChannelName(params: {
-    id: string;         // 设备的 deviceid
-    tags: any;          // tags: { 0: 'Power Fan', 1: 'PS5', 2: 'xbox' }
+    id: string; // 设备的 deviceid
+    tags: any; // tags: { 0: 'Power Fan', 1: 'PS5', 2: 'xbox' }
 }): Promise<HttpResponse> {
     return await sendRequest('POST', `${apiPrefix}/devices/updateChannelName`, params);
+}
+// 修改温度单位
+export async function updateDeviceTempUnit(params: {
+    id: string; // 设备的 deviceid
+    unit: string; //  'f' or 'c'
+}): Promise<HttpResponse> {
+    return await sendRequest('POST', `${apiPrefix}/devices/device/unit`, params);
 }
 
 // 获取设备更新信息
 export async function getOtaInfo(params: {
     list: {
-        deviceid: string;   // 设备的 ID
-        model: string;      // 设备的模块型号
-        version: string;    // 当前设备的固件版本号
+        deviceid: string; // 设备的 ID
+        model: string; // 设备的模块型号
+        version: string; // 当前设备的固件版本号
     }[];
 }): Promise<HttpResponse> {
     return await sendRequest('POST', `${apiPrefix}/devices/getOTAinfo`, params);
@@ -185,10 +192,6 @@ export async function getLanguage(): Promise<{
 
 /* -------- >8 -------- */
 // DIY 设备
-export async function controlDiyDevice(params: {
-    id: string;
-    type: 'switch' | 'startup' | 'pulse' | 'sledOnline';
-    params: any;
-}): Promise<HttpResponse> {
-    return await sendRequest('POST', `${apiPrefix}/devices/diy`, params)
+export async function controlDiyDevice(params: { id: string; type: 'switch' | 'startup' | 'pulse' | 'sledOnline'; params: any }): Promise<HttpResponse> {
+    return await sendRequest('POST', `${apiPrefix}/devices/diy`, params);
 }

@@ -1,6 +1,6 @@
 // 单通道开关，多通道开关，单通道插座，多通道插座
 import React, { useState, useReducer } from 'react';
-import { Switch } from 'antd';
+import { Switch, message } from 'antd';
 
 import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
@@ -20,6 +20,8 @@ interface SocketSwitchCardProps {
         name: string;
         model: string;
         fwVersion: string;
+        disabled: boolean;
+        params?: any;
     };
     channels: {
         stat: 'on' | 'off';
@@ -41,6 +43,8 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 name: item.name,
             };
         }),
+        params: deviceData.params,
+        disabled: deviceData.disabled,
     };
     // 开关一个通道
     const toggle = async (v: boolean, i: number) => {
@@ -101,7 +105,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('click card');
-                setModalVisible(true);
+                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-switch']}>

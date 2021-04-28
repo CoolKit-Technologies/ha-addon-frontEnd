@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch } from 'antd';
 import styles from './index.less';
-import { SwitchProps } from 'antd';
-
-const InterlockMode: React.FC<SwitchProps> = (props) => {
+import { IComponentProps } from '@/types/interface/IModal';
+import _ from 'lodash';
+import { updateDeviceByWS } from '@/api';
+const InterlockMode: React.FC<IComponentProps> = (props) => {
+    const [checked, setChecked] = useState(false);
+    async function setLockAction(value: boolean) {
+        let params = {
+            id: props.deviceId,
+            apikey: props.apikey,
+            params: {},
+        };
+        value ? _.assign(params.params, { lock: 1, zyx_clear_timers: value }) : _.assign(params.params, { lock: 0, zyx_clear_timers: value });
+        console.log(`ML ~ file: index.tsx ~ line 15 ~ setLockAction ~ params`, params);
+        const res = await updateDeviceByWS(params);
+        console.log(`ML ~ file: index.tsx ~ line 18 ~ setLockAction ~ res`, res);
+    }
+    useEffect(() => {
+        props.params?.lock && props.params.lock === 1 ? setChecked(true) : setChecked(false);
+    }, [props.params?.lock]);
     return (
         <div className={styles['interlock-mode']}>
             <span className={styles['span-font']}>InterLock Mode</span>
             <span className={styles['note-font']}>Inching mode & Power-on state will be disabled</span>
-            <Switch {...props}></Switch>
+            <Switch checked={checked} onClick={async (value) => await setLockAction(value)}></Switch>
         </div>
     );
 };

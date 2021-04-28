@@ -1,6 +1,6 @@
 // 多功能双通道电量检测开关
 import React, { useState } from 'react';
-import { Switch } from 'antd';
+import { Switch, message } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
@@ -21,6 +21,8 @@ interface DualR3CardProps {
         apikey: string;
         model: string;
         fwVersion: string;
+        disabled: boolean;
+        params: any;
     };
     channel: {
         stat: 'on' | 'off';
@@ -44,6 +46,8 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
         deviceId: deviceData.deviceId,
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
+        disabled: deviceData.disabled,
+        params: deviceData.params,
     };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
@@ -51,8 +55,8 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             apikey,
             id: deviceId,
             params: {
-                switches: [{ outlet: i, switch: v ? 'on' : 'off' }]
-            }
+                switches: [{ outlet: i, switch: v ? 'on' : 'off' }],
+            },
         });
     };
 
@@ -64,9 +68,9 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             params: {
                 uiActive: {
                     time: 120,
-                    outlet: i
-                }
-            }
+                    outlet: i,
+                },
+            },
         });
     };
 
@@ -75,7 +79,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
-                setModalVisible(true);
+                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
@@ -86,13 +90,12 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
-                        width="30"
-                        height="30"
+                        width='30'
+                        height='30'
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            if (deviceData.online)
-                                await refresh(i);
+                            if (deviceData.online) await refresh(i);
                         }}
                     />
                 </div>
