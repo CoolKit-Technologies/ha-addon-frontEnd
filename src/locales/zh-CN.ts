@@ -33,4 +33,21 @@ export default {
     'device.info.needLogin': '登录后启用',
     'device.info.notyou': '该设备不在您的账号下',
     'device.info.notsupport': '暂不支持，敬请期待',
+    //
+    'channel.name': 'Channel Name',
+
+    // Header
+    'header.signin': '登录',
+    'header.signout': '登出',
+    'header.feedback': '反馈',
+
+    // 设备卡片
+    'device.card.real.power': '有功功率',
+    'device.card.reactive.power': '无功功率',
+    'device.card.apparent.power': '视在功率',
+    'device.card.power': '功率',
+    'device.card.voltage': '电压',
+    'device.card.current': '电流',
+    'device.card.channel.single': '通道',
+    'device.card.channel.multi': '通道{ i }',
 };

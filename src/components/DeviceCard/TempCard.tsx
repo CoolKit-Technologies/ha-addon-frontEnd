@@ -68,11 +68,11 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
     // 获取温度
     const getTempStr = (temp: string, unit: string) => {
         let postfix = unit === 'c' ? '°C' : '°F';
-        let value = 0;
+        let value = '';
         if (unit === 'c') {
-            value = parseFloat(temp);
+            value = `${parseFloat(temp)}`;
         } else {
-            value = parseFloat(temp) * 9 / 5 + 32;
+            value = (parseFloat(temp) * 9 / 5 + 32).toFixed(2);
         }
         return `${value}${postfix}`;
     }

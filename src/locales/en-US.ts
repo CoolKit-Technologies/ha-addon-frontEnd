@@ -35,4 +35,19 @@ export default {
     'device.info.notsupport': 'Temporarily unsupported device',
     //
     'channel.name': 'Channel Name',
+
+    // Header
+    'header.signin': 'Sign in',
+    'header.signout': 'Sign out',
+    'header.feedback': 'Feedback',
+
+    // 设备卡片
+    'device.card.real.power': 'Real power',
+    'device.card.reactive.power': 'Reactive power',
+    'device.card.apparent.power': 'Apparent power',
+    'device.card.power': 'Power',
+    'device.card.voltage': 'Voltage',
+    'device.card.current': 'Current',
+    'device.card.channel.single': 'Channel',
+    'device.card.channel.multi': 'Channel { i }',
 };

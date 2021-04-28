@@ -1,42 +1,31 @@
-import React, { useEffect } from 'react';
-import styles from './index.less';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
+import { connect, Dispatch, useIntl } from 'umi';
+import { Card, Button, Menu, Dropdown } from 'antd';
+import { QuestionOutlined, ExportOutlined, EllipsisOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
+
+import { login, getDeviceList, logout } from '@/api';
+import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
+import { DeviceInfo } from '@/types/device';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
 import PowerDetCard from '@/components/DeviceCard/PowerDetCard';
 import TempCard from '@/components/DeviceCard/TempCard';
 import DualR3Card from '@/components/DeviceCard/DualR3Card';
 import IW100Card from '@/components/DeviceCard/IW100Card';
 import UnsupportedCard from '@/components/DeviceCard/UnsupportedCard';
-import { connect,Dispatch, useParams } from 'umi';
-import { Card, Button } from 'antd';
-import Header from '@/components/Header';
-import CKLiquid from '@/components/Circle/CKLiquid';
-import CKGauge from '@/components/Circle/CKGauge';
-import YellowGauge from '@/components/Circle/YellowGauge';
-import SettingModal from '@/components/Modal/SettingModal';
-import CKLine from '@/components/Circle/CKLine';
-import DeviceDataModal from '@/components/Modal/DeviceData';
-import MultiChannelSettingModal from '../components/Modal/MultiChannelSettingModal';
-import ChannelModal from '@/components/Modal/ChannelModal';
-import PowerDetectionModal from '@/components/Modal/PowerDetectionModal';
-import PowerDetectionSocketModal from '@/components/Modal/PowerDetectionSocketModal';
-import EModalType from '../ts/Enum/EModalType';
-import MultiDeviceSettingModal from '@/components/Modal/MultiDeviceSettingModal';
-import ConstantTempAndHumiModal from '../components/Modal/ConstantTempAndHumiModal';
-import { AccountBookFilled, DownloadOutlined, UserOutlined } from '@ant-design/icons';
-
-import { login, getDeviceList, userIsLogin, logout } from '@/api';
-import { DeviceInfo } from '@/types/device';
-import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
+import LoginTab from '@/components/LoginTab'
+import styles from './index.less';
 
 const { Meta } = Card;
 
 const App: React.FC<{ language: string; getLanguage: Function; deviceList: DeviceInfo[]; saveDeviceList:Function, dispatch: Dispatch; isLogin: boolean; checkUserLogin: Function; }> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch}) => {
+    const [loginTabVisible, setLoginTabVisible] = useState(false);
+    const { formatMessage } = useIntl();
+
     useEffect(() => {
         checkUserLogin();
-
         getDeviceList({ type: 'init' }).then((res) => saveDeviceList(res.data));
-        // getLanguage();
+        getLanguage();
 
         // dev
         // const source = new EventSource('http://localhost:3000/api/stream');
@@ -55,7 +44,28 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         };
     }, []);
 
+    // 下拉菜单
+    const menu = (
+        <Menu>
+            { isLogin ? (
+                <Menu.Item icon={<ExportOutlined/>}>
+                    <span onClick={async () => {
+                        await logout();
+                        checkUserLogin();
+                    }}>{formatMessage({ id: 'header.signout' })}</span>
+                </Menu.Item>
+            ) : null }
+            <Menu.Item icon={<QuestionOutlined/>}>
+                <span onClick={() => {}}>{formatMessage({ id: 'header.feedback' })}</span>
+            </Menu.Item>
+        </Menu>
+    );
+
+    // 处理设备列表数据
     const listCopy = _.cloneDeep(deviceList);
+    const col1 = [];
+    const col2 = [];
+    const col3 = [];
     for (let i = 0; i < listCopy.length; i++) {
         if (listCopy[i].uiid === 126) {       // 是否为 Dual R3
             const item1 = _.cloneDeep(listCopy[i]);
@@ -66,9 +76,6 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             i++;
         }
     }
-    const col1 = [];
-    const col2 = [];
-    const col3 = [];
     for (let i = 0; i < listCopy.length; i++) {
         if (i % 3 === 0)
             col1.push(listCopy[i]);
@@ -78,6 +85,7 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             col3.push(listCopy[i]);
     }
 
+    // 卡片渲染
     const renderDeviceCard = (data: DeviceInfo) => {
         const { uiid, deviceId, deviceName, online, apikey, model } = data;
         const key = deviceId;
@@ -99,15 +107,15 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
             const reactPow = data.params[`reactPow_0${i}`] / 100 + 'W';
             const appPow = data.params[`apparentPow_0${i}`] / 100 + 'W';
             const ballData = [
-                { title: 'Real power', content: actPow },
-                { title: 'Reactive power', content: reactPow },
-                { title: 'Apparent power', content: appPow },
+                { title: formatMessage({ id: 'device.card.real.power' }), content: actPow },
+                { title: formatMessage({ id: 'device.card.reactive.power' }), content: reactPow },
+                { title: formatMessage({ id: 'device.card.apparent.power' }), content: appPow },
             ];
             return (
                 <DualR3Card
                     key={deviceId}
                     deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
-                    channel={{ stat: data.params.switches[i].switch, name: data.tags ? data.tags[i] : `channel ${i+1}` }}
+                    channel={{ stat: data.params.switches[i].switch, name: data.tags ? data.tags[i] : formatMessage({ id: 'device.card.channel.multi' }, { i: i + 1 }) }}
                     voltage={voltage}
                     current={current}
                     ballData={ballData}
@@ -117,22 +125,22 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
         } else if (isIW100Device(uiid)) {
             const { power, voltage, current } = data.params;
             const ballData = [
-                { title: 'Power', content: `${power}W` },
-                { title: 'Voltage', content: `${voltage}V` },
-                { title: 'Current', content: `${current}A` },
+                { title: formatMessage({ id: 'device.card.power' }), content: `${power}W` },
+                { title: formatMessage({ id: 'device.card.voltage' }), content: `${voltage}V` },
+                { title: formatMessage({ id: 'device.card.current' }), content: `${current}A` },
             ];
-            return <IW100Card key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} ballData={ballData} />;
+            return <IW100Card key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: formatMessage({ id: 'device.card.channel.single' }) }} ballData={ballData} />;
         } else if (isPowerDet(uiid)) {
-            return <PowerDetCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} power="149W" />;
+            return <PowerDetCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: formatMessage({ id: 'device.card.channel.single' }) }} power={`${data.params.power}W`} />;
         } else if (isSocketSwitchDevice(uiid)) {
             const channels: {name:string;stat:'on'|'off'}[] = [];
             let len = 0;
             if (uiid === 1 && type === 'diy') {                         // 单通道 DIY
-                channels.push({ name: 'channel', stat: data.params.data1.switch });
+                channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.data1.switch });
             } else if (uiid === 1 || uiid === 6 || uiid === 14) {       // 单通道非 DIY
-                channels.push({ name: 'channel', stat: data.params.switch });
+                channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.switch });
             } else if (uiid === 77 || uiid === 78 || uiid === 112) {    // 单通道（多通道协议）
-                channels.push({ name: 'channel', stat: data.params.switches[0].switch });
+                channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.switches[0].switch });
             } else if (uiid === 2 || uiid === 7 || uiid === 113) {      // 双通道
                 len = 2;
             } else if (uiid === 3 || uiid === 8 || uiid === 114) {      // 三通道
@@ -144,11 +152,11 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                 if (data.tags)
                     channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
                 else
-                    channels.push({ name: `channel ${i+1}`, stat: data.params.switches[i].switch });
+                    channels.push({ name: formatMessage({ id: 'device.card.channel.multi' }, { i: i+1 }), stat: data.params.switches[i].switch });
 
             return <SocketSwitchCard key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
         } else if (isTempDevice(uiid)) {
-            return <TempCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: 'channel' }} unit={data.unit} mode={data.params.deviceType} humi={data.params.currentHumidity} temp={data.params.currentTemperature} />;
+            return <TempCard key={deviceId} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channel={{ stat: data.params.switch, name: formatMessage({ id: 'device.card.channel.single' }) }} unit={data.unit} mode={data.params.deviceType} humi={data.params.currentHumidity} temp={data.params.currentTemperature} />;
         } else {
             return <UnsupportedCard key={key} deviceData={deviceData} />;
         }
@@ -161,9 +169,14 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                     <h1>eWeLink Smart Home</h1>
                 </div>
                 <div className="control">
-                    <Button size="large" shape="round" icon={<UserOutlined />}>Sign in</Button>
-                    <Button shape="circle" icon={<DownloadOutlined />} size="large" />
-                    <Button shape="circle" icon={<AccountBookFilled />} size="large" />
+                    { !isLogin ? <Button size="large" shape="round" icon={<UserOutlined />} onClick={() => setLoginTabVisible(true)}>{formatMessage({ id: 'header.signin' })}</Button> : null }
+                    <Button shape="circle" icon={<RedoOutlined />} size="large" onClick={async () => {
+                        const res = await getDeviceList({ type: 'refresh' });
+                        saveDeviceList(res.data);
+                    }} />
+                    <Dropdown overlay={menu}>
+                        <Button shape="circle" icon={<EllipsisOutlined />} size="large" />
+                    </Dropdown>
                 </div>
             </header>
 
@@ -208,6 +221,11 @@ const App: React.FC<{ language: string; getLanguage: Function; deviceList: Devic
                 </div>
                 <p>login: {isLogin ? 'YES' : 'NO'}</p>
             </div>
+
+            <LoginTab visible={loginTabVisible} onClose={() => setLoginTabVisible(false)} onLogin={() => {
+                setLoginTabVisible(false);
+                checkUserLogin();
+            }} />
         </div>
     );
 };

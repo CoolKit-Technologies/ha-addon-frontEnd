@@ -21,7 +21,7 @@ const LiquidBall: React.FC<LiquidBallProps> = ({ size, type, title, content }) =
 
     switch (size) {
         case 'small':
-            width = height = 100;
+            width = height = 120;
             outline.border = 2;
             outline.distance = 1;
             titleFontSize = '12px';
