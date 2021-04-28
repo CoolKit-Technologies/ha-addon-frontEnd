@@ -20,7 +20,7 @@ const ConstantTempAndHumiModal: React.FC<TypeModalProps> = (props) => {
                 <DeviceNameItem {...props.device}></DeviceNameItem>
                 <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
                 <PowerState style={styles['mrgB10']} {...props.device}></PowerState>
-                <TemperatureUnit />
+                <TemperatureUnit {...props.device} />
                 <InchingMode style={styles['mrgB10']} {...props.device}></InchingMode>
                 <EnableEntityItem {...props.device}></EnableEntityItem>
             </div>

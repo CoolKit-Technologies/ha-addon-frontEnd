@@ -6,7 +6,18 @@ const MultiChannelSettingModal: React.FC<IModalProps> = (props) => {
         <div>
             {props.channels &&
                 props.channels.map((item, index) => {
-                    return <ChannelSetting deviceName={props.deviceName} deviceId={props.deviceId} apikey={props.apikey} channelName={item.name} index={index} key={index} />;
+                    return (
+                        <ChannelSetting
+                            deviceName={props.deviceName}
+                            deviceId={props.deviceId}
+                            apikey={props.apikey}
+                            channelName={item.name}
+                            index={index}
+                            key={index}
+                            disabled={props.disabled}
+                            params={props.params}
+                        />
+                    );
                 })}
         </div>
     );

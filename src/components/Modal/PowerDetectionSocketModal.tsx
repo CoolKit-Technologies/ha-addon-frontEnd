@@ -35,7 +35,7 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
                     <EnableEntityItem {...props.device}></EnableEntityItem>
                 </div>
             ) : (
-                <DeviceData />
+                <DeviceData {...props.device} />
             )}
         </BaseModal>
     );

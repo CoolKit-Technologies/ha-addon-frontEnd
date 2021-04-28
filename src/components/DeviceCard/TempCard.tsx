@@ -1,6 +1,6 @@
 // 恒温恒湿改装件
 import React, { useState } from 'react';
-import { Switch } from 'antd';
+import { Switch, message } from 'antd';
 
 import ArcGauge from '@/components/ArcGauge';
 import { DeviceType } from '@/types/device';
@@ -36,7 +36,6 @@ interface TempCardProps {
 }
 
 const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp, unit }) => {
-    console.log(`ML ~ file: TempCard.tsx ~ line 36 ~ deviceData`, deviceData);
     const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
@@ -87,7 +86,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
-                setModalVisible(true);
+                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>

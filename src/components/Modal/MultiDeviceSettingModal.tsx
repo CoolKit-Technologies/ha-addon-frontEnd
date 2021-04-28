@@ -26,7 +26,7 @@ const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
                 <div>
                     <DeviceNameItem {...props.device}></DeviceNameItem>
                     <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
-                    <InterlockMode></InterlockMode>
+                    <InterlockMode {...props.device}></InterlockMode>
                     <EnableEntityItem {...props.device}></EnableEntityItem>
                 </div>
             ) : (

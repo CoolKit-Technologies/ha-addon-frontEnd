@@ -12,13 +12,20 @@ export interface IModalProps {
         configure?: {
             //  通电状态
             startup: 'on' | 'off' | 'stay';
-        };
+        }[];
         pulses?: {
             // 点动
             pulse: 'on' | 'off';
             width: number;
-        };
+            outlet: number;
+        }[];
+        pulse: 'on' | 'off';
+        start: 'on' | 'off' | 'stay';
         sledOnline?: 'on' | 'off'; // led
+        lock?: 0 | 1;
+        unit?: string;
+        startTime?: string;
+        endTime?: string;
     };
 }
 export interface IComponentProps extends IModalProps {

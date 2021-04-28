@@ -1,6 +1,6 @@
 // 功率检测插座
 import React, { useState } from 'react';
-import { Switch } from 'antd';
+import { Switch,message } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
@@ -74,7 +74,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
-                setModalVisible(true);
+                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
@@ -90,8 +90,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            if (deviceData.online)
-                                await refresh();
+                            if (deviceData.online) await refresh();
                         }}
                     />
                 </div>

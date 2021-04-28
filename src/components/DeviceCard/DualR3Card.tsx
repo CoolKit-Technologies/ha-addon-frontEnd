@@ -1,6 +1,6 @@
 // 多功能双通道电量检测开关
 import React, { useState } from 'react';
-import { Switch } from 'antd';
+import { Switch, message } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
@@ -79,7 +79,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 console.log('you click card');
-                setModalVisible(true);
+                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
@@ -95,8 +95,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                         onClick={async (e) => {
                             e.stopPropagation();
                             console.log('you click refresh');
-                            if (deviceData.online)
-                                await refresh(i);
+                            if (deviceData.online) await refresh(i);
                         }}
                     />
                 </div>
