@@ -23,7 +23,7 @@ const IndicatorLEDItem: React.FC<IComponentProps> = (props) => {
     }
     useEffect(() => {
         props.params?.sledOnline === 'on' ? setChecked(true) : setChecked(false);
-    });
+    }, []);
     return (
         <div className={styles['form-item']}>
             <div className={styles['label']}>{formatMessage({ id: 'device.led' })}</div>

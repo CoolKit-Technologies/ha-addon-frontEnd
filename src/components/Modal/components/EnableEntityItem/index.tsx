@@ -7,16 +7,13 @@ import { IComponentProps } from '@/types/interface/IModal';
 import { changeDeviceStatus } from '@/api';
 const EnableEntityItem: React.FC<IComponentProps> = (props) => {
     const [checked, setChecked] = useState(false);
-    console.log(`ML ~ file: index.tsx ~ line 9 ~ props`, props);
     const { formatMessage } = useIntl();
     async function changeDeviceState(disabled: boolean) {
         let params = {
             id: props.deviceId,
             disabled: disabled,
         };
-        console.log(`ML ~ file: index.tsx ~ line 15 ~ changeDeviceState ~ params`, params);
         const res = await changeDeviceStatus(params);
-        console.log(`ML ~ file: index.tsx ~ line 16 ~ changeDeviceState ~ res`, res);
         setChecked(disabled);
     }
     useEffect(() => {
@@ -26,7 +23,7 @@ const EnableEntityItem: React.FC<IComponentProps> = (props) => {
         <div className={styles['form-item']}>
             <div className={styles['label']}>
                 {formatMessage({ id: 'device.entity.enable' })}
-                <span className={styles['tips']}>Disabled entities will not be added to Home Assistant.</span>
+                <span className={styles['tips']}>{formatMessage({ id: 'device.entity.enable.tips' })}</span>
             </div>
             <div className={styles['actions']}>
                 <Switch checked={checked} onClick={(value) => changeDeviceState(value)} />

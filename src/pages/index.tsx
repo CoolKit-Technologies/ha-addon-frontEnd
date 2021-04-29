@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { connect, Dispatch, useIntl } from 'umi';
 import { Card, Button, Menu, Dropdown } from 'antd';
-import { QuestionOutlined, ExportOutlined, EllipsisOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
+import { QuestionOutlined, ExportOutlined, MoreOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
 
 import { login, getDeviceList, logout, getHaToken, getCmsContent } from '@/api';
 import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
@@ -30,7 +30,7 @@ const App: React.FC<{
     const [loginTabVisible, setLoginTabVisible] = useState(false);
     const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; }[]>([]);
     const { formatMessage } = useIntl();
-
+    const [refreshing, setRefreshing] = useState(false);
     useEffect(() => {
         getCmsContent()
             .then((res) => {
@@ -81,7 +81,7 @@ const App: React.FC<{
     const menu = (
         <Menu>
             {isLogin ? (
-                <Menu.Item style={{ display: 'flex', alignItems: 'center' }}>
+                <Menu.Item className={styles['drop-down-item']}>
                     <ExportOutlined style={{ fontSize: '16px' }} />
                     <div
                         style={{ fontSize: '16px', padding: '0 12px' }}
@@ -94,7 +94,7 @@ const App: React.FC<{
                     </div>
                 </Menu.Item>
             ) : null}
-            <Menu.Item style={{ display: 'flex', alignItems: 'center' }}>
+            <Menu.Item className={styles['drop-down-item']}>
                 <QuestionOutlined style={{ fontSize: '16px' }} />
                 <div style={{ fontSize: '16px', padding: '0 12px' }} onClick={() => {}}>
                     {formatMessage({ id: 'header.feedback' })}
@@ -240,60 +240,34 @@ const App: React.FC<{
                 </div>
                 <div className='control'>
                     {!isLogin ? (
-                        <Button size='large' shape='round' icon={<UserOutlined />} onClick={() => setLoginTabVisible(true)}>
+                        <Button
+                            size='large'
+                            shape='round'
+                            icon={<UserOutlined style={{ fill: '#03a9f4' }} />}
+                            className={styles['signin-btn']}
+                            onClick={() => setLoginTabVisible(true)}
+                        >
                             {formatMessage({ id: 'header.signin' })}
                         </Button>
                     ) : null}
                     <Button
                         shape='circle'
-                        icon={<RedoOutlined />}
+                        icon={<RedoOutlined spin={refreshing} />}
+                        className={styles['refresh-btn']}
                         size='large'
+                        type='text'
                         onClick={async () => {
+                            setRefreshing(true);
                             const res = await getDeviceList({ type: 'refresh' });
+                            setRefreshing(false);
                             saveDeviceList(res.data);
                         }}
                     />
                     <Dropdown overlay={menu}>
-                        <Button shape='circle' icon={<EllipsisOutlined />} size='large' />
+                        <Button className={styles['menu-btn']} type='text' shape='circle' icon={<MoreOutlined />} size='large' />
                     </Dropdown>
                 </div>
             </header>
-
-            <div style={{ padding: '20px' }}>
-                <Button
-                    onClick={async () => {
-                        console.log('you want sign in');
-                        const res = await login({
-                            countryCode: '+86',
-                            lang: 'en',
-                            password: 'ck2021it.',
-                            phoneNumber: '+8615270260364',
-                        });
-                        console.log(res);
-                        checkUserLogin();
-                    }}
-                >
-                    Sign in
-                </Button>
-                <Button
-                    onClick={async () => {
-                        console.log('you want sign out');
-                        await logout();
-                        checkUserLogin();
-                    }}
-                >
-                    Sign out
-                </Button>
-                <Button
-                    onClick={async () => {
-                        console.log('you want refresh');
-                        const res = await getDeviceList({ type: 'refresh' });
-                        saveDeviceList(res.data);
-                    }}
-                >
-                    Refresh
-                </Button>
-            </div>
 
             <div className={styles['main-container']}>
                 <div className={styles['ad-box']}>
@@ -308,7 +282,6 @@ const App: React.FC<{
                     <div className={styles['device-col']}>{col2 ? col2.map((item) => renderDeviceCard(item)) : null}</div>
                     <div className={styles['device-col']}>{col3 ? col3.map((item) => renderDeviceCard(item)) : null}</div>
                 </div>
-                <p>login: {isLogin ? 'YES' : 'NO'}</p>
             </div>
 
             <LoginTab

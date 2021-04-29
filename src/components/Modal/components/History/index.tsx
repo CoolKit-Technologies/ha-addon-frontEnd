@@ -5,10 +5,7 @@ import CKLine from '@/components/Circle/CKLine';
 import { IComponentProps } from '@/types/interface/IModal';
 const HistoryData: React.FC<IComponentProps> = (props) => {
     const [days, setDays] = useState<Array<string>>();
-    function getDays(days: Array<string>) {
-        setDays(days);
-        console.log('days', days);
-    }
+
     return (
         <div>
             <DateItem {...props} getDays={setDays} />

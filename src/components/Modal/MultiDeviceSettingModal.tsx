@@ -7,10 +7,10 @@ import InterlockMode from './components/InterlockMode';
 import EnableEntityItem from './components/EnableEntityItem';
 import MultiChannelSettingModal from './MultiChannelSettingModal';
 import styles from './base.less';
+import OtaItem from './components/OtaItem';
 const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
     const [action, setAction] = useState(true);
     const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Channel settings</a>);
-    console.log(`ML ~ file: MultiDeviceSettingModal.tsx ~ line 11 ~ props`, props);
 
     function channelSetting() {
         setAction(false);
@@ -28,6 +28,7 @@ const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
                     <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
                     <InterlockMode {...props.device}></InterlockMode>
                     <EnableEntityItem {...props.device}></EnableEntityItem>
+                    <OtaItem></OtaItem>
                 </div>
             ) : (
                 props.device.channels && <MultiChannelSettingModal {...props.device} />

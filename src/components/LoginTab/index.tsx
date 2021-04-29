@@ -137,11 +137,12 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin, language
             </div>
             <div className={styles['hint-text']}>
                 <Text>
-                    <FormattedMessage id='app.noAcount' />{' '}
+                    {/* <FormattedMessage id='app.noAcount' />{' '} */}
                     <Link target='_blank' href='https://bing.com'>
                         <FormattedMessage id='app.download' />
-                    </Link>{' '}
-                    <FormattedMessage id='app.now' />
+                    </Link>
+                    {/* {' '} */}
+                    {/* <FormattedMessage id='app.now' /> */}
                 </Text>
             </div>
         </Modal>

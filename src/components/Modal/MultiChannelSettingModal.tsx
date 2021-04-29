@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import ChannelSetting from './components/ChannelSettingItem';
 import { IModalProps } from '../../types/interface/IModal';
 const MultiChannelSettingModal: React.FC<IModalProps> = (props) => {
+
     return (
         <div>
             {props.channels &&

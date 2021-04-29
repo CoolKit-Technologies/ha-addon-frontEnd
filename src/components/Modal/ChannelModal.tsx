@@ -9,7 +9,6 @@ import TypeModalProps from '@/ts/type/TypeModal';
 import styles from './base.less';
 
 const ChannelModal: React.FC<TypeModalProps> = (props) => {
-    console.log(`ML ~ file: ChannelModal.tsx ~ line 12 ~ props`, props);
     return (
         <BaseModal {...props} title={props.device.deviceName}>
             <DeviceNameItem {...props.device}></DeviceNameItem>

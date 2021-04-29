@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import TypeModalProps from '@/ts/type/TypeModal';
 import BaseModal from './BaseModal';
 import DeviceNameItem from './components/DeviceNameItem';
@@ -8,6 +8,7 @@ import EnableEntityItem from './components/EnableEntityItem';
 import InchingMode from './components/InchingModeItem';
 import styles from './base.less';
 import DeviceData from './DeviceData';
+import _ from 'lodash';
 /**
  * 功率检测插座过载告警
  * 多功能双通道电量检测开关
@@ -24,6 +25,23 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
         setAction(true);
         setTitleAction(<a onClick={channelSetting}>Status</a>);
     }
+    function setParams() {
+        const { apikey, deviceId, deviceName, disabled, i, params } = props.device;
+        let dealParams = {
+            apikey: apikey,
+            deviceId: deviceId,
+            deviceName: deviceName,
+            disabled: disabled,
+            params: {
+                sledOnline: params?.sledOnline,
+            },
+        };
+        i !== undefined ? _.assign(dealParams.params, { pulses: params?.pulses }) : _.assign(dealParams.params, { pulse: params?.pulse, pulseWidth: params?.pulseWidth });
+        i !== undefined && _.assign(dealParams, { index: i });
+
+        return dealParams;
+    }
+    // useEffect(() => {}, [props]);
     return (
         <BaseModal {...props} titleAction={titleAction} title={props.device.deviceName}>
             {action ? (
@@ -31,7 +49,7 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
                     <DeviceNameItem {...props.device}></DeviceNameItem>
                     <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
                     <PowerState style={styles['mrgB10']} {...props.device}></PowerState>
-                    <InchingMode style={styles['mrgB10']} {...props.device}></InchingMode>
+                    <InchingMode style={styles['mrgB10']} {...setParams()}></InchingMode>
                     <EnableEntityItem {...props.device}></EnableEntityItem>
                 </div>
             ) : (
