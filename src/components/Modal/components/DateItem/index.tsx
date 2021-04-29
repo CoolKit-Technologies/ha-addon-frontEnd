@@ -1,25 +1,30 @@
 import { DatePicker, Divider } from 'antd';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './index.less';
 import { updateDeviceByWS } from '@/api';
 import { IComponentProps } from '@/types/interface/IModal';
-const DateItem: React.FC<IComponentProps> = (props) => {
-    async function getHistoryData() {
-        let params = {
-            id: props.deviceId,
-            apikey: props.apikey,
-            params: {
-                hundredDaysKwh: 'get',
-            },
-        };
-        console.log(`ML ~ file: index.tsx ~ line 15 ~ getHistoryData ~ params`, params);
-        const res = await updateDeviceByWS(params);
-        console.log(`ML ~ file: index.tsx ~ line 17 ~ getHistoryData ~ res`, res);
+import moment from 'moment';
+interface IDate extends IComponentProps {
+    getDays: (days: Array<string>) => void;
+}
+const dateFormat = 'YYYY-MM';
+const DateItem: React.FC<IDate> = (props) => {
+    const [defaultMonth, setDefaultMonth] = useState();
+    function getDay(days: number) {
+        // const days = moment(dateString).daysInMonth();
+        const daylist: string[] = [];
+        for (let i = 1; i <= days; i++) {
+            daylist.push(`${i}`);
+        }
+        props.getDays(daylist);
     }
+    useEffect(() => {
+        getDay(moment().daysInMonth());
+    }, []);
     return (
         <div className={styles['date-item']}>
             <div className={styles['mgt']}>
-                <DatePicker picker='month' onChange={(date) => console.log(date)} onClick={getHistoryData} />
+                <DatePicker picker='month' defaultValue={moment()} format={dateFormat} onChange={(date, dateString) => getDay(moment(dateString).daysInMonth())} />
             </div>
             <Divider />
         </div>

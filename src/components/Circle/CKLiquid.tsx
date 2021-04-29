@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Liquid } from '@ant-design/charts';
-
 interface IProps {
     value: string;
 }
@@ -32,7 +31,8 @@ const CKLiquid: React.FC<IProps> = ({ value }) => {
                 },
                 offsetY: -80,
                 formatter: function formatter() {
-                    return `${value}W`;
+                    // return `${value}W`;
+                    return value ? `${value}W` : `0W`;
                 },
             },
         },
