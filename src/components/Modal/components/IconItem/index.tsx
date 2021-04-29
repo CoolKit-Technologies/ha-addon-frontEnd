@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { PlayCircleTwoTone, ReloadOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 import styles from './index.less';
 import { IComponentProps } from '@/types/interface/IModal';
 import { updateDeviceByWS } from '@/api';
 import moment from 'moment';
+interface ICon extends IComponentProps {
+    callback: (data: string) => void;
+}
 const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSS[Z]';
-const ICons: React.FC<IComponentProps> = (props) => {
+const ICons: React.FC<ICon> = (props) => {
     const [start, setStart] = useState(false); //  开始电量统计标识
     const [startTime, setStartTime] = useState(''); //  记录开始时间iso格式
     async function elecStart() {
@@ -59,6 +62,9 @@ const ICons: React.FC<IComponentProps> = (props) => {
         console.log(`ML ~ file: index.tsx ~ line 43 ~ refresh ~ params`, params);
         const res = await updateDeviceByWS(params);
         console.log(`ML ~ file: index.tsx ~ line 45 ~ refresh ~ res`, res);
+        if (res.error === 0 && res.data && res.data.config) {
+            props.callback(res.data.config.oneKwhData);
+        }
     }
     return (
         <div className={styles['iconsPos']}>
