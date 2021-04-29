@@ -4,7 +4,7 @@ import { connect, Dispatch, useIntl } from 'umi';
 import { Card, Button, Menu, Dropdown } from 'antd';
 import { QuestionOutlined, ExportOutlined, EllipsisOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
 
-import { login, getDeviceList, logout, getHaToken } from '@/api';
+import { login, getDeviceList, logout, getHaToken, getCmsContent } from '@/api';
 import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
 import { DeviceInfo } from '@/types/device';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
@@ -28,7 +28,15 @@ const App: React.FC<{
     checkUserLogin: Function;
 }> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch }) => {
     const [loginTabVisible, setLoginTabVisible] = useState(false);
+    const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; }[]>([]);
     const { formatMessage } = useIntl();
+
+    useEffect(() => {
+        getCmsContent()
+            .then((res) => {
+                setCmsContent([res.data.top, ...res.data.push]);
+            });
+    }, []);
 
     useEffect(() => {
         let source: EventSource;
@@ -288,13 +296,13 @@ const App: React.FC<{
             </div>
 
             <div className={styles['main-container']}>
-                {/* <div className={styles['ad-box']}>
-                    {Array.from({ length: 5 }).map((item) => (
-                        <Card cover={<img alt='example' src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' />}>
-                            <Meta title='Card title' description='This is the description' />
+                <div className={styles['ad-box']}>
+                    {cmsContent.map((item) => (
+                        <Card key={item.pageid} cover={<img alt='example' src={item.thumbnail} />}>
+                            <Meta title='Card title' description={item.link} />
                         </Card>
                     ))}
-                </div> */}
+                </div>
                 <div className={styles['device-box']}>
                     <div className={styles['device-col']}>{col1 ? col1.map((item) => renderDeviceCard(item)) : null}</div>
                     <div className={styles['device-col']}>{col2 ? col2.map((item) => renderDeviceCard(item)) : null}</div>

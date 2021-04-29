@@ -17,6 +17,12 @@ export async function getHaToken(params: {
     return await sendRequest('POST', `${apiPrefix}/user/auth`, params);
 }
 
+// 获取 CMS 内容
+export async function getCmsContent(): Promise<HttpResponse> {
+    const url = 'https://appcms.coolkit.cn/appcms-service/v2/batch.json?project=home-assistant&category=[%22top%22,%22push%22]&locale=en_us&region=cn&country=CL';
+    return await sendRequest('GET', url);
+}
+
 /**
  * 用户登录
  * @param params 请求参数
