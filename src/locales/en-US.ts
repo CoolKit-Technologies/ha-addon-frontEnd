@@ -4,8 +4,8 @@ export default {
     'app.yes': 'Yes',
     'app.ok': 'OK',
     'app.slogan': 'Works with everything',
-    'app.noAcount': 'No Acount.',
-    'app.download': 'Download eWeLink App',
+    'app.noAcount': ' ',
+    'app.download': 'Download eWeLink App now',
     'app.now': 'now',
     //
     'user.welcome': 'Welcome, { name }',
@@ -18,6 +18,10 @@ export default {
     'user.logout.tip': 'Do you want to logout?',
     'user.logout.success': 'Login success.',
     'user.logout.failed': 'Login failed, { msg }',
+    'device.entity.enable.tips': 'Disabled entities will not be added to Home Assistant.',
+    'device.temp.unit': 'Temperature Unit',
+    'device.temp.unit.f': 'Fahrenheit',
+    'device.temp.unit.c': 'Celsius',
     //
     'device.name': 'Device Name',
     'device.id': 'Device Id',
@@ -27,12 +31,15 @@ export default {
     'device.operation': 'Operation',
     'device.enable': 'Enable',
     'device.disabled': 'Disabled',
+    'device.led': 'Network indicator',
+
     'device.get.success': 'Get device success',
     'device.get.failed': 'Get device failed',
     'device.remove': '{ name } will be removed from the table temporarily.',
     'device.info.needLogin': 'Log in to use this device',
     'device.info.notyou': 'Not your device',
     'device.info.notsupport': 'Temporarily unsupported device',
+    'device.entity.enable': 'Enable Entity',
     //
     'channel.name': 'Channel Name',
 

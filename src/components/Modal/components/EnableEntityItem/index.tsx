@@ -26,7 +26,7 @@ const EnableEntityItem: React.FC<IComponentProps> = (props) => {
         <div className={styles['form-item']}>
             <div className={styles['label']}>
                 {formatMessage({ id: 'device.entity.enable' })}
-                <span className={styles['tips']}>Disabled entities will not be added to Home Assistant.</span>
+                <span className={styles['tips']}>{formatMessage({ id: 'device.entity.enable.tips' })}</span>
             </div>
             <div className={styles['actions']}>
                 <Switch checked={checked} onClick={(value) => changeDeviceState(value)} />
