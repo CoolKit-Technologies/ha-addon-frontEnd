@@ -22,8 +22,10 @@ const InterlockMode: React.FC<IComponentProps> = (props) => {
     }, [props.params?.lock]);
     return (
         <div className={styles['interlock-mode']}>
-            <span className={styles['span-font']}>InterLock Mode</span>
-            <span className={styles['note-font']}>Inching mode & Power-on state will be disabled</span>
+            <div>
+                <span className={styles['span-font']}>InterLock Mode</span>
+                <span className={styles['note-font']}>Inching mode & Power-on state will be disabled</span>
+            </div>
             <Switch checked={checked} onClick={async (value) => await setLockAction(value)}></Switch>
         </div>
     );

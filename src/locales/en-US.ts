@@ -32,6 +32,8 @@ export default {
     'device.enable': 'Enable',
     'device.disabled': 'Disabled',
     'device.led': 'Network indicator',
+    'device.firmware.upgrade': 'Firmware Upgrade',
+    'device.firmware.upgrade.tips': 'Upgrade available { version }',
 
     'device.get.success': 'Get device success',
     'device.get.failed': 'Get device failed',

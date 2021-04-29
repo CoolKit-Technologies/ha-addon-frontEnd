@@ -18,6 +18,8 @@ export default {
     'user.logout.tip': '确定要登出吗？',
     'user.login.success': '登录成功',
     'user.login.failed': '登录失败， { msg }',
+    'device.firmware.upgrade': '固件升级',
+    'device.firmware.upgrade.tips': '可升级固件到 { version }',
     //
     'device.name': '设备名称',
     'device.id': '设备ID',
