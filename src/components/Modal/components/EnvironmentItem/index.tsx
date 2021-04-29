@@ -17,13 +17,16 @@ const TemperatureUnit: React.FC<IComponentProps> = (props) => {
         const res = await updateDeviceTempUnit(params);
         console.log(`ML ~ file: index.tsx ~ line 16 ~ setUnitAction ~ res`, res);
     }
-    useEffect(() => {
-        props.params?.unit && setUnit(props.params.unit);
-    }, []);
+    // useEffect(() => {
+    //     props.unit && setUnit(props.unit);
+    // }, [props]);
+    // useEffect(() => {
+    //     props.unit && setUnit(props.unit);
+    // }, []);
     return (
         <div className={styles['environment']}>
             <span className={styles['span-font']}>{formatMessage({ id: 'device.temp.unit' })}</span>
-            <Select className={styles['select']} defaultValue={unit} onChange={async (value) => setUnitAction(value)}>
+            <Select className={styles['select']} defaultValue={props.unit} onChange={async (value) => setUnitAction(value)}>
                 <Option value='f'>{formatMessage({ id: 'device.temp.unit.f' })}[℉]</Option>
                 <Option value='c'>{formatMessage({ id: 'device.temp.unit.c' })}[℃]</Option>
             </Select>

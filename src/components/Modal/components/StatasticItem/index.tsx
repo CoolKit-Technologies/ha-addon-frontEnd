@@ -11,7 +11,7 @@ const StatisticData: React.FC<IComponentProps> = (props) => {
     function oneKwhDataCallback(oneKwhData: string) {
         setOneKwhData(oneKwhData);
     }
-    console.log(`ML ~ file: index.tsx ~ line 10 ~ oneKwhData`, oneKwhData);
+    // console.log(`ML ~ file: index.tsx ~ line 10 ~ oneKwhData`, oneKwhData);
     return (
         <div>
             <DateRange {...props} />

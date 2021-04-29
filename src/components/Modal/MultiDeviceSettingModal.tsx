@@ -10,7 +10,6 @@ import styles from './base.less';
 const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
     const [action, setAction] = useState(true);
     const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Channel settings</a>);
-    console.log(`ML ~ file: MultiDeviceSettingModal.tsx ~ line 11 ~ props`, props);
 
     function channelSetting() {
         setAction(false);

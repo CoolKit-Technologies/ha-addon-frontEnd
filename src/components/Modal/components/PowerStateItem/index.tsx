@@ -6,7 +6,6 @@ import { updateDeviceByWS } from '@/api';
 import _ from 'lodash';
 const { Option } = Select;
 const PowerState: React.FC<IChannelSetting> = (props) => {
-    console.log(`ML ~ file: index.tsx ~ line 8 ~ props`, props);
 
     async function setPowerState(value: string) {
         console.log(`ML ~ file: index.tsx ~ line 12 ~ setPowerState ~ value`, value);

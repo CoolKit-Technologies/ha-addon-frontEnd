@@ -13,7 +13,6 @@ import TemperatureUnit from './components/EnvironmentItem';
  * 恒温恒湿改装件
  */
 const ConstantTempAndHumiModal: React.FC<TypeModalProps> = (props) => {
-    console.log(`ML ~ file: constantTempAndHumiModal.tsx ~ line 16 ~ props`, props);
     return (
         <BaseModal {...props}>
             <div>
