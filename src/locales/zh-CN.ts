@@ -18,8 +18,6 @@ export default {
     'user.logout.tip': '确定要登出吗？',
     'user.login.success': '登录成功',
     'user.login.failed': '登录失败， { msg }',
-    'device.firmware.upgrade': '固件升级',
-    'device.firmware.upgrade.tips': '可升级固件到 { version }',
     //
     'device.name': '设备名称',
     'device.id': '设备ID',
@@ -31,6 +29,8 @@ export default {
     'device.disabled': '停用',
     'device.led': '网络指示灯',
     'device.temp.unit': '温度单位',
+    'device.firmware.upgrade': '固件升级',
+    'device.firmware.upgrade.tips': '可升级固件到 { version }',
 
     'device.get.success': '拉取设备成功',
     'device.get.failed': '拉取设备失败',

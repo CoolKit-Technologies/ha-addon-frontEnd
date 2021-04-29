@@ -18,10 +18,6 @@ export default {
     'user.logout.tip': 'Do you want to logout?',
     'user.logout.success': 'Login success.',
     'user.logout.failed': 'Login failed, { msg }',
-    'device.entity.enable.tips': 'Disabled entities will not be added to Home Assistant.',
-    'device.temp.unit': 'Temperature Unit',
-    'device.temp.unit.f': 'Fahrenheit',
-    'device.temp.unit.c': 'Celsius',
     //
     'device.name': 'Device Name',
     'device.id': 'Device Id',
@@ -32,6 +28,7 @@ export default {
     'device.enable': 'Enable',
     'device.disabled': 'Disabled',
     'device.led': 'Network indicator',
+    'device.temp.unit': 'Temperature Unit',
     'device.firmware.upgrade': 'Firmware Upgrade',
     'device.firmware.upgrade.tips': 'Upgrade available { version }',
 
@@ -42,6 +39,9 @@ export default {
     'device.info.notyou': 'Not your device',
     'device.info.notsupport': 'Temporarily unsupported device',
     'device.entity.enable': 'Enable Entity',
+    'device.entity.enable.tips': 'Disabled entities will not be added to Home Assistant.',
+    'device.temp.unit.f': 'Fahrenheit',
+    'device.temp.unit.c': 'Celsius',
     //
     'channel.name': 'Channel Name',
 
