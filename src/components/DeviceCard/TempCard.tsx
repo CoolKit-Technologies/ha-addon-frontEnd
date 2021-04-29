@@ -48,6 +48,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         apikey: deviceData.apikey,
         disabled: deviceData.disabled,
         params: deviceData.params,
+        unit: unit,
     };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;
@@ -78,7 +79,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         if (unit === 'c') {
             value = `${parseFloat(temp)}`;
         } else {
-            value = (parseFloat(temp) * 9 / 5 + 32).toFixed(2);
+            value = ((parseFloat(temp) * 9) / 5 + 32).toFixed(2);
         }
         return `${value}${postfix}`;
     };
@@ -117,7 +118,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                 <div className={style['channel-icon']}>
                     <img src={IconTune} />
                 </div>
-                <span className={style['channel-name']}>{ formatMessage({ id: 'device.card.mode' }) }</span>
+                <span className={style['channel-name']}>{formatMessage({ id: 'device.card.mode' })}</span>
                 <span className={style['channel-value']}>{mode}</span>
             </div>
             <div className={style['channel']}>
@@ -129,7 +130,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                         e.stopPropagation();
                         await toggle(v);
                     }}
-                    disabled={!deviceData.online || mode === 'normal'}
+                    disabled={!deviceData.online || mode !== 'normal'}
                 />
             </div>
             <ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />

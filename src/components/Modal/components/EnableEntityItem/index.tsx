@@ -7,16 +7,13 @@ import { IComponentProps } from '@/types/interface/IModal';
 import { changeDeviceStatus } from '@/api';
 const EnableEntityItem: React.FC<IComponentProps> = (props) => {
     const [checked, setChecked] = useState(false);
-    console.log(`ML ~ file: index.tsx ~ line 9 ~ props`, props);
     const { formatMessage } = useIntl();
     async function changeDeviceState(disabled: boolean) {
         let params = {
             id: props.deviceId,
             disabled: disabled,
         };
-        console.log(`ML ~ file: index.tsx ~ line 15 ~ changeDeviceState ~ params`, params);
         const res = await changeDeviceStatus(params);
-        console.log(`ML ~ file: index.tsx ~ line 16 ~ changeDeviceState ~ res`, res);
         setChecked(disabled);
     }
     useEffect(() => {

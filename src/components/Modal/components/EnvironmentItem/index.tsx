@@ -5,7 +5,7 @@ import { IComponentProps } from '@/types/interface/IModal';
 const { Option } = Select;
 import { updateDeviceTempUnit } from '@/api';
 const TemperatureUnit: React.FC<IComponentProps> = (props) => {
-    const [unit, setUnit] = useState('f');
+    // const [unit, setUnit] = useState('');
     async function setUnitAction(value: string) {
         let params = {
             id: props.deviceId,
@@ -15,13 +15,16 @@ const TemperatureUnit: React.FC<IComponentProps> = (props) => {
         const res = await updateDeviceTempUnit(params);
         console.log(`ML ~ file: index.tsx ~ line 16 ~ setUnitAction ~ res`, res);
     }
-    useEffect(() => {
-        props.params?.unit && setUnit(props.params.unit);
-    }, []);
+    // useEffect(() => {
+    //     props.unit && setUnit(props.unit);
+    // }, [props]);
+    // useEffect(() => {
+    //     props.unit && setUnit(props.unit);
+    // }, []);
     return (
         <div className={styles['environment']}>
             <span className={styles['span-font']}>Temperature Unit</span>
-            <Select className={styles['select']} defaultValue={unit} onChange={async (value) => setUnitAction(value)}>
+            <Select className={styles['select']} defaultValue={props.unit} onChange={async (value) => setUnitAction(value)}>
                 <Option value='f'>Fahrenheit[℉]</Option>
                 <Option value='c'>Celsius[℃]</Option>
             </Select>
