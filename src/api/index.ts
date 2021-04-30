@@ -18,8 +18,16 @@ export async function getHaToken(params: {
 }
 
 // 获取 CMS 内容
-export async function getCmsContent(): Promise<HttpResponse> {
-    const url = 'https://appcms.coolkit.cn/appcms-service/v2/batch.json?project=home-assistant&category=[%22top%22,%22push%22]&locale=en_us&region=cn&country=CL';
+export async function getCmsContent(language: string): Promise<HttpResponse> {
+    let region, locale;
+    if (language.indexOf('zh-') !== -1) {
+        region = 'cn';
+        locale = 'zh-cn';
+    } else {
+        region = 'eu';
+        locale = 'en-us';
+    }
+    const url = `https://appcms.coolkit.cn/appcms-service/v2/batch.json?project=home-assistant&category=[%22top%22,%22push%22]&locale=${locale}&region=${region}&country=CL`;
     return await sendRequest('GET', url);
 }
 

@@ -4,7 +4,7 @@ import { connect, Dispatch, useIntl } from 'umi';
 import { Card, Button, Menu, Dropdown } from 'antd';
 import { QuestionOutlined, ExportOutlined, MoreOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
 
-import { login, getDeviceList, logout, getHaToken, getCmsContent } from '@/api';
+import { login, getDeviceList, logout, getHaToken, getCmsContent, getLanguage as getLanguageApi } from '@/api';
 import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
 import { DeviceInfo } from '@/types/device';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
@@ -26,17 +26,21 @@ const App: React.FC<{
     dispatch: Dispatch;
     isLogin: boolean;
     checkUserLogin: Function;
-}> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch }) => {
+}> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch, language }) => {
     const [loginTabVisible, setLoginTabVisible] = useState(false);
-    const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; }[]>([]);
+    const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; title: string; description: string; }[]>([]);
     const { formatMessage } = useIntl();
     const [refreshing, setRefreshing] = useState(false);
+
     useEffect(() => {
-        getCmsContent()
+        getLanguageApi()
             .then((res) => {
-                setCmsContent([res.data.top, ...res.data.push]);
-            });
-    }, []);
+                getCmsContent(res.data)
+                    .then((res) => {
+                        setCmsContent([res.data.top, ...res.data.push]);
+                    });
+            })
+    }, [language]);
 
     useEffect(() => {
         let source: EventSource;
@@ -272,8 +276,10 @@ const App: React.FC<{
             <div className={styles['main-container']}>
                 <div className={styles['ad-box']}>
                     {cmsContent.map((item) => (
-                        <Card key={item.pageid} cover={<img alt='example' src={item.thumbnail} />}>
-                            <Meta title='Card title' description={item.link} />
+                        <Card key={item.pageid} hoverable cover={<img alt='example' src={item.thumbnail} height={160} onClick={() => {
+                            window.open(item.link);
+                        }} />}>
+                            <Meta title={item.title} />
                         </Card>
                     ))}
                 </div>
