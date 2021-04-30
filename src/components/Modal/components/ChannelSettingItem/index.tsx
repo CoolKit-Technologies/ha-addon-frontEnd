@@ -14,20 +14,17 @@ interface IPulses {
 }
 const ChannelSetting: React.FC<IChannelSetting> = (props) => {
     const [pulses, setPulses] = useState<Array<IPulses>>([]);
-    // function getPulses(obj: IPulses[]) {
-    //     setPulses(obj);
-    // }
+
     let params = {
         deviceId: props.deviceId,
         deviceName: props.deviceName,
         apikey: props.apikey,
         disabled: props.disabled,
         index: props.index,
+        uiid: props.uiid,
         params: {},
     };
     if (props.params?.pulses && props.params.pulses.length > 0) {
-        // let pulses = props.params.pulses.find((item) => item.outlet === props.index);
-        // console.log(`ML ~ file: index.tsx ~ line 22 ~ pulses`, pulses);
         _.assign(params.params, { pulses: props.params.pulses });
     }
 

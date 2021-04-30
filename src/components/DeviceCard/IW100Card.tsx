@@ -1,6 +1,6 @@
 // 功率检测插座
 import React, { useState } from 'react';
-import { Switch,message } from 'antd';
+import { Switch, message } from 'antd';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
@@ -23,6 +23,7 @@ interface IW100CardProps {
         model: string;
         fwVersion: string;
         disabled: boolean;
+        uiid: number;
         params: any;
     };
     channel: {
@@ -45,6 +46,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
         disabled: deviceData.disabled,
+        uiid: deviceData.uiid,
         params: deviceData.params,
     };
     const toggle = async (v: boolean) => {

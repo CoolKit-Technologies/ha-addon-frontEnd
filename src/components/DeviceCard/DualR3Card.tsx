@@ -23,6 +23,7 @@ interface DualR3CardProps {
         model: string;
         fwVersion: string;
         disabled: boolean;
+        uiid: number;
         params: any;
     };
     channel: {
@@ -50,6 +51,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
         apikey: deviceData.apikey,
         disabled: deviceData.disabled,
         params: deviceData.params,
+        uiid: deviceData.uiid,
         i: i,
     };
     const toggle = async (v: boolean) => {

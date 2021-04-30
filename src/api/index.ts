@@ -216,6 +216,6 @@ export async function getLanguage(): Promise<{
 
 /* -------- >8 -------- */
 // DIY 设备
-export async function controlDiyDevice(params: { id: string; type: 'switch' | 'startup' | 'pulse' | 'sledOnline'; params: any }): Promise<HttpResponse> {
+export async function controlDiyDevice(params: { id: string; type: string; params: any }): Promise<HttpResponse> {
     return await sendRequest('POST', `${apiPrefix}/devices/diy`, params);
 }

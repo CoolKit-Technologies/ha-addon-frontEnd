@@ -3,92 +3,118 @@ import { Line } from '@ant-design/charts';
 import { updateDeviceByWS } from '@/api';
 import { IComponentProps } from '../../types/interface/IModal';
 import { Spin } from 'antd';
-import _, { fromPairs } from 'lodash';
+import _ from 'lodash';
+import moment from 'moment';
 interface ICKLine extends IComponentProps {
-    days: string[] | undefined;
+    month: number;
+    setConsumed: (consumed: number) => void;
 }
 //  折线图接口
 interface IHistoryData {
-    day: number;
+    day: string;
     value: number;
 }
+
 const CKLine: React.FC<ICKLine> = (props) => {
     const [allData, setAllData] = useState<Array<IHistoryData>>([]); //折线图的数据
     const [spin, setSpin] = useState(true);
-    //  获取历史数据
-    async function getHistoryData() {
+
+    async function getHistoryData(month: number) {
+        // console.log(`ML ~ file: CKLine.tsx ~ line 24 ~ getHistoryData ~ month`, month);
         setSpin(true);
         let params = {
             id: props.deviceId,
             apikey: props.apikey,
             params: {
-                hundredDaysKwh: 'get',
+                // hundredDaysKwh: 'get',
             },
         };
+        props.uiid !== 126
+            ? _.assign(params.params, { hundredDaysKwh: 'get' })
+            : props.i === 1
+            ? _.assign(params.params, { getKwh_01: 2 })
+            : _.assign(params.params, { getKwh_00: 2 });
         const res = await updateDeviceByWS(params);
+        // console.log(`ML ~ file: CKLine.tsx ~ line 33 ~ getHistoryData ~ res`, res);
         if (res.error === 0 && res.data.config) {
-            // setData(res.data.config.hundredDaysKwhData);
-            const data = dealData(res.data.config.hundredDaysKwhData); //获取处理后的数据[{ value:number }]
-            console.log(`ML ~ file: CKLine.tsx ~ line 32 ~ getHistoryData ~ data`, data);
-            const obj = dealUtils();
-
-            obj.forEach((item, index) => {
-                _.assign(item, parseFloat(data[index].value));
-            });
-            setAllData(obj);
-            console.log(`ML ~ file: CKLine.tsx ~ line 35 ~ getHistoryData ~ obj`, obj);
+            // const data = dealData(res.data.config.hundredDaysKwhData, 4);
+            let temp = '';
+            if (res.data.config.hundredDaysKwhData) {
+                temp = res.data.config.hundredDaysKwhData;
+            } else if (res.data.config.kwhHistories_00) {
+                temp = res.data.config.kwhHistories_00;
+            } else if (res.data.config.kwhHistories_01) {
+                temp = res.data.config.kwhHistories_01;
+            }
+            const datas =
+                '190101190301000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+            const dealdata = dealData(temp, month);
+            console.log(`ML ~ file: CKLine.tsx ~ line 102 ~ getHistoryData ~ data`, dealdata);
+            dealdata && setAllData(dealdata);
         }
         setSpin(false);
     }
-    //  处理历史数据 长度600的16进制字符串
-    function dealData(data: string) {
-        const arr6: string[] = [];
-        for (let i = 0; i <= 99; i++) {
-            if (i === 0) {
-                arr6.push(data.substr(0, 6));
-            } else {
-                arr6.push(data.substr(i * 6, 6));
-            }
+    // 处理历史数据函数
+    function dealData(datas: string, month: number) {
+        let result: { [key: string]: object } = {};
+        for (let i = 0; i < datas.length / 6; i++) {
+            //获取到这一天的数值
+            const firNumStr = datas.substr(i * 6, 2);
+            const secNumStr = datas.substr(i * 6 + 2, 2);
+            const thrNumStr = datas.substr(i * 6 + 4, 2);
+            const firNum = parseInt(firNumStr, 16);
+            const secNum = parseInt(secNumStr, 16);
+            const thrNum = parseInt(thrNumStr, 16);
+            const resultNumStr = `${firNum}.${secNum}${thrNum}`;
+            const resultNum = parseFloat(resultNumStr);
+
+            //获取这一天的时间对象 是今天的第前几天0，1，2，3，4，
+            const tempDate = moment().subtract(i, 'days');
+
+            // LogUtil.warn('这一天的时间',tempDate)
+
+            //获取当前是几月，获取月份
+            const monthNum = tempDate.get('month') + 1;
+            //获取这一天是几号，获取是几号
+            const dayNum = tempDate.get('date');
+
+            //获取这一个月有几天,获取这个月有几天
+            // const monthDayNum = tempDate.daysInMonth();
+
+            //写入对象中
+            let tempObj = result[`${monthNum}`] ? result[`${monthNum}`] : {};
+
+            // tempObj.monthSumNum = tempObj.monthSumNum ? tempObj.monthSumNum : 0;
+            // tempObj[`${dayNum}`] = resultNum;
+            _.set(tempObj, `${dayNum}`, resultNum);
+            // tempObj.dayNum = monthDayNum;
+            // LogUtil.info('这一天的时间', firNumStr, secNumStr, thrNumStr)
+            // tempObj.monthSumNum += resultNum;
+
+            // tempObj.month = monthNum;
+            result[`${monthNum}`] = tempObj;
+
+            // allMonthSum = allMonthSum + resultNum
         }
-        const dayData = [];
-        for (let data of arr6) {
-            let target = '';
-            for (let i = 0; i < 3; i++) {
-                if (i === 0) {
-                    target = parseInt(data.substr(0, 2), 16) + '.';
-                } else {
-                    target += parseInt(data.substr(i * 2, 2), 16);
-                }
-            }
-            dayData.push(target);
-        }
-        const historyData = [];
-        for (let data of dayData) {
-            historyData.push({
-                value: data,
-            });
-        }
-        const dayLength = props.days ? props.days : [];
-        return _.slice(historyData.reverse(), historyData.length - dayLength.length, historyData.length);
-    }
-    //  拼接折线数据
-    function dealUtils() {
-        let days = props.days ? props.days.length : 0;
-        let daylist: IHistoryData[] = [];
-        for (let i = 1; i <= days; i++) {
-            daylist.push({
-                value: 0,
-                day: i,
-            });
-        }
-        return daylist;
+        // console.log(`ML ~ file: deal.ts ~ line 75 ~ result`, result);
+        // console.log(result['4']);
+        const obj = result[month];
+        // console.log(`ML ~ file: test.js ~ line 48 ~ obj`, obj);
+        let data: IHistoryData[] = [];
+        data = Object.keys(obj).map((item) => ({
+            day: item,
+            value: _.get(obj, `${item}`) as number,
+        }));
+        // console.log(`ML ~ file: test.js ~ line 54 ~ data`, data);
+        const temp = data.map((item) => item.value);
+        props.setConsumed(temp.reduce((total, item) => total + item));
+        return data;
     }
     useEffect(() => {
-        console.log('ML ~ file:---------', props.days);
-        props.days && getHistoryData();
-    }, [props.days]);
+        props.month && getHistoryData(props.month);
+    }, [props.month]);
     useEffect(() => {
-        props.days && getHistoryData();
+        props.month ? getHistoryData(props.month) : getHistoryData(moment().month() + 1);
     }, []);
     const config = {
         width: 300,

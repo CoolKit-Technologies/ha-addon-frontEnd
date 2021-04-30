@@ -26,12 +26,14 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
         setTitleAction(<a onClick={channelSetting}>Status</a>);
     }
     function setParams() {
-        const { apikey, deviceId, deviceName, disabled, i, params } = props.device;
+        const { apikey, deviceId, deviceName, disabled, i, params, uiid } = props.device;
         let dealParams = {
             apikey: apikey,
             deviceId: deviceId,
             deviceName: deviceName,
             disabled: disabled,
+            uiid: uiid,
+            i: i,
             params: {
                 sledOnline: params?.sledOnline,
             },
