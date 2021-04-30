@@ -7,7 +7,7 @@ import { changeDeviceStatus, getOtaInfo, upgradeDeviceByWS } from '@/api';
 import _ from 'lodash';
 const OtaItem: React.FC<IComponentProps> = ({ deviceId, params, model, apikey }) => {
     const { formatMessage } = useIntl();
-    const [upgradeInfo, setUpgradeInfo] = useState({ version: params?.fwVersion });
+    const [upgradeInfo, setUpgradeInfo] = useState<any>({ version: params?.fwVersion });
     useEffect(() => {
         getOtaInfo({
             list: [
