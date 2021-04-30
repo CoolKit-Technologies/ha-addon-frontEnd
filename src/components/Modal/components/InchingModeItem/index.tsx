@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { TimePicker, Switch } from 'antd';
 import styles from './index.less';
 import moment, { Moment } from 'moment';
-import { updateDeviceByWS } from '@/api';
+import { updateDeviceByWS, controlDiyDevice } from '@/api';
 import { IChannelSetting } from '@/types/interface/IModal';
 import _ from 'lodash';
 
 const dateFormat = 'mm:ss';
-const InchingMode: React.FC<IChannelSetting> = ({ style, apikey, deviceId, index, params, updateFunction }) => {
-    // console.log(`ML ~ file: index.tsx ~ line 11 ~ params`, params);
+const InchingMode: React.FC<IChannelSetting> = ({ style, apikey, deviceId, type, index, params, updateFunction }) => {
     const [checked, setChecked] = useState(Boolean);
     //  点动时间设置提交
     async function getInchingTime(time: Moment | null) {
@@ -18,31 +17,41 @@ const InchingMode: React.FC<IChannelSetting> = ({ style, apikey, deviceId, index
         let count = 0;
         h === 0 ? (count = s) : (count = h * 60 + s);
         console.log('count', count);
-        const param = {
-            id: deviceId,
-            apikey: apikey,
-            params: params,
-        };
-        // console.log(`ML ~ file: index.tsx ~ line 26 ~ getInchingTime ~ param`, param);
-        if (params && params.pulses) {
-            param.params?.pulses?.forEach((item) => {
-                if (item.outlet === index) _.assign(item, { width: count * 1000 });
-            });
+        if (type === 'diy') {
+            const param = {
+                id: deviceId,
+                type: 'pulse',
+                params: {
+                    state: 'on',
+                    width: count * 1000,
+                },
+            };
+            console.log(`ML ~ file: index.tsx ~ line 29 ~ getInchingTime ~ param`, param);
+            const res = await controlDiyDevice(param);
+            console.log(`ML ~ file: index.tsx ~ line 31 ~ getInchingTime ~ res`, res);
         } else {
-            _.assign(param.params, { pulseWidth: count * 1000, pulse: 'on' });
-        }
+            const param = {
+                id: deviceId,
+                apikey: apikey,
+                params: params,
+            };
+            if (params && params.pulses) {
+                param.params?.pulses?.forEach((item) => {
+                    if (item.outlet === index) _.assign(item, { width: count * 1000 });
+                });
+            } else {
+                _.assign(param.params, { pulseWidth: count * 1000, pulse: 'on' });
+            }
 
-        // console.log(`ML ~ file: index.tsx ~ line 28 ~ setInchingTime ~ params`, param);
-        const res = await updateDeviceByWS(param);
-        // console.log(`ML ~ file: index.tsx ~ line 30 ~ setInchingTime ~ res`, res);
-        if (res.error === 0) {
-            setChecked(true);
-            param.params?.pulses && updateFunction && updateFunction(param.params?.pulses);
+            const res = await updateDeviceByWS(param);
+            if (res.error === 0) {
+                setChecked(true);
+                param.params?.pulses && updateFunction && updateFunction(param.params?.pulses);
+            }
         }
     }
     //  点动开关
     async function inchingAction(value: boolean) {
-        // console.log(`ML ~ file: index.tsx ~ line 37 ~ inchingAction ~ value`, value);
         const param = {
             id: deviceId,
             apikey: apikey,
@@ -53,7 +62,6 @@ const InchingMode: React.FC<IChannelSetting> = ({ style, apikey, deviceId, index
             : _.assign(param.params, { pulseWidth: 500, pulse: 'off' });
         if (!value) {
             const res = await updateDeviceByWS(param);
-            // console.log(`ML ~ file: index.tsx ~ line 50 ~ inchingAction ~ res`, res);
             res.error === 0 && setChecked(value);
         }
     }
@@ -63,8 +71,8 @@ const InchingMode: React.FC<IChannelSetting> = ({ style, apikey, deviceId, index
             const temp = params.pulses.find((item) => item.outlet === index);
             return temp && temp?.width < 1000 ? moment('00:01', dateFormat) : temp && moment(`${formatTime(temp?.width)}`, dateFormat);
         }
-        if (params?.width) {
-            return params.width < 1000 ? moment('00:01', dateFormat) : moment(`${formatTime(params.width)}`, dateFormat);
+        if (!params?.pulses && params?.pulseWidth) {
+            return params.pulseWidth < 1000 ? moment('00:01', dateFormat) : moment(`${formatTime(params.pulseWidth)}`, dateFormat);
         }
     }
     //  格式化点动时间

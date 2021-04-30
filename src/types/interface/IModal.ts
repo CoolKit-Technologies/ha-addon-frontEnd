@@ -1,10 +1,15 @@
+import { DeviceType } from '../device';
 //  有关modal层和组件层的接口
 export interface IModalProps {
     deviceId: string;
     deviceName: string;
     apikey: string;
+    key?: string;
     disabled: boolean;
     unit?: string; //温度单位
+    uiid: number;
+    type?: DeviceType;
+    rate?: number;
     channels?: {
         // 通道
         name: string;
@@ -13,6 +18,7 @@ export interface IModalProps {
         configure?: {
             //  通电状态
             startup: 'on' | 'off' | 'stay';
+            outlet: number;
         }[];
         pulses?: {
             // 点动
@@ -23,11 +29,16 @@ export interface IModalProps {
         pulse?: 'on' | 'off';
         width?: number;
         pulseWidth?: number;
-        start?: 'on' | 'off' | 'stay';
+        startup?: 'on' | 'off' | 'stay';
         sledOnline?: 'on' | 'off'; // led
         lock?: 0 | 1;
         startTime?: string;
         endTime?: string;
+        startTime_00?: string;
+        endTime_00?: string;
+        startTime_01?: string;
+        endTime_01?: string;
+        data1?: any;
     };
     i?: number; //dualr3设备区分
 }

@@ -1,6 +1,6 @@
 // 功率检测单通道插座
 import React, { useState } from 'react';
-import { Switch,message } from 'antd';
+import { Switch, message } from 'antd';
 import { useIntl } from 'umi';
 
 import LiquidBall from '@/components/LiquidBall';
@@ -23,6 +23,7 @@ interface PowerDetCardProps {
         model: string;
         fwVersion: string;
         disabled: boolean;
+        uiid: number;
         params: any;
     };
     channel: {
@@ -43,6 +44,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
         disabled: deviceData.disabled,
+        uiid:deviceData.uiid,
         params: deviceData.params,
     };
     const toggle = async (v: boolean) => {

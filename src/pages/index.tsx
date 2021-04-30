@@ -132,6 +132,7 @@ const App: React.FC<{
             model,
             params,
             disabled,
+            uiid
         };
         if (isDualR3(uiid)) {
             const i = data.xindex;

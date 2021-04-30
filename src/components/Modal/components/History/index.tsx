@@ -4,13 +4,17 @@ import DescriptionItem from '../DescriptionItem';
 import CKLine from '@/components/Circle/CKLine';
 import { IComponentProps } from '@/types/interface/IModal';
 const HistoryData: React.FC<IComponentProps> = (props) => {
-    const [days, setDays] = useState<Array<string>>();
-
+    const [month, setMonth] = useState(Number);
+    const [consumed, setConsumed] = useState(Number);
+    let rate = 0;
+    if (props.rate) {
+        rate = props.rate;
+    }
     return (
         <div>
-            <DateItem {...props} getDays={setDays} />
-            <DescriptionItem />
-            <CKLine {...props} days={days} />
+            <DateItem {...props} setMonth={setMonth} />
+            <DescriptionItem rate={rate} consumed={consumed} />
+            <CKLine {...props} month={month} setConsumed={setConsumed} />
         </div>
     );
 };

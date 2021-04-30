@@ -10,17 +10,20 @@ import { updateDeviceByWS, controlDiyDevice } from '@/api';
 import style from './card.less';
 import ChannelModal from '../Modal/ChannelModal';
 import MultiDeviceSettingModal from '../Modal/MultiDeviceSettingModal';
+import DIYChannelModal from '../Modal/DIYChannelModal';
 
 interface SocketSwitchCardProps {
     deviceData: {
         deviceId: string;
         apikey: string;
+        key?: string;
         online: boolean;
         type: DeviceType;
         name: string;
         model: string;
         fwVersion: string;
         disabled: boolean;
+        uiid: number;
         params?: any;
     };
     channels: {
@@ -38,6 +41,9 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
         deviceId: deviceData.deviceId,
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
+        uiid: deviceData.uiid,
+        type: deviceData.type,
+        key: deviceData.key,
         channels: channels.map((item) => {
             return {
                 name: item.name,
@@ -143,7 +149,11 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 );
             })}
             {channels.length === 1 ? (
-                <ChannelModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
+                deviceData.type !== 'diy' ? (
+                    <ChannelModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
+                ) : (
+                    <DIYChannelModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
+                )
             ) : (
                 <MultiDeviceSettingModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
             )}

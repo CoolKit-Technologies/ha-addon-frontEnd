@@ -24,6 +24,7 @@ interface TempCardProps {
         model: string;
         fwVersion: string;
         disabled: boolean;
+        uiid: number;
         params: any;
     };
     channel: {
@@ -47,6 +48,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         deviceName: deviceData.name,
         apikey: deviceData.apikey,
         disabled: deviceData.disabled,
+        uiid: deviceData.uiid,
         params: deviceData.params,
         unit: unit,
     };

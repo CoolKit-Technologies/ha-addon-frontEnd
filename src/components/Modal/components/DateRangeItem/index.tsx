@@ -12,10 +12,23 @@ const DateRange: React.FC<IComponentProps> = (props) => {
     function getDefaluteDate(time: string) {
         return time ? moment(time) : moment();
     }
+    function getPropsTime() {
+        props.uiid !== 126 && props.params?.startTime && setStartTime(moment(props.params.startTime).format(dateFormat));
+        props.uiid !== 126 && props.params?.endTime && setEndTime(moment(props.params.endTime).format(dateFormat));
+        props.uiid === 126 && props.i !== 1 && props.params?.startTime_00 && setStartTime(moment(props.params.startTime_00).format(dateFormat));
+        props.uiid === 126 && props.i !== 1 && props.params?.endTime_00 && setEndTime(moment(props.params.endTime_00).format(dateFormat));
+        props.uiid === 126 && props.i === 1 && props.params?.startTime_01 && setStartTime(moment(props.params.startTime_01).format(dateFormat));
+        props.uiid === 126 && props.i === 1 && props.params?.endTime_01 && setEndTime(moment(props.params.endTime_01).format(dateFormat));
+    }
     useEffect(() => {
-        props.params?.startTime && setStartTime(moment(props.params.startTime).format(dateFormat));
-        props.params?.endTime && setEndTime(moment(props.params.endTime).format(dateFormat));
+        getPropsTime();
     }, [props.params?.startTime, props.params?.endTime]);
+    useEffect(() => {
+        getPropsTime();
+    }, [props.params?.startTime_00, props.params?.endTime_00]);
+    useEffect(() => {
+        getPropsTime();
+    }, [props.params?.startTime_01, props.params?.endTime_01]);
     return (
         <div className={styles['date-range']}>
             <RangePicker
