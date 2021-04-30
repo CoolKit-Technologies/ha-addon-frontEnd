@@ -4,14 +4,14 @@ import { Button } from 'antd';
 import { updateDeviceName, updateChannelName, getDeviceById, updateDeviceByWS, getOtaInfo, upgradeDeviceByWS, controlDiyDevice } from '@/api';
 
 const Settings: React.FC = (props) => {
-    console.log(props);
+    // console.log(props);
 
     const handleClick1 = () => {
         updateDeviceName({
             id: '1000bde572',
             newName: 'T2000'
         }).then((res) => {
-            console.log(res)
+            // console.log(res)
         })
     }
 
@@ -23,7 +23,7 @@ const Settings: React.FC = (props) => {
     }
 
     const handleClick3 = () => {
-        getDeviceById({ id: '1000bde572'}).then((res) => console.log(res))
+        // getDeviceById({ id: '1000bde572'}).then((res) => console.log(res))
     }
 
     const handleClick4 = () => {

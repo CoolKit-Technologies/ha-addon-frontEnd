@@ -45,9 +45,7 @@ const ICons: React.FC<ICon> = (props) => {
                       .format(dateFormat),
                   endTime_00: '',
               });
-        console.log(`ML ~ file: index.tsx ~ line 17 ~ elecStart ~ params`, params);
         const startRes = await updateDeviceByWS(params);
-        console.log(`ML ~ file: index.tsx ~ line 18 ~ elecStart ~ startRes`, startRes);
     }
     async function elecEnd() {
         setStart(false);
@@ -77,9 +75,7 @@ const ICons: React.FC<ICon> = (props) => {
                       .format(dateFormat),
                   startTime_00: startTime,
               });
-        console.log(`ML ~ file: index.tsx ~ line 31 ~ elecEnd ~ params`, params);
         const endRes = await updateDeviceByWS(params);
-        console.log(`ML ~ file: index.tsx ~ line 33 ~ elecEnd ~ endRes`, endRes);
         await refresh();
     }
     async function refresh() {
@@ -99,9 +95,7 @@ const ICons: React.FC<ICon> = (props) => {
             : _.assign(params.params, {
                   getKwh_00: 1,
               });
-        console.log(`ML ~ file: index.tsx ~ line 43 ~ refresh ~ params`, params);
         const res = await updateDeviceByWS(params);
-        console.log(`ML ~ file: index.tsx ~ line 45 ~ refresh ~ res`, res);
         if (res.error === 0 && res.data && res.data.config) {
             res.data.config.oneKwhData && props.callback(res.data.config.oneKwhData);
             res.data.config.oneKwhData_00 && props.callback(res.data.config.oneKwhData_00);

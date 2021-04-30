@@ -14,15 +14,12 @@ const ChannelNameItem: React.FC<IChannelSetting> = (props) => {
     const { formatMessage } = useIntl();
 
     async function savechannelName(channelName: string) {
-        console.log(`ML ~ file: index.tsx ~ line 12 ~ savechannelName ~ channelName`, channelName);
         //  保存设备名称
         const params = {
             id: deviceId,
             tags: { [index]: channelName },
         };
-        console.log(`ML ~ file: index.tsx ~ line 23 ~ savechannelName ~ params`, params);
         const res = await updateChannelName(params);
-        console.log(`ML ~ file: index.tsx ~ line 25 ~ savechannelName ~ res`, res);
         if (res.error === 0) {
             message.success('修改成功');
         }
@@ -31,7 +28,7 @@ const ChannelNameItem: React.FC<IChannelSetting> = (props) => {
     useEffect(() => {
         props.channelName && setchannelName(props.channelName);
         setDeviceId(props.deviceId);
-        props.index !== undefined && setIndex(props.index);
+        props.i !== undefined && setIndex(props.i);
     }, []);
     return (
         <div className={styles['device-name-item']}>

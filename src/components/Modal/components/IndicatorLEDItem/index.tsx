@@ -5,8 +5,8 @@ import { Switch } from 'antd';
 import styles from './index.less';
 import { updateDeviceByWS, controlDiyDevice } from '@/api';
 import { IComponentProps } from '@/types/interface/IModal';
+import _ from 'lodash';
 const IndicatorLEDItem: React.FC<IComponentProps> = (props) => {
-    console.log(`ML ~ file: index.tsx ~ line 9 ~ props`, props);
     const [checked, setChecked] = useState(false);
     const { formatMessage } = useIntl();
     async function setLEDOnline(value: boolean) {
@@ -18,21 +18,19 @@ const IndicatorLEDItem: React.FC<IComponentProps> = (props) => {
                     state: value ? 'on' : 'off',
                 },
             };
-            console.log(`ML ~ file: index.tsx ~ line 20 ~ setLEDOnline ~ params`, params);
             const res = await controlDiyDevice(params);
-            console.log(`ML ~ file: index.tsx ~ line 21 ~ setLEDOnline ~ res`, res);
             setChecked(value);
         } else {
             let params = {
                 id: props.deviceId,
                 apikey: props.apikey,
                 params: {
-                    sledOnline: value ? 'on' : 'off',
+                    // sledOnline: value ? 'on' : 'off',
                 },
             };
-            console.log(`ML ~ file: index.tsx ~ line 18 ~ setLEDOnline ~ params`, params);
+            props.uiid === 126 ? _.assign(params.params, { sledBright: value ? 100 : 0 }) : _.assign(params.params, { sledOnline: value ? 'on' : 'off' });
+
             const res = await updateDeviceByWS(params);
-            console.log(`ML ~ file: index.tsx ~ line 20 ~ setLEDOnline ~ res`, res);
             setChecked(value);
         }
     }

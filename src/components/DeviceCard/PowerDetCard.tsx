@@ -74,7 +74,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
         <div
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
-                console.log('you click card');
+                // console.log('you click card');
                 deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
@@ -90,7 +90,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                         height='30'
                         onClick={async (e) => {
                             e.stopPropagation();
-                            console.log('you click refresh');
+                            // console.log('you click refresh');
                             if (deviceData.online) await refresh();
                         }}
                     />

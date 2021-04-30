@@ -13,7 +13,6 @@ import styles from './base.less';
  * @returns
  */
 const PowerDetectionModal: React.FC<TypeModalProps> = (props) => {
-    // console.log(`ML ~ file: PowerDetectionModal.tsx ~ line 16 ~ props`, props);
     const [action, setAction] = useState(true);
     const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Status</a>);
 

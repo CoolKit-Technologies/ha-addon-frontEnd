@@ -20,7 +20,6 @@ const CKLine: React.FC<ICKLine> = (props) => {
     const [spin, setSpin] = useState(true);
 
     async function getHistoryData(month: number) {
-        // console.log(`ML ~ file: CKLine.tsx ~ line 24 ~ getHistoryData ~ month`, month);
         setSpin(true);
         let params = {
             id: props.deviceId,
@@ -35,7 +34,6 @@ const CKLine: React.FC<ICKLine> = (props) => {
             ? _.assign(params.params, { getKwh_01: 2 })
             : _.assign(params.params, { getKwh_00: 2 });
         const res = await updateDeviceByWS(params);
-        // console.log(`ML ~ file: CKLine.tsx ~ line 33 ~ getHistoryData ~ res`, res);
         if (res.error === 0 && res.data.config) {
             // const data = dealData(res.data.config.hundredDaysKwhData, 4);
             let temp = '';
@@ -46,10 +44,9 @@ const CKLine: React.FC<ICKLine> = (props) => {
             } else if (res.data.config.kwhHistories_01) {
                 temp = res.data.config.kwhHistories_01;
             }
-            const datas =
-                '190101190301000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+            // const datas =
+            //     '190101190301000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
             const dealdata = dealData(temp, month);
-            console.log(`ML ~ file: CKLine.tsx ~ line 102 ~ getHistoryData ~ data`, dealdata);
             dealdata && setAllData(dealdata);
         }
         setSpin(false);
@@ -71,7 +68,6 @@ const CKLine: React.FC<ICKLine> = (props) => {
             //获取这一天的时间对象 是今天的第前几天0，1，2，3，4，
             const tempDate = moment().subtract(i, 'days');
 
-            // LogUtil.warn('这一天的时间',tempDate)
 
             //获取当前是几月，获取月份
             const monthNum = tempDate.get('month') + 1;
@@ -88,7 +84,6 @@ const CKLine: React.FC<ICKLine> = (props) => {
             // tempObj[`${dayNum}`] = resultNum;
             _.set(tempObj, `${dayNum}`, resultNum);
             // tempObj.dayNum = monthDayNum;
-            // LogUtil.info('这一天的时间', firNumStr, secNumStr, thrNumStr)
             // tempObj.monthSumNum += resultNum;
 
             // tempObj.month = monthNum;
@@ -96,16 +91,12 @@ const CKLine: React.FC<ICKLine> = (props) => {
 
             // allMonthSum = allMonthSum + resultNum
         }
-        // console.log(`ML ~ file: deal.ts ~ line 75 ~ result`, result);
-        // console.log(result['4']);
         const obj = result[month];
-        // console.log(`ML ~ file: test.js ~ line 48 ~ obj`, obj);
         let data: IHistoryData[] = [];
         data = Object.keys(obj).map((item) => ({
             day: item,
             value: _.get(obj, `${item}`) as number,
         }));
-        // console.log(`ML ~ file: test.js ~ line 54 ~ data`, data);
         const temp = data.map((item) => item.value);
         props.setConsumed(temp.reduce((total, item) => total + item));
         return data;
@@ -129,31 +120,11 @@ const CKLine: React.FC<ICKLine> = (props) => {
             tickCount: 10,
         },
         tooltip: {
-            // customContent: (title, data) => {
-            //     return `<div>${title}</div>`;
-            // },
             formatter: (datum: any) => {
-                // console.log(`ML ~ file: CKLine.tsx ~ line 35 ~ datum`, datum);
                 return { name: '功率', value: datum.value + 'kwh' };
             },
-            // customContent: (title, data) => {
-            //     return `<div>${title}${data}</div>`;
-            // },
-            // domStyles: {
-            //     'g2-tooltip-name': {
-            //         display: 'none',
-            //     },
-            // },
         },
-        // yAxis: {
-        //     label: {
-        //         formatter: function formatter(v: any) {
-        //             console.log('v', v);
 
-        //             return `${v}Kwh`;
-        //         },
-        //     },
-        // },
     };
     return (
         <div>

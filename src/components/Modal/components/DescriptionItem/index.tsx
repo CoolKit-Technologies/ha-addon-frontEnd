@@ -15,12 +15,12 @@ const DescriptionItem: React.FC<IDescription> = (props) => {
                 <Col span={1} className={styles['col']}>
                     <Divider type='vertical' style={{ height: '70%' }} />
                 </Col>
-                <Col span={10}>
+                {/* <Col span={10}>
                     <Statistic title='Costs' value={props.rate} suffix='USD' />
                 </Col>
                 <Col span={1} className={styles['col']}>
                     <Divider type='vertical' style={{ height: '70%' }} />
-                </Col>
+                </Col> */}
             </Row>
         </div>
     );

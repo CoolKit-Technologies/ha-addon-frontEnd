@@ -14,15 +14,12 @@ const DeviceNameItem: React.FC<IComponentProps> = ({ deviceId, deviceName }) => 
     const { formatMessage } = useIntl();
 
     async function saveDeviceName(deviceName: string) {
-        console.log(`ML ~ file: index.tsx ~ line 12 ~ saveDeviceName ~ deviceName`, deviceName);
         //  保存设备名称
         const params = {
             id: id,
             newName: deviceName,
         };
-        console.log(`ML ~ file: index.tsx ~ line 22 ~ saveDeviceName ~ params`, params);
         const res = await updateDeviceName(params);
-        console.log(`ML ~ file: index.tsx ~ line 23 ~ saveDeviceName ~ res`, res);
         if (res.error === 0) {
             message.success('修改成功');
         }
@@ -31,7 +28,6 @@ const DeviceNameItem: React.FC<IComponentProps> = ({ deviceId, deviceName }) => 
     useEffect(() => {
         setDeviceName(deviceName);
         setDeviceId(deviceId);
-        console.log(deviceName);
     }, []);
     return (
         <div className={styles['device-name-item']}>

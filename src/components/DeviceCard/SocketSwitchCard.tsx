@@ -111,7 +111,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
         <div
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
-                console.log('click card');
+                // console.log('click card');
                 deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >

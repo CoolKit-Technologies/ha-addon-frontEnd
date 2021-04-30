@@ -17,9 +17,7 @@ const EnableEntityItem: React.FC<IComponentProps> = (props) => {
                     state: disabled ? 'on' : 'off',
                 },
             };
-            console.log(`ML ~ file: index.tsx ~ line 20 ~ changeDeviceState ~ params`, params);
             const res = await controlDiyDevice(params);
-            console.log(`ML ~ file: index.tsx ~ line 21 ~ changeDeviceState ~ res`, res);
         } else {
             let params = {
                 id: props.deviceId,

@@ -6,21 +6,21 @@ import { updateDeviceByWS, controlDiyDevice } from '@/api';
 import _ from 'lodash';
 const { Option } = Select;
 const PowerState: React.FC<IChannelSetting> = (props) => {
-    console.log(`ML ~ file: index.tsx ~ line 9 ~ props`, props);
     let startup = '';
     if (props.type === 'diy' && props.params?.startup) {
         //手工diy
         startup = props.params?.startup;
-    } else if (props.params?.configure) {
+    } else if (props.params?.configure && props.i !== undefined) {
         //dualr3或多通道设备
-        let tempStart = props.params?.configure.find((item) => item.startup);
-        tempStart && (startup = tempStart?.startup);
+        let tempStart = props.params?.configure[props.i].startup;
+        tempStart && (startup = tempStart);
     } else if (!props.params?.configure && props.params?.startup) {
         startup = props.params?.startup;
+    } else if (props.params?.configure && (props.uiid === 77 || props.uiid === 78 || props.uiid === 112)) {
+        startup = props.params?.configure[0].startup;
     }
 
     async function setPowerState(value: string) {
-        console.log(`ML ~ file: index.tsx ~ line 12 ~ setPowerState ~ value`, value);
         if (props.type === 'diy') {
             let params = {
                 id: props.deviceId,
@@ -29,32 +29,32 @@ const PowerState: React.FC<IChannelSetting> = (props) => {
                     state: value,
                 },
             };
-            console.log(`ML ~ file: index.tsx ~ line 20 ~ changeDeviceState ~ params`, params);
             const res = await controlDiyDevice(params);
-            console.log(`ML ~ file: index.tsx ~ line 21 ~ changeDeviceState ~ res`, res);
         } else {
             let params = {
                 id: props.deviceId,
                 apikey: props.apikey,
                 params: {},
             };
-            if (!props.params?.configure) {
+            if (!props.params?.configure && !(props.uiid === 77 || props.uiid === 78 || props.uiid === 112)) {
                 _.assign(params.params, { startup: value });
             }
             if (props.params?.configure && props.params.configure?.length > 0) {
                 props.params?.configure?.forEach((item) => {
-                    if (item.outlet === props.index) _.assign(item, { startup: value });
+                    if (item.outlet === props.i) _.assign(item, { startup: value });
                 });
-                props.index !== undefined && _.assign(params.params, { configure: props.params?.configure });
+                props.i !== undefined && _.assign(params.params, { configure: props.params?.configure });
             }
-            console.log(`ML ~ file: index.tsx ~ line 20 ~ setPowerState ~ params`, params);
+            if ((props.params?.configure && props.uiid === 77) || props.uiid === 78 || props.uiid === 112) {
+                props.params?.configure!.find((item) => {
+                    if (item.outlet === 0) _.assign(item, { startup: value });
+                });
+                _.assign(params.params, { configure: props.params?.configure });
+            }
             const res = await updateDeviceByWS(params);
-            console.log(`ML ~ file: index.tsx ~ line 22 ~ setPowerState ~ res`, res);
         }
     }
-    async function changePowerState(state: string) {
-        console.log('state', state);
-    }
+
     return (
         <div className={`${styles['power-state']} ${props.style}`}>
             <span className={styles['span-font']}>Power-on state</span>
