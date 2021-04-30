@@ -75,7 +75,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
         <div
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
-                console.log('you click card');
+                // console.log('you click card');
                 deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
@@ -91,7 +91,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                         height='30'
                         onClick={async (e) => {
                             e.stopPropagation();
-                            console.log('you click refresh');
+                            // console.log('you click refresh');
                             if (deviceData.online) await refresh();
                         }}
                     />

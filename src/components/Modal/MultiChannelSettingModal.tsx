@@ -12,7 +12,7 @@ const MultiChannelSettingModal: React.FC<IModalProps> = (props) => {
                             deviceId={props.deviceId}
                             apikey={props.apikey}
                             channelName={item.name}
-                            index={index}
+                            i={index}
                             key={`${index}`}
                             uiid={props.uiid}
                             disabled={props.disabled}

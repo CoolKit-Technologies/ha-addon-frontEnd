@@ -35,7 +35,7 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
             uiid: uiid,
             i: i,
             params: {
-                sledOnline: params?.sledOnline,
+                // sledOnline: params?.sledOnline,
             },
         };
         i !== undefined ? _.assign(dealParams.params, { pulses: params?.pulses }) : _.assign(dealParams.params, { pulse: params?.pulse, pulseWidth: params?.pulseWidth });

@@ -22,7 +22,7 @@ const DateItem: React.FC<IDate> = (props) => {
         <div className={styles['date-item']}>
             <div className={styles['mgt']}>
                 {/* <DatePicker picker='month' defaultValue={moment()} format={dateFormat} onChange={(date, dateString) => getDay(moment(dateString).daysInMonth())} /> */}
-                <DatePicker picker='month' defaultValue={moment()} format={dateFormat} onChange={(date, dateString) => dealDate(dateString)} />
+                <DatePicker picker='month' value={moment()} format={dateFormat} onChange={(date, dateString) => dealDate(dateString)} />
             </div>
             <Divider />
         </div>

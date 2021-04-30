@@ -13,9 +13,7 @@ const TemperatureUnit: React.FC<IComponentProps> = (props) => {
             id: props.deviceId,
             unit: value,
         };
-        console.log(`ML ~ file: index.tsx ~ line 13 ~ setUnitAction ~ params`, params);
         const res = await updateDeviceTempUnit(params);
-        console.log(`ML ~ file: index.tsx ~ line 16 ~ setUnitAction ~ res`, res);
     }
     // useEffect(() => {
     //     props.unit && setUnit(props.unit);

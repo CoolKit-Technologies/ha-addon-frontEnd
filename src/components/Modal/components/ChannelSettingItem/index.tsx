@@ -20,7 +20,7 @@ const ChannelSetting: React.FC<IChannelSetting> = (props) => {
         deviceName: props.deviceName,
         apikey: props.apikey,
         disabled: props.disabled,
-        index: props.index,
+        i: props.i,
         uiid: props.uiid,
         params: {},
     };
@@ -32,7 +32,7 @@ const ChannelSetting: React.FC<IChannelSetting> = (props) => {
         props.params?.pulses && setPulses(props.params?.pulses);
     }, [pulses]);
     return (
-        <div className={styles['magB10']} key={props.index}>
+        <div className={styles['magB10']} key={props.i}>
             <ChannelNameItem {...props} />
             <div className={styles['magTB']}>
                 <InchingMode {...params} {...setPulses} />

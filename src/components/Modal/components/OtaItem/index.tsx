@@ -15,7 +15,7 @@ const OtaItem: React.FC = (props) => {
             </div>
             <div className={styles['actions']}>
                 <img src={upgradeIcon} alt='' onClick={() => {
-                    console.log('hello');
+                    // console.log('hello');
                 }} />
             </div>
         </div>

@@ -13,9 +13,7 @@ const InterlockMode: React.FC<IComponentProps> = (props) => {
             params: {},
         };
         value ? _.assign(params.params, { lock: 1, zyx_clear_timers: value }) : _.assign(params.params, { lock: 0, zyx_clear_timers: value });
-        console.log(`ML ~ file: index.tsx ~ line 15 ~ setLockAction ~ params`, params);
         const res = await updateDeviceByWS(params);
-        console.log(`ML ~ file: index.tsx ~ line 18 ~ setLockAction ~ res`, res);
     }
     useEffect(() => {
         props.params?.lock && props.params.lock === 1 ? setChecked(true) : setChecked(false);
