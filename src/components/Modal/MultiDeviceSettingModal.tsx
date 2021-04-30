@@ -28,7 +28,7 @@ const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
                     <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
                     <InterlockMode {...props.device}></InterlockMode>
                     <EnableEntityItem {...props.device}></EnableEntityItem>
-                    <OtaItem></OtaItem>
+                    <OtaItem {...props.device}></OtaItem>
                 </div>
             ) : (
                 props.device.channels && <MultiChannelSettingModal {...props.device} />

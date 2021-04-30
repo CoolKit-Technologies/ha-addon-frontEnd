@@ -51,6 +51,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         uiid: deviceData.uiid,
         params: deviceData.params,
         unit: unit,
+        model: deviceData.model,
     };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;

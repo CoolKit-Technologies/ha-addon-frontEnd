@@ -51,6 +51,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
         }),
         params: deviceData.params,
         disabled: deviceData.disabled,
+        model: deviceData.model,
     };
     // 开关一个通道
     const toggle = async (v: boolean, i: number) => {

@@ -53,6 +53,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
         params: deviceData.params,
         uiid: deviceData.uiid,
         i: i,
+        model: deviceData.model,
     };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;

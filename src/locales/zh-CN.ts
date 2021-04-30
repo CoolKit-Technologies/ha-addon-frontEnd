@@ -31,6 +31,7 @@ export default {
     'device.temp.unit': '温度单位',
     'device.firmware.upgrade': '固件升级',
     'device.firmware.upgrade.tips': '可升级固件到 { version }',
+    'device.firmware.upgrade.latest': '当前固件已是最新版本',
 
     'device.get.success': '拉取设备成功',
     'device.get.failed': '拉取设备失败',

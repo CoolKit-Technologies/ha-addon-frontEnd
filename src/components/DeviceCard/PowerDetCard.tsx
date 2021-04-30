@@ -46,6 +46,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
         disabled: deviceData.disabled,
         uiid:deviceData.uiid,
         params: deviceData.params,
+        model: deviceData.model,
     };
     const toggle = async (v: boolean) => {
         const { deviceId, apikey } = deviceData;

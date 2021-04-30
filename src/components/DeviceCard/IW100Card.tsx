@@ -48,6 +48,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
         disabled: deviceData.disabled,
         uiid: deviceData.uiid,
         params: deviceData.params,
+        model: deviceData.model,
     };
     const toggle = async (v: boolean) => {
         const { apikey, deviceId } = deviceData;

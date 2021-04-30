@@ -31,6 +31,7 @@ export default {
     'device.temp.unit': 'Temperature Unit',
     'device.firmware.upgrade': 'Firmware Upgrade',
     'device.firmware.upgrade.tips': 'Upgrade available { version }',
+    'device.firmware.upgrade.latest': 'Latest Version',
 
     'device.get.success': 'Get device success',
     'device.get.failed': 'Get device failed',
