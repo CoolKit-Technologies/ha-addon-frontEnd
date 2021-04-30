@@ -10,10 +10,7 @@ export async function userIsLogin(): Promise<HttpResponse> {
 }
 
 // 获取 HA 的 token
-export async function getHaToken(params: {
-    code: string;
-    clientId: string;
-}): Promise<HttpResponse> {
+export async function getHaToken(params: { code: string; clientId: string }): Promise<HttpResponse> {
     return await sendRequest('POST', `${apiPrefix}/user/auth`, params);
 }
 
@@ -27,7 +24,7 @@ export async function getCmsContent(language: string): Promise<HttpResponse> {
         region = 'eu';
         locale = 'en-us';
     }
-    const url = `https://appcms.coolkit.cn/appcms-service/v2/batch.json?project=home-assistant&category=[%22top%22,%22push%22]&locale=${locale}&region=${region}&country=CL`;
+    const url = `https://appcms.coolkit.cn/appcms-service/v2/batch.json?project=home-assistant&category=[%22top%22,%22push%22]&region=${region}&locale=${locale}&country=CL`;
     return await sendRequest('GET', url);
 }
 
@@ -169,7 +166,7 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
         // 重定向到 HA 授权
         if (res.data.error === 302) {
             const origin = window.location.origin;
-            window.location = genAuthorizeUrl(res.data.data, origin, origin);
+            window.location.href = genAuthorizeUrl(res.data.data, origin, origin);
         }
 
         if (res.data.error === 0) {

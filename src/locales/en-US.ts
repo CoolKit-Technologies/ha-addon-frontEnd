@@ -16,8 +16,8 @@ export default {
     'user.login.password.placeholder': 'Password',
     'user.login.info': 'Log in for more devices',
     'user.logout.tip': 'Do you want to logout?',
-    'user.logout.success': 'Login success.',
-    'user.logout.failed': 'Login failed, { msg }',
+    'user.login.success': 'Login success.',
+    'user.login.failed': 'Login failed, { msg }',
     //
     'device.name': 'Device Name',
     'device.id': 'Device Id',
@@ -86,4 +86,12 @@ export default {
     'login.message.no.country': 'Please select your country',
     'login.message.no.phone.or.email': 'Please input your phone number or email',
     'login.message.no.password': 'Please input your password',
+    'device.modal.channel.settings': 'Channel Settings',
+    'device.modal.device.settings': 'Device Settings',
+    'device.modal.status': 'Status',
+
+    'device.tab.realtime.stats': 'Realtime stats',
+    'device.tab.history': 'History',
+
+    'device.chart.consumed': 'Consumed',
 };

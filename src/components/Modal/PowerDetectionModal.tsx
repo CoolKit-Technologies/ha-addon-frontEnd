@@ -1,4 +1,5 @@
 import React, { useState, ReactNode } from 'react';
+import { useIntl } from 'umi';
 import TypeModalProps from '@/ts/type/TypeModal';
 import BaseModal from './BaseModal';
 import DeviceNameItem from './components/DeviceNameItem';
@@ -14,15 +15,16 @@ import styles from './base.less';
  */
 const PowerDetectionModal: React.FC<TypeModalProps> = (props) => {
     const [action, setAction] = useState(true);
-    const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Status</a>);
+    const { formatMessage } = useIntl();
+    const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>{formatMessage({ id: 'device.modal.status' })}</a>);
 
     function channelSetting() {
         setAction(false);
-        setTitleAction(<a onClick={deviceSetting}>Device settings</a>);
+        setTitleAction(<a onClick={deviceSetting}>{formatMessage({ id: 'device.modal.device.settings' })}</a>);
     }
     function deviceSetting() {
         setAction(true);
-        setTitleAction(<a onClick={channelSetting}>Status</a>);
+        setTitleAction(<a onClick={channelSetting}>{formatMessage({ id: 'device.modal.status' })}</a>);
     }
     return (
         <BaseModal {...props} titleAction={titleAction} title={props.device.deviceName}>

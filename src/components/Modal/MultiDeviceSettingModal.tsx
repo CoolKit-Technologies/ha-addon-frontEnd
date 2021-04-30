@@ -8,17 +8,19 @@ import EnableEntityItem from './components/EnableEntityItem';
 import MultiChannelSettingModal from './MultiChannelSettingModal';
 import styles from './base.less';
 import OtaItem from './components/OtaItem';
+import { useIntl } from 'umi';
 const MultiDeviceSettingModal: React.FC<TypeModalProps> = (props) => {
+    const { formatMessage } = useIntl();
     const [action, setAction] = useState(true);
-    const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>Channel settings</a>);
+    const [titleAction, setTitleAction] = useState<ReactNode>(<a onClick={channelSetting}>{formatMessage({ id: 'device.modal.channel.settings' })}</a>);
 
     function channelSetting() {
         setAction(false);
-        setTitleAction(<a onClick={deviceSetting}>Device settings</a>);
+        setTitleAction(<a onClick={deviceSetting}>{formatMessage({ id: 'device.modal.device.settings' })}</a>);
     }
     function deviceSetting() {
         setAction(true);
-        setTitleAction(<a onClick={channelSetting}>Channel settings</a>);
+        setTitleAction(<a onClick={channelSetting}>{formatMessage({ id: 'device.modal.channel.settings' })}</a>);
     }
     return (
         <BaseModal {...props} title={props.device.deviceName} titleAction={titleAction} destroyOnClose={true}>

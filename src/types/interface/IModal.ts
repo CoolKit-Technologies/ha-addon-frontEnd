@@ -39,10 +39,10 @@ export interface IModalProps {
         startTime_01?: string;
         endTime_01?: string;
         data1?: any;
-        fwVersion: string;
+        fwVersion?: string;
     };
     i?: number; //dualr3设备区分
-    model: string;
+    model?: string;
 }
 export interface IComponentProps extends IModalProps {
     style?: string;

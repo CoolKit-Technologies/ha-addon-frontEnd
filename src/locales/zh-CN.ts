@@ -86,4 +86,12 @@ export default {
     'login.message.no.country': '请选择您的国家',
     'login.message.no.phone.or.email': '请输入您的手机号或邮箱',
     'login.message.no.password': '请输入您的密码',
+    'device.modal.channel.settings': '通道设置',
+    'device.modal.device.settings': '设备设置',
+    'device.modal.status': '用电信息',
+
+    'device.tab.realtime.stats': '实时统计',
+    'device.tab.history': '历史记录',
+
+    'device.chart.consumed': '已使用',
 };
