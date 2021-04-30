@@ -33,6 +33,16 @@ export default {
     'device.firmware.upgrade.tips': '可升级固件到 { version }',
     'device.firmware.upgrade.latest': '当前固件已是最新版本',
 
+    'device.interlock': '互锁',
+    'device.interlock.tips': '启用后，不支持定时器、点动等功能',
+
+    'device.poweron.state': '通电反应',
+    'device.poweron.on': '开启',
+    'device.poweron.off': '关闭',
+    'device.poweron.stay': '恢复断电前状态',
+
+    'device.inching.mode': '点动设置',
+
     'device.get.success': '拉取设备成功',
     'device.get.failed': '拉取设备失败',
     'device.remove': '暂时将设备“{ name }”从列表中移除',

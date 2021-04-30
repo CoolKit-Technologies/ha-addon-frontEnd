@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Switch } from 'antd';
 import styles from './index.less';
 import { IComponentProps } from '@/types/interface/IModal';
+import { useIntl } from 'umi';
 import _ from 'lodash';
 import { updateDeviceByWS } from '@/api';
 const InterlockMode: React.FC<IComponentProps> = (props) => {
+    const { formatMessage } = useIntl();
     const [checked, setChecked] = useState(false);
     async function setLockAction(value: boolean) {
         let params = {
@@ -21,8 +23,8 @@ const InterlockMode: React.FC<IComponentProps> = (props) => {
     return (
         <div className={styles['interlock-mode']}>
             <div>
-                <span className={styles['span-font']}>InterLock Mode</span>
-                <span className={styles['note-font']}>Inching mode & Power-on state will be disabled</span>
+                <span className={styles['span-font']}>{formatMessage({ id: 'device.interlock' })}</span>
+                <span className={styles['note-font']}>{formatMessage({ id: 'device.interlock.tips' })}</span>
             </div>
             <Switch checked={checked} onClick={async (value) => await setLockAction(value)}></Switch>
         </div>

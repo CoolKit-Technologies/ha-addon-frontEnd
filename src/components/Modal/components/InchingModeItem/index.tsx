@@ -5,9 +5,11 @@ import moment, { Moment } from 'moment';
 import { updateDeviceByWS, controlDiyDevice } from '@/api';
 import { IChannelSetting } from '@/types/interface/IModal';
 import _ from 'lodash';
+import { useIntl } from 'umi';
 
 const dateFormat = 'mm:ss';
 const InchingMode: React.FC<IChannelSetting> = ({ style, apikey, deviceId, type, i, params, updateFunction, uiid }) => {
+    const { formatMessage } = useIntl();
     const [checked, setChecked] = useState(Boolean);
     //  点动时间设置提交
     async function getInchingTime(time: Moment | null) {
@@ -131,7 +133,7 @@ const InchingMode: React.FC<IChannelSetting> = ({ style, apikey, deviceId, type,
     }, [params]);
     return (
         <div className={`${styles['inching-mode']} ${style}`}>
-            <span className={styles['span-font']}>Inching mode</span>
+            <span className={styles['span-font']}>{formatMessage({ id: 'device.inching.mode' })}</span>
             <div>
                 <TimePicker className={styles['mgr20']} format={dateFormat} value={dealInchingTime()} onChange={(time) => getInchingTime(time)} />
                 <Switch checked={checked} onClick={(value) => inchingAction(value)} />

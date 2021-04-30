@@ -33,6 +33,16 @@ export default {
     'device.firmware.upgrade.tips': 'Upgrade available { version }',
     'device.firmware.upgrade.latest': 'Latest Version',
 
+    'device.interlock': 'InterLock Mode',
+    'device.interlock.tips': 'Inching mode & Power-on state will be disabled',
+
+    'device.poweron.state': 'Power-on state',
+    'device.poweron.on': 'On',
+    'device.poweron.off': 'Off',
+    'device.poweron.stay': 'Last State',
+
+    'device.inching.mode': 'Inching mode',
+
     'device.get.success': 'Get device success',
     'device.get.failed': 'Get device failed',
     'device.remove': '{ name } will be removed from the table temporarily.',

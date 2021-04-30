@@ -4,8 +4,10 @@ import styles from './index.less';
 import { IChannelSetting } from '@/types/interface/IModal';
 import { updateDeviceByWS, controlDiyDevice } from '@/api';
 import _ from 'lodash';
+import { useIntl } from 'umi';
 const { Option } = Select;
 const PowerState: React.FC<IChannelSetting> = (props) => {
+    const { formatMessage } = useIntl();
     let startup = '';
     if (props.type === 'diy' && props.params?.startup) {
         //手工diy
@@ -57,11 +59,11 @@ const PowerState: React.FC<IChannelSetting> = (props) => {
 
     return (
         <div className={`${styles['power-state']} ${props.style}`}>
-            <span className={styles['span-font']}>Power-on state</span>
+            <span className={styles['span-font']}>{formatMessage({ id: 'device.poweron.state' })}</span>
             <Select className={styles['select']} defaultValue={startup} onSelect={(value) => setPowerState(value)}>
-                <Option value='on'>On</Option>
-                <Option value='off'>Off</Option>
-                <Option value='stay'>Last state</Option>
+                <Option value='on'>{formatMessage({ id: 'device.poweron.on' })}</Option>
+                <Option value='off'>{formatMessage({ id: 'device.poweron.off' })}</Option>
+                <Option value='stay'>{formatMessage({ id: 'device.poweron.stay' })}</Option>
             </Select>
         </div>
     );
