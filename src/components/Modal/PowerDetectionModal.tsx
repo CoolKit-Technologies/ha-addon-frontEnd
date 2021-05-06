@@ -8,6 +8,7 @@ import PowerState from './components/PowerStateItem';
 import EnableEntityItem from './components/EnableEntityItem';
 import DeviceData from './DeviceData';
 import styles from './base.less';
+import OtaItem from './components/OtaItem';
 /**
  * 功率检测单通道
  * @param props
@@ -34,6 +35,7 @@ const PowerDetectionModal: React.FC<TypeModalProps> = (props) => {
                     <IndicatorLEDItem {...props.device}></IndicatorLEDItem>
                     <PowerState style={styles['mrgB10']} {...props.device}></PowerState>
                     <EnableEntityItem {...props.device}></EnableEntityItem>
+                    <OtaItem {...props.device}></OtaItem>
                 </div>
             ) : (
                 <DeviceData {...props.device} />

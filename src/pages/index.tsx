@@ -28,18 +28,16 @@ const App: React.FC<{
     checkUserLogin: Function;
 }> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch, language }) => {
     const [loginTabVisible, setLoginTabVisible] = useState(false);
-    const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; title: string; description: string; }[]>([]);
+    const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; title: string; description: string }[]>([]);
     const { formatMessage } = useIntl();
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        getLanguageApi()
-            .then((res) => {
-                getCmsContent(res.data)
-                    .then((res) => {
-                        setCmsContent([res.data.top, ...res.data.push]);
-                    });
-            })
+        getLanguageApi().then((res) => {
+            getCmsContent(res.data).then((res) => {
+                setCmsContent([res.data.top, ...res.data.push]);
+            });
+        });
     }, [language]);
 
     useEffect(() => {
@@ -60,7 +58,7 @@ const App: React.FC<{
             checkUserLogin();
             getDeviceList({ type: 'init' }).then((res) => saveDeviceList(res.data));
             getLanguage();
-            source = new EventSource('http://192.168.1.115:3000/api/stream');
+            const source = new EventSource('http://localhost:3000/api/stream');
             // Prod
             // const source = new EventSource('api/stream');
             source.addEventListener('open', () => {
@@ -144,7 +142,7 @@ const App: React.FC<{
             model,
             params,
             disabled,
-            uiid
+            uiid,
         };
         if (isDualR3(uiid)) {
             const i = data.xindex;
@@ -277,9 +275,20 @@ const App: React.FC<{
             <div className={styles['main-container']}>
                 <div className={styles['ad-box']}>
                     {cmsContent.map((item) => (
-                        <Card key={item.pageid} hoverable cover={<img alt='example' src={item.thumbnail} height={160} onClick={() => {
-                            window.open(item.link);
-                        }} />}>
+                        <Card
+                            key={item.pageid}
+                            hoverable
+                            cover={
+                                <img
+                                    alt='example'
+                                    src={item.thumbnail}
+                                    height={160}
+                                    onClick={() => {
+                                        window.open(item.link);
+                                    }}
+                                />
+                            }
+                        >
                             <Meta title={item.title} />
                         </Card>
                     ))}

@@ -10,6 +10,7 @@ import InchingMode from './components/InchingModeItem';
 import styles from './base.less';
 import DeviceData from './DeviceData';
 import _ from 'lodash';
+import OtaItem from './components/OtaItem';
 /**
  * 功率检测插座过载告警
  * 多功能双通道电量检测开关
@@ -55,6 +56,7 @@ const PowerDetectionSocketModal: React.FC<TypeModalProps> = (props) => {
                     <PowerState style={styles['mrgB10']} {...props.device}></PowerState>
                     <InchingMode style={styles['mrgB10']} {...setParams()}></InchingMode>
                     <EnableEntityItem {...props.device}></EnableEntityItem>
+                    <OtaItem {...props.device}></OtaItem>
                 </div>
             ) : (
                 <DeviceData {...props.device} />

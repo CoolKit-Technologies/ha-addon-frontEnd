@@ -14,7 +14,7 @@ const OtaItem: React.FC<IComponentProps> = ({ deviceId, params, model, apikey })
                 {
                     deviceid: deviceId,
                     version: params?.fwVersion!,
-                    model,
+                    model: model!,
                 },
             ],
         }).then((res) => {
