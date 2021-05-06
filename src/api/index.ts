@@ -149,10 +149,11 @@ export async function changeDeviceStatus(params: { id: string; disabled: boolean
 async function sendRequest(method: HttpMethod, url: string, params?: any): Promise<HttpResponse> {
     const config: AxiosRequestConfig = {
         // 本地开发时，可替换 baseURL
-        baseURL: 'http://192.168.1.115:3000',
+        // baseURL: 'http://192.168.1.115:3000',
         // baseURL: 'http://localhost:3000',
         method,
         url,
+        timeout: 10000,
     };
 
     if (params && method === 'GET') {

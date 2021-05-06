@@ -28,21 +28,50 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin, language
     // 验证表单，通过返回 true；否则返回 false
     const verify = (): boolean => {
         if (country === '') {
-            message.warning('Please select your country');
+            message.warning(formatMessage({ id: 'login.message.no.country' }));
             return false;
         }
 
         if (account === '') {
-            message.warning('Please input your phone number or email');
+            message.warning(formatMessage({ id: 'login.message.no.phone.or.email' }));
             return false;
         }
 
         if (password === '') {
-            message.warning('Please input your password');
+            message.warning(formatMessage({ id: 'login.message.no.password' }));
             return false;
         }
 
         return true;
+    };
+
+    const handleLogin = async () => {
+        // 验证后登录
+        if (!verify()) return;
+
+        setLoading(true);
+        const params: any = {
+            lang: 'en',
+            countryCode: country,
+            password,
+        };
+        if (account.indexOf('@') === -1) {
+            params.phoneNumber = `${country}${account.trim()}`;
+        } else {
+            params.email = account.trim();
+        }
+
+        const res = await login(params);
+        setLoading(false);
+        if (res.error !== 0) {
+            message.error(formatMessage({ id: 'user.login.failed' }, { msg: res.msg }));
+        } else {
+            message.success(formatMessage({ id: 'user.login.success' }));
+            setTimeout(() => {
+                onClose();
+                onLogin(res.data.user);
+            }, 1000);
+        }
     };
 
     useEffect(() => {
@@ -97,38 +126,12 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin, language
                     placeholder={formatMessage({ id: 'user.login.password.placeholder' })}
                     prefix={<LockOutlined style={{ paddingRight: '5px' }} />}
                     onChange={(e) => setPassword(e.target.value)}
+                    onPressEnter={handleLogin}
                     allowClear
                 />
                 <Button
                     type='primary'
-                    onClick={async () => {
-                        // 验证后登录
-                        if (!verify()) return;
-
-                        setLoading(true);
-                        const params: any = {
-                            lang: 'en',
-                            countryCode: country,
-                            password,
-                        };
-                        if (account.indexOf('@') === -1) {
-                            params.phoneNumber = `${country}${account.trim()}`;
-                        } else {
-                            params.email = account.trim();
-                        }
-
-                        const res = await login(params);
-                        setLoading(false);
-                        if (res.error !== 0) {
-                            message.error(formatMessage({ id: 'user.login.failed' }, { msg: res.msg }));
-                        } else {
-                            message.success(formatMessage({ id: 'user.login.success' }));
-                            setTimeout(() => {
-                                onClose();
-                                onLogin(res.data.user);
-                            }, 1000);
-                        }
-                    }}
+                    onClick={handleLogin}
                     loading={loading}
                     block
                 >
@@ -138,7 +141,7 @@ const LoginTab: React.FC<LoginTabProps> = ({ visible, onClose, onLogin, language
             <div className={styles['hint-text']}>
                 <Text>
                     {/* <FormattedMessage id='app.noAcount' />{' '} */}
-                    <Link target='_blank' href='https://bing.com'>
+                    <Link target='_blank' href='http://www.ewelink.cc/'>
                         <FormattedMessage id='app.download' />
                     </Link>
                     {/* {' '} */}

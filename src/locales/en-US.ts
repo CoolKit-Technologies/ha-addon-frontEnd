@@ -71,4 +71,9 @@ export default {
     'device.card.cool': 'Cool',
     'device.card.warm': 'Warm',
     'device.card.hot': 'Hot',
+
+    // 登录框提示信息
+    'login.message.no.country': 'Please select your country',
+    'login.message.no.phone.or.email': 'Please input your phone number or email',
+    'login.message.no.password': 'Please input your password',
 };
