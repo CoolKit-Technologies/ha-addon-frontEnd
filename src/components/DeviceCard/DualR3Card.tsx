@@ -124,7 +124,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                 </div>
             </div>
             <div className={style['channel']}>
-                <div className={style['channel-icon']}>{channel.stat ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
+                <div className={style['channel-icon']}>{channel.stat === 'on' ? <img src={IconFlashOn} /> : <img src={IconFlashOff} />}</div>
                 <span className={style['channel-name']}>{channel.name}</span>
                 <Switch
                     checked={channel.stat === 'on'}
