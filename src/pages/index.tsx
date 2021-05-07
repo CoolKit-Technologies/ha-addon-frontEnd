@@ -15,6 +15,7 @@ import IW100Card from '@/components/DeviceCard/IW100Card';
 import UnsupportedCard from '@/components/DeviceCard/UnsupportedCard';
 import LoginTab from '@/components/LoginTab';
 import styles from './index.less';
+import { sseUrl } from '@/config/app';
 
 const { Meta } = Card;
 
@@ -58,9 +59,7 @@ const App: React.FC<{
             checkUserLogin();
             getDeviceList({ type: 'init' }).then((res) => saveDeviceList(res.data));
             getLanguage();
-            const source = new EventSource('http://localhost:3000/api/stream');
-            // Prod
-            // const source = new EventSource('api/stream');
+            const source = new EventSource(sseUrl);
             source.addEventListener('open', () => {
                 console.log('连接建立成功');
             });
@@ -69,8 +68,6 @@ const App: React.FC<{
                 saveDeviceList(JSON.parse(e.data));
             });
         });
-        // dev
-        // const source = new EventSource('http://localhost:3000/api/stream');
 
         return () => {
             if (source) {
