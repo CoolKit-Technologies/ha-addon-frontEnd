@@ -49,7 +49,7 @@ export default {
     'device.info.needLogin': '登录后启用',
     'device.info.notyou': '该设备不在您的账号下',
     'device.info.notsupport': '暂不支持，敬请期待',
-    'device.entity.enable': '启用实体',
+    'device.entity.enable': '禁用实体',
     'device.entity.enable.tips': '已禁用的实体不会同步到HomeAssistant',
     'device.temp.unit.f': '华氏度',
     'device.temp.unit.c': '摄氏度',

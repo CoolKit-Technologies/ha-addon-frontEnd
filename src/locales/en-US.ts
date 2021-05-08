@@ -49,7 +49,7 @@ export default {
     'device.info.needLogin': 'Log in to use this device',
     'device.info.notyou': 'Not your device',
     'device.info.notsupport': 'Temporarily unsupported device',
-    'device.entity.enable': 'Enable Entity',
+    'device.entity.enable': 'Disable Entity',
     'device.entity.enable.tips': 'Disabled entities will not be added to Home Assistant.',
     'device.temp.unit.f': 'Fahrenheit',
     'device.temp.unit.c': 'Celsius',
