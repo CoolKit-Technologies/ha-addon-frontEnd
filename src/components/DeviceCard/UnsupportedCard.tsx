@@ -1,28 +1,40 @@
 // 不支持的设备
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'umi';
+import _ from 'lodash';
 
-import { DeviceType } from '@/types/device';
-import { getIconByDeviceType } from '@/utils';
+import { getIconByDeviceType, getMittEmitter, deviceTypeMap, getTmpDeviceList, saveTmpDeviceList } from '@/utils';
 import style from './card.less';
 
-interface UnsupportedCard {
-    deviceData: {
-        online: boolean;
-        type: DeviceType;
-        name: string;
-    };
+interface UnsupportedCardProps {
+    data: any;
 }
 
-const UnsupportedCard: React.FC<UnsupportedCard> = ({ deviceData }) => {
+const emitter = getMittEmitter();
+
+const UnsupportedCard: React.FC<UnsupportedCardProps> = ({ data }) => {
     const { formatMessage } = useIntl();
+    const [deviceData, setDeviceData] = useState<any>(data);
+    const { deviceId, online, type, deviceName } = deviceData;
+
+    emitter.on('data-update', (data: any[]) => {
+        const preData = _.find(getTmpDeviceList(), { deviceId });
+        const nowData = _.find(data, { deviceId });
+        if (!_.isEqual(preData, nowData)) {
+            saveTmpDeviceList(data);
+            setDeviceData(nowData);
+        }
+    });
+
+    console.log(`${deviceId} now render`);
+
     return (
         <div className={style['card']}>
             <div className={style['info-switch']}>
                 <div className={style['info-icon']}>
-                    <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
+                    <img src={getIconByDeviceType(deviceTypeMap(type), online)} />
                 </div>
-                <span className={style['device-name']}>{deviceData.name}</span>
+                <span className={style['device-name']}>{deviceName || deviceId}</span>
             </div>
             <p className={style['unsupport-hint']}>{ formatMessage({ id: 'device.card.unsupport.message' }) }</p>
         </div>

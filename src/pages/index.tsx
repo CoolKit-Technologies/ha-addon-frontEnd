@@ -5,7 +5,7 @@ import { Card, Button, Menu, Dropdown } from 'antd';
 import { QuestionOutlined, ExportOutlined, MoreOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
 
 import { login, getDeviceList, logout, getHaToken, getCmsContent, getLanguage as getLanguageApi } from '@/api';
-import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap } from '@/utils';
+import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap, getMittEmitter, saveTmpDeviceList, getTmpDeviceList, clearMittEmitter } from '@/utils';
 import { DeviceInfo } from '@/types/device';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
 import PowerDetCard from '@/components/DeviceCard/PowerDetCard';
@@ -18,6 +18,7 @@ import styles from './index.less';
 import { sseUrl } from '@/config/app';
 
 const { Meta } = Card;
+const emitter = getMittEmitter();
 
 const App: React.FC<{
     language: string;
@@ -33,11 +34,33 @@ const App: React.FC<{
     const { formatMessage } = useIntl();
     const [refreshing, setRefreshing] = useState(false);
 
+    // 保存设备数据
+    const saveDeviceData = (v: any) => {
+        clearMittEmitter();
+        saveTmpDeviceList(v);
+        saveDeviceList(v);
+    };
+
+    const handleMessage = (e: any) => {
+        const newList = JSON.parse(e.data);
+        const oldList = getTmpDeviceList();
+        console.log('sse -> deviceList', newList);
+        console.log('sse -> tpm device list', oldList);
+        console.log('sse -> emitter', emitter);
+        if (newList.length !== oldList.length) {        // 设备数量发生了变化（登录／登出）
+            console.log('device num change');
+            saveDeviceData(newList);
+        } else {                                        // 设备状态发生了变化
+            console.log('device stat change');
+            emitter.emit('data-update', newList);
+        }
+    };
+
     useEffect(() => {
         getLanguageApi().then((res) => {
-            getCmsContent(res.data).then((res) => {
-                setCmsContent([res.data.top, ...res.data.push]);
-            });
+            // getCmsContent(res.data).then((res) => {
+                // setCmsContent([res.data.top, ...res.data.push]);
+            // });
         });
     }, [language]);
 
@@ -57,16 +80,15 @@ const App: React.FC<{
             }
         }).then(() => {
             checkUserLogin();
-            getDeviceList({ type: 'init' }).then((res) => saveDeviceList(res.data));
+            getDeviceList({ type: 'init' }).then((res) => {
+                saveDeviceData(res.data);
+            });
             getLanguage();
             const source = new EventSource(sseUrl);
             source.addEventListener('open', () => {
                 console.log('连接建立成功');
             });
-            source.addEventListener('message', (e) => {
-                console.log('sse -> deviceList', JSON.parse(e.data));
-                saveDeviceList(JSON.parse(e.data));
-            });
+            source.addEventListener('message', handleMessage);
         });
 
         return () => {
@@ -214,7 +236,7 @@ const App: React.FC<{
                 if (data.tags) channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
                 else channels.push({ name: formatMessage({ id: 'device.card.channel.multi' }, { i: i + 1 }), stat: data.params.switches[i].switch });
 
-            return <SocketSwitchCard key={key} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
+            return <SocketSwitchCard key={key} data={data} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
         } else if (isTempDevice(uiid)) {
             return (
                 <TempCard
@@ -228,7 +250,7 @@ const App: React.FC<{
                 />
             );
         } else {
-            return <UnsupportedCard key={key} deviceData={deviceData} />;
+            return <UnsupportedCard key={key} data={data} />;
         }
     };
 
@@ -260,7 +282,7 @@ const App: React.FC<{
                             setRefreshing(true);
                             const res = await getDeviceList({ type: 'refresh' });
                             setRefreshing(false);
-                            saveDeviceList(res.data);
+                            saveDeviceData(res.data);
                         }}
                     />
                     <Dropdown overlay={menu}>

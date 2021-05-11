@@ -1,3 +1,5 @@
+import mitt from 'mitt';
+
 import { DeviceType, DeviceInfo } from '@/types/device';
 import IconDiyOnline from '@/assets/svg/diy-online.svg';
 import IconDiyOffline from '@/assets/svg/diy-offline.svg';
@@ -5,6 +7,37 @@ import IconLanOnline from '@/assets/svg/lan-online.svg';
 import IconLanOffline from '@/assets/svg/lan-offline.svg';
 import IconWifiOnline from '@/assets/svg/wifi-online.svg';
 import IconWifiOffline from '@/assets/svg/wifi-offline.svg';
+
+const mittData: any = {};
+const deviceData: any = {};
+
+initMitt();
+
+// 初始化 Mitt
+export function initMitt() {
+    if (!mittData.emitter)
+        mittData.emitter = mitt();
+}
+
+// 获取 Mitt 的 emitter 对象
+export function getMittEmitter() {
+    return mittData.emitter;
+}
+
+// 清除事件
+export function clearMittEmitter() {
+    mittData.emitter.all.clear();
+}
+
+// 暂存一下设备列表
+export function saveTmpDeviceList(deviceList: any) {
+    deviceData.deviceList = deviceList;
+}
+
+// 获取暂存的设备列表
+export function getTmpDeviceList() {
+    return deviceData.deviceList;
+}
 
 // 根据设备类型及设备是否在线返回对应的 icon
 export function getIconByDeviceType(type: DeviceType, online: boolean) {

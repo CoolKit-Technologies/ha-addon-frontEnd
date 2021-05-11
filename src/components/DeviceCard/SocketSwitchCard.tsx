@@ -1,6 +1,7 @@
 // 单通道开关，多通道开关，单通道插座，多通道插座
 import React, { useState, useReducer } from 'react';
 import { Switch, message } from 'antd';
+import _ from 'lodash';
 
 import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
@@ -11,6 +12,7 @@ import style from './card.less';
 import ChannelModal from '../Modal/ChannelModal';
 import MultiDeviceSettingModal from '../Modal/MultiDeviceSettingModal';
 import DIYChannelModal from '../Modal/DIYChannelModal';
+import { getTmpDeviceList, getMittEmitter } from '@/utils';
 
 interface SocketSwitchCardProps {
     deviceData: {
@@ -30,10 +32,13 @@ interface SocketSwitchCardProps {
         stat: 'on' | 'off';
         name: string;
     }[];
+    data: any;
 }
 
-const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channels }) => {
-    const [modalVisible, setModalVisible] = useState(false);
+const emitter = getMittEmitter();
+
+const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channels, data }) => {
+    /*const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
     }
@@ -52,7 +57,17 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
         params: deviceData.params,
         disabled: deviceData.disabled,
         model: deviceData.model,
-    };
+    };*/
+
+    /*emitter.on('data-update', (data: any[]) => {
+        const preData = _.find(getTmpDeviceList(), { deviceId });
+        const nowData = _.find(data, { deviceId });
+        if (!_.isEqual(preData, nowData)) {
+            console.log(`${deviceId} should update`);
+            setThename('thefuxk');
+        }
+    });*/
+
     // 开关一个通道
     const toggle = async (v: boolean, i: number) => {
         const { type, deviceId, apikey } = deviceData;
@@ -65,6 +80,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                     state: v ? 'on' : 'off',
                 },
             });
+            return;
         }
         if (channels.length === 1) {
             // 单通道设备
@@ -75,6 +91,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                     switch: v ? 'on' : 'off',
                 },
             });
+            return;
         }
         await updateDeviceByWS({
             apikey,
@@ -112,7 +129,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('click card');
-                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-switch']}>
@@ -149,7 +166,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                     </div>
                 );
             })}
-            {channels.length === 1 ? (
+            {/*channels.length === 1 ? (
                 deviceData.type !== 'diy' ? (
                     <ChannelModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
                 ) : (
@@ -157,7 +174,7 @@ const SocketSwitchCard: React.FC<SocketSwitchCardProps> = ({ deviceData, channel
                 )
             ) : (
                 <MultiDeviceSettingModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
-            )}
+            )*/}
         </div>
     );
 };
