@@ -1,30 +1,27 @@
 // 不支持的设备
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'umi';
 import _ from 'lodash';
 
 import { getIconByDeviceType, getMittEmitter, deviceTypeMap, getTmpDeviceList, saveTmpDeviceList } from '@/utils';
 import style from './card.less';
 
-interface UnsupportedCardProps {
+interface Props {
     data: any;
 }
 
 const emitter = getMittEmitter();
 
-const UnsupportedCard: React.FC<UnsupportedCardProps> = ({ data }) => {
+const UnsupportedCard: React.FC<Props> = ({ data }) => {
     const { formatMessage } = useIntl();
     const [deviceData, setDeviceData] = useState<any>(data);
     const { deviceId, online, type, deviceName } = deviceData;
 
-    emitter.on('data-update', (data: any[]) => {
-        const preData = _.find(getTmpDeviceList(), { deviceId });
-        const nowData = _.find(data, { deviceId });
-        if (!_.isEqual(preData, nowData)) {
-            saveTmpDeviceList(data);
-            setDeviceData(nowData);
-        }
-    });
+    useEffect(() => {
+        emitter.on(`data-update-${deviceId}`, (data: any) => {
+            setDeviceData(data);
+        });
+    }, []);
 
     console.log(`${deviceId} now render`);
 

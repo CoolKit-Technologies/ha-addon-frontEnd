@@ -36,7 +36,6 @@ const App: React.FC<{
 
     // 保存设备数据
     const saveDeviceData = (v: any) => {
-        clearMittEmitter();
         saveTmpDeviceList(v);
         saveDeviceList(v);
     };
@@ -52,7 +51,13 @@ const App: React.FC<{
             saveDeviceData(newList);
         } else {                                        // 设备状态发生了变化
             console.log('device stat change');
-            emitter.emit('data-update', newList);
+            // emitter.emit('data-update', newList);
+            for (let i = 0; i < newList.length; i++) {
+                if (!_.isEqual(newList[i], oldList[i])) {
+                    saveTmpDeviceList(newList);
+                    emitter.emit(`data-update-${newList[i].deviceId}`, newList[i]);
+                }
+            }
         }
     };
 
@@ -211,32 +216,7 @@ const App: React.FC<{
                 />
             );
         } else if (isSocketSwitchDevice(uiid)) {
-            const channels: { name: string; stat: 'on' | 'off' }[] = [];
-            let len = 0;
-            if (uiid === 1 && type === 'diy') {
-                // 单通道 DIY
-                channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.data1.switch });
-            } else if (uiid === 1 || uiid === 6 || uiid === 14) {
-                // 单通道非 DIY
-                channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.switch });
-            } else if (uiid === 77 || uiid === 78 || uiid === 112) {
-                // 单通道（多通道协议）
-                channels.push({ name: formatMessage({ id: 'device.card.channel.single' }), stat: data.params.switches[0].switch });
-            } else if (uiid === 2 || uiid === 7 || uiid === 113) {
-                // 双通道
-                len = 2;
-            } else if (uiid === 3 || uiid === 8 || uiid === 114) {
-                // 三通道
-                len = 3;
-            } else if (uiid === 4 || uiid === 9) {
-                // 四通道
-                len = 4;
-            }
-            for (let i = 0; i < len; i++)
-                if (data.tags) channels.push({ name: data.tags[i], stat: data.params.switches[i].switch });
-                else channels.push({ name: formatMessage({ id: 'device.card.channel.multi' }, { i: i + 1 }), stat: data.params.switches[i].switch });
-
-            return <SocketSwitchCard key={key} data={data} deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }} channels={channels} />;
+            return <SocketSwitchCard key={key} data={data} />;
         } else if (isTempDevice(uiid)) {
             return (
                 <TempCard
