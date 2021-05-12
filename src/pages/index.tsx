@@ -219,15 +219,7 @@ const App: React.FC<{
             return <SocketSwitchCard key={key} data={data} />;
         } else if (isTempDevice(uiid)) {
             return (
-                <TempCard
-                    key={deviceId}
-                    deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
-                    channel={{ stat: data.params.switch, name: formatMessage({ id: 'device.card.channel.single' }) }}
-                    unit={data.unit}
-                    mode={data.params.deviceType}
-                    humi={data.params.currentHumidity}
-                    temp={data.params.currentTemperature}
-                />
+                <TempCard key={deviceId} data={data} />
             );
         } else {
             return <UnsupportedCard key={key} data={data} />;

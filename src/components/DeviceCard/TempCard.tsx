@@ -1,5 +1,5 @@
 // 恒温恒湿改装件
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, message } from 'antd';
 import { useIntl } from 'umi';
 
@@ -9,37 +9,40 @@ import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
 import IconTune from '@/assets/svg/tune.svg';
-import { getIconByDeviceType } from '@/utils';
+import { deviceTypeMap, getIconByDeviceType, getMittEmitter } from '@/utils';
 import style from './card.less';
 import ConstantTempAndHumiModal from '../Modal/ConstantTempAndHumiModal';
 import { updateDeviceByWS } from '@/api';
 
-interface TempCardProps {
-    deviceData: {
-        online: boolean;
-        type: DeviceType;
-        name: string;
-        deviceId: string;
-        apikey: string;
-        model: string;
-        fwVersion: string;
-        disabled: boolean;
-        uiid: number;
-        params: any;
-    };
-    channel: {
-        stat: 'on' | 'off';
-        name: string;
-    };
-    mode: string;
-    unit: string; // 温度单位
-    humi: string;
-    temp: string;
+interface Channel {
+    stat: 'on' | 'off';
+    name: string;
 }
 
-const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, temp, unit }) => {
+interface Props {
+    data: any;
+}
+
+const emitter = getMittEmitter();
+
+const TempCard: React.FC<Props> = ({ data }) => {
     const { formatMessage } = useIntl();
-    const [modalVisible, setModalVisible] = useState(false);
+    const [deviceData, setDeviceData] = useState<any>(data);
+    const { deviceId, apikey, unit, params, online, deviceName } = deviceData;
+    const type = deviceTypeMap(deviceData.type);
+    const mode = params.deviceType;
+    const humi = params.currentHumidity;
+    const temp = params.currentTemperature;
+    const channel: Channel = { stat: params.switch, name: formatMessage({ id: 'device.card.channel.single' }) };
+
+    // 绑定更新事件
+    useEffect(() => {
+        emitter.on(`data-update-${deviceId}`, (data: any) => {
+            setDeviceData(data);
+        });
+    }, []);
+
+    /*const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
     }
@@ -52,9 +55,9 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
         params: deviceData.params,
         unit: unit,
         model: deviceData.model,
-    };
+    };*/
+
     const toggle = async (v: boolean) => {
-        const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -65,7 +68,6 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
     };
 
     const refresh = async () => {
-        const { apikey, deviceId } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -89,17 +91,17 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
 
     return (
         <div
-            className={deviceData.online ? style['card'] : style['card-disabled']}
+            className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
                 <div className={style['info-icon']}>
-                    <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
+                    <img src={getIconByDeviceType(type, online)} />
                 </div>
-                <span className={style['device-name']}>{deviceData.name}</span>
+                <span className={style['device-name']}>{deviceName || deviceId}</span>
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
@@ -108,7 +110,7 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                         onClick={async (e) => {
                             e.stopPropagation();
                             // console.log('you click refresh');
-                            if (deviceData.online) await refresh();
+                            if (online) await refresh();
                         }}
                     />
                 </div>
@@ -133,10 +135,10 @@ const TempCard: React.FC<TempCardProps> = ({ deviceData, channel, mode, humi, te
                         e.stopPropagation();
                         await toggle(v);
                     }}
-                    disabled={!deviceData.online || mode !== 'normal'}
+                    disabled={!online || mode !== 'normal'}
                 />
             </div>
-            <ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
+            {/*<ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} /> */}
         </div>
     );
 };

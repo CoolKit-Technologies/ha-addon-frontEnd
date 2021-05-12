@@ -23,8 +23,6 @@ const UnsupportedCard: React.FC<Props> = ({ data }) => {
         });
     }, []);
 
-    console.log(`${deviceId} now render`);
-
     return (
         <div className={style['card']}>
             <div className={style['info-switch']}>
