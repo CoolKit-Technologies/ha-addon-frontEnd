@@ -1,43 +1,45 @@
 // 功率检测插座
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, message } from 'antd';
+import { useIntl } from 'umi';
 
 import LiquidBall from '@/components/LiquidBall';
 import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
-import { getIconByDeviceType } from '@/utils';
+import { getIconByDeviceType, getMittEmitter } from '@/utils';
 import style from './card.less';
 import PowerDetectionSocketModal from '../Modal/PowerDetectionSocketModal';
 
 import { updateDeviceByWS } from '@/api';
 
-interface IW100CardProps {
-    deviceData: {
-        online: boolean;
-        type: DeviceType;
-        name: string;
-        deviceId: string;
-        apikey: string;
-        model: string;
-        fwVersion: string;
-        disabled: boolean;
-        uiid: number;
-        params: any;
-    };
-    channel: {
-        stat: 'on' | 'off';
-        name: string;
-    };
-    ballData: {
-        title: string;
-        content: string;
-    }[];
+interface Props {
+    data: any;
 }
 
-const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) => {
-    const [modalVisible, setModalVisible] = useState(false);
+const emitter = getMittEmitter();
+
+const IW100Card: React.FC<Props> = ({ data }) => {
+    const { formatMessage } = useIntl();
+    const [deviceData, setDeviceData] = useState<any>(data);
+    const { online, apikey, deviceId, params, deviceName } = deviceData;
+    const type = deviceData.type;
+    const ballData = [
+        { title: formatMessage({ id: 'device.card.power' }), content: `${params.power}W` },
+        { title: formatMessage({ id: 'device.card.voltage' }), content: `${params.voltage}V` },
+        { title: formatMessage({ id: 'device.card.current' }), content: `${params.current}A` },
+    ];
+    const channel = { stat: params.switch, name: formatMessage({ id: 'device.card.channel.single' }) };
+
+    // 绑定更新事件
+    useEffect(() => {
+        emitter.on(`data-update-${deviceId}`, (data: any) => {
+            setDeviceData(data);
+        });
+    }, []);
+
+    /*const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
     }
@@ -49,9 +51,9 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
         uiid: deviceData.uiid,
         params: deviceData.params,
         model: deviceData.model,
-    };
+    };*/
+
     const toggle = async (v: boolean) => {
-        const { apikey, deviceId } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -62,7 +64,6 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
     };
 
     const refresh = async () => {
-        const { apikey, deviceId } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -74,17 +75,17 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
 
     return (
         <div
-            className={deviceData.online ? style['card'] : style['card-disabled']}
+            className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
                 <div className={style['info-icon']}>
-                    <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
+                    <img src={getIconByDeviceType(type, online)} />
                 </div>
-                <span className={style['device-name']}>{deviceData.name}</span>
+                <span className={style['device-name']}>{deviceName || deviceId}</span>
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
@@ -93,7 +94,7 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                         onClick={async (e) => {
                             e.stopPropagation();
                             // console.log('you click refresh');
-                            if (deviceData.online) await refresh();
+                            if (online) await refresh();
                         }}
                     />
                 </div>
@@ -113,10 +114,10 @@ const IW100Card: React.FC<IW100CardProps> = ({ deviceData, channel, ballData }) 
                         e.stopPropagation();
                         await toggle(v);
                     }}
-                    disabled={!deviceData.online}
+                    disabled={!online}
                 />
             </div>
-            <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} destroyOnClose={true} device={modalProps} />
+            {/*<PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} destroyOnClose={true} device={modalProps} />*/}
         </div>
     );
 };

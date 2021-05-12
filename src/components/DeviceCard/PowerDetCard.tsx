@@ -1,41 +1,40 @@
 // 功率检测单通道插座
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, message } from 'antd';
 import { useIntl } from 'umi';
 
 import LiquidBall from '@/components/LiquidBall';
-import { DeviceType } from '@/types/device';
+import { Channel, DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
-import { getIconByDeviceType } from '@/utils';
+import { deviceTypeMap, getIconByDeviceType, getMittEmitter } from '@/utils';
 import style from './card.less';
 import PowerDetectionModal from '../Modal/PowerDetectionModal';
 import { updateDeviceByWS } from '@/api';
 
-interface PowerDetCardProps {
-    deviceData: {
-        online: boolean;
-        type: DeviceType;
-        name: string;
-        deviceId: string;
-        apikey: string;
-        model: string;
-        fwVersion: string;
-        disabled: boolean;
-        uiid: number;
-        params: any;
-    };
-    channel: {
-        stat: 'on' | 'off';
-        name: string;
-    };
-    power: string;
+interface Props {
+    data: any;
 }
 
-const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power }) => {
+const emitter = getMittEmitter();
+
+const PowerDetCard: React.FC<Props> = ({ data }) => {
     const { formatMessage } = useIntl();
-    const [modalVisible, setModalVisible] = useState(false);
+    const [deviceData, setDeviceData] = useState<any>(data);
+    const { deviceId, apikey, online, deviceName, params } = deviceData;
+    const type = deviceTypeMap(deviceData.type);
+    const power = `${params.power}W`;
+    const channel: Channel = { stat: params.switch, name: formatMessage({ id: 'device.card.channel.single' }) };
+
+    // 绑定更新事件
+    useEffect(() => {
+        emitter.on(`data-update-${deviceId}`, (data: any) => {
+            setDeviceData(data);
+        });
+    }, []);
+
+    /*const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
     }
@@ -47,9 +46,9 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
         uiid:deviceData.uiid,
         params: deviceData.params,
         model: deviceData.model,
-    };
+    };*/
+
     const toggle = async (v: boolean) => {
-        const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -60,7 +59,6 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
     };
 
     const refresh = async () => {
-        const { apikey, deviceId } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -72,17 +70,17 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
 
     return (
         <div
-            className={deviceData.online ? style['card'] : style['card-disabled']}
+            className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
                 <div className={style['info-icon']}>
-                    <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
+                    <img src={getIconByDeviceType(type, online)} />
                 </div>
-                <span className={style['device-name']}>{deviceData.name}</span>
+                <span className={style['device-name']}>{deviceName || deviceId}</span>
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
@@ -91,7 +89,7 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                         onClick={async (e) => {
                             e.stopPropagation();
                             // console.log('you click refresh');
-                            if (deviceData.online) await refresh();
+                            if (online) await refresh();
                         }}
                     />
                 </div>
@@ -108,10 +106,10 @@ const PowerDetCard: React.FC<PowerDetCardProps> = ({ deviceData, channel, power 
                         e.stopPropagation();
                         await toggle(v);
                     }}
-                    disabled={!deviceData.online}
+                    disabled={!online}
                 />
             </div>
-            <PowerDetectionModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
+            {/*<PowerDetectionModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />*/}
         </div>
     );
 };

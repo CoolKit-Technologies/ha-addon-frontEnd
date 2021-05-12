@@ -1,5 +1,5 @@
 // 多功能双通道电量检测开关
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, message } from 'antd';
 import { useIntl } from 'umi';
 
@@ -8,40 +8,40 @@ import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
-import { getIconByDeviceType } from '@/utils';
+import { deviceTypeMap, getIconByDeviceType, getMittEmitter } from '@/utils';
 import style from './card.less';
 import PowerDetectionSocketModal from '../Modal/PowerDetectionSocketModal';
 import { updateDeviceByWS } from '@/api';
 
-interface DualR3CardProps {
-    deviceData: {
-        online: boolean;
-        type: DeviceType;
-        name: string;
-        deviceId: string;
-        apikey: string;
-        model: string;
-        fwVersion: string;
-        disabled: boolean;
-        uiid: number;
-        params: any;
-    };
-    channel: {
-        stat: 'on' | 'off';
-        name: string;
-    };
-    voltage: string;
-    current: string;
-    ballData: {
-        title: string;
-        content: string;
-    }[];
-    i: number;
+interface Props {
+    data: any;
 }
 
-const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, current, ballData, i }) => {
+const emitter = getMittEmitter();
+
+const DualR3Card: React.FC<Props> = ({ data }) => {
     const { formatMessage } = useIntl();
-    const [modalVisible, setModalVisible] = useState(false);
+    const [deviceData, setDeviceData] = useState<any>(data);
+    const { apikey, deviceId, online, deviceName, params, tags } = deviceData;
+    const type = deviceTypeMap(deviceData.type);
+    const i = deviceData.xindex;
+    const voltage = params[`voltage_0${i}`] / 100 + 'V';
+    const current = params[`current_0${i}`] / 100 + 'A';
+    const ballData = [
+        { title: formatMessage({ id: 'device.card.real.power' }), content: params[`actPow_0${i}`] / 100 + 'W' },
+        { title: formatMessage({ id: 'device.card.reactive.power' }), content: params[`reactPow_0${i}`] / 100 + 'W' },
+        { title: formatMessage({ id: 'device.card.apparent.power' }), content: params[`apparentPow_0${i}`] / 100 + 'W' },
+    ];
+    const channel = { stat: params.switches[i].switch, name: tags ? tags[i] : formatMessage({ id: 'device.card.channel.multi' }, { i: i + 1 }) };
+
+    // 绑定更新事件
+    useEffect(() => {
+        emitter.on(`data-update-${deviceId}-${i}`, (data: any) => {
+            setDeviceData(data);
+        });
+    }, []);
+
+    /*const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
     }
@@ -54,9 +54,9 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
         uiid: deviceData.uiid,
         i: i,
         model: deviceData.model,
-    };
+    };*/
+
     const toggle = async (v: boolean) => {
-        const { deviceId, apikey } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -67,7 +67,6 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
     };
 
     const refresh = async (i: number) => {
-        const { apikey, deviceId } = deviceData;
         await updateDeviceByWS({
             apikey,
             id: deviceId,
@@ -82,17 +81,17 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
 
     return (
         <div
-            className={deviceData.online ? style['card'] : style['card-disabled']}
+            className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
                 <div className={style['info-icon']}>
-                    <img src={getIconByDeviceType(deviceData.type, deviceData.online)} />
+                    <img src={getIconByDeviceType(type, online)} />
                 </div>
-                <span className={style['device-name']}>{deviceData.name}</span>
+                <span className={style['device-name']}>{deviceName || deviceId}</span>
                 <div className={style['refresh-icon']}>
                     <img
                         src={IconRefresh}
@@ -101,7 +100,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                         onClick={async (e) => {
                             e.stopPropagation();
                             // console.log('you click refresh');
-                            if (deviceData.online) await refresh(i);
+                            if (online) await refresh(i);
                         }}
                     />
                 </div>
@@ -132,10 +131,10 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
                         e.stopPropagation();
                         await toggle(v);
                     }}
-                    disabled={!deviceData.online}
+                    disabled={!online}
                 />
             </div>
-            <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
+            {/*<PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />*/}
         </div>
     );
 };

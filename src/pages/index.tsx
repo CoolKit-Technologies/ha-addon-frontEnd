@@ -55,7 +55,14 @@ const App: React.FC<{
             for (let i = 0; i < newList.length; i++) {
                 if (!_.isEqual(newList[i], oldList[i])) {
                     saveTmpDeviceList(newList);
-                    emitter.emit(`data-update-${newList[i].deviceId}`, newList[i]);
+                    if (newList[i].uiid === 126) {      // DualR3 设备
+                        newList[i].xindex = 0;
+                        emitter.emit(`data-update-${newList[i].deviceId}-0`, newList[i]);
+                        newList[i].xindex = 1;
+                        emitter.emit(`data-update-${newList[i].deviceId}-1`, newList[i]);
+                    } else {
+                        emitter.emit(`data-update-${newList[i].deviceId}`, newList[i]);
+                    }
                 }
             }
         }
@@ -152,77 +159,21 @@ const App: React.FC<{
     }
 
     // 卡片渲染
+    let i = 0;  // 卡片计数
     const renderDeviceCard = (data: DeviceInfo) => {
-        const { uiid, deviceId, deviceName, online, apikey, model, params, disabled } = data;
-        const key = deviceId;
-        const type = deviceTypeMap(data.type);
-        const name = deviceName || deviceId;
-        const deviceData = {
-            deviceId,
-            online,
-            type,
-            name,
-            apikey,
-            model,
-            params,
-            disabled,
-            uiid,
-        };
+        const { key, uiid } = data;
         if (isDualR3(uiid)) {
-            const i = data.xindex;
-            const voltage = data.params[`voltage_0${i}`] / 100 + 'V';
-            const current = data.params[`current_0${i}`] / 100 + 'A';
-            const actPow = data.params[`actPow_0${i}`] / 100 + 'W';
-            const reactPow = data.params[`reactPow_0${i}`] / 100 + 'W';
-            const appPow = data.params[`apparentPow_0${i}`] / 100 + 'W';
-            const ballData = [
-                { title: formatMessage({ id: 'device.card.real.power' }), content: actPow },
-                { title: formatMessage({ id: 'device.card.reactive.power' }), content: reactPow },
-                { title: formatMessage({ id: 'device.card.apparent.power' }), content: appPow },
-            ];
-            return (
-                <DualR3Card
-                    key={deviceId}
-                    deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
-                    channel={{ stat: data.params.switches[i].switch, name: data.tags ? data.tags[i] : formatMessage({ id: 'device.card.channel.multi' }, { i: i + 1 }) }}
-                    voltage={voltage}
-                    current={current}
-                    ballData={ballData}
-                    i={i}
-                />
-            );
+            return <DualR3Card key={key} data={data} />;
         } else if (isIW100Device(uiid)) {
-            const { power, voltage, current } = data.params;
-            const ballData = [
-                { title: formatMessage({ id: 'device.card.power' }), content: `${power}W` },
-                { title: formatMessage({ id: 'device.card.voltage' }), content: `${voltage}V` },
-                { title: formatMessage({ id: 'device.card.current' }), content: `${current}A` },
-            ];
-            return (
-                <IW100Card
-                    key={key}
-                    deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
-                    channel={{ stat: data.params.switch, name: formatMessage({ id: 'device.card.channel.single' }) }}
-                    ballData={ballData}
-                />
-            );
+            return <IW100Card key={key + i} data={data} />;
         } else if (isPowerDet(uiid)) {
-            return (
-                <PowerDetCard
-                    key={deviceId}
-                    deviceData={{ fwVersion: data.params.fwVersion, ...deviceData }}
-                    channel={{ stat: data.params.switch, name: formatMessage({ id: 'device.card.channel.single' }) }}
-                    power={`${data.params.power}W`}
-                />
-            );
+            return <PowerDetCard key={key + i} data={data} />;
         } else if (isSocketSwitchDevice(uiid)) {
-            return <SocketSwitchCard key={key} data={data} />;
+            return <SocketSwitchCard key={key + i} data={data} />;
         } else if (isTempDevice(uiid)) {
-            return (
-                <TempCard key={deviceId} data={data} />
-            );
+            return <TempCard key={key + i} data={data} />;
         } else {
-            return <UnsupportedCard key={key} data={data} />;
+            return <UnsupportedCard key={key + i} data={data} />;
         }
     };
 

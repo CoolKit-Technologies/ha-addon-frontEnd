@@ -4,7 +4,7 @@ import { useIntl } from 'umi';
 import { Switch, message } from 'antd';
 import _ from 'lodash';
 
-import { DeviceType } from '@/types/device';
+import { DeviceType, Channel } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import { getIconByDeviceType } from '@/utils';
@@ -14,11 +14,6 @@ import ChannelModal from '../Modal/ChannelModal';
 import MultiDeviceSettingModal from '../Modal/MultiDeviceSettingModal';
 import DIYChannelModal from '../Modal/DIYChannelModal';
 import { getTmpDeviceList, getMittEmitter, deviceTypeMap } from '@/utils';
-
-interface Channel {
-    stat: 'on' | 'off';
-    name: string;
-}
 
 interface Props {
     data: any;

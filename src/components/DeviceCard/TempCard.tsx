@@ -4,7 +4,7 @@ import { Switch, message } from 'antd';
 import { useIntl } from 'umi';
 
 import ArcGauge from '@/components/ArcGauge';
-import { DeviceType } from '@/types/device';
+import { DeviceType, Channel } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
@@ -13,11 +13,6 @@ import { deviceTypeMap, getIconByDeviceType, getMittEmitter } from '@/utils';
 import style from './card.less';
 import ConstantTempAndHumiModal from '../Modal/ConstantTempAndHumiModal';
 import { updateDeviceByWS } from '@/api';
-
-interface Channel {
-    stat: 'on' | 'off';
-    name: string;
-}
 
 interface Props {
     data: any;

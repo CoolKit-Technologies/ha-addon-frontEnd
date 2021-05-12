@@ -23,3 +23,8 @@ export interface DeviceInfo {
     xindex: number;         // 给 Dual R3 排序用
     unit: string;           // 恒温恒湿设备的温度单位
 }
+
+export interface Channel {
+    stat: 'on' | 'off';
+    name: string;
+}
