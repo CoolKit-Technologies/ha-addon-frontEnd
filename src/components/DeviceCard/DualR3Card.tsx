@@ -85,7 +85,7 @@ const DualR3Card: React.FC<DualR3CardProps> = ({ deviceData, channel, voltage, c
             className={deviceData.online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                deviceData.online ? setModalVisible(true) : message.warn(formatMessage({ id: 'device.message.device.unavailable' }));
             }}
         >
             <div className={style['info-refresh']}>
