@@ -13,7 +13,7 @@ import style from './card.less';
 import ChannelModal from '../Modal/ChannelModal';
 import MultiDeviceSettingModal from '../Modal/MultiDeviceSettingModal';
 import DIYChannelModal from '../Modal/DIYChannelModal';
-import { getTmpDeviceList, getMittEmitter, deviceTypeMap } from '@/utils';
+import { getMittEmitter, deviceTypeMap } from '@/utils';
 
 interface Props {
     data: any;
@@ -22,30 +22,9 @@ interface Props {
 const emitter = getMittEmitter();
 
 const SocketSwitchCard: React.FC<Props> = ({ data }) => {
-    /*const [modalVisible, setModalVisible] = useState(false);
-    function onCancel() {
-        setModalVisible(false);
-    }
-    let modalProps = {
-        deviceId: deviceData.deviceId,
-        deviceName: deviceData.name,
-        apikey: deviceData.apikey,
-        uiid: deviceData.uiid,
-        type: deviceData.type,
-        key: deviceData.key,
-        channels: channels.map((item) => {
-            return {
-                name: item.name,
-            };
-        }),
-        params: deviceData.params,
-        disabled: deviceData.disabled,
-        model: deviceData.model,
-    };*/
-
     const { formatMessage } = useIntl();
     const [deviceData, setDeviceData] = useState<any>(data);
-    const { deviceId, online, deviceName, uiid, params, tags, apikey } = deviceData;
+    const { deviceId, online, deviceName, uiid, params, tags, apikey, key, disabled, model } = deviceData;
     const type = deviceTypeMap(deviceData.type);
 
     // 初始化通道数据
@@ -78,6 +57,28 @@ const SocketSwitchCard: React.FC<Props> = ({ data }) => {
             setDeviceData(data);
         });
     }, []);
+
+    // Modal 框的设置
+    const [modalVisible, setModalVisible] = useState(false);
+    let modalProps = {
+        deviceId,
+        deviceName,
+        apikey,
+        uiid,
+        type,
+        key,
+        channels: channels.map((item) => {
+            return {
+                name: item.name,
+            };
+        }),
+        params,
+        disabled,
+        model,
+    };
+    function onCancel() {
+        setModalVisible(false);
+    }
 
     // 开关一个通道
     const toggle = async (v: boolean, i: number) => {
@@ -134,7 +135,7 @@ const SocketSwitchCard: React.FC<Props> = ({ data }) => {
             className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('click card');
-                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-switch']}>
@@ -175,15 +176,15 @@ const SocketSwitchCard: React.FC<Props> = ({ data }) => {
                     );
                 })
             }
-            {/*channels.length === 1 ? (
-                deviceData.type !== 'diy' ? (
+            {channels.length === 1 ? (
+                type !== 'diy' ? (
                     <ChannelModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
                 ) : (
                     <DIYChannelModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
                 )
             ) : (
                 <MultiDeviceSettingModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
-            )*/}
+            )}
         </div>
     );
 };

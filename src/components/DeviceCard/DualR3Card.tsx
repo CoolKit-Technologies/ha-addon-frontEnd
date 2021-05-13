@@ -22,7 +22,7 @@ const emitter = getMittEmitter();
 const DualR3Card: React.FC<Props> = ({ data }) => {
     const { formatMessage } = useIntl();
     const [deviceData, setDeviceData] = useState<any>(data);
-    const { apikey, deviceId, online, deviceName, params, tags } = deviceData;
+    const { apikey, deviceId, online, deviceName, params, tags, disabled, uiid, model } = deviceData;
     const type = deviceTypeMap(deviceData.type);
     const i = deviceData.xindex;
     const voltage = params[`voltage_0${i}`] / 100 + 'V';
@@ -41,20 +41,20 @@ const DualR3Card: React.FC<Props> = ({ data }) => {
         });
     }, []);
 
-    /*const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
     }
     let modalProps = {
-        deviceId: deviceData.deviceId,
-        deviceName: deviceData.name,
-        apikey: deviceData.apikey,
-        disabled: deviceData.disabled,
-        params: deviceData.params,
-        uiid: deviceData.uiid,
-        i: i,
-        model: deviceData.model,
-    };*/
+        deviceId,
+        deviceName,
+        apikey,
+        disabled,
+        params,
+        uiid,
+        i,
+        model,
+    };
 
     const toggle = async (v: boolean) => {
         await updateDeviceByWS({
@@ -84,7 +84,7 @@ const DualR3Card: React.FC<Props> = ({ data }) => {
             className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
@@ -134,7 +134,7 @@ const DualR3Card: React.FC<Props> = ({ data }) => {
                     disabled={!online}
                 />
             </div>
-            {/*<PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />*/}
+            <PowerDetectionSocketModal visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
         </div>
     );
 };

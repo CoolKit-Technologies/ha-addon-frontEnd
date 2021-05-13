@@ -23,7 +23,7 @@ const emitter = getMittEmitter();
 const TempCard: React.FC<Props> = ({ data }) => {
     const { formatMessage } = useIntl();
     const [deviceData, setDeviceData] = useState<any>(data);
-    const { deviceId, apikey, unit, params, online, deviceName } = deviceData;
+    const { deviceId, apikey, unit, params, online, deviceName, disabled, uiid, model } = deviceData;
     const type = deviceTypeMap(deviceData.type);
     const mode = params.deviceType;
     const humi = params.currentHumidity;
@@ -37,20 +37,20 @@ const TempCard: React.FC<Props> = ({ data }) => {
         });
     }, []);
 
-    /*const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     function onCancel() {
         setModalVisible(false);
     }
     let modalProps = {
-        deviceId: deviceData.deviceId,
-        deviceName: deviceData.name,
-        apikey: deviceData.apikey,
-        disabled: deviceData.disabled,
-        uiid: deviceData.uiid,
-        params: deviceData.params,
-        unit: unit,
-        model: deviceData.model,
-    };*/
+        deviceId,
+        deviceName,
+        apikey,
+        disabled,
+        uiid,
+        params,
+        unit,
+        model,
+    };
 
     const toggle = async (v: boolean) => {
         await updateDeviceByWS({
@@ -89,7 +89,7 @@ const TempCard: React.FC<Props> = ({ data }) => {
             className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                // deviceData.online ? setModalVisible(true) : message.warn('设备不可用');
+                online ? setModalVisible(true) : message.warn('设备不可用');
             }}
         >
             <div className={style['info-refresh']}>
@@ -133,7 +133,7 @@ const TempCard: React.FC<Props> = ({ data }) => {
                     disabled={!online || mode !== 'normal'}
                 />
             </div>
-            {/*<ConstantTempAndHumiModal title={deviceData.name} visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} /> */}
+            <ConstantTempAndHumiModal title={deviceName || deviceId} visible={modalVisible} onCancel={onCancel} device={modalProps} destroyOnClose={true} />
         </div>
     );
 };

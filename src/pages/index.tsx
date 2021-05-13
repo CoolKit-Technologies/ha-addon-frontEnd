@@ -163,7 +163,7 @@ const App: React.FC<{
     const renderDeviceCard = (data: DeviceInfo) => {
         const { key, uiid } = data;
         if (isDualR3(uiid)) {
-            return <DualR3Card key={key} data={data} />;
+            return <DualR3Card key={key + i} data={data} />;
         } else if (isIW100Device(uiid)) {
             return <IW100Card key={key + i} data={data} />;
         } else if (isPowerDet(uiid)) {
