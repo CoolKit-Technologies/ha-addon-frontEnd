@@ -5,7 +5,18 @@ import { Card, Button, Menu, Dropdown } from 'antd';
 import { QuestionOutlined, ExportOutlined, MoreOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons';
 
 import { login, getDeviceList, logout, getHaToken, getCmsContent, getLanguage as getLanguageApi } from '@/api';
-import { isDualR3, isIW100Device, isPowerDet, isSocketSwitchDevice, isTempDevice, deviceTypeMap, getMittEmitter, saveTmpDeviceList, getTmpDeviceList, clearMittEmitter } from '@/utils';
+import {
+    isDualR3,
+    isIW100Device,
+    isPowerDet,
+    isSocketSwitchDevice,
+    isTempDevice,
+    deviceTypeMap,
+    getMittEmitter,
+    saveTmpDeviceList,
+    getTmpDeviceList,
+    clearMittEmitter,
+} from '@/utils';
 import { DeviceInfo } from '@/types/device';
 import SocketSwitchCard from '@/components/DeviceCard/SocketSwitchCard';
 import PowerDetCard from '@/components/DeviceCard/PowerDetCard';
@@ -43,23 +54,28 @@ const App: React.FC<{
     const handleMessage = (e: any) => {
         const newList = JSON.parse(e.data);
         const oldList = getTmpDeviceList();
-        console.log('sse -> deviceList', newList);
-        console.log('sse -> tpm device list', oldList);
-        console.log('sse -> emitter', emitter);
-        if (newList.length !== oldList.length) {        // 设备数量发生了变化（登录／登出）
-            console.log('device num change');
+        // console.log('sse -> deviceList', newList);
+        // console.log('sse -> tpm device list', oldList);
+        // console.log('sse -> emitter', emitter);
+        if (newList.length !== oldList.length) {
+            // 设备数量发生了变化（登录／登出）
+            // console.log('device num change');
             saveDeviceData(newList);
-        } else {                                        // 设备状态发生了变化
-            console.log('device stat change');
+        } else {
+            // 设备状态发生了变化
+            // console.log('device stat change');
             // emitter.emit('data-update', newList);
             for (let i = 0; i < newList.length; i++) {
                 if (!_.isEqual(newList[i], oldList[i])) {
                     saveTmpDeviceList(newList);
-                    if (newList[i].uiid === 126) {      // DualR3 设备
+                    if (newList[i].uiid === 126) {
+                        // DualR3 设备
+                        console.log('设备状态发生了变化');
                         newList[i].xindex = 0;
                         emitter.emit(`data-update-${newList[i].deviceId}-0`, newList[i]);
                         newList[i].xindex = 1;
                         emitter.emit(`data-update-${newList[i].deviceId}-1`, newList[i]);
+                        delete newList[i].xindex;
                     } else {
                         emitter.emit(`data-update-${newList[i].deviceId}`, newList[i]);
                     }
@@ -70,9 +86,9 @@ const App: React.FC<{
 
     useEffect(() => {
         getLanguageApi().then((res) => {
-            // getCmsContent(res.data).then((res) => {
-                // setCmsContent([res.data.top, ...res.data.push]);
-            // });
+            getCmsContent(res.data).then((res) => {
+                setCmsContent([res.data.top, ...res.data.push]);
+            });
         });
     }, [language]);
 
@@ -161,7 +177,7 @@ const App: React.FC<{
     }
 
     // 卡片渲染
-    let i = 0;  // 卡片计数
+    let i = 0; // 卡片计数
     const renderDeviceCard = (data: DeviceInfo) => {
         const { key, uiid } = data;
         if (isDualR3(uiid)) {
