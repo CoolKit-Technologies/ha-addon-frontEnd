@@ -21,7 +21,7 @@ const ChannelNameItem: React.FC<IChannelSetting> = (props) => {
         };
         const res = await updateChannelName(params);
         if (res.error === 0) {
-            message.success('修改成功');
+            message.success(formatMessage({ id: 'device.message.modify.success' }));
         }
         setAbled(true);
     }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useIntl } from 'umi';
 import { Line } from '@ant-design/charts';
 import { updateDeviceByWS } from '@/api';
 import { IComponentProps } from '../../types/interface/IModal';
@@ -16,6 +17,7 @@ interface IHistoryData {
 }
 
 const CKLine: React.FC<ICKLine> = (props) => {
+    const { formatMessage } = useIntl();
     const [allData, setAllData] = useState<Array<IHistoryData>>([]); //折线图的数据
     const [spin, setSpin] = useState(true);
 
@@ -67,7 +69,6 @@ const CKLine: React.FC<ICKLine> = (props) => {
 
             //获取这一天的时间对象 是今天的第前几天0，1，2，3，4，
             const tempDate = moment().subtract(i, 'days');
-
 
             //获取当前是几月，获取月份
             const monthNum = tempDate.get('month') + 1;
@@ -121,10 +122,9 @@ const CKLine: React.FC<ICKLine> = (props) => {
         },
         tooltip: {
             formatter: (datum: any) => {
-                return { name: '功率', value: datum.value + 'kwh' };
+                return { name: formatMessage({ id: 'device.card.power' }), value: datum.value + 'kWh' };
             },
         },
-
     };
     return (
         <div>

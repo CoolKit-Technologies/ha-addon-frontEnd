@@ -94,4 +94,7 @@ export default {
     'device.tab.history': 'History',
 
     'device.chart.consumed': 'Consumed',
+
+    'device.message.modify.success': 'Successfully Modified',
+    'device.message.device.unavailable': 'Device Unavailable',
 };

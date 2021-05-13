@@ -129,8 +129,10 @@ const App: React.FC<{
             ) : null}
             <Menu.Item className={styles['drop-down-item']}>
                 <QuestionOutlined style={{ fontSize: '16px' }} />
-                <div style={{ fontSize: '16px', padding: '0 12px' }} onClick={() => {}}>
-                    {formatMessage({ id: 'header.feedback' })}
+                <div style={{ fontSize: '16px', padding: '0 12px' }}>
+                    <a style={{ color: 'rgba(0, 0, 0, 0.85)' }} href='https://t.me/joinchat/RkXAHh47kmI2Y2Nl' target='_blank'>
+                        {formatMessage({ id: 'header.feedback' })}
+                    </a>
                 </div>
             </Menu.Item>
         </Menu>

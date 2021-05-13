@@ -89,7 +89,7 @@ const TempCard: React.FC<Props> = ({ data }) => {
             className={online ? style['card'] : style['card-disabled']}
             onClick={() => {
                 // console.log('you click card');
-                online ? setModalVisible(true) : message.warn('设备不可用');
+                online ? setModalVisible(true) : message.warn(formatMessage({ id: 'device.message.device.unavailable' }));
             }}
         >
             <div className={style['info-refresh']}>

@@ -21,7 +21,7 @@ const DeviceNameItem: React.FC<IComponentProps> = ({ deviceId, deviceName }) => 
         };
         const res = await updateDeviceName(params);
         if (res.error === 0) {
-            message.success('修改成功');
+            message.success(formatMessage({ id: 'device.message.modify.success' }));
         }
         setAbled(true);
     }

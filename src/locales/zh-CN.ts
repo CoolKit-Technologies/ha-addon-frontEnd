@@ -94,4 +94,7 @@ export default {
     'device.tab.history': '历史记录',
 
     'device.chart.consumed': '已使用',
+
+    'device.message.modify.success': '修改成功',
+    'device.message.device.unavailable': '设备不可用',
 };
