@@ -31,6 +31,8 @@ const DIYChannelModal: React.FC<TypeModalProps> = (props) => {
     return (
         <BaseModal {...props} title={props.device.deviceName}>
             {/* <IndicatorLEDItem {...getDIYProps()}></IndicatorLEDItem> */}
+            <DeviceNameItem {...getDIYProps()} ></DeviceNameItem>
+            <div style={{marginTop:'10px'}}></div>
             <InchingMode style={styles['mrgB10']} {...getDIYProps()}></InchingMode>
             <PowerState style={styles['mrgB10']} {...getDIYProps()}></PowerState>
             <EnableEntityItem {...getDIYProps()}></EnableEntityItem>

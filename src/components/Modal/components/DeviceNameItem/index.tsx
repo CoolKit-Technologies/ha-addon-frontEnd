@@ -4,9 +4,9 @@ import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { Input, message } from 'antd';
 import { IComponentProps } from '../../../../types/interface/IModal';
-import { updateDeviceName } from '@/api';
+import { updateDeviceName, controlDiyDevice } from '@/api';
 
-const DeviceNameItem: React.FC<IComponentProps> = ({ deviceId, deviceName }) => {
+const DeviceNameItem: React.FC<IComponentProps> = ({ deviceId, deviceName, type }) => {
     const [name, setDeviceName] = useState(''); // 设备名称
     const [id, setDeviceId] = useState(''); // 设备id
 
@@ -19,7 +19,18 @@ const DeviceNameItem: React.FC<IComponentProps> = ({ deviceId, deviceName }) => 
             id: id,
             newName: deviceName,
         };
-        const res = await updateDeviceName(params);
+        let res: any;
+        if (type === 'diy') {
+            res = await controlDiyDevice({
+                id,
+                type: 'deviceName',
+                params: {
+                    deviceName
+                }
+            });
+        } else {
+            res = await updateDeviceName(params);
+        }
         if (res.error === 0) {
             message.success(formatMessage({ id: 'device.message.modify.success' }));
         }
@@ -43,7 +54,7 @@ const DeviceNameItem: React.FC<IComponentProps> = ({ deviceId, deviceName }) => 
                     className={styles['ant-input']}
                     maxLength={14}
                 ></Input>
-                <div className={styles['input-actions']}>{abled ? <EditOutlined onClick={() => setAbled(false)} /> : <SaveOutlined onClick={() => saveDeviceName(name)} />}</div>
+                <div className={styles['input-actions']}>{abled ? <EditOutlined style={{fontSize:'18px'}} onClick={() => setAbled(false)} /> : <SaveOutlined style={{fontSize:'18px'}} onClick={() => saveDeviceName(name)} />}</div>
             </div>
         </div>
     );
