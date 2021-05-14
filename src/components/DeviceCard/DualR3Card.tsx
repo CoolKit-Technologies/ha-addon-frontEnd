@@ -63,6 +63,7 @@ const DualR3Card: React.FC<Props> = ({ data }) => {
             params: {
                 switches: [{ outlet: i, switch: v ? 'on' : 'off' }],
             },
+            useLanCtrl: type === 'lan'
         });
     };
 

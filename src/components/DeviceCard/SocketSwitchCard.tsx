@@ -97,6 +97,7 @@ const SocketSwitchCard: React.FC<Props> = ({ data }) => {
                 params: {
                     switch: v ? 'on' : 'off',
                 },
+                useLanCtrl: type === 'lan'
             });
         } else {
             await updateDeviceByWS({
@@ -110,6 +111,7 @@ const SocketSwitchCard: React.FC<Props> = ({ data }) => {
                         },
                     ],
                 },
+                useLanCtrl: type === 'lan'
             });
         }
     };
@@ -127,6 +129,7 @@ const SocketSwitchCard: React.FC<Props> = ({ data }) => {
             params: {
                 switches: statList,
             },
+            useLanCtrl: type === 'lan'
         });
     };
 

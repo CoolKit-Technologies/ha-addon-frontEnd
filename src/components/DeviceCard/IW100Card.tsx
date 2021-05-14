@@ -8,10 +8,9 @@ import { DeviceType } from '@/types/device';
 import IconFlashOn from '@/assets/svg/flash-on.svg';
 import IconFlashOff from '@/assets/svg/flash-off.svg';
 import IconRefresh from '@/assets/svg/refresh.svg';
-import { getIconByDeviceType, getMittEmitter } from '@/utils';
+import { getIconByDeviceType, getMittEmitter, deviceTypeMap } from '@/utils';
 import style from './card.less';
 import PowerDetectionSocketModal from '../Modal/PowerDetectionSocketModal';
-
 import { updateDeviceByWS } from '@/api';
 
 interface Props {
@@ -24,7 +23,7 @@ const IW100Card: React.FC<Props> = ({ data }) => {
     const { formatMessage } = useIntl();
     const [deviceData, setDeviceData] = useState<any>(data);
     const { online, apikey, deviceId, params, deviceName, disabled, uiid, model } = deviceData;
-    const type = deviceData.type;
+    const type = deviceTypeMap(deviceData.type);
     const ballData = [
         { title: formatMessage({ id: 'device.card.power' }), content: `${params.power}W` },
         { title: formatMessage({ id: 'device.card.voltage' }), content: `${params.voltage}V` },
@@ -60,6 +59,7 @@ const IW100Card: React.FC<Props> = ({ data }) => {
             params: {
                 switch: v ? 'on' : 'off',
             },
+            useLanCtrl: type === 'lan'
         });
     };
 

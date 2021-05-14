@@ -81,8 +81,13 @@ export async function updateDeviceByWS(params: {
     id: string; // 设备的 deviceid
     apikey: string; // 设备的 apikey
     params: any; // 控制参数
+    useLanCtrl?: boolean;   // 使用局域网控制
 }): Promise<HttpResponse> {
-    return await sendRequest('POST', `${apiPrefix}/devices/proxy2ws`, params);
+    if (params.useLanCtrl) {
+        return await sendRequest('POST', `${apiPrefix}/devices/lan`, params);
+    } else {
+        return await sendRequest('POST', `${apiPrefix}/devices/proxy2ws`, params);
+    }
 }
 
 export async function upgradeDeviceByWS(params: {

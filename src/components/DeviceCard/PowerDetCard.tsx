@@ -55,6 +55,7 @@ const PowerDetCard: React.FC<Props> = ({ data }) => {
             params: {
                 switch: v ? 'on' : 'off',
             },
+            useLanCtrl: type === 'lan'
         });
     };
 
