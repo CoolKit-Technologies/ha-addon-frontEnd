@@ -1,0 +1,27 @@
+.device-name-item {
+    .label {
+        color: #212121;
+        font-size: 12px;
+    }
+
+    .fake-input {
+        font-size: 12px;
+        line-height: 20px;
+        color: #727272;
+        display: grid;
+        grid-template-columns: auto 30px;
+        column-gap: 10px;
+
+        & > span {
+            border-bottom: 1px solid #e8e8e8;
+        }
+        :global {
+            .ant-input {
+                border-bottom: 1px solid #e8e8e8;
+                padding: 0;
+            }
+        }
+        .input-actions {
+        }
+    }
+}
