@@ -54,7 +54,7 @@ const App: React.FC<{
     const handleMessage = (e: any) => {
         const newList = JSON.parse(e.data);
         const oldList = getTmpDeviceList();
-        // console.log('sse -> deviceList', newList);
+        console.log('sse -> deviceList', newList);
         // console.log('sse -> tpm device list', oldList);
         // console.log('sse -> emitter', emitter);
         if (newList.length !== oldList.length) {

@@ -59,8 +59,9 @@ const PowerState: React.FC<IChannelSetting> = (props) => {
 
     return (
         <div className={`${styles['power-state']} ${props.style}`}>
+            {console.log(startup)}
             <span className={styles['span-font']}>{formatMessage({ id: 'device.poweron.state' })}</span>
-            <Select className={styles['select']} defaultValue={startup} onSelect={(value) => setPowerState(value)}>
+            <Select className={styles['select']} defaultValue={startup} value={startup} onSelect={(value) => setPowerState(value)}>
                 <Option value='on'>{formatMessage({ id: 'device.poweron.on' })}</Option>
                 <Option value='off'>{formatMessage({ id: 'device.poweron.off' })}</Option>
                 <Option value='stay'>{formatMessage({ id: 'device.poweron.stay' })}</Option>

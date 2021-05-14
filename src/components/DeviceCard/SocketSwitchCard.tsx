@@ -45,7 +45,7 @@ const SocketSwitchCard: React.FC<Props> = ({ data }) => {
     }
     for (let i = 0; i < len; i++) {
         if (tags) {
-            channels.push({ name: data.tags[i], stat: params.switches[i].switch });
+            channels.push({ name: tags[i], stat: params.switches[i].switch });
         } else {
             channels.push({ name: formatMessage({ id: 'device.card.channel.multi' }, { i: i + 1 }), stat: params.switches[i].switch });
         }
