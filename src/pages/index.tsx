@@ -75,7 +75,7 @@ const App: React.FC<{
                         emitter.emit(`data-update-${newList[i].deviceId}-0`, newList[i]);
                         newList[i].xindex = 1;
                         emitter.emit(`data-update-${newList[i].deviceId}-1`, newList[i]);
-                        delete newList[i].xindex;
+                        // delete newList[i].xindex;
                     } else {
                         emitter.emit(`data-update-${newList[i].deviceId}`, newList[i]);
                     }

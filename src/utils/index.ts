@@ -90,7 +90,7 @@ export function deviceTypeMap(type: number): DeviceType {
         return 'cloud';
 }
 
-// 阿甲的方法
+//  生成认证 URL
 export const genAuthorizeUrl = (hassUrl: string, clientId: string, redirectUrl: string, state?: string) => {
     let authorizeUrl = `${hassUrl}/auth/authorize?response_type=code&redirect_uri=${encodeURIComponent(redirectUrl)}`;
 

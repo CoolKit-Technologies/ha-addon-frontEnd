@@ -14,6 +14,11 @@ export async function getHaToken(params: { code: string; clientId: string }): Pr
     return await sendRequest('POST', `${apiPrefix}/user/auth`, params);
 }
 
+// auth 是否认证
+export async function isAuth() {
+    return await sendRequest('GET', `${apiPrefix}/user/isAuth`);
+}
+
 // 获取 CMS 内容
 export async function getCmsContent(language: string): Promise<HttpResponse> {
     let region, locale;
@@ -169,7 +174,7 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
         // 重定向到 HA 授权
         if (res.data.error === 302) {
             const origin = window.location.origin;
-            window.location.href = genAuthorizeUrl(res.data.data, origin, origin);
+            window.location.href = genAuthorizeUrl(res.data.data, origin, origin + '/loading');
         }
 
         if (res.data.error === 0) {

@@ -11,5 +11,8 @@ export default defineConfig({
         baseSeparator: '-',
     },
     exportStatic: {},
-    routes: [{ path: '/', component: '@/pages/index', title: 'eWeLink Smart Home' }],
+    routes: [
+        { path: '/', component: '@/pages/index', title: 'eWeLink Smart Home' },
+        { path: '/loading', component: '@/pages/loading', title: 'Loading...' }
+    ],
 });
