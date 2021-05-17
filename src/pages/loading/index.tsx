@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
-import { history } from 'umi';
+import { history, useIntl } from 'umi';
+import { Spin } from 'antd';
 
 import { isAuth, getHaToken } from '@/api';
+import style from './index.less';
 
 const Loading: React.FC = () => {
+    const { formatMessage } = useIntl();
     let timer: any;
 
     const checkIsAuth = () => {
@@ -32,8 +35,11 @@ const Loading: React.FC = () => {
     }, []);
 
     return (
-        <div>
-            <p>Please wait</p>
+        <div className={style['container']}>
+            <div className={style['wrapper']}>
+                <Spin size="large" />
+                <p className={style['hint-text']}>{formatMessage({ id: 'loading.message.hint' })}</p>
+            </div>
         </div>
     );
 };

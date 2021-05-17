@@ -97,4 +97,7 @@ export default {
 
     'device.message.modify.success': 'Successfully Modified',
     'device.message.device.unavailable': 'Device Unavailable',
+
+    // 加载页面
+    'loading.message.hint': 'Processing, please wait...',
 };

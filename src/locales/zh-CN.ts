@@ -97,4 +97,7 @@ export default {
 
     'device.message.modify.success': '修改成功',
     'device.message.device.unavailable': '设备不可用',
+
+    // 加载页面
+    'loading.message.hint': '正在处理中，请稍等...',
 };
