@@ -44,6 +44,8 @@ const App: React.FC<{
     const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; title: string; description: string }[]>([]);
     const { formatMessage } = useIntl();
     const [refreshing, setRefreshing] = useState(false);
+    // 由于没有路由，用这个变量标示页面是否加载
+    const [isLoading, setIsLoading] = useState(true);
 
     // 保存设备数据
     const saveDeviceData = (v: any) => {

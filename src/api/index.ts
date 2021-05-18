@@ -172,7 +172,7 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
     try {
         const res = await axios(config);
         // 重定向到 HA 授权
-        if (res.data.error === 302) {
+        if (res.data.error === 302 && window.location.search.indexOf('code=') === -1) {
             const origin = window.location.origin;
             window.location.href = genAuthorizeUrl(res.data.data, origin, origin + '/loading');
         }
