@@ -14,6 +14,7 @@ export default {
         language: 'en',
         deviceList: [] as DeviceInfo[],
         isLogin: false,
+        isLoading: true, // 由于没有路由，用这个变量标示页面是否加载
     } as TypeState,
     effects: {
         *getLanguage(_: any, { put, call }: any) {

@@ -24,6 +24,7 @@ import TempCard from '@/components/DeviceCard/TempCard';
 import DualR3Card from '@/components/DeviceCard/DualR3Card';
 import IW100Card from '@/components/DeviceCard/IW100Card';
 import UnsupportedCard from '@/components/DeviceCard/UnsupportedCard';
+import Loading from '@/components/Loading';
 import LoginTab from '@/components/LoginTab';
 import styles from './index.less';
 import { sseUrl } from '@/config/app';
@@ -39,13 +40,12 @@ const App: React.FC<{
     dispatch: Dispatch;
     isLogin: boolean;
     checkUserLogin: Function;
-}> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch, language }) => {
+    isLoading: boolean;
+}> = ({ isLogin, checkUserLogin, getLanguage, deviceList, saveDeviceList, dispatch, language, isLoading }) => {
     const [loginTabVisible, setLoginTabVisible] = useState(false);
     const [cmsContent, setCmsContent] = useState<{ pageid: string; link: string; thumbnail: string; title: string; description: string }[]>([]);
     const { formatMessage } = useIntl();
     const [refreshing, setRefreshing] = useState(false);
-    // 由于没有路由，用这个变量标示页面是否加载
-    const [isLoading, setIsLoading] = useState(true);
 
     // 保存设备数据
     const saveDeviceData = (v: any) => {
@@ -197,6 +197,10 @@ const App: React.FC<{
         }
     };
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
     return (
         <div>
             <header className={styles['header']}>
@@ -279,6 +283,7 @@ export default connect(
         language: global.language,
         deviceList: global.deviceList,
         isLogin: global.isLogin,
+        isLoading: global.isLoading,
     }),
     (dispatch) => ({
         getLanguage: () =>
