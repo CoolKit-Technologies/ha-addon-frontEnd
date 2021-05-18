@@ -10,9 +10,9 @@ export default defineConfig({
         antd: false,
         baseSeparator: '-',
     },
-    exportStatic: {},
+    // exportStatic: {},
     routes: [
         { path: '/', component: '@/pages/index', title: 'eWeLink Smart Home' },
-        { path: '/loading', component: '@/pages/loading', title: 'Loading...' }
+        { path: '/loading', component: '@/pages/loading', title: 'Loading...' },
     ],
 });

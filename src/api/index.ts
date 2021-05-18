@@ -86,7 +86,7 @@ export async function updateDeviceByWS(params: {
     id: string; // 设备的 deviceid
     apikey: string; // 设备的 apikey
     params: any; // 控制参数
-    useLanCtrl?: boolean;   // 使用局域网控制
+    useLanCtrl?: boolean; // 使用局域网控制
 }): Promise<HttpResponse> {
     if (params.useLanCtrl) {
         return await sendRequest('POST', `${apiPrefix}/devices/lan`, params);
@@ -173,8 +173,8 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
         const res = await axios(config);
         // 重定向到 HA 授权
         if (res.data.error === 302) {
-            const origin = window.location.origin;
-            window.location.href = genAuthorizeUrl(res.data.data, origin, origin + '/loading');
+            const { href } = window.location;
+            window.location.href = genAuthorizeUrl(res.data.data, href.replace(/\/$/, ''), href + 'loading');
         }
 
         if (res.data.error === 0) {
