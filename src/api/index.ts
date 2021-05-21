@@ -174,8 +174,7 @@ async function sendRequest(method: HttpMethod, url: string, params?: any): Promi
         // 重定向到 HA 授权
         if (res.data.error === 302 && window.location.search.indexOf('code=') === -1) {
             const { href } = window.location;
-            const tmp = href.replace(/\/$/, '');
-            window.location.href = genAuthorizeUrl(res.data.data, tmp, tmp);
+            window.location.href = genAuthorizeUrl(res.data.data, href, href);
         }
 
         if (res.data.error === 0) {

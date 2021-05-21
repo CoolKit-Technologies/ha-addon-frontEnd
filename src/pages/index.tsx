@@ -103,7 +103,7 @@ const App: React.FC<{
                 code = window.location.search.slice(index + 5);
                 getHaToken({
                     code,
-                    clientId: window.location.origin,
+                    clientId: window.location.href,
                 }).then(resolve);
             } else {
                 resolve(0);
