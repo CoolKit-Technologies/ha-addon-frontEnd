@@ -1,27 +1,32 @@
 {
-  "private": true,
-  "version": "0.1.0",
-  "scripts": {
-    "start": "umi dev",
-    "build": "umi build"
-  },
-  "dependencies": {
-    "@ant-design/charts": "^1.1.2",
-    "@ant-design/pro-layout": "^5.0.12",
-    "@material-ui/core": "^4.11.3",
-    "@umijs/preset-react": "1.x",
-    "@umijs/test": "^3.2.20",
-    "axios": "^0.21.1",
-    "lint-staged": "^10.0.7",
-    "mitt": "^2.1.0",
-    "moment": "^2.29.1",
-    "prettier": "^1.19.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "umi": "^3.2.20",
-    "yorkie": "^2.0.0"
-  },
-  "devDependencies": {
-    "@types/lodash": "^4.14.168"
-  }
+    "name": "hass-addon-fe",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build"
+    },
+    "dependencies": {
+        "ant-design-vue": "^2.1.6",
+        "axios": "^0.21.1",
+        "core-js": "^3.6.5",
+        "echarts": "^5.1.1",
+        "lodash": "^4.17.21",
+        "vue": "^3.0.0",
+        "vue-echarts": "^6.0.0-rc.5",
+        "vue-i18n": "^9.1.6",
+        "vue-router": "^4.0.0-0",
+        "vuex": "^4.0.0-0"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~4.5.0",
+        "@vue/cli-plugin-router": "~4.5.0",
+        "@vue/cli-plugin-typescript": "~4.5.0",
+        "@vue/cli-plugin-vuex": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "@vue/compiler-sfc": "^3.0.0",
+        "stylus": "^0.54.7",
+        "stylus-loader": "^3.0.2",
+        "typescript": "~4.1.5"
+    }
 }
