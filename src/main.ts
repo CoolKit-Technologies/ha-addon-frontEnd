@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
+import { Button } from 'ant-design-vue';
 
-import router from '@/router';
 import store from '@/store';
 import App from '@/App.vue';
 import { messages } from '@/locales';
@@ -14,8 +14,10 @@ const i18n = createI18n({
 
 const app = createApp(App);
 
-app.use(router);
 app.use(store);
 app.use(i18n);
+
+// ant-design-vue components
+app.use(Button);
 
 app.mount('#app');
