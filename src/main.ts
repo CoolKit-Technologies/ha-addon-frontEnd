@@ -1,6 +1,9 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
-import { Button } from 'ant-design-vue';
+import {
+    Button,
+    Card
+} from 'ant-design-vue';
 
 import store from '@/store';
 import App from '@/App.vue';
@@ -19,5 +22,6 @@ app.use(i18n);
 
 // ant-design-vue components
 app.use(Button);
+app.use(Card);
 
 app.mount('#app');

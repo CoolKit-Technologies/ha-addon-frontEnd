@@ -1,7 +1,7 @@
 <template>
     <div class="main-content">
         <intro-bar />
-        <p>hello, world</p>
+        <device-grid />
     </div>
 </template>
 
@@ -9,12 +9,14 @@
 import { defineComponent } from 'vue';
 
 import IntroBar from '@/components/IntroBar.vue';
+import DeviceGrid from '@/components/DeviceGrid.vue';
 
 export default defineComponent({
     name: 'MainContent',
 
     components: {
-        IntroBar
+        IntroBar,
+        DeviceGrid
     }
 });
 </script>

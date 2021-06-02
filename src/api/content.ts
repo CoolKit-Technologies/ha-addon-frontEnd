@@ -12,5 +12,5 @@ export async function getContent() {
         + 'locale=' + 'en-us' + '&'
         + 'category=' + CATEGORY;
 
-    // await axios.get(url);
+    await axios.get(url);
 }
