@@ -2,7 +2,9 @@ import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
 import {
     Button,
-    Card
+    Card,
+    Dropdown,
+    Menu
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -23,5 +25,7 @@ app.use(i18n);
 // ant-design-vue components
 app.use(Button);
 app.use(Card);
+app.use(Dropdown);
+app.use(Menu);
 
 app.mount('#app');
