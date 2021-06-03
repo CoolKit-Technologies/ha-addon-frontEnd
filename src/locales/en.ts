@@ -1,5 +1,7 @@
 export const en = {
-    foo: {
-        bar: 'hello, world'
+    common: {
+        error: {
+            getcontent: 'Get content failed'
+        }
     }
 };

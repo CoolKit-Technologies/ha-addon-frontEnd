@@ -1,19 +1,35 @@
 <template>
-    <a-card hoverable>
+    <a-card hoverable @click="open">
         <template #cover>
             <img
                 alt="introduction card picture"
-                src="https://appcms.coolkit.cn/wp-content/uploads/2021/04/Purple-and-Cream-Illustrated-Technology-Business-Plan-Presentation-1.png"
+                :src="cardData.thumbnail"
             />
         </template>
-        <a-card-meta title="the quick brown fox jumps over the lazy dog there is no doubt that the job is awesome" />
+        <a-card-meta :title="cardData.title" />
     </a-card>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+
+import { openWindow } from '@/utils/etc';
+import { Content } from '@/api/content';
 
 export default defineComponent({
-    name: 'IntroCard'
+    name: 'IntroCard',
+
+    props: {
+        cardData: {
+            type: Object as PropType<Content>,
+            required: true
+        }
+    },
+
+    methods: {
+        open() {
+            openWindow(this.cardData.link);
+        }
+    }
 });
 </script>

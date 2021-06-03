@@ -1,28 +1,45 @@
 <template>
     <div class="intro-bar">
-        <intro-card class="intro-card" />
-        <intro-card class="intro-card" />
-        <intro-card class="intro-card" />
-        <intro-card class="intro-card" />
-        <intro-card class="intro-card" />
+        <intro-card
+            class="intro-card"
+            v-for="card in cardList"
+            :key="card.pageid"
+            :cardData="card"
+        />
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { message } from 'ant-design-vue';
 
-import { getContent } from '@/api/content';
+import { getContent, Content } from '@/api/content';
 import IntroCard from '@/components/IntroCard.vue';
 
 export default defineComponent({
     name: 'IntroBar',
 
+    data() {
+        return {
+            cardList: []
+        } as {
+            cardList: Array<Content>
+        };
+    },
+
     components: {
         IntroCard
     },
 
-    created() {
-        getContent();
+    async created() {
+        const res = await getContent();
+        if (res.error === 0) {
+            const { top, push } = res.data;
+            this.cardList.push(top);
+            this.cardList.push(...push);
+        } else {
+            message.error(this.$t('common.error.getcontent'));
+        }
     }
 });
 </script>

@@ -1,5 +1,7 @@
 export const zh = {
-    foo: {
-        bar: '你好，世界'
+    common: {
+        error: {
+            getcontent: '获取内容出错'
+        }
     }
 };
