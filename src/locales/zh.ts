@@ -9,14 +9,23 @@ export const zh = {
             feedback: '反馈'
         },
         slogan: '一切从连接开始 又连接一切',
-        downloadapp: ''
+        downloadapp: '马上下载易微联 App'
     },
 
     form: {
         placeholder: {
-            country: '',
-            username: '',
-            password: ''
+            country: '国家',
+            username: '手机 / 邮箱',
+            password: '密码'
+        },
+        error: {
+            nocountry: '请选择您的国家',
+            nousername: '请输入您的手机号或邮箱',
+            nopassword: '请输入您的密码',
+            login: '登录成败，{ msg }'
+        },
+        success: {
+            login: '登录成功'
         }
     }
 };

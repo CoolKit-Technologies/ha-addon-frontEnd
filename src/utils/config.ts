@@ -18,6 +18,7 @@ export function getConfig() {
             sseUrl: 'api/stream',
             timeout: 10000,
             downloadAppUrl: 'http://www.ewelink.cc/',
+            apiPrefix: 'api',
         };
     } else {
         return {
@@ -25,6 +26,7 @@ export function getConfig() {
             sseUrl: host + '/api/stream',
             timeout: 2000,
             downloadAppUrl: 'http://www.ewelink.cc/',
+            apiPrefix: 'api',
         };
     }
 }

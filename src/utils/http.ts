@@ -5,7 +5,7 @@ import { getConfig } from './config';
 
 type HttpMethod = 'GET' | 'POST';
 
-interface HttpResponse {
+export interface HttpResponse {
     error: number;
     msg: string;
     data: any;
@@ -21,7 +21,7 @@ export async function sendHttpRequest(
     method: HttpMethod,
     url: string,
     params?: any
-) {
+): Promise<HttpResponse> {
     const { baseUrl, timeout } = getConfig();
     const config: AxiosRequestConfig = {
         baseURL: baseUrl,
@@ -38,6 +38,30 @@ export async function sendHttpRequest(
         }
     }
 
-    console.log('axios config', config);
-    axios(config);
+    try {
+        const res = await axios(config);
+
+        if (res.status === 200 && res.data.error === 0) {
+            return {
+                error: 0,
+                msg: 'success',
+                data: res.data.data
+            };
+        } else {
+            console.error('http request failed');
+            const { error, msg, data } = res.data;
+            return {
+                error,
+                msg,
+                data
+            };
+        }
+    } catch (e) {
+        console.error('http request error');
+        return {
+            error: -1,
+            msg: 'error occur',
+            data: {}
+        };
+    }
 }
