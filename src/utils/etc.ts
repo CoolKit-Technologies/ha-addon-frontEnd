@@ -443,7 +443,7 @@ export function openWindow(url: string) {
  * @param lang Display language
  * @returns Region Map
  */
-export function getRegionMap(lang: 'en' | 'zh') {
+export function getRegionMap(lang: string) {
     if (lang === 'en') {
         return regionMap_en;
     } else {

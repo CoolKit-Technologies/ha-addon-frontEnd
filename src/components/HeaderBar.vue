@@ -145,4 +145,5 @@ $color-white = #ffffff
 
     .item-wrapper__text
         flex 1
+        margin-right 14px
 </style>

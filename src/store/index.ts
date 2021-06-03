@@ -8,14 +8,17 @@ export default createStore({
         isLogin: false,
 
         // Component 'ModalBox' visibility
-        modalVisible: true
+        modalVisible: false,
+
+        // Locale for i18n: 'en' or 'zh'
+        locale: 'en'
     },
 
     getters: {
-        regionMap() {
+        regionMap(state) {
             // TODO: lang should be set by state
             const result = [];
-            const res = getRegionMap('en');
+            const res = getRegionMap(state.locale);
             for (let i = 0; i < res.length; i++) {
                 const [code, name] = Object.entries(res[i])[0];
                 result.push({ i, code, name });
@@ -30,6 +33,9 @@ export default createStore({
         },
         setModalVisible(state, v) {
             state.modalVisible = v;
+        },
+        setLocale(state, v) {
+            state.locale = v;
         }
     }
 });

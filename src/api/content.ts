@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import { sendHttpRequest, HttpResponse } from '@/utils/http';
+import { getConfig } from '@/utils/config';
+
 export interface Content {
     description: string;
     link: string;
@@ -11,6 +14,8 @@ export interface Content {
 const BASE_URL = 'https://appcms.coolkit.cn/appcms-service/v2/batch.json';
 const PROJECT = 'home-assistant';
 const CATEGORY = '[%22top%22,%22push%22]';
+
+const { apiPrefix } = getConfig();
 
 /**
  * Get content data
@@ -48,4 +53,12 @@ export async function getContent() {
             data: {}
         };
     }
+}
+
+/**
+ * Get Hass locale
+ * @returns Hass locale
+ */
+export async function getLocale(): Promise<HttpResponse> {
+    return await sendHttpRequest('GET', apiPrefix + '/language');
 }
