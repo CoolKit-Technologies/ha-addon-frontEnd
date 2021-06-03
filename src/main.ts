@@ -4,7 +4,11 @@ import {
     Button,
     Card,
     Dropdown,
-    Menu
+    Menu,
+    Modal,
+    Select,
+    Input,
+    Typography
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -27,5 +31,9 @@ app.use(Button);
 app.use(Card);
 app.use(Dropdown);
 app.use(Menu);
+app.use(Modal);
+app.use(Select);
+app.use(Input);
+app.use(Typography);
 
 app.mount('#app');

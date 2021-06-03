@@ -17,12 +17,14 @@ export function getConfig() {
             baseUrl: '',
             sseUrl: 'api/stream',
             timeout: 10000,
+            downloadAppUrl: 'http://www.ewelink.cc/',
         };
     } else {
         return {
             baseUrl: host,
             sseUrl: host + '/api/stream',
             timeout: 2000,
+            downloadAppUrl: 'http://www.ewelink.cc/',
         };
     }
 }
