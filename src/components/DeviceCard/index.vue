@@ -1,5 +1,6 @@
 <template>
     <div class="device-card" @click="openModalBox">
+        <card-header :cardData="cardData" />
         <span>card id: {{ cardData.cardId }}</span>
     </div>
 </template>
@@ -8,10 +9,14 @@
 import { defineComponent } from 'vue';
 import { mapActions } from 'vuex';
 
-// TODO: add DeviceCardHeader, DeviceCardFooter
+import CardHeader from './CardHeader.vue';
 
 export default defineComponent({
     name: 'DeviceCard',
+
+    components: {
+        CardHeader
+    },
 
     props: {
         cardData: {
@@ -23,9 +28,7 @@ export default defineComponent({
         openModalBox() {
             this.openModal({
                 type: 'device',
-                params: {
-                    foo: 'bar'
-                }
+                params: this.cardData
             });
         },
         ...mapActions(['openModal'])

@@ -8,8 +8,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
+import _ from 'lodash';
 
+import { getConfig } from '@/utils/config';
 import { getLocale } from '@/api/content';
 import HeaderBar from '@/components/HeaderBar.vue';
 import MainContent from '@/components/MainContent.vue';
@@ -24,7 +26,17 @@ export default defineComponent({
         ModalBox
     },
 
+    data() {
+        return {
+            source: null    // SSE source
+        } as {
+            source: any;
+        };
+    },
+
     async created() {
+        const { sseUrl, debug } = getConfig();
+
         // Set locale
         const res = await getLocale();
         if (res.error === 0 && res.data === 'zh-Hans') {
@@ -34,10 +46,39 @@ export default defineComponent({
             this.$root!.$i18n.locale = 'en';
             this.setLocale('en');
         }
+
+        // Set SSE
+        this.source = new EventSource(sseUrl);
+        this.source.addEventListener('open', () => {
+            if (debug) {
+                console.log('SSE connect success');
+            }
+        });
+        this.source.addEventListener('message', (e: any) => {
+            const newList = JSON.parse(e.data);
+            const oldList = _.cloneDeep(this.originDeviceList);
+            if (debug) {
+                console.log('SSE message received, event data:');
+                console.log(newList, oldList);
+                console.log('new list === old list:', _.isEqual(newList, oldList));
+            }
+            if (!_.isEqual(newList, oldList)) {
+                this.setOriginDeviceList(newList);
+            }
+        });
+    },
+
+    beforeUnmount() {
+        // Close SSE when page reload or tear down
+        this.source.close();
+    },
+
+    computed: {
+        ...mapState(['originDeviceList'])
     },
 
     methods: {
-        ...mapMutations(['setLocale'])
+        ...mapMutations(['setLocale', 'setOriginDeviceList'])
     }
 });
 </script>

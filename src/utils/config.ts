@@ -20,6 +20,7 @@ export function getConfig() {
             downloadAppUrl: 'http://www.ewelink.cc/',
             apiPrefix: 'api',
             feedbackUrl: 'https://t.me/joinchat/RkXAHh47kmI2Y2Nl',
+            debug: false,
         };
     } else {
         return {
@@ -29,6 +30,7 @@ export function getConfig() {
             downloadAppUrl: 'http://www.ewelink.cc/',
             apiPrefix: 'api',
             feedbackUrl: 'https://t.me/joinchat/RkXAHh47kmI2Y2Nl',
+            debug: true,
         };
     }
 }
