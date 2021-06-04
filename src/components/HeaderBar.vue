@@ -2,12 +2,12 @@
     <div class="header-bar">
         <h1 class="header-bar__title">eWeLink Smart Home</h1>
         <div class="header-bar__action">
-            <a-button @click="toggle">toggle</a-button>
             <a-button
                 v-if="!isLogin"
                 class="signin-btn"
                 size="large"
                 shape="round"
+                @click="openModalBox"
             >
                 <template #icon>
                     <user-outlined />
@@ -28,7 +28,7 @@
                             </div>
                         </a-menu-item>
                         <a-menu-item>
-                            <div class="item-wrapper">
+                            <div class="item-wrapper" @click="toFeedbackPage">
                                 <question-outlined class="item-wrapper__icon" />
                                 <span class="item-wrapper__text">
                                     {{ $t('common.text.feedback') }}
@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import {
     UserOutlined,
     SyncOutlined,
@@ -53,6 +53,9 @@ import {
     QuestionOutlined
 } from '@ant-design/icons-vue';
 import _ from 'lodash';
+
+import { getConfig } from '@/utils/config';
+import { openWindow } from '@/utils/etc';
 
 export default defineComponent({
     name: 'HeaderBar',
@@ -82,11 +85,17 @@ export default defineComponent({
                 this.spin = false;
             }, 2000);
         },
-        toggle() {
-            console.log(this);
-            this.setIsLogin(!this.isLogin);
+        toFeedbackPage() {
+            openWindow(getConfig().feedbackUrl);
         },
-        ...mapMutations(['setIsLogin'])
+        openModalBox() {
+            this.openModal({
+                type: 'login',
+                params: null
+            });
+        },
+        ...mapMutations(['setIsLogin']),
+        ...mapActions(['openModal'])
     },
 
     mounted() {
