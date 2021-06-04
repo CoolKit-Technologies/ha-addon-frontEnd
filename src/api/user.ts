@@ -1,5 +1,5 @@
 // user api
-import { sendHttpRequest, HttpResponse } from '@/utils/http';
+import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
 
 const { apiPrefix } = getConfig();
@@ -14,6 +14,6 @@ export async function login(params: {
     email?: string;
     password: string;
     lang: string;
-}): Promise<HttpResponse> {
+}) {
     return await sendHttpRequest('POST', apiPrefix + '/user/login', params);
 }

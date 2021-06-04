@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { sendHttpRequest, HttpResponse } from '@/utils/http';
+import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
 
 export interface Content {
@@ -59,6 +59,6 @@ export async function getContent() {
  * Get Hass locale
  * @returns Hass locale
  */
-export async function getLocale(): Promise<HttpResponse> {
+export async function getLocale() {
     return await sendHttpRequest('GET', apiPrefix + '/language');
 }

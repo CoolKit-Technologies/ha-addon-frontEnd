@@ -1,13 +1,11 @@
 <template>
-    <div class="device-ctrl">
-        <p>you should see a button here</p>
-    </div>
+    <div class="card-icon"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    name: 'DeviceCtrl'
+    name: 'CardIcon'
 });
 </script>

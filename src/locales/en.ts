@@ -1,7 +1,8 @@
 export const en = {
     common: {
         error: {
-            getcontent: 'Get content failed'
+            getcontent: 'Get content failed',
+            getdevice: 'Get device list failed'
         },
         text: {
             signin: 'Sign in',

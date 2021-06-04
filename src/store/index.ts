@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import _ from 'lodash';
 
 import { getRegionMap } from '@/utils/etc';
 
@@ -15,17 +16,40 @@ export default createStore({
         modalParams: null,
 
         // Locale for i18n: 'en' or 'zh'
-        locale: 'en'
+        locale: 'en',
+
+        // Origin device list
+        originDeviceList: []
     },
 
     getters: {
         regionMap(state) {
-            // TODO: lang should be set by state
             const result = [];
             const res = getRegionMap(state.locale);
             for (let i = 0; i < res.length; i++) {
                 const [code, name] = Object.entries(res[i])[0];
                 result.push({ i, code, name });
+            }
+            return result;
+        },
+        deviceCardList(state) {
+            const origin = state.originDeviceList as any[];
+            const result = [];
+            for (let i = 0; i < origin.length; i++) {
+                if (origin[i].uiid === 126) {
+                    // When a device UIID is 126, it should be renderred
+                    // in two cards form.
+                    for (let j = 0; j < 2; j++) {
+                        const item = _.cloneDeep(origin[i]);
+                        item.cardId = `${i}_${origin[i].key}_${j}`;
+                        item.cardIndex = j;
+                        result.push(item);
+                    }
+                } else {
+                    const item = _.cloneDeep(origin[i]);
+                    item.cardId = `${i}_${origin[i].key}`;
+                    result.push(item);
+                }
             }
             return result;
         }
@@ -46,6 +70,9 @@ export default createStore({
         },
         setLocale(state, v) {
             state.locale = v;
+        },
+        setOriginDeviceList(state, v) {
+            state.originDeviceList = v;
         }
     },
 

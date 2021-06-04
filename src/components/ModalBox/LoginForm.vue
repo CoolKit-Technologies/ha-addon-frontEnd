@@ -7,7 +7,7 @@
             />
             <span class="slogan">{{ $t('common.slogan') }}</span>
         </div>
-        <div class="login-form">
+        <form class="login-form">
             <a-select
                 style="width: 100%; margin-bottom: 14px;"
                 :placeholder="$t('form.placeholder.country')"
@@ -43,7 +43,7 @@
             >
                 {{ $t('common.text.signin') }}
             </a-button>
-        </div>
+        </form>
         <div class="download">
             <a-typography-link
                 :href="downloadAppUrl"
@@ -136,7 +136,7 @@ export default defineComponent({
 <style lang="stylus" scoped>
 .container
     background-color #ddd
-    & > div:not(:last-child)
+    & > *:not(:last-child)
         margin-bottom 20px
 
     .logo

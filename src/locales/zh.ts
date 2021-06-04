@@ -1,7 +1,8 @@
 export const zh = {
     common: {
         error: {
-            getcontent: '获取内容出错'
+            getcontent: '获取内容出错',
+            getdevice: '获取设备列表出错'
         },
         text: {
             signin: '登录',
