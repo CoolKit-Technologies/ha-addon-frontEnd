@@ -46,6 +46,8 @@ export default defineComponent({
             this.$root!.$i18n.locale = 'en';
             this.setLocale('en');
         }
+        // TODO: uncomment for test
+        return;
 
         // Set SSE
         this.source = new EventSource(sseUrl);

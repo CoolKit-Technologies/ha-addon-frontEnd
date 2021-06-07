@@ -450,3 +450,35 @@ export function getRegionMap(lang: string) {
         return regionMap_zh;
     }
 }
+
+/**
+ * If device was supported
+ * @param uiid Device UIID
+ * @returns If device was supported
+ */
+export function isSupportedDevice(uiid: number) {
+    const uiids = [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        14,
+        15,
+        22,
+        32,
+        77,
+        78,
+        104,
+        107,
+        112,
+        113,
+        114,
+        126
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}

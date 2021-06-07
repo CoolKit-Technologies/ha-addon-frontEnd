@@ -19,7 +19,15 @@ export default createStore({
         locale: 'en',
 
         // Origin device list
-        originDeviceList: []
+        originDeviceList: [{
+            // TODO: empty this array
+            uiid: 5,
+            online: true,
+            type: 1,
+            deviceId: '1000af38',
+            deviceName: 'Super Power',
+            key: 'xsx',
+        }]
     },
 
     getters: {

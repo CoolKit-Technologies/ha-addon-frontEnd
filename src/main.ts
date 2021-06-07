@@ -8,7 +8,8 @@ import {
     Modal,
     Select,
     Input,
-    Typography
+    Typography,
+    Switch
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -35,5 +36,6 @@ app.use(Modal);
 app.use(Select);
 app.use(Input);
 app.use(Typography);
+app.use(Switch);
 
 app.mount('#app');

@@ -32,7 +32,8 @@ export default defineComponent({
     },
 
     async created() {
-        // return;
+        // TODO: uncomment for test
+        return;
         const res = await getContent();
         if (res.error === 0) {
             const { top, push } = res.data;
