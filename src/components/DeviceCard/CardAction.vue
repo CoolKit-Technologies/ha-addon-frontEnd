@@ -8,6 +8,7 @@
         />
         <a-switch
             v-else-if="hasAllToggleFunc"
+            @change="toggle"
         />
     </div>
 </template>
@@ -68,6 +69,10 @@ export default defineComponent({
             setTimeout(() => {
                 this.spin = false;
             }, 2000);
+        },
+        toggle(v: boolean, e: any) {
+            // TODO: send request
+            e.stopPropagation();
         }
     },
 

@@ -1,7 +1,7 @@
 <template>
     <div class="device-card" @click="openModalBox">
         <card-header :cardData="cardData" />
-        <span>card id: {{ cardData.cardId }}</span>
+        <card-content :cardData="cardData" />
     </div>
 </template>
 
@@ -9,13 +9,16 @@
 import { defineComponent } from 'vue';
 import { mapActions } from 'vuex';
 
+import { isSupportedDevice } from '@/utils/etc';
 import CardHeader from './CardHeader.vue';
+import CardContent from './CardContent.vue';
 
 export default defineComponent({
     name: 'DeviceCard',
 
     components: {
-        CardHeader
+        CardHeader,
+        CardContent
     },
 
     props: {
@@ -26,10 +29,13 @@ export default defineComponent({
 
     methods: {
         openModalBox() {
-            this.openModal({
-                type: 'device',
-                params: this.cardData
-            });
+            const { uiid } = this.cardData as any;
+            if (isSupportedDevice(uiid)) {
+                this.openModal({
+                    type: 'device',
+                    params: this.cardData
+                });
+            }
         },
         ...mapActions(['openModal'])
     }

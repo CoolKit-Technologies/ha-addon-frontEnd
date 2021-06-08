@@ -28,5 +28,10 @@ export const en = {
         success: {
             login: 'Login success'
         }
+    },
+
+    card: {
+        unsupport: 'Device is not supported currently',
+        channel: 'Channel'
     }
 };

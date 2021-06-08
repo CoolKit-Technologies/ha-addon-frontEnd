@@ -430,6 +430,13 @@ const regionMap_en = [
     { '+263': 'Zimbabwe' },
 ];
 
+export const SW_SOCK_UIID = [
+    1, 2, 3, 4,
+    6, 7, 8, 9,
+    77, 78, 107, 112,
+    113, 114
+];
+
 /**
  * Open a new browser window
  * @param url New page URL

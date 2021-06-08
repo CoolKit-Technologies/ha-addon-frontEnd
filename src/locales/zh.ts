@@ -28,5 +28,10 @@ export const zh = {
         success: {
             login: '登录成功'
         }
+    },
+
+    card: {
+        unsupport: '设备暂不支持',
+        channel: '通道'
     }
 };
