@@ -32,6 +32,15 @@ export const en = {
 
     card: {
         unsupport: 'Device is not supported currently',
-        channel: 'Channel'
+        channel: 'Channel',
+        humidity: 'Humidity',
+        temperature: 'Temperature',
+        dry: 'Dry',
+        wet: 'Wet',
+        cold: 'Cold',
+        cool: 'Cool',
+        warm: 'Warm',
+        hot: 'Hot',
+        mode: 'Mode'
     }
 };

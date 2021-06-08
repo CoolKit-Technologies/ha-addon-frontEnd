@@ -489,3 +489,17 @@ export function isSupportedDevice(uiid: number) {
     ];
     return uiids.indexOf(uiid) !== -1;
 }
+
+/**
+ * Temperature conversion
+ * @param t Cel temperature
+ * @returns Fahr temperature
+ */
+export function tempC2F(t: number) {
+    return t * 9 / 5 + 32;
+}
+
+// Format number
+export function fmtNum(n: number, m: number) {
+    return parseFloat(n.toFixed(m));
+}

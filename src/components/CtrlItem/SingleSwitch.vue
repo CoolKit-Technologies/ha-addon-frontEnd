@@ -55,7 +55,6 @@ export default defineComponent({
 .single-switch
     display flex
     align-items center
-    margin-top 14px
 
     .icon
         display flex

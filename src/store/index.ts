@@ -19,7 +19,22 @@ export default createStore({
         locale: 'en',
 
         // Origin device list
-        originDeviceList: []
+        originDeviceList: [
+            {
+                key: '01',
+                uiid: 15,
+                type: 4,
+                online: true,
+                deviceName: 'T H',
+                deviceId: '100086af3c',
+                params: {
+                    deviceType: 'Normal',
+                    currentHumidity: 19.23,
+                    currentTemperature: 30
+                },
+                unit: 'c'
+            }
+        ]
     },
 
     getters: {

@@ -14,6 +14,26 @@
                     :icon="item.stat"
                     :title="item.name"
                     desc="hello, world"
+                    class="mb-14"
+                />
+            </div>
+            <div class="th-sw" v-if="isThSw">
+                <div class="gauge">
+                    <humi-gauge
+                        :value="cardData.params.currentHumidity"
+                    />
+                    <temp-gauge
+                        :value="cardData.params.currentTemperature"
+                        :tempUnit="cardData.unit"
+                    />
+                </div>
+                <single-mode
+                    class="mb-14"
+                    :mode="cardData.params.deviceType"
+                />
+                <single-switch
+                    icon="on"
+                    :title="$t('card.channel')"
                 />
             </div>
         </div>
@@ -25,12 +45,18 @@ import { defineComponent } from 'vue';
 
 import { isSupportedDevice, SW_SOCK_UIID } from '@/utils/etc';
 import SingleSwitch from '@/components/CtrlItem/SingleSwitch.vue';
+import SingleMode from '@/components/CtrlItem/SingleMode.vue';
+import HumiGauge from '@/components/GaugeChart/Humidity.vue';
+import TempGauge from '@/components/GaugeChart/Temperature.vue';
 
 export default defineComponent({
     name: 'CardContent',
 
     components: {
-        SingleSwitch
+        SingleSwitch,
+        SingleMode,
+        HumiGauge,
+        TempGauge
     },
 
     props: {
@@ -44,9 +70,15 @@ export default defineComponent({
             const { uiid } = this.cardData as any;
             return !isSupportedDevice(uiid);
         },
+        // Current device is switch or socket
         isSwSock() {
             const { uiid } = this.cardData as any;
             return SW_SOCK_UIID.indexOf(uiid) !== -1;
+        },
+        // Current device is temperature / thermal switch
+        isThSw() {
+            const { uiid } = this.cardData as any;
+            return uiid === 15;
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;
@@ -97,4 +129,13 @@ export default defineComponent({
         padding-top 14px
         padding-left 44px
         color #cccccc
+
+    .th-sw
+        .gauge
+            display flex
+            justify-content space-between
+            align-items center
+
+.mb-14:not(:last-child)
+    margin-bottom 14px
 </style>

@@ -32,6 +32,15 @@ export const zh = {
 
     card: {
         unsupport: '设备暂不支持',
-        channel: '通道'
+        channel: '通道',
+        humidity: '湿度',
+        temperature: '温度',
+        dry: '干燥',
+        wet: '潮湿',
+        cold: '寒冷',
+        cool: '凉爽',
+        warm: '温暖',
+        hot: '炎热',
+        mode: '模式'
     }
 };
