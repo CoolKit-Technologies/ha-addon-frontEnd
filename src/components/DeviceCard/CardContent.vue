@@ -6,7 +6,7 @@
         >
             <p>{{ $t('card.unsupport') }}</p>
         </div>
-        <div v-else class="control">
+        <div v-else class="content">
             <div class="sw-sock" v-if="isSwSock">
                 <single-switch
                     v-for="item in channels"
@@ -14,10 +14,10 @@
                     :icon="item.stat"
                     :title="item.name"
                     desc="hello, world"
-                    class="mb-14"
+                    class="mg-14"
                 />
             </div>
-            <div class="th-sw" v-if="isThSw">
+            <div class="th-sw" v-else-if="isThSw">
                 <div class="gauge">
                     <humi-gauge
                         :value="cardData.params.currentHumidity"
@@ -28,10 +28,35 @@
                     />
                 </div>
                 <single-mode
-                    class="mb-14"
+                    class="mg-14"
                     :mode="cardData.params.deviceType"
                 />
                 <single-switch
+                    class="mg-14"
+                    icon="on"
+                    :title="$t('card.channel')"
+                />
+            </div>
+            <div class="pw-det" v-else-if="isPwDet">
+                <div>circle icon here</div>
+                <single-switch
+                    class="mg-14"
+                    icon="on"
+                    :title="$t('card.channel')"
+                />
+            </div>
+            <div class="pvc-sct" v-else-if="isPvcSct">
+                <div>power v a switch</div>
+                <single-switch
+                    class="mg-14"
+                    icon="on"
+                    :title="$t('card.channel')"
+                />
+            </div>
+            <div class="dual-pw-sw" v-else-if="isDualPwSw">
+                <div>dual r3</div>
+                <single-switch
+                    class="mg-14"
                     icon="on"
                     :title="$t('card.channel')"
                 />
@@ -48,6 +73,7 @@ import SingleSwitch from '@/components/CtrlItem/SingleSwitch.vue';
 import SingleMode from '@/components/CtrlItem/SingleMode.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
+import CircleChart from '@/components/CircleChart.vue';
 
 export default defineComponent({
     name: 'CardContent',
@@ -56,7 +82,8 @@ export default defineComponent({
         SingleSwitch,
         SingleMode,
         HumiGauge,
-        TempGauge
+        TempGauge,
+        CircleChart
     },
 
     props: {
@@ -79,6 +106,21 @@ export default defineComponent({
         isThSw() {
             const { uiid } = this.cardData as any;
             return uiid === 15;
+        },
+        // Current device is power detection socket
+        isPwDet() {
+            const { uiid } = this.cardData as any;
+            return uiid === 5;
+        },
+        // Current device is power voltage current socket
+        isPvcSct() {
+            const { uiid } = this.cardData as any;
+            return uiid === 32;
+        },
+        // Current device is dual power detection switch
+        isDualPwSw() {
+            const { uiid } = this.cardData as any;
+            return uiid === 126;
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;
@@ -136,6 +178,8 @@ export default defineComponent({
             justify-content space-between
             align-items center
 
-.mb-14:not(:last-child)
-    margin-bottom 14px
+.mg-14
+    margin 14px 0
+    &:last-child
+        margin-bottom 0
 </style>

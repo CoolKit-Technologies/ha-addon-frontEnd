@@ -33,6 +33,38 @@ export default createStore({
                     currentTemperature: 30
                 },
                 unit: 'c'
+            },
+            {
+                key: '03',
+                uiid: 5,
+                type: 4,
+                online: false,
+                deviceName: 'KS',
+                deviceId: '1000093c3d'
+            },
+            {
+                key: '0x',
+                uiid: 32,
+                type: 4,
+                online: true,
+                deviceName: 'IW100',
+                deviceId: '1000093c3d'
+            },
+            {
+                key: '0y',
+                uiid: 126,
+                type: 4,
+                online: true,
+                deviceName: 'Dual R3',
+                deviceId: '1000093c3x'
+            },
+            {
+                key: '0z',
+                uiid: 226,
+                type: 1,
+                online: true,
+                deviceName: 'Dual R3',
+                deviceId: '111'
             }
         ]
     },
