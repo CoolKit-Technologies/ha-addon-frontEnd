@@ -44,6 +44,12 @@ export const zh = {
         mode: '模式',
         voltage: '电压',
         current: '电流',
-        realtimestats: '功率'
-    }
+        realtimestats: '功率',
+        power: '功率',
+        realpower: '有功功率',
+        reactivepower: '无功功率',
+        apparentpower: '视在功率'
+    },
+
+    modal: {}
 };

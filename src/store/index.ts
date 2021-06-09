@@ -35,6 +35,25 @@ export default createStore({
                 unit: 'c'
             },
             {
+                key: '0001',
+                uiid: 3,
+                type: 2,
+                online: false,
+                deviceName: 'socket',
+                deviceId: '2008',
+                params: {
+                    switches: [{
+                        switch: 'on'
+                    },{
+                        switch: 'off'
+                    },{
+                        switch: 'on'
+                    },{
+                        switch: 'off'
+                    }]
+                }
+            },
+            {
                 key: '03',
                 uiid: 5,
                 type: 4,

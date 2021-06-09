@@ -42,8 +42,13 @@
             <!-- power detection -->
             <div class="pw-det" v-else-if="isPwDet">
                 <div class="chart">
-                    <!-- <span class="title">{{ $t('card.realtimestats') }}</span>
-                    <span class="value">140W</span> -->
+                    <circle-chart
+                        width="180px"
+                        height="180px"
+                        color="blue"
+                    />
+                    <span class="title">{{ $t('card.realtimestats') }}</span>
+                    <span class="value">140W</span>
                 </div>
                 <single-switch
                     class="mg-14"
@@ -54,7 +59,18 @@
             <!-- power voltage current socket -->
             <div class="pvc-sct" v-else-if="isPvcSct">
                 <div class="chart-grp">
-                    <div class="chart">
+                    <div
+                        class="chart"
+                        v-for="item in pvcSctData"
+                        :key="item.key"
+                    >
+                        <circle-chart
+                            width="110px"
+                            height="110px"
+                            :color="item.color"
+                        />
+                        <span class="title">{{ item.title }}</span>
+                        <span class="value">{{ item.value }}</span>
                     </div>
                 </div>
                 <single-switch
@@ -65,6 +81,21 @@
             </div>
             <!-- dual power switch -->
             <div class="dual-pw-sw" v-else-if="isDualPwSw">
+                <div class="chart-grp">
+                    <div
+                        class="chart"
+                        v-for="item in dualPwSwData"
+                        :key="item.key"
+                    >
+                        <circle-chart
+                            width="110px"
+                            height="110px"
+                            :color="item.color"
+                        />
+                        <span class="title">{{ item.title }}</span>
+                        <span class="value">{{ item.value }}</span>
+                    </div>
+                </div>
                 <div class="data-stat">
                     <div class="vol">
                         <p class="key">{{ $t('card.voltage') }}</p>
@@ -94,6 +125,7 @@ import SingleSwitch from '@/components/CtrlItem/SingleSwitch.vue';
 import SingleMode from '@/components/CtrlItem/SingleMode.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
+import CircleChart from '@/components/CircleChart.vue';
 
 export default defineComponent({
     name: 'CardContent',
@@ -102,7 +134,8 @@ export default defineComponent({
         SingleSwitch,
         SingleMode,
         HumiGauge,
-        TempGauge
+        TempGauge,
+        CircleChart
     },
 
     props: {
@@ -136,10 +169,56 @@ export default defineComponent({
             const { uiid } = this.cardData as any;
             return uiid === 32;
         },
+        pvcSctData() {
+            const { $t } = this as any;
+            return [
+                {
+                    title: $t('card.power'),
+                    value: '231W',
+                    color: 'blue',
+                    key: 0
+                },
+                {
+                    title: $t('card.voltage'),
+                    value: '140V',
+                    color: 'green',
+                    key: 1
+                },
+                {
+                    title: $t('card.current'),
+                    value: '2.0A',
+                    color: 'yellow',
+                    key: 2
+                }
+            ];
+        },
         // Current device is dual power detection switch
         isDualPwSw() {
             const { uiid } = this.cardData as any;
             return uiid === 126;
+        },
+        dualPwSwData() {
+            const { $t } = this as any;
+            return [
+                {
+                    title: $t('realpower'),
+                    value: '231W',
+                    color: 'blue',
+                    key: 0
+                },
+                {
+                    title: $t('card.reactivepower'),
+                    value: '140V',
+                    color: 'green',
+                    key: 1
+                },
+                {
+                    title: $t('card.apparentpower'),
+                    value: '2.0A',
+                    color: 'yellow',
+                    key: 2
+                }
+            ];
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;
@@ -196,6 +275,7 @@ export default defineComponent({
             display flex
             justify-content space-between
             align-items center
+            margin -16px 0
 
     .pw-det
         .chart
@@ -241,8 +321,32 @@ export default defineComponent({
             p
                 margin 0
 
+/* -------- >8 -------- */
+
 .mg-14
     margin 14px 0
     &:last-child
         margin-bottom 0
+
+.chart-grp
+    display flex
+    justify-content space-between
+    margin-top 18px
+    padding 0 10px
+    .chart
+        display flex
+        justify-content center
+        align-items center
+        position relative
+        .title,
+        .value
+            position absolute
+        .title
+            top 20px
+            font-size 12px
+            color #C8C8C8
+        .value
+            top 38px
+            font-size 16px
+            color #222222
 </style>

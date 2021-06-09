@@ -44,6 +44,12 @@ export const en = {
         mode: 'Mode',
         voltage: 'Voltage',
         current: 'Current',
-        realtimestats: 'Realtime stats'
-    }
+        realtimestats: 'Realtime stats',
+        power: 'Power',
+        realpower: 'Real power',
+        reactivepower: 'Reactive power',
+        apparentpower: 'Apparent power'
+    },
+
+    modal: {}
 };
