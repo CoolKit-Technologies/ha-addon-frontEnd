@@ -1,5 +1,5 @@
 <template>
-    <div class="device-card" @click="openModalBox">
+    <div :class="{ 'device-card': true, 'disabled': !cardData.online }" @click="openModalBox">
         <card-header :cardData="cardData" />
         <card-content :cardData="cardData" />
     </div>
@@ -29,8 +29,8 @@ export default defineComponent({
 
     methods: {
         openModalBox() {
-            const { uiid } = this.cardData as any;
-            if (isSupportedDevice(uiid)) {
+            const { uiid, online } = this.cardData as any;
+            if (isSupportedDevice(uiid) && online) {
                 this.openModal({
                     type: 'device',
                     params: this.cardData
@@ -46,6 +46,7 @@ export default defineComponent({
 $color-white = #ffffff
 $color-grey = #e3e3e3
 $color-grey-dark = #eaeaea
+$color-grey-light = #f5f5f5
 
 .device-card
     background-color $color-white
@@ -58,4 +59,7 @@ $color-grey-dark = #eaeaea
     &:hover
         box-shadow 0 2px 4px 2px $color-grey-dark
         cursor pointer
+    &.disabled
+        background-color $color-grey-light
+        box-shadow none
 </style>

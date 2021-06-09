@@ -15,6 +15,7 @@
                     icon="flash"
                     :title="item.name"
                     :stat="item.stat === 'on' ? true : false"
+                    :cardData="cardData"
                     class="mg-14"
                 />
             </div>
@@ -38,6 +39,7 @@
                     icon="flash"
                     :title="$t('card.channel')"
                     :stat="cardData.params.switch === 'on' ? true : false"
+                    :cardData="cardData"
                 />
             </div>
             <!-- power detection -->
@@ -56,6 +58,7 @@
                     icon="flash"
                     :title="$t('card.channel')"
                     :stat="cardData.params.switch === 'on' ? true : false"
+                    :cardData="cardData"
                 />
             </div>
             <!-- power voltage current socket -->
@@ -80,6 +83,7 @@
                     icon="flash"
                     :title="$t('card.channel')"
                     :stat="cardData.params.switch === 'on' ? true : false"
+                    :cardData="cardData"
                 />
             </div>
             <!-- dual power switch -->
@@ -115,6 +119,7 @@
                     icon="flash"
                     :title="`${$t('card.channel')} ${cardData.cardIndex + 1}`"
                     :stat="cardData.params.switches[cardData.cardIndex].switch === 'on' ? true : false"
+                    :cardData="cardData"
                 />
             </div>
         </div>

@@ -21,6 +21,7 @@
             <a-switch
                 :checked="stat"
                 @change="toggle"
+                :disabled="!cardData.online"
             />
         </div>
     </div>
@@ -43,6 +44,9 @@ export default defineComponent({
             default: ''
         },
         stat: {
+            required: true
+        },
+        cardData: {
             required: true
         }
     },

@@ -9,6 +9,7 @@
         <a-switch
             v-else-if="hasAllToggleFunc"
             @change="toggle"
+            :disabled="!cardData.online"
         />
     </div>
 </template>
@@ -40,7 +41,7 @@ export default defineComponent({
     computed: {
         hasRefreshFunc() {
             // Only these types of device support
-            const uiids = [126, 32, 5, 15];
+            const uiids = [126, 32, 5];
             const { uiid } = this.cardData as any;
 
             if (uiids.indexOf(uiid) === -1) {
@@ -65,10 +66,13 @@ export default defineComponent({
 
     methods: {
         refresh() {
-            this.spin = true;
-            setTimeout(() => {
-                this.spin = false;
-            }, 2000);
+            const { online } = this.cardData as any;
+            if (online) {
+                this.spin = true;
+                setTimeout(() => {
+                    this.spin = false;
+                }, 2000);
+            }
         },
         toggle(v: boolean, e: any) {
             // TODO: send request
