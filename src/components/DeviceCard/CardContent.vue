@@ -7,6 +7,7 @@
             <p>{{ $t('card.unsupport') }}</p>
         </div>
         <div v-else class="content">
+            <!-- switch or socket devices -->
             <div class="sw-sock" v-if="isSwSock">
                 <single-switch
                     v-for="item in channels"
@@ -17,6 +18,7 @@
                     class="mg-14"
                 />
             </div>
+            <!-- temperature or thermal switch -->
             <div class="th-sw" v-else-if="isThSw">
                 <div class="gauge">
                     <humi-gauge
@@ -37,24 +39,43 @@
                     :title="$t('card.channel')"
                 />
             </div>
+            <!-- power detection -->
             <div class="pw-det" v-else-if="isPwDet">
-                <div>circle icon here</div>
+                <div class="chart">
+                    <!-- <span class="title">{{ $t('card.realtimestats') }}</span>
+                    <span class="value">140W</span> -->
+                </div>
                 <single-switch
                     class="mg-14"
                     icon="on"
                     :title="$t('card.channel')"
                 />
             </div>
+            <!-- power voltage current socket -->
             <div class="pvc-sct" v-else-if="isPvcSct">
-                <div>power v a switch</div>
+                <div class="chart-grp">
+                    <div class="chart">
+                    </div>
+                </div>
                 <single-switch
                     class="mg-14"
                     icon="on"
                     :title="$t('card.channel')"
                 />
             </div>
+            <!-- dual power switch -->
             <div class="dual-pw-sw" v-else-if="isDualPwSw">
-                <div>dual r3</div>
+                <div class="data-stat">
+                    <div class="vol">
+                        <p class="key">{{ $t('card.voltage') }}</p>
+                        <p class="value">220V</p>
+                    </div>
+                    <div class="divided"></div>
+                    <div class="cur">
+                        <p class="key">{{ $t('card.current') }}</p>
+                        <p class="value">1.0A</p>
+                    </div>
+                </div>
                 <single-switch
                     class="mg-14"
                     icon="on"
@@ -73,7 +94,6 @@ import SingleSwitch from '@/components/CtrlItem/SingleSwitch.vue';
 import SingleMode from '@/components/CtrlItem/SingleMode.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
-import CircleChart from '@/components/CircleChart.vue';
 
 export default defineComponent({
     name: 'CardContent',
@@ -82,8 +102,7 @@ export default defineComponent({
         SingleSwitch,
         SingleMode,
         HumiGauge,
-        TempGauge,
-        CircleChart
+        TempGauge
     },
 
     props: {
@@ -177,6 +196,50 @@ export default defineComponent({
             display flex
             justify-content space-between
             align-items center
+
+    .pw-det
+        .chart
+            display flex
+            justify-content center
+            align-items center
+            position relative
+            .title,
+            .value
+                position absolute
+                text-align center
+            .title
+                top 34px
+                font-size 14px
+                color #C8C8C8
+            .value
+                top 56px
+                font-size 26px
+                color #222222
+
+    .dual-pw-sw
+        .data-stat
+            display flex
+            margin 20px 0
+            .divided
+                width 2px
+                background-color #bbbbbb
+                margin 10px 20px
+            .vol
+                flex 1
+                .key
+                    text-align right
+                    color #bbbbbb
+                .value
+                    text-align right
+                    font-size 26px
+            .cur
+                flex 1
+                .key
+                    color #bbbbbb
+                .value
+                    font-size 26px
+            p
+                margin 0
 
 .mg-14
     margin 14px 0

@@ -41,6 +41,9 @@ export const en = {
         cool: 'Cool',
         warm: 'Warm',
         hot: 'Hot',
-        mode: 'Mode'
+        mode: 'Mode',
+        voltage: 'Voltage',
+        current: 'Current',
+        realtimestats: 'Realtime stats'
     }
 };

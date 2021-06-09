@@ -63,7 +63,7 @@ export default createStore({
                 uiid: 226,
                 type: 1,
                 online: true,
-                deviceName: 'Dual R3',
+                deviceName: 'fake dev',
                 deviceId: '111'
             }
         ]

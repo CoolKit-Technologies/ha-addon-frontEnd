@@ -3,13 +3,7 @@
         <Icon :style="{ width, height }">
             <template #component>
                 <svg x="0px" y="0px" viewBox="0 0 176 172" style="enable-background:new 0 0 595.28 841.89;">
-                    <path v-if="color === 'blue'" id="XMLID_11_" style="fill:#1890FF;" d="M87.718,3.83C42.012,3.83,4.96,40.882,4.96,86.588s37.052,82.758,82.758,82.758
-                        s82.758-37.052,82.758-82.758S133.424,3.83,87.718,3.83z M87.718,167.463c-44.666,0-80.875-36.209-80.875-80.875
-                        S43.052,5.713,87.718,5.713s80.875,36.209,80.875,80.875S132.384,167.463,87.718,167.463z"/>
-                    <path v-else-if="color === 'green'" id="XMLID_11_" style="fill:#4ECB73;" d="M87.718,3.83C42.012,3.83,4.96,40.882,4.96,86.588s37.052,82.758,82.758,82.758
-                        s82.758-37.052,82.758-82.758S133.424,3.83,87.718,3.83z M87.718,167.463c-44.666,0-80.875-36.209-80.875-80.875
-                        S43.052,5.713,87.718,5.713s80.875,36.209,80.875,80.875S132.384,167.463,87.718,167.463z"/>
-                    <path v-else-if="color === 'yellow'" id="XMLID_11_" style="fill:#FBD437;" d="M87.718,3.83C42.012,3.83,4.96,40.882,4.96,86.588s37.052,82.758,82.758,82.758
+                    <path id="XMLID_11_" style="fill:#4ECB73;" d="M87.718,3.83C42.012,3.83,4.96,40.882,4.96,86.588s37.052,82.758,82.758,82.758
                         s82.758-37.052,82.758-82.758S133.424,3.83,87.718,3.83z M87.718,167.463c-44.666,0-80.875-36.209-80.875-80.875
                         S43.052,5.713,87.718,5.713s80.875,36.209,80.875,80.875S132.384,167.463,87.718,167.463z"/>
                     <g id="XMLID_4_">
@@ -19,15 +13,7 @@
                         <clipPath id="XMLID_2_">
                             <use xlink:href="#XMLID_3_"  style="overflow:visible;"/>
                         </clipPath>
-                        <linearGradient v-if="color === 'blue'" id="XMLID_6_" gradientUnits="userSpaceOnUse" x1="95.7665" y1="93.6394" x2="95.7665" y2="167.4632">
-                            <stop  offset="0" style="stop-color:#77BFF8"/>
-                            <stop  offset="1" style="stop-color:#1E92FF"/>
-                        </linearGradient>
-                        <linearGradient v-else-if="color === 'green'" id="XMLID_6_" gradientUnits="userSpaceOnUse" x1="95.7665" y1="93.6394" x2="95.7665" y2="167.4632">
-                            <stop  offset="0" style="stop-color:#77BFF8"/>
-                            <stop  offset="1" style="stop-color:#1E92FF"/>
-                        </linearGradient>
-                        <linearGradient v-else-if="color === 'yellow'" id="XMLID_6_" gradientUnits="userSpaceOnUse" x1="95.7665" y1="93.6394" x2="95.7665" y2="167.4632">
+                        <linearGradient id="XMLID_6_" gradientUnits="userSpaceOnUse" x1="95.7665" y1="93.6394" x2="95.7665" y2="167.4632">
                             <stop  offset="0" style="stop-color:#77BFF8"/>
                             <stop  offset="1" style="stop-color:#1E92FF"/>
                         </linearGradient>
@@ -63,12 +49,8 @@ export default defineComponent({
         height: {
             default: '180px',
             required: true
-        },
-        // color: blue, green, yellow
-        color: {
-            default: 'blue',
-            required: true
         }
     }
 });
 </script>
+

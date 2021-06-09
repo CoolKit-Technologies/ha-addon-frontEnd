@@ -41,6 +41,9 @@ export const zh = {
         cool: '凉爽',
         warm: '温暖',
         hot: '炎热',
-        mode: '模式'
+        mode: '模式',
+        voltage: '电压',
+        current: '电流',
+        realtimestats: '功率'
     }
 };
