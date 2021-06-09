@@ -45,5 +45,9 @@ export const en = {
         voltage: 'Voltage',
         current: 'Current',
         realtimestats: 'Realtime stats'
+    },
+
+    modal: {
+        name:'Device Name'
     }
 };

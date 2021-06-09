@@ -1,12 +1,15 @@
 <template>
     <div class="device-name">
-        <div>Device Name</div>
-        <a-input>
-            <template #suffix>
+        <div class="title">{{ $t('modal.name') }}</div>
+        <div class="input-box">
+            <a-input v-model:value="value" v-if='editable'>
+            </a-input>
+            <p class="text" v-else>{{ value }}</p>
+            <div class="action" @click="handleSave">
                 <SaveOutlined  v-if="editable"/>
-                <EditOutlined  v-else="editable"/>
-            </template>
-        </a-input>
+                <EditOutlined  v-else/>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -22,62 +25,61 @@ export default defineComponent({
     },
 
     props: {
-        icon: {
-            default: "",
-        },
-        title: {
-            default: "",
-        },
-        desc: {
-            default: "",
-        },
+        cardData: {
+            required: true,
+            default:{
+                deviceName: ''
+            }
+        }
     },
     data() {
         return {
-            editable: false
+            editable: false,
+            value: this.cardData.deviceName,
         }
     },
 
+
     methods: {
-        toggle(v: boolean, e: any) {
-            // TODO: send request
-            e.stopPropagation();
-        },
+        handleSave() {
+            const status = this.editable;
+            if(status) {
+                // todo 接口请求
+                console.log(this.$data.value);
+            }
+            this.$data.editable = !status;
+        }
     },
+
+    created() {
+        console.log('>_<', this.cardData);
+    }
 });
 </script>
 
 <style lang="stylus" scoped>
-.device-name {
-    .icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 32px;
-        height: 32px;
-    }
+    .device-name
+        .title
+            color #212121
+            font-size 12px
+        .input-box
+            display flex
+            flex-direction row
+            align-items center
+            .action
+                cursor pointer
+                margin-left 8px
+            .text 
+                margin 0
+                width 100%
+                cursor not-allowed
+                padding 4px 11px
+                border-bottom 1px solid #d9d9d9
+        .ant-input
+            border-radius 0
+            border-top: none
+            border-left: none
+            border-right: none
 
-    .text {
-        flex: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0 14px;
-
-        & > p {
-            margin: 0;
-        }
-
-        .title {
-            margin-right: 14px;
-        }
-    }
-
-    .action {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 6px;
-    }
-}
+        
 </style>

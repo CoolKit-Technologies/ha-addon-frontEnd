@@ -45,5 +45,9 @@ export const zh = {
         voltage: '电压',
         current: '电流',
         realtimestats: '功率'
+    },
+
+    modal: {
+        name: '设备名称'
     }
 };

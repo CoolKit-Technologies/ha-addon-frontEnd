@@ -81,6 +81,7 @@
                     icon="on"
                     :title="$t('card.channel')"
                 />
+                <CircleChart color='yellow' />
             </div>
         </div>
     </div>
@@ -94,6 +95,7 @@ import SingleSwitch from '@/components/CtrlItem/SingleSwitch.vue';
 import SingleMode from '@/components/CtrlItem/SingleMode.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
+import CircleChart from '@/components/CircleChart.vue';
 
 export default defineComponent({
     name: 'CardContent',
@@ -102,7 +104,8 @@ export default defineComponent({
         SingleSwitch,
         SingleMode,
         HumiGauge,
-        TempGauge
+        TempGauge,
+        CircleChart,
     },
 
     props: {

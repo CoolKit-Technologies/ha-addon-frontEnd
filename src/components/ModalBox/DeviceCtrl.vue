@@ -2,7 +2,7 @@
     <div class="device-ctrl">
         <p>you should see a button here</p>
         <p>{{ modalParams.cardId }}</p>
-        <device-name />
+        <device-name :cardData="modalParams" />
     </div>
 </template>
 

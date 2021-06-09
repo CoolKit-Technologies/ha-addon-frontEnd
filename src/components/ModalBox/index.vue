@@ -4,6 +4,7 @@
         :footer="null"
         :destroyOnClose="true"
         :maskClosable="false"
+        :title="123"
         @cancel="handleClose"
         class="modal-box"
     >
@@ -44,4 +45,8 @@ export default defineComponent({
     .modal-box
         .ant-modal-content
             border-radius 4px
+        button.ant-modal-close
+            left 0
+        .ant-modal-title
+            text-indent 20px
 </style>
