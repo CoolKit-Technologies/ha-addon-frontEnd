@@ -12,9 +12,9 @@
                 <single-switch
                     v-for="item in channels"
                     :key="item.key"
-                    :icon="item.stat"
+                    icon="flash"
                     :title="item.name"
-                    desc="hello, world"
+                    :stat="item.stat === 'on' ? true : false"
                     class="mg-14"
                 />
             </div>
@@ -35,8 +35,9 @@
                 />
                 <single-switch
                     class="mg-14"
-                    icon="on"
+                    icon="flash"
                     :title="$t('card.channel')"
+                    :stat="cardData.params.switch === 'on' ? true : false"
                 />
             </div>
             <!-- power detection -->
@@ -52,8 +53,9 @@
                 </div>
                 <single-switch
                     class="mg-14"
-                    icon="on"
+                    icon="flash"
                     :title="$t('card.channel')"
+                    :stat="cardData.params.switch === 'on' ? true : false"
                 />
             </div>
             <!-- power voltage current socket -->
@@ -75,8 +77,9 @@
                 </div>
                 <single-switch
                     class="mg-14"
-                    icon="on"
+                    icon="flash"
                     :title="$t('card.channel')"
+                    :stat="cardData.params.switch === 'on' ? true : false"
                 />
             </div>
             <!-- dual power switch -->
@@ -109,8 +112,9 @@
                 </div>
                 <single-switch
                     class="mg-14"
-                    icon="on"
-                    :title="$t('card.channel')"
+                    icon="flash"
+                    :title="`${$t('card.channel')} ${cardData.cardIndex + 1}`"
+                    :stat="cardData.params.switches[cardData.cardIndex].switch === 'on' ? true : false"
                 />
             </div>
         </div>
@@ -201,7 +205,7 @@ export default defineComponent({
             const { $t } = this as any;
             return [
                 {
-                    title: $t('realpower'),
+                    title: $t('card.realpower'),
                     value: '231W',
                     color: 'blue',
                     key: 0

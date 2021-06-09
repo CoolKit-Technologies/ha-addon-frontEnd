@@ -1,13 +1,14 @@
 <template>
     <div class="single-switch">
         <div class="icon" v-if="icon !== ''">
+            <!-- icon: flash -->
             <img
-                v-if="icon === 'on'"
+                v-if="icon === 'flash' && stat"
                 src="@/assets/flash-on.svg"
                 alt="flash icon"
             />
             <img
-                v-if="icon === 'off'"
+                v-else-if="icon === 'flash' && !stat"
                 src="@/assets/flash-off.svg"
                 alt="flash icon"
             />
@@ -18,6 +19,7 @@
         </div>
         <div class="action">
             <a-switch
+                :checked="stat"
                 @change="toggle"
             />
         </div>
@@ -39,6 +41,9 @@ export default defineComponent({
         },
         desc: {
             default: ''
+        },
+        stat: {
+            required: true
         }
     },
 
@@ -46,6 +51,7 @@ export default defineComponent({
         toggle(v: boolean, e: any) {
             // TODO: send request
             e.stopPropagation();
+            console.log('>_<', v);
         }
     }
 });

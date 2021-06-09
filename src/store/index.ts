@@ -30,7 +30,8 @@ export default createStore({
                 params: {
                     deviceType: 'Normal',
                     currentHumidity: 19.23,
-                    currentTemperature: 30
+                    currentTemperature: 30,
+                    switch: 'off'
                 },
                 unit: 'c'
             },
@@ -59,7 +60,10 @@ export default createStore({
                 type: 4,
                 online: false,
                 deviceName: 'KS',
-                deviceId: '1000093c3d'
+                deviceId: '1000093c3d',
+                params: {
+                    switch: 'on'
+                }
             },
             {
                 key: '0x',
@@ -67,7 +71,10 @@ export default createStore({
                 type: 4,
                 online: true,
                 deviceName: 'IW100',
-                deviceId: '1000093c3d'
+                deviceId: '1000093c3d',
+                params: {
+                    switch: 'off'
+                }
             },
             {
                 key: '0y',
@@ -75,7 +82,17 @@ export default createStore({
                 type: 4,
                 online: true,
                 deviceName: 'Dual R3',
-                deviceId: '1000093c3x'
+                deviceId: '1000093c3x',
+                params: {
+                    switches: [
+                        {
+                            switch: 'on'
+                        },
+                        {
+                            switch: 'off'
+                        }
+                    ]
+                }
             },
             {
                 key: '0z',
