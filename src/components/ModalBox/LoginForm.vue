@@ -135,7 +135,6 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .container
-    background-color #ddd
     & > *:not(:last-child)
         margin-bottom 20px
 
@@ -144,10 +143,16 @@ export default defineComponent({
         flex-direction column
         align-items center
 
+    .slogan
+        margin-top 10px
+    
     .login-form
+        max-width 404px
+        margin auto
         .form-item
             margin-bottom 14px
 
     .download
+        margin-top 10px
         text-align center
 </style>

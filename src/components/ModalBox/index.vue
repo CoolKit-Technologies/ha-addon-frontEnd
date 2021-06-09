@@ -5,6 +5,7 @@
         :destroyOnClose="true"
         :maskClosable="false"
         @cancel="handleClose"
+        class="modal-box"
     >
         <login-form v-if="modalType === 'login'" />
         <device-ctrl v-if="modalType === 'device'" />
@@ -38,3 +39,9 @@ export default defineComponent({
     }
 });
 </script>
+
+<style lang="stylus">
+    .modal-box
+        .ant-modal-content
+            border-radius 4px
+</style>
