@@ -139,7 +139,7 @@ export default defineComponent({
         SingleMode,
         HumiGauge,
         TempGauge,
-        CircleChart
+        CircleChart,
     },
 
     props: {

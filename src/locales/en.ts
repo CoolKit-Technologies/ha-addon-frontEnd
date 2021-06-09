@@ -51,5 +51,7 @@ export const en = {
         apparentpower: 'Apparent power'
     },
 
-    modal: {}
+    modal: {
+        name:'Device Name'
+    }
 };

@@ -51,5 +51,7 @@ export const zh = {
         apparentpower: '视在功率'
     },
 
-    modal: {}
+    modal: {
+        name: '设备名称'
+    }
 };
