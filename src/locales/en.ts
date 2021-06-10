@@ -52,6 +52,8 @@ export const en = {
     },
 
     modal: {
-        name:'Device Name'
+        deviceName:'Device Name',
+        powerOnState:'Power-on State',
+        temperatureUnit:'Temperature unit'
     }
 };

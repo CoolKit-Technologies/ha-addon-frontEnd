@@ -52,6 +52,9 @@ export const zh = {
     },
 
     modal: {
-        name: '设备名称'
+        deviceName: '设备名称',
+        powerOnState:'上电状态',
+        temperatureUnit:'温度单位'
+
     }
 };
