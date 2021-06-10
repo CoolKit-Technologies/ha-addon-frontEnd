@@ -58,7 +58,7 @@ export default defineComponent({
 .device-name
     .title
         color #212121
-        font-size 12px
+        font-size 14px
     .input-box
         display flex
         flex-direction row
