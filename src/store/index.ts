@@ -69,7 +69,8 @@ export default createStore({
                 deviceName: 'KS',
                 deviceId: '1000093c3d',
                 params: {
-                    switch: 'on'
+                    switch: 'on',
+                    power: 120
                 }
             },
             {
@@ -80,7 +81,10 @@ export default createStore({
                 deviceName: 'IW100',
                 deviceId: '1000093c3d',
                 params: {
-                    switch: 'off'
+                    switch: 'off',
+                    power: 120,
+                    voltage: 120,
+                    current: 1
                 }
             },
             {
@@ -91,6 +95,12 @@ export default createStore({
                 deviceName: 'Dual R3',
                 deviceId: '1000093c3x',
                 params: {
+                    actPow_00: 110,
+                    actPow_01: 120,
+                    reactPow_00: 130,
+                    reactPow_01: 140,
+                    apparentPow_00: 150,
+                    apparentPow_01: 160,
                     switches: [
                         {
                             switch: 'on'

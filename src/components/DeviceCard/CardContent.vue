@@ -50,7 +50,7 @@
                         color="blue"
                     />
                     <span class="title">{{ $t('card.realtimestats') }}</span>
-                    <span class="value">140W</span>
+                    <span class="value">{{ cardData.params.power }}W</span>
                 </div>
                 <channel-switch
                     class="mg-14"
@@ -176,23 +176,23 @@ export default defineComponent({
             return uiid === 32;
         },
         pvcSctData() {
-            const { $t } = this as any;
+            const { $t, cardData } = this as any;
             return [
                 {
                     title: $t('card.power'),
-                    value: '231W',
+                    value: cardData.params.power + 'W',
                     color: 'blue',
                     key: 0
                 },
                 {
                     title: $t('card.voltage'),
-                    value: '140V',
+                    value: cardData.params.voltage + 'V',
                     color: 'green',
                     key: 1
                 },
                 {
                     title: $t('card.current'),
-                    value: '2.0A',
+                    value: cardData.params.current + 'A',
                     color: 'yellow',
                     key: 2
                 }
@@ -204,23 +204,23 @@ export default defineComponent({
             return uiid === 126;
         },
         dualPwSwData() {
-            const { $t } = this as any;
+            const { $t, cardData } = this as any;
             return [
                 {
                     title: $t('card.realpower'),
-                    value: '231W',
+                    value: cardData.params['actPow_0' + cardData.cardIndex] + 'W',
                     color: 'blue',
                     key: 0
                 },
                 {
                     title: $t('card.reactivepower'),
-                    value: '140V',
+                    value: cardData.params['reactPow_0' + cardData.cardIndex] + 'W',
                     color: 'green',
                     key: 1
                 },
                 {
                     title: $t('card.apparentpower'),
-                    value: '2.0A',
+                    value: cardData.params['apparentPow_0' + cardData.cardIndex] + 'W',
                     color: 'yellow',
                     key: 2
                 }

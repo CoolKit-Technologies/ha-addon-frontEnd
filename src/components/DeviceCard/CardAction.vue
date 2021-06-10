@@ -86,17 +86,33 @@ export default defineComponent({
     },
 
     methods: {
-        refresh() {
-            const { online } = this.cardData as any;
+        async refresh() {
+            const { online, apikey, uiid, deviceId, cardIndex } = this.cardData as any;
             if (online) {
                 this.spin = true;
                 setTimeout(() => {
                     this.spin = false;
                 }, 2000);
+
+                const params: any = {
+                    apikey,
+                    id: deviceId,
+                    params: {
+                    }
+                };
+                if (uiid === 126) {
+                    // Dual R3 device is special
+                    params.params.uiActive = {
+                        time: 120,
+                        outlet: cardIndex
+                    };
+                } else {
+                    params.params.uiActive = 120;
+                }
+                await setCloudDevice(params);
             }
         },
         async toggle(v: boolean, e: any) {
-            // TODO: send request
             e.stopPropagation();
 
             const { type, deviceId, apikey } = this.cardData as any;
@@ -132,7 +148,7 @@ export default defineComponent({
     },
 
     mounted() {
-        this.refresh = _.throttle(this.refresh, 2200, { 'leading': true, 'trailing': false });
+        this.refresh = _.throttle(this.refresh, 2200, { 'leading': true, 'trailing': false }) as any;
     }
 });
 </script>
