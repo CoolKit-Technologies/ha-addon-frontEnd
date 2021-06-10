@@ -1,8 +1,8 @@
 <template>
     <div class="device-ctrl">
-        <p>you should see a button here</p>
-        <p>{{ modalParams.cardId }}</p>
-        <device-name :cardData="modalParams" />
+        <device-name />
+        <power-on-state />
+        <temperature-unit v-if="modalParams.uiid === 15" />
     </div>
 </template>
 
@@ -11,12 +11,16 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 
 import DeviceName from '@/components/CtrlItem/DeviceName.vue';
+import PowerOnState from '@/components/CtrlItem/PowerOnState.vue';
+import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
 
 export default defineComponent({
     name: 'DeviceCtrl',
 
     components:{
-        DeviceName
+        DeviceName,
+        PowerOnState,
+        TemperatureUnit
     },
 
     computed: {
@@ -24,3 +28,9 @@ export default defineComponent({
     }
 });
 </script>
+
+<style lang="stylus" scoped>
+.device-ctrl
+    & > div:not(:first-child)
+        margin-top 10px
+</style>

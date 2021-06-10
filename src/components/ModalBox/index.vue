@@ -4,7 +4,7 @@
         :footer="null"
         :destroyOnClose="true"
         :maskClosable="false"
-        :title="123"
+        :title="modalType === 'device' ? modalParams.deviceName : ' '"
         @cancel="handleClose"
         class="modal-box"
     >
@@ -29,7 +29,7 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapState(['modalVisible', 'modalType'])
+        ...mapState(['modalVisible', 'modalType', 'modalParams'])
     },
 
     methods: {
@@ -42,11 +42,13 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
-    .modal-box
-        .ant-modal-content
-            border-radius 4px
-        button.ant-modal-close
-            left 0
+.modal-box
+    .ant-modal-header
+        border-bottom none
         .ant-modal-title
-            text-indent 20px
+            text-indent 30px
+    .ant-modal-content
+        border-radius 4px
+    button.ant-modal-close
+        left 0
 </style>

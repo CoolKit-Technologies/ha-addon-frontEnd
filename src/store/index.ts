@@ -31,8 +31,10 @@ export default createStore({
                     deviceType: 'Normal',
                     currentHumidity: 19.23,
                     currentTemperature: 30,
-                    switch: 'off'
+                    switch: 'off',
+                    sledOnline: "on"
                 },
+                
                 unit: 'c'
             },
             {
