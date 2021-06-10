@@ -19,7 +19,7 @@
                 <more-outlined class="action-icon" />
                 <template #overlay>
                     <a-menu>
-                        <a-menu-item v-if="isLogin">
+                        <a-menu-item v-if="isLogin" @click="handleSignout">
                             <div class="item-wrapper">
                                 <export-outlined class="item-wrapper__icon" />
                                 <span class="item-wrapper__text">
@@ -27,8 +27,8 @@
                                 </span>
                             </div>
                         </a-menu-item>
-                        <a-menu-item>
-                            <div class="item-wrapper" @click="toFeedbackPage">
+                        <a-menu-item @click="handleFeedback">
+                            <div class="item-wrapper">
                                 <question-outlined class="item-wrapper__icon" />
                                 <span class="item-wrapper__text">
                                     {{ $t('common.text.feedback') }}
@@ -45,6 +45,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState, mapMutations, mapActions } from 'vuex';
+import { message } from 'ant-design-vue';
 import {
     UserOutlined,
     SyncOutlined,
@@ -56,6 +57,7 @@ import _ from 'lodash';
 
 import { getConfig } from '@/utils/config';
 import { openWindow } from '@/utils/etc';
+import { logout } from '@/api/user';
 
 export default defineComponent({
     name: 'HeaderBar',
@@ -85,7 +87,16 @@ export default defineComponent({
                 this.spin = false;
             }, 2000);
         },
-        toFeedbackPage() {
+        async handleSignout() {
+            const res = await logout();
+            if (res.error !== 0) {
+                console.error('logout failed:', res.msg);
+            } else {
+                this.setIsLogin(false);
+                message.success(this.$t('form.success.logout'));
+            }
+        },
+        handleFeedback() {
             openWindow(getConfig().feedbackUrl);
         },
         openModalBox() {

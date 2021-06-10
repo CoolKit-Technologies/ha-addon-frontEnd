@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { message } from 'ant-design-vue';
 
 import { getConfig } from '@/utils/config';
@@ -122,13 +122,19 @@ export default defineComponent({
                 message.error(this.$t('form.error.login', { msg: res.msg }));
             } else {
                 message.success(this.$t('form.success.login'));
+                this.setIsLogin(true);
+                setTimeout(() => {
+                    this.closeModal();
+                }, 1000);
             }
         },
         selectCountry(e: string) {
             const start = e.indexOf('(');
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
-        }
+        },
+        ...mapMutations(['setIsLogin']),
+        ...mapActions(['closeModal'])
     }
 });
 </script>

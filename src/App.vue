@@ -13,6 +13,7 @@ import _ from 'lodash';
 
 import { getConfig } from '@/utils/config';
 import { getLocale } from '@/api/content';
+import { isLogin as userIsLogin } from '@/api/user';
 import HeaderBar from '@/components/HeaderBar.vue';
 import MainContent from '@/components/MainContent.vue';
 import ModalBox from '@/components/ModalBox/index.vue';
@@ -35,44 +36,14 @@ export default defineComponent({
     },
 
     async created() {
-        const { sseUrl, debug } = getConfig();
-
-        // Set locale
-        const res = await getLocale();
-        if (res.error === 0 && res.data === 'zh-Hans') {
-            this.$root!.$i18n.locale = 'zh';
-            this.setLocale('zh');
-        } else {
-            this.$root!.$i18n.locale = 'en';
-            this.setLocale('en');
-        }
-        // TODO: uncomment for test
-        return;
-
-        // Set SSE
-        this.source = new EventSource(sseUrl);
-        this.source.addEventListener('open', () => {
-            if (debug) {
-                console.log('SSE connect success');
-            }
-        });
-        this.source.addEventListener('message', (e: any) => {
-            const newList = JSON.parse(e.data);
-            const oldList = _.cloneDeep(this.originDeviceList);
-            if (debug) {
-                console.log('SSE message received, event data:');
-                console.log(newList, oldList);
-                console.log('new list === old list:', _.isEqual(newList, oldList));
-            }
-            if (!_.isEqual(newList, oldList)) {
-                this.setOriginDeviceList(newList);
-            }
-        });
+        await this.initIsLogin();
+        await this.initLocale();
+        // this.initSse();
     },
 
     beforeUnmount() {
         // Close SSE when page reload or tear down
-        this.source.close();
+        // this.source.close();
     },
 
     computed: {
@@ -80,7 +51,47 @@ export default defineComponent({
     },
 
     methods: {
-        ...mapMutations(['setLocale', 'setOriginDeviceList'])
+        async initIsLogin() {
+            const res = await userIsLogin();
+            if (res.error === 0 && res.data.isLogin) {
+                this.setIsLogin(true);
+            } else {
+                this.setIsLogin(false);
+            }
+        },
+        async initLocale() {
+            const res = await getLocale();
+            if (res.error === 0 && res.data === 'zh-Hans') {
+                this.$root!.$i18n.locale = 'zh';
+                this.setLocale('zh');
+            } else {
+                this.$root!.$i18n.locale = 'en';
+                this.setLocale('en');
+            }
+        },
+        initSse() {
+            const { sseUrl, debug } = getConfig();
+
+            this.source = new EventSource(sseUrl);
+            this.source.addEventListener('open', () => {
+                if (debug) {
+                    console.log('SSE connect success');
+                }
+            });
+            this.source.addEventListener('message', (e: any) => {
+                const newList = JSON.parse(e.data);
+                const oldList = _.cloneDeep(this.originDeviceList);
+                if (debug) {
+                    console.log('SSE message received, event data:');
+                    console.log(newList, oldList);
+                    console.log('new list === old list:', _.isEqual(newList, oldList));
+                }
+                if (!_.isEqual(newList, oldList)) {
+                    this.setOriginDeviceList(newList);
+                }
+            });
+        },
+        ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList'])
     }
 });
 </script>

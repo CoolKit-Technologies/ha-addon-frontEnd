@@ -26,7 +26,8 @@ export const zh = {
             login: '登录成败，{ msg }'
         },
         success: {
-            login: '登录成功'
+            login: '登录成功',
+            logout: '登出成功'
         }
     },
 

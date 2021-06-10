@@ -259,7 +259,7 @@ export default defineComponent({
                 if (tags) {
                     result.push({ key: i, name: tags[i], stat: params.switches[i].switch });
                 } else {
-                    result.push({ key: i, name: channelName + ' ' + i, stat: params.switches[i].switch });
+                    result.push({ key: i, name: channelName + ' ' + (i + 1), stat: params.switches[i].switch });
                 }
             }
 

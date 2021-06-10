@@ -26,7 +26,8 @@ export const en = {
             login: 'Login failed, { msg }'
         },
         success: {
-            login: 'Login success'
+            login: 'Login success',
+            logout: 'Logout success'
         }
     },
 
