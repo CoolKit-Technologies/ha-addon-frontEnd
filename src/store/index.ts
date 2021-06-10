@@ -40,15 +40,16 @@ export default createStore({
             {
                 key: '0001',
                 uiid: 3,
-                type: 2,
-                online: false,
+                type: 4,
+                online: true,
                 deviceName: 'socket',
+                apikey: 'dddd',
                 deviceId: '2008',
                 params: {
                     switches: [{
                         switch: 'on'
                     },{
-                        switch: 'off'
+                        switch: 'on'
                     },{
                         switch: 'on'
                     },{
@@ -60,7 +61,7 @@ export default createStore({
                 key: '03',
                 uiid: 5,
                 type: 4,
-                online: false,
+                online: true,
                 deviceName: 'KS',
                 deviceId: '1000093c3d',
                 params: {

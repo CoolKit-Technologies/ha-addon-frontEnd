@@ -10,6 +10,7 @@
             v-else-if="hasAllToggleFunc"
             @change="toggle"
             :disabled="!cardData.online"
+            :checked="allOn"
         />
     </div>
 </template>
@@ -18,6 +19,8 @@
 import { defineComponent } from 'vue';
 import { SyncOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash';
+
+import { setLanDevice, setCloudDevice } from '@/api/device';
 
 export default defineComponent({
     name: 'CardAction',
@@ -61,6 +64,24 @@ export default defineComponent({
             } else {
                 return uiids.indexOf(uiid) !== -1;
             }
+        },
+        allOn() {
+            const { uiid, params } = this.cardData as any;
+            let cnt = 0;
+
+            if (uiid === 2 || uiid === 7 || uiid === 113) {
+                // 2 channels
+                cnt = 2;
+            } else if (uiid === 3 || uiid === 8 || uiid === 114) {
+                // 3 channels
+                cnt = 3;
+            } else if (uiid === 4 || uiid === 9) {
+                // 4 channels
+                cnt = 4;
+            }
+
+            const channels = params.switches.slice(0, cnt) as any[];
+            return channels.every((channel) => channel.switch === 'on');
         }
     },
 
@@ -74,9 +95,39 @@ export default defineComponent({
                 }, 2000);
             }
         },
-        toggle(v: boolean, e: any) {
+        async toggle(v: boolean, e: any) {
             // TODO: send request
             e.stopPropagation();
+
+            const { type, deviceId, apikey } = this.cardData as any;
+            const statList = [];
+            let stat = 'on';
+
+            if (v) {
+                stat = 'on';
+            } else {
+                stat = 'off';
+            }
+
+            for (let i = 0; i < 4; i++) {
+                statList.push({
+                    switch: stat,
+                    outlet: i
+                });
+            }
+
+            const params = {
+                apikey,
+                id: deviceId,
+                params: {
+                    switches: statList
+                }
+            };
+            if (type === 2) {       // If current device is LAN device
+                await setLanDevice(params);
+            } else {
+                await setCloudDevice(params);
+            }
         }
     },
 

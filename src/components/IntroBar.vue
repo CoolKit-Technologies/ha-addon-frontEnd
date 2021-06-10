@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 import { message } from 'ant-design-vue';
 
 import { getContent, Content } from '@/api/content';
@@ -31,10 +32,14 @@ export default defineComponent({
         IntroCard
     },
 
+    computed: {
+        ...mapState(['locale'])
+    },
+
     async created() {
         // TODO: uncomment for test
         return;
-        const res = await getContent();
+        const res = await getContent(this.locale);
         if (res.error === 0) {
             const { top, push } = res.data;
             this.cardList.push(top);

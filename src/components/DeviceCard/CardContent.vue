@@ -12,6 +12,7 @@
                 <single-switch
                     v-for="item in channels"
                     :key="item.key"
+                    :index="item.key"
                     icon="flash"
                     :title="item.name"
                     :stat="item.stat === 'on' ? true : false"
@@ -120,6 +121,7 @@
                     :title="`${$t('card.channel')} ${cardData.cardIndex + 1}`"
                     :stat="cardData.params.switches[cardData.cardIndex].switch === 'on' ? true : false"
                     :cardData="cardData"
+                    :index="cardData.cardIndex"
                 />
             </div>
         </div>

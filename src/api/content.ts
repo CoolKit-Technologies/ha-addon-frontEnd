@@ -21,12 +21,14 @@ const { apiPrefix } = getConfig();
  * Get content data
  * @returns Content data
  */
-export async function getContent() {
+export async function getContent(v: string) {
     // cn, zh-cn; eu, en-us
+    const region = v === 'en' ? 'eu' : 'cn';
+    const locale = v === 'en' ? 'en-us' : 'zh-cn';
     let url = BASE_URL + '?'
         + 'project=' + PROJECT + '&'
-        + 'region=' + 'eu' + '&'
-        + 'locale=' + 'en-us' + '&'
+        + 'region=' + region + '&'
+        + 'locale=' + locale + '&'
         + 'category=' + CATEGORY;
 
     try {

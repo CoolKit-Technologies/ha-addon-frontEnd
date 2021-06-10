@@ -30,6 +30,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import { setDiyDevice, setCloudDevice, setLanDevice } from '@/api/device';
+
 export default defineComponent({
     name: 'SingleSwitch',
 
@@ -43,6 +45,9 @@ export default defineComponent({
         desc: {
             default: ''
         },
+        index: {
+            default: 0
+        },
         stat: {
             required: true
         },
@@ -52,10 +57,56 @@ export default defineComponent({
     },
 
     methods: {
-        toggle(v: boolean, e: any) {
-            // TODO: send request
+        async toggle(v: boolean, e: any) {
             e.stopPropagation();
-            console.log('>_<', v);
+
+            const { apikey, deviceId, uiid, type } = this.cardData as any;
+            let params;
+
+            if (uiid === 1 && type === 1) {
+                // DIY device
+                await setDiyDevice({
+                    id: deviceId,
+                    type: 'switch',
+                    params: {
+                        state: v ? 'on' : 'off'
+                    }
+                });
+                return;
+            } else if (
+                uiid === 1 || uiid === 6 || uiid === 14 || uiid === 15
+                || uiid === 5 || uiid === 32
+            ) {
+                // Single channel switch or socket, temperature thermal device,
+                // power detection device, power voltage current detection,
+                params = {
+                    apikey,
+                    id: deviceId,
+                    params: {
+                        switch: v ? 'on' : 'off'
+                    }
+                };
+            } else {
+                // Multi-channel switch or socket, dual power detection device
+                params = {
+                    apikey,
+                    id: deviceId,
+                    params: {
+                        switches: [
+                            {
+                                outlet: this.index,
+                                switch: v ? 'on' : 'off'
+                            }
+                        ]
+                    }
+                };
+            }
+
+            if (type === 2) {
+                await setLanDevice(params);
+            } else {
+                await setCloudDevice(params);
+            }
         }
     }
 });
