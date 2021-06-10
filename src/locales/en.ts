@@ -2,28 +2,28 @@ export const en = {
     common: {
         error: {
             getcontent: 'Get content failed',
-            getdevice: 'Get device list failed'
+            getdevice: 'Get device list failed',
         },
         text: {
             signin: 'Sign in',
             signout: 'Sign out',
-            feedback: 'Feedback'
+            feedback: 'Feedback',
         },
         slogan: 'Works with everything',
-        downloadapp: 'Download eWeLink App now'
+        downloadapp: 'Download eWeLink App now',
     },
 
     form: {
         placeholder: {
             country: 'Country',
             username: 'Phone No. / Email',
-            password: 'Password'
+            password: 'Password',
         },
         error: {
             nocountry: 'Please select your country',
             nousername: 'Please input your phone number or email',
             nopassword: 'Please input your password',
-            login: 'Login failed, { msg }'
+            login: 'Login failed, { msg }',
         },
         success: {
             login: 'Login success',
@@ -49,12 +49,16 @@ export const en = {
         power: 'Power',
         realpower: 'Real power',
         reactivepower: 'Reactive power',
-        apparentpower: 'Apparent power'
+        apparentpower: 'Apparent power',
     },
 
     modal: {
-        deviceName:'Device Name',
-        powerOnState:'Power-on State',
-        temperatureUnit:'Temperature unit'
-    }
+        deviceName: 'Device Name',
+        powerOnState: 'Power-on State',
+        temperatureUnit: {
+            name: 'Temperature unit',
+            c: 'Celsius[℃]',
+            f: 'Fahrenheit[℉]',
+        },
+    },
 };

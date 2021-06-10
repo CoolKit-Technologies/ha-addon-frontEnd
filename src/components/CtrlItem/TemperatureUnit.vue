@@ -1,13 +1,13 @@
 <template>
     <div class="temperature-unit">
-        <div class="title">{{ $t('modal.temperatureUnit') }}</div>
+        <div class="title">{{ $t('modal.temperatureUnit.name') }}</div>
         <a-select
             v-model:value="value"
             style="width: 120px"
             @change="handleChange" 
         >
-            <a-select-option value="c">Celsius[℃]</a-select-option>
-            <a-select-option value="f">Fahrenheit[℉]</a-select-option>
+            <a-select-option value="c">{{ $t('modal.temperatureUnit.c') }}</a-select-option>
+            <a-select-option value="f">{{ $t('modal.temperatureUnit.f') }}</a-select-option>
         </a-select>
     </div>
 </template>
@@ -51,6 +51,6 @@ export default defineComponent({
     align-items center
     .title
         color #212121
-        font-size 12px
+        font-size 14px
     
 </style>
