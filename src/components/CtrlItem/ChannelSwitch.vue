@@ -1,14 +1,13 @@
 <template>
-    <div class="single-switch">
-        <div class="icon" v-if="icon !== ''">
-            <!-- icon: flash -->
+    <div class="channel-switch">
+        <div class="icon">
             <img
-                v-if="icon === 'flash' && stat"
+                v-if="stat"
                 src="@/assets/flash-on.svg"
                 alt="flash icon"
             />
             <img
-                v-else-if="icon === 'flash' && !stat"
+                v-else-if="!stat"
                 src="@/assets/flash-off.svg"
                 alt="flash icon"
             />
@@ -33,12 +32,9 @@ import { defineComponent } from 'vue';
 import { setDiyDevice, setCloudDevice, setLanDevice } from '@/api/device';
 
 export default defineComponent({
-    name: 'SingleSwitch',
+    name: 'ChannelSwitch',
 
     props: {
-        icon: {
-            default: ''
-        },
         title: {
             default: ''
         },
@@ -102,7 +98,7 @@ export default defineComponent({
                 };
             }
 
-            if (type === 2) {
+            if (type === 2) {       // If current device is LAN device
                 await setLanDevice(params);
             } else {
                 await setCloudDevice(params);
@@ -113,7 +109,7 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
-.single-switch
+.channel-switch
     display flex
     align-items center
 

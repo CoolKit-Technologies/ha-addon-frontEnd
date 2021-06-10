@@ -58,6 +58,7 @@ import _ from 'lodash';
 import { getConfig } from '@/utils/config';
 import { openWindow } from '@/utils/etc';
 import { logout } from '@/api/user';
+import { getDeviceListRefresh } from '@/api/device';
 
 export default defineComponent({
     name: 'HeaderBar',
@@ -81,11 +82,17 @@ export default defineComponent({
     },
 
     methods: {
-        refresh() {
+        async refresh() {
             this.spin = true;
             setTimeout(() => {
                 this.spin = false;
             }, 2000);
+            const res = await getDeviceListRefresh();
+            if (res.error === 0) {
+                this.setOriginDeviceList(res.data);
+            } else {
+                message.error(this.$t('common.error.getdevice'));
+            }
         },
         async handleSignout() {
             const res = await logout();
@@ -105,12 +112,12 @@ export default defineComponent({
                 params: null
             });
         },
-        ...mapMutations(['setIsLogin']),
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList']),
         ...mapActions(['openModal'])
     },
 
     mounted() {
-        this.refresh = _.throttle(this.refresh, 2200, { 'leading': true, 'trailing': false });
+        this.refresh = _.throttle(this.refresh, 2200, { 'leading': true, 'trailing': false }) as any;
     }
 });
 </script>

@@ -23,7 +23,7 @@ export const zh = {
             nocountry: '请选择您的国家',
             nousername: '请输入您的手机号或邮箱',
             nopassword: '请输入您的密码',
-            login: '登录成败，{ msg }'
+            login: '登录失败，{ msg }'
         },
         success: {
             login: '登录成功',
@@ -53,6 +53,11 @@ export const zh = {
     },
 
     modal: {
+        netled: '网络指示灯',
+        interlock: '互锁',
+        interlocktip: '启用后，不支持定时器、点动等功能',
+        entitydisable: '禁用实体',
+        entitydisabletip: '已禁用的实体不会同步到 Home Assistant',
         deviceName: '设备名称',
         powerOnState:'上电状态',
         temperatureUnit:'温度单位'

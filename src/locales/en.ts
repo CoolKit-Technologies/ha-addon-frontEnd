@@ -53,6 +53,11 @@ export const en = {
     },
 
     modal: {
+        netled: 'Network Indicator',
+        interlock: 'Interlock Mode',
+        interlocktip: 'Inching mode & Power-on state will be disabled',
+        entitydisable: 'Disable Entity',
+        entitydisabletip: 'Disabled entities will not be added to Home Assistant',
         deviceName: 'Device Name',
         powerOnState: 'Power-on State',
         temperatureUnit: {

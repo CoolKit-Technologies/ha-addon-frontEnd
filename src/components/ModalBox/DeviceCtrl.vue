@@ -3,6 +3,9 @@
         <device-name />
         <power-on-state />
         <temperature-unit v-if="modalParams.uiid === 15" />
+        <ctrl-switch type="led" />
+        <ctrl-switch type="lock" />
+        <ctrl-switch type="disable" />
     </div>
 </template>
 
@@ -13,6 +16,7 @@ import { mapState } from 'vuex';
 import DeviceName from '@/components/CtrlItem/DeviceName.vue';
 import PowerOnState from '@/components/CtrlItem/PowerOnState.vue';
 import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
+import CtrlSwitch from '@/components/CtrlItem/CtrlSwitch.vue';
 
 export default defineComponent({
     name: 'DeviceCtrl',
@@ -20,6 +24,7 @@ export default defineComponent({
     components:{
         DeviceName,
         PowerOnState,
+        CtrlSwitch,
         TemperatureUnit
     },
 
@@ -32,5 +37,5 @@ export default defineComponent({
 <style lang="stylus" scoped>
 .device-ctrl
     & > div:not(:first-child)
-        margin-top 10px
+        margin-top 14px
 </style>

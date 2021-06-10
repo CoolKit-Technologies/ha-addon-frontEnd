@@ -38,12 +38,12 @@ export default defineComponent({
     async created() {
         await this.initIsLogin();
         await this.initLocale();
-        // this.initSse();
+        this.initSse();
     },
 
     beforeUnmount() {
         // Close SSE when page reload or tear down
-        // this.source.close();
+        this.source.close();
     },
 
     computed: {

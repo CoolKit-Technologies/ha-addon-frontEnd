@@ -1,5 +1,5 @@
 <template>
-    <div class="single-mode">
+    <div class="channel-mode">
         <div class="icon">
             <img
                 alt="tune icon"
@@ -19,7 +19,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    name: 'SingleMode',
+    name: 'ChannelMode',
 
     props: {
         mode: {
@@ -31,7 +31,7 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
-.single-mode
+.channel-mode
     display flex
     align-items center
 

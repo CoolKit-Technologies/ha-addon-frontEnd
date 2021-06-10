@@ -9,11 +9,10 @@
         <div v-else class="content">
             <!-- switch or socket devices -->
             <div class="sw-sock" v-if="isSwSock">
-                <single-switch
+                <channel-switch
                     v-for="item in channels"
                     :key="item.key"
                     :index="item.key"
-                    icon="flash"
                     :title="item.name"
                     :stat="item.stat === 'on' ? true : false"
                     :cardData="cardData"
@@ -31,13 +30,12 @@
                         :tempUnit="cardData.unit"
                     />
                 </div>
-                <single-mode
+                <channel-mode
                     class="mg-14"
                     :mode="cardData.params.deviceType"
                 />
-                <single-switch
+                <channel-switch
                     class="mg-14"
-                    icon="flash"
                     :title="$t('card.channel')"
                     :stat="cardData.params.switch === 'on' ? true : false"
                     :cardData="cardData"
@@ -54,9 +52,8 @@
                     <span class="title">{{ $t('card.realtimestats') }}</span>
                     <span class="value">140W</span>
                 </div>
-                <single-switch
+                <channel-switch
                     class="mg-14"
-                    icon="flash"
                     :title="$t('card.channel')"
                     :stat="cardData.params.switch === 'on' ? true : false"
                     :cardData="cardData"
@@ -79,9 +76,8 @@
                         <span class="value">{{ item.value }}</span>
                     </div>
                 </div>
-                <single-switch
+                <channel-switch
                     class="mg-14"
-                    icon="flash"
                     :title="$t('card.channel')"
                     :stat="cardData.params.switch === 'on' ? true : false"
                     :cardData="cardData"
@@ -115,9 +111,8 @@
                         <p class="value">1.0A</p>
                     </div>
                 </div>
-                <single-switch
+                <channel-switch
                     class="mg-14"
-                    icon="flash"
                     :title="`${$t('card.channel')} ${cardData.cardIndex + 1}`"
                     :stat="cardData.params.switches[cardData.cardIndex].switch === 'on' ? true : false"
                     :cardData="cardData"
@@ -132,8 +127,8 @@
 import { defineComponent } from 'vue';
 
 import { isSupportedDevice, SW_SOCK_UIID } from '@/utils/etc';
-import SingleSwitch from '@/components/CtrlItem/SingleSwitch.vue';
-import SingleMode from '@/components/CtrlItem/SingleMode.vue';
+import ChannelSwitch from '@/components/CtrlItem/ChannelSwitch.vue';
+import ChannelMode from '@/components/CtrlItem/ChannelMode.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
@@ -142,8 +137,8 @@ export default defineComponent({
     name: 'CardContent',
 
     components: {
-        SingleSwitch,
-        SingleMode,
+        ChannelSwitch,
+        ChannelMode,
         HumiGauge,
         TempGauge,
         CircleChart,
