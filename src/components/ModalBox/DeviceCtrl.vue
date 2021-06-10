@@ -3,6 +3,10 @@
         <device-name />
         <power-on-state />
         <temperature-unit v-if="modalParams.uiid === 15" />
+        <p>you should see a button here</p>
+        <p>{{ modalParams.cardId }}</p>
+        <device-name :cardData="modalParams" />
+        <inching-mode :cardData="modalParams" />
     </div>
 </template>
 
@@ -14,13 +18,15 @@ import DeviceName from '@/components/CtrlItem/DeviceName.vue';
 import PowerOnState from '@/components/CtrlItem/PowerOnState.vue';
 import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
 
+import InchingMode from '@/components/CtrlItem/InchingMode.vue'
 export default defineComponent({
     name: 'DeviceCtrl',
 
     components:{
         DeviceName,
         PowerOnState,
-        TemperatureUnit
+        TemperatureUnit,
+        InchingMode
     },
 
     computed: {

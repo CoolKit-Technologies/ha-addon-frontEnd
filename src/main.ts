@@ -9,7 +9,8 @@ import {
     Select,
     Input,
     Typography,
-    Switch
+    Switch,
+    TimePicker
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -26,7 +27,6 @@ const app = createApp(App);
 
 app.use(store);
 app.use(i18n);
-
 // ant-design-vue components
 app.use(Button);
 app.use(Card);
@@ -37,5 +37,6 @@ app.use(Select);
 app.use(Input);
 app.use(Typography);
 app.use(Switch);
+app.use(TimePicker);
 
 app.mount('#app');

@@ -27,8 +27,8 @@ export const en = {
         },
         success: {
             login: 'Login success',
-            logout: 'Logout success'
-        }
+            logout: 'Logout success',
+        },
     },
 
     card: {
@@ -60,5 +60,7 @@ export const en = {
             c: 'Celsius[℃]',
             f: 'Fahrenheit[℉]',
         },
+        name: 'Device Name',
+        inchingmode: 'Inching mode',
     },
 };
