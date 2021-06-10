@@ -53,7 +53,11 @@ export const zh = {
     },
 
     modal: {
+        channelSettings: '通道设置',
+        deviceSettings: '设备设置',
+        stats: '用电信息',
         deviceName: '设备名称',
+        channelName: '通道名称',
         powerOnState: '上电状态',
         temperatureUnit: {
             name: '温度单位',
@@ -61,5 +65,9 @@ export const zh = {
             f: '华氏度[℉]',
         },
         inchingmode: '点动模式',
+        firmwareUpgrade: {
+            title: '固件升级',
+            desc: '最新版本：{ version }',
+        },
     },
 };
