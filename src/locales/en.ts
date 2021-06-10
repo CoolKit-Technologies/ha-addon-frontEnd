@@ -52,6 +52,7 @@ export const en = {
     },
 
     modal: {
-        name:'Device Name'
+        name:'Device Name',
+        inchingmode:'Inching mode'
     }
 };

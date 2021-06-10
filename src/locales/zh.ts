@@ -52,6 +52,7 @@ export const zh = {
     },
 
     modal: {
-        name: '设备名称'
+        name: '设备名称',
+        inchingmode:'点动模式'
     }
 };
