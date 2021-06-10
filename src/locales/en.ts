@@ -60,7 +60,6 @@ export const en = {
             c: 'Celsius[℃]',
             f: 'Fahrenheit[℉]',
         },
-        name: 'Device Name',
         inchingmode: 'Inching mode',
     },
 };
