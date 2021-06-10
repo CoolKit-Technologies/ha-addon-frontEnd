@@ -29,13 +29,16 @@ export default defineComponent({
 
     data() {
         return {
-            source: null    // SSE source
+            source: null,   // SSE source
+            windowResizeHandler: null
         } as {
             source: any;
+            windowResizeHandler: any;
         };
     },
 
     async created() {
+        this.initWinSize();
         await this.initIsLogin();
         await this.initLocale();
         this.initSse();
@@ -44,6 +47,8 @@ export default defineComponent({
     beforeUnmount() {
         // Close SSE when page reload or tear down
         this.source.close();
+        // Remove event handler
+        window.removeEventListener('resize', this.windowResizeHandler);
     },
 
     computed: {
@@ -51,6 +56,15 @@ export default defineComponent({
     },
 
     methods: {
+        initWinSize() {
+            console.log('init size:', window.innerWidth);
+            this.setWindowSize(window.innerWidth);
+            this.windowResizeHandler = _.throttle(() => {
+                console.log('resize', window.innerWidth);
+                this.setWindowSize(window.innerWidth);
+            }, 1000, { 'leading': false, 'trailing': true });
+            window.addEventListener('resize', this.windowResizeHandler);
+        },
         async initIsLogin() {
             const res = await userIsLogin();
             if (res.error === 0 && res.data.isLogin) {
@@ -91,7 +105,7 @@ export default defineComponent({
                 }
             });
         },
-        ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList'])
+        ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList', 'setWindowSize'])
     }
 });
 </script>

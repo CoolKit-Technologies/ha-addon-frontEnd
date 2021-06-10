@@ -8,6 +8,10 @@ export default createStore({
         // If user is login
         isLogin: false,
 
+        // Browser window size, 'lg' for large screen, 'md' for medium screen,
+        // 'sm' for small, 'xm' for smartphone
+        windowSize: 'lg',
+
         // Component 'ModalBox' visibility
         modalVisible: false,
         // Component 'ModalBox' type
@@ -159,6 +163,17 @@ export default createStore({
         },
         setOriginDeviceList(state, v) {
             state.originDeviceList = v;
+        },
+        setWindowSize(state, v) {
+            if (v > 1500) {
+                state.windowSize = 'lg';
+            } else if (v > 1000) {
+                state.windowSize = 'md';
+            } else if (v > 500) {
+                state.windowSize = 'sm';
+            } else {
+                state.windowSize = 'xm';
+            }
         }
     },
 

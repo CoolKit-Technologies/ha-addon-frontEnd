@@ -5,13 +5,19 @@
             <p class="desc">{{ desc }}</p>
         </div>
         <div class="action">
-            <a-switch/>
+            <a-switch
+                :checked="stat"
+                @change="toggle"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
+
+import { disableDevice } from '@/api/device';
 
 export default defineComponent({
     name: 'CtrlSwitch',
@@ -56,6 +62,35 @@ export default defineComponent({
                     break;
             }
             return result;
+        },
+        stat() {
+            console.log('o_o', this.modalParams);
+
+            const { disabled, params } = this.modalParams;
+            let result = false;
+
+            switch (this.type) {
+                case 'lock':
+                    result = params.lock === 1;
+                    break;
+                case 'led':
+                    result = params.sledOnline === 'on';
+                    break;
+                case 'disable':
+                    result = disabled;
+                    // fall through
+                default:
+                    break;
+            }
+            return false;
+        },
+        ...mapState(['modalParams'])
+    },
+
+    methods: {
+        toggle(v: boolean) {
+            console.log('o_o', v);
+            // disableDevice();
         }
     }
 });

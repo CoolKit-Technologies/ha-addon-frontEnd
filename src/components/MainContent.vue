@@ -25,5 +25,4 @@ export default defineComponent({
 .main-content
     max-width 1500px
     margin 0 auto
-    // background-color #ccc
 </style>

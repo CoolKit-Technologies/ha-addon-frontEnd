@@ -54,8 +54,6 @@ $color-grey-light = #f5f5f5
     border: 1px solid $color-grey
     border-radius: 4px
     transition all 0.3s
-    // TODO: remove margin
-    margin-bottom 20px
     &:hover
         box-shadow 0 2px 4px 2px $color-grey-dark
         cursor pointer
