@@ -1,6 +1,8 @@
 <template>
     <div class="device-name">
-        <div class="title">{{ title }}</div>
+        <div class="title">
+            {{ type === 'device' ? $t('modal.deviceName') : $t('modal.channelName') }}
+        </div>
         <div class="input-box">
             <a-input v-model:value="value" v-if="editable" />
             <p class="text" v-else>{{ value }}</p>
@@ -16,6 +18,8 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons-vue';
+
+import { setName } from '@/api/device';
 
 export default defineComponent({
     name: 'DeviceName',
@@ -34,36 +38,36 @@ export default defineComponent({
 
     props: {
         // type: 'device', 'channel'
+        // 'device' - update device name
+        // 'channel' - update device channel name
         type: {
             default: 'device',
             required: false,
         },
+        index: {
+            default: 0
+        }
     },
 
     computed: {
-        title() {
-            const { $t } = this as any;
-            console.log('Jia ~ file: DeviceName.vue ~ line 47 ~ title ~ type', this.type);
-            if (this.type === 'device') {
-                return $t('modal.deviceName');
-            }
-            return $t('modal.channelName');
-        },
         ...mapState(['modalParams']),
     },
+
     methods: {
-        handleSave() {
-            const status = this.editable;
-            if (status) {
-                // todo 接口请求
-                console.log(this.value);
+        async handleSave() {
+            if (this.editable) {
+                await setName({
+                    id: this.modalParams.deviceId,
+                    newName: this.value
+                });
             }
-            this.editable = !status;
+            this.editable = !this.editable;
         },
     },
 
     created() {
         this.value = this.modalParams.deviceName;
+        console.log('>_< ...', this.index);
     },
 });
 </script>
@@ -80,12 +84,13 @@ export default defineComponent({
         .action
             cursor pointer
             margin-left 8px
+            font-size 18px
         .text
             margin 0
             width 100%
             cursor not-allowed
             padding 4px 11px
-            border-bottom 1px solid #d9d9d9
+            border-bottom 1px solid white
     .ant-input
         border-radius 0
         border-top: none

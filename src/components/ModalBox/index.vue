@@ -1,16 +1,43 @@
 <template>
-    <a-modal :visible="modalVisible" :footer="null" :destroyOnClose="true" :maskClosable="false" @cancel="handleClose" class="modal-box">
+    <a-modal
+        :visible="modalVisible"
+        :footer="null"
+        :destroyOnClose="true"
+        :maskClosable="false"
+        @cancel="handleClose"
+        class="modal-box"
+    >
+        <!-- modal title -->
         <template #title v-if="`${modalType && modalType !== 'login'}`">
-            {{ modalParams.deviceName }}
-            <span class="more" v-if="showStats()" @click="() => setModalType('stats')">{{ $t('modal.stats') }}</span>
-            <span class="more" v-if="showChannelSettings()" @click="() => setModalType('channelSettings')">{{ $t('modal.channelSettings') }}</span>
-            <span class="more" v-if="modalType !== 'device'" @click="() => setModalType('device')">{{ $t('modal.deviceSettings') }}</span>
+            <span class="title">{{ modalParams.deviceName }}</span>
+            <span
+                class="more"
+                v-if="modalType !== 'device'"
+                @click="() => setModalType('device')"
+            >
+                {{ $t('modal.deviceSettings') }}
+            </span>
+            <span
+                class="more"
+                v-else-if="showChannelSettings()"
+                @click="() => setModalType('channelSettings')"
+            >
+                {{ $t('modal.channelSettings') }}
+            </span>
+            <span
+                class="more"
+                v-else-if="showStats()"
+                @click="() => setModalType('stats')"
+            >
+                {{ $t('modal.stats') }}
+            </span>
         </template>
 
-        <stats v-if="modalType === 'stats'" />
+        <!-- modal content -->
         <login-form v-if="modalType === 'login'" />
-        <device-ctrl v-if="modalType === 'device'" />
-        <channel-settings v-if="modalType === 'channelSettings'" />
+        <device-ctrl v-else-if="modalType === 'device'" />
+        <channel-settings v-else-if="modalType === 'channelSettings'" />
+        <stats v-else-if="modalType === 'stats'" />
     </a-modal>
 </template>
 
@@ -75,6 +102,8 @@ export default defineComponent({
         border-bottom none
         .ant-modal-title
             text-indent 30px
+            .title
+                font-size 18px
             .more
                 cursor pointer
                 float right

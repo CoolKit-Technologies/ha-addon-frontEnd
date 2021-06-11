@@ -4,7 +4,9 @@
             <div class="title">{{ $t('modal.firmwareUpgrade.title') }}</div>
             <div class="desc">{{ $t('modal.firmwareUpgrade.desc', { version: '1.2.3' }) }}</div>
         </div>
-        <img src="@/assets/upgrade.svg" alt="upgrade icon" />
+        <div class="action" @click="upgradeFw">
+            <img src="@/assets/upgrade.svg" alt="upgrade icon" />
+        </div>
     </div>
 </template>
 
@@ -27,10 +29,9 @@ export default defineComponent({
     },
 
     methods: {
-        handleChange() {
-            // todo 请求处理
-            console.log('当前Power-on state:', this.value);
-        },
+        upgradeFw() {
+            console.log('upgrade');
+        }
     },
 
     created() {
@@ -42,16 +43,23 @@ export default defineComponent({
 <style lang="stylus" scoped>
 .firmware-upgrade-item
     display flex
-    justify-content space-between
     align-items center
     .text-box
+        flex 1
         display flex
+        justify-content space-between
         align-items center
         .title
             color #212121
             font-size 14px
         .desc
-            margin-left 12px
+            margin-right 20px
             font-size 12px
             color #727272
+    .action
+        display flex
+        width 44px
+        justify-content center
+        align-items center
+        cursor pointer
 </style>

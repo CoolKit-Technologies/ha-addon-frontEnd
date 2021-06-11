@@ -40,7 +40,7 @@ export default defineComponent({
     },
 
     created() {
-        this.value = _.get(this,['modalParams', 'params', 'sledOnline'], '');
+        this.value = _.get(this,['modalParams', 'params', 'startup'], '');
     }
 });
 </script>

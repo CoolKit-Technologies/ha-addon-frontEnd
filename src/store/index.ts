@@ -53,6 +53,7 @@ export default createStore({
                 apikey: 'dddd',
                 deviceId: '2008',
                 params: {
+                    startup: 'on',
                     switches: [{
                         switch: 'on'
                     },{

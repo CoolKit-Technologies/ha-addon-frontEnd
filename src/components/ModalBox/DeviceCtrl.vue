@@ -42,6 +42,7 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .device-ctrl
+    margin-top -20px
     & > div:not(:first-child)
         margin-top 14px
 </style>

@@ -4,26 +4,38 @@
             {{ $t('modal.inchingmode') }}
         </div>
         <div class="control">
-            <a-time-picker :format="dateFormat" :value="pulseWidth" @change="(time) => handleTime(time)"></a-time-picker>
-            <a-switch class="switch" :checked="pulseSwitch" @click="(value) => inchingAction(value)"></a-switch>
+            <a-time-picker
+                :format="dateFormat"
+                :value="pulseWidth"
+                @change="(time) => handleTime(time)"
+            />
+            <a-switch
+                class="switch"
+                :checked="pulseSwitch"
+                @click="(value) => inchingAction(value)"
+            />
         </div>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
 import moment, { Moment } from 'moment';
+
 export default defineComponent({
     name: 'InchingMode',
+
     props: {
         cardData: {
             required: true,
         },
     },
+
     data() {
         return {
             dateFormat: 'mm:ss',
         };
     },
+
     computed: {
         pulseWidth(): Moment {
             let time = 500;
@@ -33,6 +45,7 @@ export default defineComponent({
             return true;
         },
     },
+
     methods: {
         //  设置点动时间
         handleTime(time: Moment) {
@@ -58,12 +71,15 @@ export default defineComponent({
     },
 });
 </script>
+
 <style lang="stylus">
 .inching-mode
     display flex
     justify-content space-between
     align-items center
     margin-top 10px
+    .title
+        color #212121
     .switch
         margin-left 20px
 </style>

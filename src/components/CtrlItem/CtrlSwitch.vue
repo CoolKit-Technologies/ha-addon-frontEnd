@@ -110,6 +110,7 @@ export default defineComponent({
             margin 0
         .title
             margin-right 10px
+            color #212121
         .desc
             margin-right 20px
             font-size 12px

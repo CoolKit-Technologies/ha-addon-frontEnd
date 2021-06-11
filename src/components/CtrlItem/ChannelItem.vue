@@ -1,6 +1,6 @@
 <template>
     <div class="channel-item">
-        <device-name type="channel" />
+        <device-name type="channel" :index="outlet" />
         <inching-mode />
         <power-on-state />
     </div>
@@ -50,7 +50,9 @@ export default defineComponent({
         },
     },
 
-    created() {},
+    created() {
+        console.log('o_o >>>', this.outlet);
+    },
 });
 </script>
 
