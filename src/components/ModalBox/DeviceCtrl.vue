@@ -17,21 +17,20 @@ import { mapState } from 'vuex';
 import DeviceName from '@/components/CtrlItem/DeviceName.vue';
 import PowerOnState from '@/components/CtrlItem/PowerOnState.vue';
 import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
-
-import InchingMode from '@/components/CtrlItem/InchingMode.vue'
+import InchingMode from '@/components/CtrlItem/InchingMode.vue';
 export default defineComponent({
     name: 'DeviceCtrl',
 
-    components:{
+    components: {
         DeviceName,
         PowerOnState,
         TemperatureUnit,
-        InchingMode
+        InchingMode,
     },
 
     computed: {
-        ...mapState(['modalParams'])
-    }
+        ...mapState(['modalParams']),
+    },
 });
 </script>
 

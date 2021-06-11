@@ -10,7 +10,8 @@ import {
     Input,
     Typography,
     Switch,
-    TimePicker
+    TimePicker,
+    DatePicker
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -38,5 +39,5 @@ app.use(Input);
 app.use(Typography);
 app.use(Switch);
 app.use(TimePicker);
-
+app.use(DatePicker)
 app.mount('#app');

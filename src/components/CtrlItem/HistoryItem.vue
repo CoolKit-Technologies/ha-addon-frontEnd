@@ -1,0 +1,158 @@
+<template>
+    <div class="history-item">
+        <div class="month-item">
+            <a-month-picker @change="(value) => selectMonth(value)" :disabled-date="(current) => disabledDate(current)"></a-month-picker>
+        </div>
+        <Divider class="divider"></Divider>
+        <div class="description-item">
+            <div>
+                <Statistic title="Consumed" :value="total" suffix="KWh" />
+            </div>
+        </div>
+        <div class="line-item">
+            <v-chart class="chart" :option="option" />
+        </div>
+    </div>
+</template>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import moment from 'moment';
+import _ from 'lodash';
+import { Divider, Statistic } from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+
+import { CanvasRenderer } from 'echarts/renderers';
+import VChart from 'vue-echarts';
+import { LineChart } from 'echarts/charts';
+import { use } from 'echarts/core';
+import { GridComponent } from 'echarts/components';
+import { TooltipComponent } from 'echarts/components';
+
+use([LineChart, CanvasRenderer, GridComponent, TooltipComponent]);
+export default defineComponent({
+    name: 'historyItem',
+    components: { VChart, Divider, Statistic },
+    data() {
+        return {
+            total: 0,
+            month: moment().month() + 1,
+            avaliableMonth: [] as string[],
+        };
+    },
+    computed: {
+        staValue(total: number): number {
+            return 14;
+            return total;
+        },
+        option() {
+            const { calculateHistoryData, month } = this as any;
+            const data = calculateHistoryData('', month);
+            return {
+                xAxis: {
+                    type: 'category',
+                    name: 'day',
+                    data: data.map((item: any) => item.day),
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                tooltip: {
+                    show: true,
+                    trigger: 'item',
+                },
+                series: [
+                    {
+                        data: data,
+                        type: 'line',
+                    },
+                ],
+            };
+        },
+    },
+    mounted() {},
+    methods: {
+        disabledDate(current: any) {
+            return this.avaliableMonth.includes(`${moment(current).month() + 1}`) ? false : true;
+        },
+        selectMonth(date: any) {
+            const month = moment(date).month() + 1;
+            this.month = month;
+        },
+        calculateHistoryData(datas11111: string, month: number) {
+            const datas =
+                '190101190301000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+            interface IHistoryData {
+                day: string;
+                value: number;
+            }
+            let result: { [key: string]: object } = {};
+            for (let i = 0; i < datas.length / 6; i++) {
+                //获取到这一天的数值
+                const firNumStr = datas.substr(i * 6, 2);
+                const secNumStr = datas.substr(i * 6 + 2, 2);
+                const thrNumStr = datas.substr(i * 6 + 4, 2);
+                const firNum = parseInt(firNumStr, 16);
+                const secNum = parseInt(secNumStr, 16);
+                const thrNum = parseInt(thrNumStr, 16);
+                const resultNumStr = `${firNum}.${secNum}${thrNum}`;
+                const resultNum = parseFloat(resultNumStr);
+
+                //获取这一天的时间对象 是今天的第前几天0，1，2，3，4，
+                const tempDate = moment().subtract(i, 'days');
+
+                //获取当前是几月，获取月份
+                const monthNum = tempDate.get('month') + 1;
+                //获取这一天是几号，获取是几号
+                const dayNum = tempDate.get('date');
+
+                //获取这一个月有几天,获取这个月有几天
+                // const monthDayNum = tempDate.daysInMonth();
+
+                //写入对象中
+                let tempObj = result[`${monthNum}`] ? result[`${monthNum}`] : {};
+
+                // tempObj.monthSumNum = tempObj.monthSumNum ? tempObj.monthSumNum : 0;
+                // tempObj[`${dayNum}`] = resultNum;
+                _.set(tempObj, `${dayNum}`, resultNum);
+                // tempObj.dayNum = monthDayNum;
+                // tempObj.monthSumNum += resultNum;
+
+                // tempObj.month = monthNum;
+                result[`${monthNum}`] = tempObj;
+
+                // allMonthSum = allMonthSum + resultNum
+            }
+            this.avaliableMonth = Object.keys(result);
+            const obj = result[month];
+            if (!obj) {
+                return false;
+            }
+            const currentDays = moment().daysInMonth();
+            const lastDay = Object.keys(obj).length;
+            if (lastDay < currentDays) {
+                // 计算填充的天数
+                for (let i = lastDay + 1; i < currentDays; i++) {
+                    _.set(obj, i, 0);
+                }
+            }
+            let data: IHistoryData[] = [];
+            data = Object.keys(obj).map((item) => ({
+                day: item,
+                value: _.get(obj, `${item}`) as number,
+            }));
+            const temp = data.map((item) => item.value);
+            //  计算月内总用电量
+            this.total = temp.reduce((total, item) => total + item);
+            return data;
+        },
+    },
+});
+</script>
+<style lang="stylus">
+.history-item
+    .divider
+        width 100%
+    .chart
+        height 500px
+        width 500px
+</style>
