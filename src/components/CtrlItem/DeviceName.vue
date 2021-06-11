@@ -1,28 +1,26 @@
 <template>
     <div class="device-name">
-        <div class="title">{{ $t('modal.deviceName') }}</div>
+        <div class="title">{{ title }}</div>
         <div class="input-box">
-            <a-input v-model:value="value" v-if='editable'>
-            </a-input>
+            <a-input v-model:value="value" v-if="editable" />
             <p class="text" v-else>{{ value }}</p>
             <div class="action" @click="handleSave">
-                <SaveOutlined  v-if="editable"/>
-                <EditOutlined  v-else/>
+                <SaveOutlined v-if="editable" />
+                <EditOutlined v-else />
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-
 import { EditOutlined, SaveOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
-    name: "DeviceName",
+    name: 'DeviceName',
 
-    components:{
+    components: {
         EditOutlined,
         SaveOutlined,
     },
@@ -31,26 +29,42 @@ export default defineComponent({
         return {
             editable: false,
             value: '',
-        }
+        };
+    },
+
+    props: {
+        // type: 'device', 'channel'
+        type: {
+            default: 'device',
+            required: false,
+        },
     },
 
     computed: {
-        ...mapState(['modalParams'])
+        title() {
+            const { $t } = this as any;
+            console.log('Jia ~ file: DeviceName.vue ~ line 47 ~ title ~ type', this.type);
+            if (this.type === 'device') {
+                return $t('modal.deviceName');
+            }
+            return $t('modal.channelName');
+        },
+        ...mapState(['modalParams']),
     },
     methods: {
         handleSave() {
             const status = this.editable;
-            if(status) {
+            if (status) {
                 // todo 接口请求
                 console.log(this.value);
             }
             this.editable = !status;
-        }
+        },
     },
 
     created() {
         this.value = this.modalParams.deviceName;
-    }
+    },
 });
 </script>
 
@@ -66,7 +80,7 @@ export default defineComponent({
         .action
             cursor pointer
             margin-left 8px
-        .text 
+        .text
             margin 0
             width 100%
             cursor not-allowed

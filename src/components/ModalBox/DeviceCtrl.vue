@@ -6,6 +6,8 @@
         <ctrl-switch type="led" />
         <ctrl-switch type="lock" />
         <ctrl-switch type="disable" />
+        <inching-mode :cardData="modalParams" />
+        <firmware-upgrade />
     </div>
 </template>
 
@@ -17,20 +19,24 @@ import DeviceName from '@/components/CtrlItem/DeviceName.vue';
 import PowerOnState from '@/components/CtrlItem/PowerOnState.vue';
 import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
 import CtrlSwitch from '@/components/CtrlItem/CtrlSwitch.vue';
+import FirmwareUpgrade from '@/components/CtrlItem/FirmwareUpgrade.vue';
 
+import InchingMode from '@/components/CtrlItem/InchingMode.vue';
 export default defineComponent({
     name: 'DeviceCtrl',
 
-    components:{
+    components: {
         DeviceName,
         PowerOnState,
         CtrlSwitch,
-        TemperatureUnit
+        TemperatureUnit,
+        InchingMode,
+        FirmwareUpgrade,
     },
 
     computed: {
-        ...mapState(['modalParams'])
-    }
+        ...mapState(['modalParams']),
+    },
 });
 </script>
 

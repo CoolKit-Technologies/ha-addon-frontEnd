@@ -61,7 +61,25 @@ export default createStore({
                         switch: 'on'
                     },{
                         switch: 'off'
-                    }]
+                    }],
+                    pulses:[{
+                            pulse:'off',
+                            width:'500',
+                            outlet:0
+                        },{
+                            pulse:'on',
+                            width:'1000',
+                            outlet: 1
+                        },{
+                            pulse:'off',
+                            width:'1000',
+                            outlet: 1
+                        },{
+                            pulse:'on',
+                            width:'1000',
+                            outlet: 1
+                        }
+                    ]
                 }
             },
             {

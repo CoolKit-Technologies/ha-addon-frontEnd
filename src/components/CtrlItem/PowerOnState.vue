@@ -21,7 +21,6 @@ import _ from 'lodash';
 export default defineComponent({
     name: "PowerOnState",
 
-
     data() {
         return {
             value: '',
@@ -31,6 +30,7 @@ export default defineComponent({
     computed: {
         ...mapState(['modalParams'])
     },
+
     methods: {
         handleChange() {
             // todo 请求处理

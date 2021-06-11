@@ -28,8 +28,8 @@ export const en = {
         },
         success: {
             login: 'Login success',
-            logout: 'Logout success'
-        }
+            logout: 'Logout success',
+        },
     },
 
     card: {
@@ -59,12 +59,21 @@ export const en = {
         interlocktip: 'Inching mode & Power-on state will be disabled',
         entitydisable: 'Disable Entity',
         entitydisabletip: 'Disabled entities will not be added to Home Assistant',
+        channelSettings: 'Channel Settings',
+        deviceSettings: 'Device Settings',
+        stats: 'Stats',
         deviceName: 'Device Name',
+        channelName: 'Channel Name',
         powerOnState: 'Power-on State',
         temperatureUnit: {
             name: 'Temperature unit',
             c: 'Celsius[℃]',
             f: 'Fahrenheit[℉]',
+        },
+        inchingmode: 'Inching mode',
+        firmwareUpgrade: {
+            title: 'Firmware Upgrade',
+            desc: 'Newest version { version }.',
         },
     },
 };

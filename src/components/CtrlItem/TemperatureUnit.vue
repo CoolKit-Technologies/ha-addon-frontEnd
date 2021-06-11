@@ -30,6 +30,7 @@ export default defineComponent({
     computed: {
         ...mapState(['modalParams'])
     },
+
     methods: {
         handleChange() {
             // todo 请求处理
@@ -39,7 +40,7 @@ export default defineComponent({
     },
 
     created() {
-        this.value = _.get(this,['modalParams', 'unit'], 'c');
+        this.value = _.get(this, ['modalParams', 'unit'], 'c');
     }
 });
 </script>
@@ -52,5 +53,4 @@ export default defineComponent({
     .title
         color #212121
         font-size 14px
-    
 </style>
