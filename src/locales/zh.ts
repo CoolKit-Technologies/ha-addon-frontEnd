@@ -56,6 +56,8 @@ export const zh = {
         channelSettings: '通道设置',
         deviceSettings: '设备设置',
         stats: '用电信息',
+        realtimeStats: '实时统计',
+        history: '历史记录',
         deviceName: '设备名称',
         channelName: '通道名称',
         powerOnState: '上电状态',

@@ -56,6 +56,8 @@ export const en = {
         channelSettings: 'Channel Settings',
         deviceSettings: 'Device Settings',
         stats: 'Stats',
+        realtimeStats:"Realtime stats",
+        history: 'History',
         deviceName: 'Device Name',
         channelName: 'Channel Name',
         powerOnState: 'Power-on State',
