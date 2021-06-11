@@ -53,14 +53,21 @@ export const en = {
     },
 
     modal: {
+        channelSettings: 'Channel Settings',
+        deviceSettings: 'Device Settings',
+        stats: 'Stats',
         deviceName: 'Device Name',
+        channelName: 'Channel Name',
         powerOnState: 'Power-on State',
         temperatureUnit: {
             name: 'Temperature unit',
             c: 'Celsius[℃]',
             f: 'Fahrenheit[℉]',
         },
-        name: 'Device Name',
         inchingmode: 'Inching mode',
+        firmwareUpgrade: {
+            title: 'Firmware Upgrade',
+            desc: 'Newest version { version }.',
+        },
     },
 };
