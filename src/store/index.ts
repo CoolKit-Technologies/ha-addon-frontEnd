@@ -12,6 +12,9 @@ export default createStore({
         // 'sm' for small, 'xm' for smartphone
         windowSize: 'lg',
 
+        // Hold on until page complete
+        pageLoading: false,
+
         // Component 'ModalBox' visibility
         modalVisible: false,
         // Component 'ModalBox' type
@@ -95,6 +98,10 @@ export default createStore({
                 deviceName: 'Dual R3',
                 deviceId: '1000093c3x',
                 params: {
+                    voltage_00: 120,
+                    voltage_01: 140,
+                    current_00: 2.0,
+                    current_01: 3.0,
                     actPow_00: 110,
                     actPow_01: 120,
                     reactPow_00: 130,

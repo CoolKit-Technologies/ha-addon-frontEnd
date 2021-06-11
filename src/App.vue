@@ -1,8 +1,16 @@
 <template>
     <div class="main">
-        <header-bar />
-        <main-content />
-        <modal-box />
+        <div class="loading" v-if="pageLoading">
+            <div class="wrapper">
+                <a-spin size="large" />
+                <p>{{ $t('common.text.loading') }}</p>
+            </div>
+        </div>
+        <template v-else>
+            <header-bar />
+            <main-content />
+            <modal-box />
+        </template>
     </div>
 </template>
 
@@ -52,7 +60,7 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapState(['originDeviceList'])
+        ...mapState(['originDeviceList', 'pageLoading'])
     },
 
     methods: {
@@ -97,7 +105,8 @@ export default defineComponent({
                 const oldList = _.cloneDeep(this.originDeviceList);
                 if (debug) {
                     console.log('SSE message received, event data:');
-                    console.log(newList, oldList);
+                    console.log('new', newList);
+                    console.log('old', oldList);
                     console.log('new list === old list:', _.isEqual(newList, oldList));
                 }
                 if (!_.isEqual(newList, oldList)) {
@@ -109,3 +118,18 @@ export default defineComponent({
     }
 });
 </script>
+
+<style lang="stylus" scoped>
+.loading
+    height 100vh
+    display flex
+    justify-content center
+    align-items center
+    .wrapper
+        display flex
+        flex-direction column
+        align-items center
+        & p
+            font-size 22px
+            margin-top 20px
+</style>

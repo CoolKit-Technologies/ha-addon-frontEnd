@@ -7,7 +7,8 @@ export const zh = {
         text: {
             signin: '登录',
             signout: '登出',
-            feedback: '反馈'
+            feedback: '反馈',
+            loading: '正在处理中，请稍候...',
         },
         slogan: '一切从连接开始 又连接一切',
         downloadapp: '马上下载易微联 App'

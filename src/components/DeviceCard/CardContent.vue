@@ -103,12 +103,12 @@
                 <div class="data-stat">
                     <div class="vol">
                         <p class="key">{{ $t('card.voltage') }}</p>
-                        <p class="value">220V</p>
+                        <p class="value">{{ cardData.params[`voltage_0${cardData.cardIndex}`] / 100 }}V</p>
                     </div>
                     <div class="divided"></div>
                     <div class="cur">
                         <p class="key">{{ $t('card.current') }}</p>
-                        <p class="value">1.0A</p>
+                        <p class="value">{{ cardData.params[`current_0${cardData.cardIndex}`] / 100 }}A</p>
                     </div>
                 </div>
                 <channel-switch
@@ -208,19 +208,19 @@ export default defineComponent({
             return [
                 {
                     title: $t('card.realpower'),
-                    value: cardData.params['actPow_0' + cardData.cardIndex] + 'W',
+                    value: cardData.params['actPow_0' + cardData.cardIndex] / 100 + 'W',
                     color: 'blue',
                     key: 0
                 },
                 {
                     title: $t('card.reactivepower'),
-                    value: cardData.params['reactPow_0' + cardData.cardIndex] + 'W',
+                    value: cardData.params['reactPow_0' + cardData.cardIndex] / 100 + 'W',
                     color: 'green',
                     key: 1
                 },
                 {
                     title: $t('card.apparentpower'),
-                    value: cardData.params['apparentPow_0' + cardData.cardIndex] + 'W',
+                    value: cardData.params['apparentPow_0' + cardData.cardIndex] / 100 + 'W',
                     color: 'yellow',
                     key: 2
                 }

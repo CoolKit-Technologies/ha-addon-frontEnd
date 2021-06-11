@@ -8,6 +8,7 @@ export const en = {
             signin: 'Sign in',
             signout: 'Sign out',
             feedback: 'Feedback',
+            loading: 'Processing, please wait...',
         },
         slogan: 'Works with everything',
         downloadapp: 'Download eWeLink App now',
