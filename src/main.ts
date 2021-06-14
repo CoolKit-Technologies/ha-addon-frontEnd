@@ -12,7 +12,8 @@ import {
     Spin,
     Switch,
     TimePicker,
-    DatePicker
+    DatePicker,
+    Tabs
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -43,5 +44,6 @@ app.use(Spin);
 app.use(Switch);
 app.use(TimePicker);
 app.use(DatePicker);
+app.use(Tabs);
 
 app.mount('#app');

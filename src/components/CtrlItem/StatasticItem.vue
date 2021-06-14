@@ -1,7 +1,14 @@
 <template>
     <div class="statastic-item">
         <div class="range-item">
-            <a-range-picker showTime :bordered="false" :placeholder="placeholder" :disabled="true" :format="dateFormat" :value="[defaultTime, defaultTime]"></a-range-picker>
+            <a-range-picker
+                showTime
+                :bordered="false"
+                :placeholder="placeholder"
+                :disabled="true"
+                :format="dateFormat"
+                :value="[defaultStartTime, defaultEndTime]"
+            ></a-range-picker>
         </div>
         <div class="liquid-item">
             <circle-chart width="180px" height="180px" color="blue" />
@@ -20,7 +27,8 @@ import { defineComponent } from 'vue';
 import CircleChart from '@/components/CircleChart.vue';
 import { PlayCircleTwoTone, CheckCircleTwoTone, SyncOutlined } from '@ant-design/icons-vue';
 import moment, { Moment } from 'moment';
-
+import { mapState } from 'vuex';
+import _ from 'lodash';
 export default defineComponent({
     components: {
         CircleChart,
@@ -34,35 +42,97 @@ export default defineComponent({
             dateFormat: 'YYYY-MM-DD HH:mm:ss',
             spin: false,
             startFlag: false,
+            staDateFromat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
+            startTime: '',
+            endTime: '',
         };
     },
     computed: {
-        defaultTime(time: string): Moment {
-            // return time ? moment(time) : moment();
-            return moment('2015-01-01 10:10:10');
+        ...mapState(['modalParams']),
+        defaultStartTime(): Moment {
+            return this.startTime ? moment(this.startTime) : moment();
+        },
+        defaultEndTime(): Moment {
+            return this.endTime ? moment(this.endTime) : moment();
         },
     },
+    mounted() {
+        console.log('statastic', this.modalParams);
+    },
     methods: {
-        selectRangeTime(dates: any) {
-            console.log(`ML ~ file: StatasticItem.vue ~ line 34 ~ selectRangeTime ~ value`, dates);
-        },
+        selectRangeTime(dates: any) {},
         startFunc() {
             this.startFlag = true;
-            console.log(new Date().getTime());
+            this.startTime = moment()
+                .utc()
+                .format(this.staDateFromat);
+            let params = {
+                id: this.modalParams.deviceId,
+                apikey: this.modalParams.key,
+                params: {},
+            };
+            if (this.modalParams.uiid === 126) {
+                this.modalParams.cardIndex === 1
+                    ? _.assign(params.params, { startTime_01: this.startTime, endTime_01: '' })
+                    : _.assign(params.params, { startTime_00: this.startTime, endTime_00: '' });
+            } else {
+                _.assign(params.params, {
+                    onKwh: 'start',
+                    startTime: this.startTime,
+                    endTime: '',
+                });
+            }
+            //  TODO
         },
         endFunc() {
             this.startFlag = false;
-            console.log(new Date().getTime());
+            this.endTime = moment()
+                .utc()
+                .format(this.staDateFromat);
+            let params = {
+                id: this.modalParams.deviceId,
+                apikey: this.modalParams.key,
+                params: {},
+            };
+            if (this.modalParams.uiid === 126) {
+                this.modalParams.cardIndex === 1
+                    ? _.assign(params.params, { startTime_01: this.startTime, endTime_01: this.endTime })
+                    : _.assign(params.params, { startTime_00: this.startTime, endTime_00: this.endTime });
+            } else {
+                _.assign(params.params, {
+                    onKwh: 'stop',
+                    startTime: this.startTime,
+                    endTime: this.endTime,
+                });
+            }
+            //  TODO
         },
         refresh() {
             this.spin = true;
             setTimeout(() => {
                 this.spin = false;
             }, 2000);
+            let params = {
+                id: this.modalParams.deviceId,
+                apikey: this.modalParams.key,
+                params: {},
+            };
+            if (this.modalParams.uiid === 126) {
+                this.modalParams.cardIndex === 1
+                    ? _.assign(params.params, {
+                          getKwh_01: 1,
+                      })
+                    : _.assign(params.params, {
+                          getKwh_00: 1,
+                      });
+            } else {
+                _.assign(params.params, {
+                    oneKwh: 'get',
+                });
+            }
+            console.log(`ML ~ file: StatasticItem.vue ~ line 120 ~ refresh ~ params`, params);
+            //  TODO
         },
-        // formatTime(time: any): string {
-        //     return moment(time).format(this.dateFormat);
-        // },
     },
 });
 </script>
