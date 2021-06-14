@@ -30,7 +30,7 @@ export default defineComponent({
 
     methods: {
         upgradeFw() {
-            console.log('upgrade');
+            // console.log('upgrade');
         }
     },
 

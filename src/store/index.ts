@@ -64,21 +64,21 @@ export default createStore({
                         switch: 'off'
                     }],
                     pulses:[{
-                            pulse:'off',
-                            width:'500',
+                            pulse:'on',
+                            width:500,
                             outlet:0
                         },{
                             pulse:'on',
-                            width:'1000',
+                            width:1000,
                             outlet: 1
                         },{
                             pulse:'off',
-                            width:'1000',
-                            outlet: 1
+                            width:1000,
+                            outlet: 2
                         },{
                             pulse:'on',
-                            width:'1000',
-                            outlet: 1
+                            width:1000,
+                            outlet: 3
                         }
                     ]
                 }

@@ -8,8 +8,8 @@
         class="modal-box"
     >
         <!-- modal title -->
-        <template #title v-if="`${modalType && modalType !== 'login'}`">
-            <span class="title">{{ modalParams.deviceName }}</span>
+        <template #title v-if="modalType && modalType !== 'login'">
+            <span class="title">{{ modalParams && modalParams.deviceName }}</span>
             <span
                 class="more"
                 v-if="modalType !== 'device'"

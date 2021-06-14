@@ -64,7 +64,7 @@ export default defineComponent({
             return result;
         },
         stat() {
-            console.log('o_o', this.modalParams);
+            // console.log('o_o', this.modalParams);
 
             const { disabled, params } = this.modalParams;
             let result = false;
@@ -89,7 +89,7 @@ export default defineComponent({
 
     methods: {
         toggle(v: boolean) {
-            console.log('o_o', v);
+            // console.log('o_o', v);
             // disableDevice();
         }
     }

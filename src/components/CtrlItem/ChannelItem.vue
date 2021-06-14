@@ -44,14 +44,14 @@ export default defineComponent({
             const status = this.editable;
             if (status) {
                 // todo 接口请求
-                console.log(this.value);
+                // console.log(this.value);
             }
             this.editable = !status;
         },
     },
 
     created() {
-        console.log('o_o >>>', this.outlet);
+        // console.log('o_o >>>', this.outlet);
     },
 });
 </script>

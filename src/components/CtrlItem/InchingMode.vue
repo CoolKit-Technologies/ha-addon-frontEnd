@@ -5,21 +5,22 @@
         </div>
         <div class="control">
             <a-time-picker
-                :format="dateFormat"
-                :value="pulseWidth"
-                @change="(time) => handleTime(time)"
+                format="mm:ss"
+                v-model:value="modeTime"
+                @change="changeTime"
             />
             <a-switch
                 class="switch"
-                :checked="pulseSwitch"
-                @click="(value) => inchingAction(value)"
+                :checked="modeStat"
+                @change="toggle"
             />
         </div>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import moment, { Moment } from 'moment';
+import { mapState } from 'vuex';
+import moment from 'moment';
 
 export default defineComponent({
     name: 'InchingMode',
@@ -32,41 +33,53 @@ export default defineComponent({
 
     data() {
         return {
-            dateFormat: 'mm:ss',
+            modeTime: null,
+        } as {
+            modeTime: any;
         };
     },
 
     computed: {
-        pulseWidth(): Moment {
-            let time = 500;
-            return time < 1000 ? moment('00:01', this.dateFormat) : moment(`${this.formatTime(time)}`, this.dateFormat);
+        modeStat() {
+            return (this.modalParams as any).params.pulses[0].pulse === 'on';
         },
-        pulseSwitch(): boolean {
-            return true;
-        },
+        ...mapState(['modalParams'])
+    },
+
+    created() {
+        this.initTime();
     },
 
     methods: {
-        //  设置点动时间
-        handleTime(time: Moment) {
-            console.log('time', time);
-            if (!time) return;
-            const h = moment(time).get('minute');
-            const s = moment(time).get('second');
-            let count = 0;
-            h === 0 ? (count = s) : (count = h * 60 + s);
-            console.log(`ML ~ file: InchingMode.vue ~ line 34 ~ handleTime ~ count`, count);
-            // todo 接口请求
+        initTime() {
+            const ms = this.modalParams.params.pulses[0].width;
+            this.modeTime = this.ms2time(ms);
         },
-        //  格式化点动时间
-        formatTime(time: number): string {
-            let temp = time / 1000;
-            return temp < 60 ? `00:${temp}` : `${Math.floor(temp / 60)}:${temp % 60}`;
+        // Convert time format (ms => min:sec)
+        // 1000ms => 00:01, 1500ms => 00:02
+        ms2time(ms: number) {
+            if (ms <= 1000) {
+                return moment('00:01', 'mm:ss');
+            } else {
+                const sec = Math.ceil(ms / 1000);
+                if (sec < 60) {
+                    return moment('00:' + sec.toString().padStart(2, '0'), 'mm:ss');
+                } else {
+                    const mm = Math.floor(sec / 60).toString().padStart(2, '0');
+                    const ss = String(sec % 60).padStart(2, '0');
+                    return moment(`${mm}:${ss}`, 'mm:ss');
+                }
+            }
         },
-        //  点动开关
-        inchingAction(value: boolean) {
-            console.log(`ML ~ file: InchingMode.vue ~ line 54 ~ inchingAction ~ value`, value);
-            // todo 接口请求
+        changeTime() {
+            const mm = moment(this.modeTime).get('minute');
+            const ss = moment(this.modeTime).get('second');
+            if (this.modeStat) {
+                // When stat is 'on', send request
+            }
+        },
+        toggle(v: boolean) {
+            // TODO: send request
         },
     },
 });

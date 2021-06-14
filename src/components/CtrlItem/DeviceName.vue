@@ -67,7 +67,7 @@ export default defineComponent({
 
     created() {
         this.value = this.modalParams.deviceName;
-        console.log('>_< ...', this.index);
+        // console.log('>_< ...', this.index);
     },
 });
 </script>
