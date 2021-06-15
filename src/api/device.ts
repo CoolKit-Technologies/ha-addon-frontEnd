@@ -1,4 +1,5 @@
 // device api
+import { isOneChannelSPDevice } from '@/utils/etc';
 import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
 
@@ -144,10 +145,7 @@ export async function toggleChannel(v: boolean, data: any, index: number) {
             }
         });
         return;
-    } else if (
-        uiid === 1 || uiid === 5 || uiid === 6 || uiid === 14 || uiid === 15
-        || uiid === 32
-    ) {
+    } else if (isOneChannelSPDevice(uiid)) {
         // Single channel
         params = {
             apikey,

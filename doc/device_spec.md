@@ -2,7 +2,7 @@
 
 ## 设备类型
 
-* `type == 1` - DIY 设备（`uiid === 1`）
+* `type == 1` - DIY 设备（`uiid == 1`）
 
 * `type == 2` - LAN 设备
 

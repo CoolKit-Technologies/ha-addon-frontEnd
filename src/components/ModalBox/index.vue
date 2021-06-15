@@ -50,6 +50,7 @@ import LoginForm from './LoginForm.vue';
 import DeviceCtrl from './DeviceCtrl.vue';
 import ChannelSettings from './ChannelSettings.vue';
 import Stats from './Stats.vue';
+import { isMultiChannelDevice, hasStatDevice } from '@/utils/etc';
 
 export default defineComponent({
     name: 'ModalBox',
@@ -70,22 +71,10 @@ export default defineComponent({
             this.closeModal();
         },
         showStats() {
-            const uiids = new Set<number>([5, 32, 126]);
-            return this.modalType !== 'stats' && uiids.has(_.get(this, ['modalParams', 'uiid']));
+            return this.modalType !== 'stats' && hasStatDevice(this.modalParams.uiid);
         },
         showChannelSettings() {
-            // multi-channel device
-            const uiids = new Set<number>([
-                2,
-                3,
-                4,
-                7,
-                8,
-                9,
-                113,
-                114
-            ]);
-            return this.modalType !== 'channelSettings' && uiids.has(_.get(this, ['modalParams', 'uiid']));
+            return this.modalType !== 'channelSettings' && isMultiChannelDevice(this.modalParams.uiid);
         },
         ...mapMutations(['setModalType']),
         ...mapActions(['closeModal']),

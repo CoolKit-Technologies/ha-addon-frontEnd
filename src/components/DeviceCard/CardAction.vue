@@ -21,6 +21,13 @@ import { SyncOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash';
 
 import { toggleAllChannels, refreshUi } from '@/api/device';
+import {
+    isMultiChannelDevice,
+    isTwoChannelDevice,
+    isThreeChannelDevice,
+    isFourChannelDevice,
+    hasRefreshUiDevice
+} from '@/utils/etc';
 
 export default defineComponent({
     name: 'CardAction',
@@ -43,39 +50,31 @@ export default defineComponent({
 
     computed: {
         hasRefreshFunc() {
-            // Only these types of device support
-            const uiids = [126, 32, 5];
             const { uiid } = this.cardData as any;
 
-            if (uiids.indexOf(uiid) === -1) {
-                return false;
-            } else {
-                return true;
-            }
+            return hasRefreshUiDevice(uiid);
         },
         hasAllToggleFunc() {
-            // Only these types of device support
-            const uiids = [2, 3, 4, 7, 8, 9, 113, 114];
             const { uiid, params } = this.cardData as any;
 
             if (params) {
                 const isLock = params.lock === 1;
-                return uiids.indexOf(uiid) !== -1 && !isLock;
+                return isMultiChannelDevice(uiid) && !isLock;
             } else {
-                return uiids.indexOf(uiid) !== -1;
+                return isMultiChannelDevice(uiid);
             }
         },
         allOn() {
             const { uiid, params } = this.cardData as any;
             let cnt = 0;
 
-            if (uiid === 2 || uiid === 7 || uiid === 113) {
+            if (isTwoChannelDevice(uiid)) {
                 // 2 channels
                 cnt = 2;
-            } else if (uiid === 3 || uiid === 8 || uiid === 114) {
+            } else if (isThreeChannelDevice(uiid)) {
                 // 3 channels
                 cnt = 3;
-            } else if (uiid === 4 || uiid === 9) {
+            } else if (isFourChannelDevice(uiid)) {
                 // 4 channels
                 cnt = 4;
             }

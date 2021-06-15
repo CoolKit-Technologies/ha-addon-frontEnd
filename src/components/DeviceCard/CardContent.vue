@@ -126,7 +126,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { isSupportedDevice, SW_SOCK_UIID } from '@/utils/etc';
+import {
+    isSupportedDevice,
+    isPureSwOrSockDevice,
+    isOneChannelSwOrSockSPDevice,
+    isOneChannelSwOrSockCPDevice,
+    isTwoChannelDevice,
+    isThreeChannelDevice,
+    isFourChannelDevice
+} from '@/utils/etc';
 import ChannelSwitch from '@/components/CtrlItem/ChannelSwitch.vue';
 import ChannelMode from '@/components/CtrlItem/ChannelMode.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
@@ -158,7 +166,7 @@ export default defineComponent({
         // Current device is switch or socket
         isSwSock() {
             const { uiid } = this.cardData as any;
-            return SW_SOCK_UIID.indexOf(uiid) !== -1;
+            return isPureSwOrSockDevice(uiid);
         },
         // Current device is temperature / thermal switch
         isThSw() {
@@ -235,19 +243,19 @@ export default defineComponent({
             if (type === 1 && uiid === 1) {
                 // Single channel (DIY)
                 result.push({ key: 0, name: channelName, stat: params.data1.switch });
-            } else if (uiid === 1 || uiid === 6 || uiid === 14) {
+            } else if (isOneChannelSwOrSockSPDevice(uiid)) {
                 // Single channel (non-DIY)
                 result.push({ key: 0, name: channelName, stat: params.switch });
-            } else if (uiid === 77 || uiid === 78 || uiid === 112) {
+            } else if (isOneChannelSwOrSockCPDevice(uiid)) {
                 // Single channel (multi-channel protocol)
                 result.push({ key: 0, name: channelName, stat: params.switches[0].switch });
-            } else if (uiid === 2 || uiid === 7 || uiid === 113) {
+            } else if (isTwoChannelDevice(uiid)) {
                 // 2 channels
                 cnt = 2;
-            } else if (uiid === 3 || uiid === 8 || uiid === 114) {
+            } else if (isThreeChannelDevice(uiid)) {
                 // 3 channels
                 cnt = 3;
-            } else if (uiid === 4 || uiid === 9) {
+            } else if (isFourChannelDevice(uiid)) {
                 // 4 channels
                 cnt = 4;
             }

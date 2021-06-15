@@ -430,13 +430,6 @@ const regionMap_en = [
     { '+263': 'Zimbabwe' },
 ];
 
-export const SW_SOCK_UIID = [
-    1, 2, 3, 4,
-    6, 7, 8, 9,
-    77, 78, 107, 112,
-    113, 114
-];
-
 /**
  * Open a new browser window
  * @param url New page URL
@@ -502,4 +495,126 @@ export function tempC2F(t: number) {
 // Format number
 export function fmtNum(n: number, m: number) {
     return parseFloat(n.toFixed(m));
+}
+
+/* -------- determine device type -------- */
+
+// Pure switch or socket device
+export function isPureSwOrSockDevice(uiid: number) {
+    const uiids = [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        14,
+        77,
+        78,
+        107,
+        112,
+        113,
+        114
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// One channel simple protocol device
+export function isOneChannelSPDevice(uiid: number) {
+    const uiids = [
+        1,
+        5,
+        6,
+        14,
+        15,
+        32
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// Multi-channel device (not include Dual R3)
+export function isMultiChannelDevice(uiid: number) {
+    const uiids = [
+        2,
+        3,
+        4,
+        7,
+        8,
+        9,
+        113,
+        114
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 2 channels device (not include Dual R3)
+export function isTwoChannelDevice(uiid: number) {
+    const uiids = [
+        2,
+        7,
+        113
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 3 channels device (not include Dual R3)
+export function isThreeChannelDevice(uiid: number) {
+    const uiids = [
+        3,
+        8,
+        114
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 4 channels device (not include Dual R3)
+export function isFourChannelDevice(uiid: number) {
+    const uiids = [
+        4,
+        9
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// Device has refresh UI function
+export function hasRefreshUiDevice(uiid: number) {
+    const uiids = [
+        5,
+        32,
+        126
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// Device has stat tab
+export function hasStatDevice(uiid: number) {
+    const uiids = [
+        5,
+        32,
+        126
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 1 channel switch or socket with simple protocol
+export function isOneChannelSwOrSockSPDevice(uiid: number) {
+    const uiids = [
+        1,
+        6,
+        14
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// 1 channel switch or socket with complex protocol
+export function isOneChannelSwOrSockCPDevice(uiid: number) {
+    const uiids = [
+        77,
+        78,
+        107,
+        112
+    ];
+    return uiids.indexOf(uiid) !== -1;
 }

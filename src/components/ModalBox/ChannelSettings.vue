@@ -13,6 +13,11 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 
 import ChannelItem from '@/components/CtrlItem/ChannelItem.vue';
+import {
+    isTwoChannelDevice,
+    isThreeChannelDevice,
+    isFourChannelDevice
+} from '@/utils/etc';
 
 export default defineComponent({
     name: 'ChannelSettings',
@@ -23,18 +28,16 @@ export default defineComponent({
 
     computed: {
         getMaxChannel() {
-            const { modalParams } = this as any;
-            const channelMap = new Map<number, number>([
-                [2, 2], // 双通道插座
-                [3, 3], // 三通道插座
-                [4, 4], // 四通道插座
-                [7, 2], // 双通道开关
-                [8, 3], // 三通道开关
-                [9, 4], // 四通道开关
-                [113, 2], // 双通道开关微波雷达版
-                [114, 3], // 三通道开关微波雷达版
-            ]);
-            return channelMap.get(modalParams.uiid) || 0;
+            const { uiid } = this.modalParams;
+            if (isTwoChannelDevice(uiid)) {
+                return 2;
+            } else if (isThreeChannelDevice(uiid)) {
+                return 3;
+            } else if (isFourChannelDevice(uiid)) {
+                return 4;
+            } else {
+                return 0;
+            }
         },
         ...mapState(['modalParams']),
     },

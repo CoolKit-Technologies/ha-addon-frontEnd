@@ -19,6 +19,8 @@ import { defineComponent } from "vue";
 import { mapState } from 'vuex';
 import _ from 'lodash';
 
+import { isMultiChannelDevice } from '@/utils/etc';
+
 export default defineComponent({
     name: "PowerOnState",
 
@@ -55,10 +57,7 @@ export default defineComponent({
         if (type === 1 && uiid === 1) {
             // DIY device
             this.value = params.data1.startup;
-        } else if (
-            uiid === 2 || uiid === 3 || uiid === 4 || uiid === 7
-            || uiid === 8 || uiid === 9 || uiid === 113 || uiid === 114
-        ) {
+        } else if (isMultiChannelDevice(uiid)) {
             // Multi-channel
             this.value = params.configure[this.index].startup;
         } else if (uiid === 126) {
