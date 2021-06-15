@@ -13,7 +13,9 @@ import {
     Switch,
     TimePicker,
     DatePicker,
-    Tabs
+    Tabs,
+    Divider,
+    Statistic
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -45,5 +47,7 @@ app.use(Switch);
 app.use(TimePicker);
 app.use(DatePicker);
 app.use(Tabs);
+app.use(Divider);
+app.use(Statistic);
 
 app.mount('#app');

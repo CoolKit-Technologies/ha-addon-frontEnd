@@ -90,7 +90,7 @@ export default defineComponent({
             width 100%
             cursor not-allowed
             padding 4px 11px
-            border-bottom 1px solid white
+            border-bottom 1px solid #cccccc
     .ant-input
         border-radius 0
         border-top: none

@@ -88,7 +88,7 @@ export default createStore({
                 uiid: 5,
                 type: 4,
                 online: true,
-                deviceName: 'KS',
+                deviceName: 'UIID5',
                 deviceId: '1000093c3d',
                 params: {
                     switch: 'on',

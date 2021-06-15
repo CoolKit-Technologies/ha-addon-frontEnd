@@ -1,6 +1,14 @@
 <template>
     <div class="history-item">
         <div class="month-item">
+            <a-month-picker />
+        </div>
+        <a-divider style="margin:14px 0" />
+        <div>
+            <a-statistic/>
+        </div>
+        <!--
+        <div class="month-item">
             <a-month-picker @change="(value) => selectMonth(value)" :disabled-date="(current) => disabledDate(current)"></a-month-picker>
         </div>
         <Divider class="divider"></Divider>
@@ -12,26 +20,38 @@
         <div class="line-item">
             <v-chart class="chart" :option="option" />
         </div>
+        -->
     </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import moment from 'moment';
 import _ from 'lodash';
-import { Divider, Statistic } from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
 
-import { CanvasRenderer } from 'echarts/renderers';
-import VChart from 'vue-echarts';
-import { LineChart } from 'echarts/charts';
 import { use } from 'echarts/core';
-import { GridComponent } from 'echarts/components';
-import { TooltipComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart } from 'echarts/charts';
+import {
+    GridComponent,
+    TooltipComponent
+} from 'echarts/components';
+import VChart from 'vue-echarts';
 
-use([LineChart, CanvasRenderer, GridComponent, TooltipComponent]);
+use([
+    CanvasRenderer,
+    LineChart,
+    GridComponent,
+    TooltipComponent
+]);
+
 export default defineComponent({
-    name: 'historyItem',
-    components: { VChart, Divider, Statistic },
+    name: 'HistoryItem',
+
+    components: {
+        VChart
+    },
+
     data() {
         return {
             total: 0,
@@ -39,6 +59,7 @@ export default defineComponent({
             avaliableMonth: [] as string[],
         };
     },
+
     computed: {
         staValue(total: number): number {
             return 14;
@@ -69,7 +90,9 @@ export default defineComponent({
             };
         },
     },
+
     mounted() {},
+
     methods: {
         disabledDate(current: any) {
             return this.avaliableMonth.includes(`${moment(current).month() + 1}`) ? false : true;
@@ -148,7 +171,8 @@ export default defineComponent({
     },
 });
 </script>
-<style lang="stylus">
+
+<style lang="stylus" scoped>
 .history-item
     .divider
         width 100%

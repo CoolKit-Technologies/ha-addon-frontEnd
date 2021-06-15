@@ -1,10 +1,13 @@
 <template>
     <div class="channel-settings">
+        <p>channel setting</p>
+        <!--
         <channel-item
             v-for="item in getMaxChannel"
             :key="item"
             :outlet="item"
         />
+        -->
     </div>
 </template>
 

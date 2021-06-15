@@ -1,5 +1,23 @@
 <template>
-    <div class="statastic-item">
+    <div class="statistics-item">
+        <div class="range-item">
+            <a-range-picker
+                showTime
+                :placeholder="['From', 'To']"
+                format="YYYY-MM-DD HH:mm:ss"
+            />
+        </div>
+        <div class="liquid-item">
+            <circle-chart width="180px" height="180px" color="blue" />
+            <span class="title">{{ $t('card.realtimestats') }}</span>
+            <span class="value">140 KWH</span>
+        </div>
+        <div class="icon-item">
+            <PlayCircleTwoTone class="play-icon" @click="startFunc" />
+            <CheckCircleTwoTone class="play-icon" @click="endFunc" />
+            <sync-outlined class="action-icon" :spin="spin" @click="refresh" />
+        </div>
+        <!--
         <div class="range-item">
             <a-range-picker
                 showTime
@@ -20,16 +38,26 @@
             <CheckCircleTwoTone v-else-if="this.startFlag" class="play-icon" @click="endFunc" />
             <sync-outlined class="action-icon" :spin="spin" @click="refresh" />
         </div>
+        -->
     </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
-import CircleChart from '@/components/CircleChart.vue';
-import { PlayCircleTwoTone, CheckCircleTwoTone, SyncOutlined } from '@ant-design/icons-vue';
-import moment, { Moment } from 'moment';
 import { mapState } from 'vuex';
+import {
+    PlayCircleTwoTone,
+    CheckCircleTwoTone,
+    SyncOutlined
+} from '@ant-design/icons-vue';
+import moment, { Moment } from 'moment';
 import _ from 'lodash';
+
+import CircleChart from '@/components/CircleChart.vue';
+
 export default defineComponent({
+    name: 'StatisticsItem',
+
     components: {
         CircleChart,
         PlayCircleTwoTone,
@@ -136,9 +164,9 @@ export default defineComponent({
     },
 });
 </script>
-<style lang="stylus">
 
-.statastic-item
+<style lang="stylus" scoped>
+.statistics-item
     .range-item
         display flex
         justify-content center

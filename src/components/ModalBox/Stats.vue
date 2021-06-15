@@ -1,10 +1,10 @@
 <template>
     <div class="stats">
-        <a-tabs class=".ant-tabs-nav-list">
-            <a-tab-pane key="status" :tab="status" class="ant-tabs-tab">
-                <statastic-item />
+        <a-tabs type="line">
+            <a-tab-pane key="1" :tab="$t('modal.realtimeStats')">
+                <statistics-item />
             </a-tab-pane>
-            <a-tab-pane key="history" :tab="history" class="ant-tabs-tab">
+            <a-tab-pane key="2" :tab="$t('modal.history')">
                 <history-item />
             </a-tab-pane>
         </a-tabs>
@@ -13,33 +13,24 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
-import StatasticItem from '@/components/CtrlItem/StatasticItem.vue';
+
+import StatisticsItem from '@/components/CtrlItem/StatisticsItem.vue';
 import HistoryItem from '@/components/CtrlItem/HistoryItem.vue';
+
 export default defineComponent({
     name: 'Stats',
 
     components: {
-        StatasticItem,
+        StatisticsItem,
         HistoryItem,
-    },
-    data() {
-        return {
-            status: this.$t('modal.realtimeStats'),
-            history: this.$t('modal.history'),
-        };
-    },
-    created() {
-        console.log('===============', this.modalParams);
-    },
-    computed: {
-        ...mapState(['modalParams']),
-    },
+    }
 });
 </script>
 
-<style lang="stylus">
-.ant-tabs-nav-list,.ant-tabs-tab
-    width: 100%;
-    justify-content: space-between;
+<style lang="stylus" scoped>
+.stats
+    margin-top -20px
+    .ant-tabs-nav-list,
+    .ant-tabs-tab
+        width auto
 </style>
