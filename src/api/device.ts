@@ -274,3 +274,38 @@ export async function updateDeviceOrChannelName(actionType: 'deviceName' | 'chan
         });
     }
 }
+
+/**
+ * Toggle device network LED
+ * @param v State value
+ * @param data Device data
+ */
+export async function toggleNetworkLed(v: boolean, data: any) {
+    const { type, uiid, deviceId, apikey } = data;
+
+    if (type === 1 && uiid === 1) {
+        await setDiyDevice({
+            id: deviceId,
+            type: 'sledOnline',
+            params: {
+                state: v ? 'on' : 'off'
+            }
+        });
+    } else if (uiid === 126) {
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                sledBright: v ? 100 : 0
+            }
+        });
+    } else {
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                sledOnline: v ? 'on' : 'off'
+            }
+        });
+    }
+}

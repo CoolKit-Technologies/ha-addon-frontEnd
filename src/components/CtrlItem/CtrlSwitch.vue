@@ -17,7 +17,7 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 
-import { disableDevice, setLanDevice, setCloudDevice } from '@/api/device';
+import { disableDevice, setLanDevice, setCloudDevice, toggleNetworkLed } from '@/api/device';
 
 export default defineComponent({
     name: 'CtrlSwitch',
@@ -64,7 +64,7 @@ export default defineComponent({
             return result;
         },
         stat() {
-            const { disabled, params } = this.modalParams as any;
+            /*const { disabled, params } = this.modalParams as any;
             let result = false;
 
             switch (this.type) {
@@ -80,38 +80,33 @@ export default defineComponent({
                 default:
                     break;
             }
-            return result;
+            return result;*/
+            const { params, type, uiid, disabled } = this.modalParams as any;
+
+            if (this.type === 'led') {
+                if (type === 1 && uiid === 1) {
+                    return params.data1.sledOnline === 'on';
+                } else if (uiid === 126) {
+                    return params.sledBright !== 0;
+                } else {
+                    return params.sledOnline === 'on';
+                }
+            } else if (this.type === 'disable') {
+                return disabled;
+            }
         },
         ...mapState(['modalParams'])
     },
 
     methods: {
         async toggle(v: boolean) {
-            const { deviceId, type, apikey } = this.modalParams as any;
-
-            if (this.type === 'disable') {
+            if (this.type === 'led') {
+                await toggleNetworkLed(v, this.modalParams);
+            } else if (this.type === 'disable') {
                 await disableDevice({
-                    id: deviceId,
+                    id: this.modalParams.deviceId,
                     disabled: v
                 });
-            } else if (this.type === 'led') {
-                if (type === 2) {
-                    await setLanDevice({
-                        apikey,
-                        id: deviceId,
-                        params: {
-                            sledOnline: v ? 'on' : 'off'
-                        }
-                    });
-                } else if (type === 4) {
-                    await setCloudDevice({
-                        apikey,
-                        id: deviceId,
-                        params: {
-                            sledOnline: v ? 'on' : 'off'
-                        }
-                    });
-                }
             }
         }
     }

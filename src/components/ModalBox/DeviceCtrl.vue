@@ -1,18 +1,15 @@
 <template>
     <div class="device-ctrl">
         <device-name />
-        <!-- TODO: DIY device no led -->
-        <ctrl-switch type="led" />
+        <!-- DIY device could not toggle network LED -->
+        <ctrl-switch type="led" v-if="!(modalParams.type === 1 && modalParams.uiid === 1)" />
+        <temperature-unit v-if="modalParams.uiid === 15" />
+        <ctrl-switch type="disable" />
+        <!-- DIY device could not upgrade firmware -->
+        <firmware-upgrade v-if="!(modalParams.type === 1 && modalParams.uiid === 1)" />
         <!-- TODO: multi-channel
         <ctrl-switch type="lock" />
         -->
-        <power-on-state />
-        <!--
-        <inching-mode />
-        -->
-        <temperature-unit v-if="modalParams.uiid === 15" />
-        <ctrl-switch type="disable" />
-        <firmware-upgrade />
     </div>
 </template>
 

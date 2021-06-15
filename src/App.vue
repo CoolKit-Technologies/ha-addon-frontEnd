@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 import _ from 'lodash';
 
 import { getConfig } from '@/utils/config';
@@ -60,7 +60,8 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapState(['originDeviceList', 'pageLoading'])
+        ...mapState(['originDeviceList', 'pageLoading', 'modalParams']),
+        ...mapGetters(['deviceCardList'])
     },
 
     methods: {
@@ -111,10 +112,15 @@ export default defineComponent({
                 }
                 if (!_.isEqual(newList, oldList)) {
                     this.setOriginDeviceList(newList);
+                    if (this.modalParams) {
+                        // Update device data when modal was opened
+                        const res = this.deviceCardList.find((item: any) => item.deviceId === this.modalParams.deviceId);
+                        this.setModalParams(res);
+                    }
                 }
             });
         },
-        ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList', 'setWindowSize'])
+        ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList', 'setWindowSize', 'setModalParams'])
     }
 });
 </script>
