@@ -3,7 +3,8 @@
         <div class="title">{{ $t('modal.powerOnState') }}</div>
         <a-select
             v-model:value="value"
-            style="width: 120px"
+            style="min-width: 120px"
+            size="small"
             @change="handleChange"
         >
             <a-select-option value="on">On</a-select-option>

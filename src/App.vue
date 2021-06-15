@@ -49,12 +49,12 @@ export default defineComponent({
         this.initWinSize();
         await this.initIsLogin();
         await this.initLocale();
-        // this.initSse();
+        this.initSse();
     },
 
     beforeUnmount() {
         // Close SSE when page reload or tear down
-        // this.source.close();
+        this.source.close();
         // Remove event handler
         window.removeEventListener('resize', this.windowResizeHandler);
     },

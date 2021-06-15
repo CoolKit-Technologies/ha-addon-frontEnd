@@ -32,7 +32,7 @@ export async function setDiyDevice(params: {
 }
 
 /**
- * Set LAN device status
+ * Set LAN device status, only for toggle
  */
 export async function setLanDevice(params: {
     id: string;         // device id
@@ -115,4 +115,129 @@ export async function upgradeDeviceFw(params: {
     params: any;            // upgrade params
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/device/upgrade', params);
+}
+
+/* -------- high -------- */
+
+/**
+ * Toggle device channel
+ * @param v State value
+ * @param data Device data
+ * @param index Multi-channel index
+ */
+export async function toggleChannel(v: boolean, data: any, index: number) {
+    const {
+        apikey,
+        deviceId,
+        uiid,
+        type
+    } = data;
+    let params;
+
+    if (type === 1 && uiid === 1) {
+        // DIY device
+        await setDiyDevice({
+            id: deviceId,
+            type: 'switch',
+            params: {
+                state: v ? 'on' : 'off'
+            }
+        });
+        return;
+    } else if (
+        uiid === 1 || uiid === 5 || uiid === 6 || uiid === 14 || uiid === 15
+        || uiid === 32
+    ) {
+        // Single channel
+        params = {
+            apikey,
+            id: deviceId,
+            params: {
+                switch: v ? 'on' : 'off'
+            }
+        };
+    } else {
+        // Multi-channel
+        params = {
+            apikey,
+            id: deviceId,
+            params: {
+                switches: [
+                    {
+                        outlet: index,
+                        switch: v ? 'on' : 'off'
+                    }
+                ]
+            }
+        };
+    }
+
+    if (type === 2) {
+        // LAN device
+        await setLanDevice(params);
+    } else {
+        // Cloud device
+        await setCloudDevice(params);
+    }
+}
+
+/**
+ * Toggle all of the channels
+ * @param v State value
+ * @param data Device data
+ */
+export async function toggleAllChannels(v: boolean, data: any) {
+    const { type, deviceId, apikey } = data;
+    const switches = [];
+
+    for (let i = 0; i < 4; i++) {
+        switches.push({
+            switch: v ? 'on' : 'off',
+            outlet: i
+        });
+    }
+
+    const params = {
+        apikey,
+        id: deviceId,
+        params: {
+            switches
+        }
+    };
+
+    if (type === 2) {
+        // LAN device
+        await setLanDevice(params);
+    } else {
+        // Cloud device
+        await setCloudDevice(params);
+    }
+}
+
+/**
+ * Refresh UI
+ * @param data Device data
+ */
+export async function refreshUi(data: any) {
+    const {
+        apikey,
+        uiid,
+        deviceId,
+        cardIndex
+    } = data;
+    const params: any = {
+        apikey,
+        id: deviceId,
+        params: {}
+    };
+
+    if (uiid === 126) {
+        params.params.uiActive = {
+            time: 120,
+            outlet: cardIndex
+        };
+    } else {
+        params.params.uiActive = 120;
+    }
+    await setCloudDevice(params);
 }

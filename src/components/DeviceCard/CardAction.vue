@@ -20,7 +20,7 @@ import { defineComponent } from 'vue';
 import { SyncOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash';
 
-import { setLanDevice, setCloudDevice } from '@/api/device';
+import { toggleAllChannels, refreshUi } from '@/api/device';
 
 export default defineComponent({
     name: 'CardAction',
@@ -87,63 +87,18 @@ export default defineComponent({
 
     methods: {
         async refresh() {
-            const { online, apikey, uiid, deviceId, cardIndex } = this.cardData as any;
+            const { online } = this.cardData as any;
             if (online) {
                 this.spin = true;
                 setTimeout(() => {
                     this.spin = false;
                 }, 2000);
-
-                const params: any = {
-                    apikey,
-                    id: deviceId,
-                    params: {
-                    }
-                };
-                if (uiid === 126) {
-                    // Dual R3 device is special
-                    params.params.uiActive = {
-                        time: 120,
-                        outlet: cardIndex
-                    };
-                } else {
-                    params.params.uiActive = 120;
-                }
-                await setCloudDevice(params);
+                await refreshUi(this.cardData);
             }
         },
         async toggle(v: boolean, e: any) {
             e.stopPropagation();
-
-            const { type, deviceId, apikey } = this.cardData as any;
-            const statList = [];
-            let stat = 'on';
-
-            if (v) {
-                stat = 'on';
-            } else {
-                stat = 'off';
-            }
-
-            for (let i = 0; i < 4; i++) {
-                statList.push({
-                    switch: stat,
-                    outlet: i
-                });
-            }
-
-            const params = {
-                apikey,
-                id: deviceId,
-                params: {
-                    switches: statList
-                }
-            };
-            if (type === 2) {       // If current device is LAN device
-                await setLanDevice(params);
-            } else {
-                await setCloudDevice(params);
-            }
+            await toggleAllChannels(v, this.cardData);
         }
     },
 

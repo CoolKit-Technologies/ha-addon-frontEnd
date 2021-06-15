@@ -74,21 +74,18 @@ export default defineComponent({
             return this.modalType !== 'stats' && uiids.has(_.get(this, ['modalParams', 'uiid']));
         },
         showChannelSettings() {
+            // multi-channel device
             const uiids = new Set<number>([
-                2, // 双通道插座
-                3, // 三通道插座
-                4, // 四通道插座
-                7, // 双通道开关
-                8, // 三通道开关
-                77, // 单通道插座-多通道版
-                112, // 单通道开关微波雷达版
-                113, // 双通道开关微波雷达版
-                114, // 三通道开关微波雷达版
+                2,
+                3,
+                4,
+                7,
+                8,
+                9,
+                113,
+                114
             ]);
             return this.modalType !== 'channelSettings' && uiids.has(_.get(this, ['modalParams', 'uiid']));
-        },
-        showDeviceSettings() {
-            return this.modalType === 'stats' || this.modalType === 'channelSettings';
         },
         ...mapMutations(['setModalType']),
         ...mapActions(['closeModal']),

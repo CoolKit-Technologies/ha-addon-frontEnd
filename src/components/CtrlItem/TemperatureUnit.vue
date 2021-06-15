@@ -3,7 +3,8 @@
         <div class="title">{{ $t('modal.temperatureUnit.name') }}</div>
         <a-select
             v-model:value="value"
-            style="width: 120px"
+            style="min-width: 120px"
+            size="small"
             @change="handleChange" 
         >
             <a-select-option value="c">{{ $t('modal.temperatureUnit.c') }}</a-select-option>
@@ -17,9 +18,10 @@ import { defineComponent } from "vue";
 import { mapState } from 'vuex';
 import _ from 'lodash';
 
+import { setTempUnit } from '@/api/device';
+
 export default defineComponent({
     name: "TemperatureUnit",
-
 
     data() {
         return {
@@ -32,10 +34,12 @@ export default defineComponent({
     },
 
     methods: {
-        handleChange() {
-            // todo 请求处理
-            console.log('Current temperature unit-->', this.value);
-            
+        async handleChange() {
+            const { deviceId } = this.modalParams as any;
+            await setTempUnit({
+                id: deviceId,
+                unit: this.value
+            });
         }
     },
 

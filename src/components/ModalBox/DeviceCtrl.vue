@@ -7,7 +7,9 @@
         <ctrl-switch type="lock" />
         -->
         <power-on-state />
+        <!--
         <inching-mode />
+        -->
         <temperature-unit v-if="modalParams.uiid === 15" />
         <ctrl-switch type="disable" />
         <firmware-upgrade />

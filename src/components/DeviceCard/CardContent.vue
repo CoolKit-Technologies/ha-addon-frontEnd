@@ -232,7 +232,7 @@ export default defineComponent({
             const result: Array<{ key: number; name: string; stat: string; }> = [];
             let cnt = 0;
 
-            if (uiid === 1 && type === 1) {
+            if (type === 1 && uiid === 1) {
                 // Single channel (DIY)
                 result.push({ key: 0, name: channelName, stat: params.data1.switch });
             } else if (uiid === 1 || uiid === 6 || uiid === 14) {

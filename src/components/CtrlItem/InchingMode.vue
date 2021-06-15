@@ -26,9 +26,9 @@ export default defineComponent({
     name: 'InchingMode',
 
     props: {
-        cardData: {
-            required: true,
-        },
+        index: {
+            default: 0
+        }
     },
 
     data() {
@@ -41,7 +41,9 @@ export default defineComponent({
 
     computed: {
         modeStat() {
-            return (this.modalParams as any).params.pulses[0].pulse === 'on';
+            // const { modalParams } = this as any;
+            // return modalParams.params.pulses[0].pulse === 'on';
+            return false;
         },
         ...mapState(['modalParams'])
     },
@@ -52,7 +54,8 @@ export default defineComponent({
 
     methods: {
         initTime() {
-            const ms = this.modalParams.params.pulses[0].width;
+            // const ms = this.modalParams.params.pulses[0].width;
+            const ms = 5000;
             this.modeTime = this.ms2time(ms);
         },
         // Convert time format (ms => min:sec)

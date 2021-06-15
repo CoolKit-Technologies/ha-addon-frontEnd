@@ -14,7 +14,6 @@
         </div>
         <div class="text">
             <p class="title">{{ title }}</p>
-            <p class="desc">{{ desc }}</p>
         </div>
         <div class="action">
             <a-switch
@@ -29,16 +28,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { setDiyDevice, setCloudDevice, setLanDevice } from '@/api/device';
+import { toggleChannel } from '@/api/device';
 
 export default defineComponent({
     name: 'ChannelSwitch',
 
     props: {
         title: {
-            default: ''
-        },
-        desc: {
             default: ''
         },
         index: {
@@ -55,54 +51,7 @@ export default defineComponent({
     methods: {
         async toggle(v: boolean, e: any) {
             e.stopPropagation();
-
-            const { apikey, deviceId, uiid, type } = this.cardData as any;
-            let params;
-
-            if (uiid === 1 && type === 1) {
-                // DIY device
-                await setDiyDevice({
-                    id: deviceId,
-                    type: 'switch',
-                    params: {
-                        state: v ? 'on' : 'off'
-                    }
-                });
-                return;
-            } else if (
-                uiid === 1 || uiid === 6 || uiid === 14 || uiid === 15
-                || uiid === 5 || uiid === 32
-            ) {
-                // Single channel switch or socket, temperature thermal device,
-                // power detection device, power voltage current detection,
-                params = {
-                    apikey,
-                    id: deviceId,
-                    params: {
-                        switch: v ? 'on' : 'off'
-                    }
-                };
-            } else {
-                // Multi-channel switch or socket, dual power detection device
-                params = {
-                    apikey,
-                    id: deviceId,
-                    params: {
-                        switches: [
-                            {
-                                outlet: this.index,
-                                switch: v ? 'on' : 'off'
-                            }
-                        ]
-                    }
-                };
-            }
-
-            if (type === 2) {       // If current device is LAN device
-                await setLanDevice(params);
-            } else {
-                await setCloudDevice(params);
-            }
+            await toggleChannel(v, this.cardData, this.index);
         }
     }
 });
