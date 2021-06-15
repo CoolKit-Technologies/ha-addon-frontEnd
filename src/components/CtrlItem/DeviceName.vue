@@ -4,7 +4,7 @@
             {{ type === 'device' ? $t('modal.deviceName') : $t('modal.channelName') }}
         </div>
         <div class="input-box">
-            <a-input v-model:value="value" v-if="editable" />
+            <a-input v-model:value="value" v-if="editable" :maxlength="14" />
             <p class="text" v-else>{{ value }}</p>
             <div class="action" @click="handleSave">
                 <SaveOutlined v-if="editable" />
@@ -19,7 +19,7 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons-vue';
 
-import { setName } from '@/api/device';
+import { updateDeviceOrChannelName } from '@/api/device';
 
 export default defineComponent({
     name: 'DeviceName',
@@ -56,18 +56,22 @@ export default defineComponent({
     methods: {
         async handleSave() {
             if (this.editable) {
-                await setName({
-                    id: this.modalParams.deviceId,
-                    newName: this.value
-                });
+                if (this.type === 'device') {
+                    await updateDeviceOrChannelName('deviceName', this.modalParams, this.value);
+                } else {
+                    await updateDeviceOrChannelName('channelName', this.modalParams, this.value, this.index);
+                }
             }
             this.editable = !this.editable;
         },
     },
 
     created() {
-        this.value = this.modalParams.deviceName;
-        // console.log('>_< ...', this.index);
+        if (this.type === 'device') {
+            this.value = this.modalParams.deviceName;
+        } else {
+            this.value = this.modalParams.tags[this.index];
+        }
     },
 });
 </script>
@@ -88,9 +92,8 @@ export default defineComponent({
         .text
             margin 0
             width 100%
-            cursor not-allowed
             padding 4px 11px
-            border-bottom 1px solid #cccccc
+            border-bottom 1px solid #e8e8e8
     .ant-input
         border-radius 0
         border-top: none

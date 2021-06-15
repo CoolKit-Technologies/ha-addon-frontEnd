@@ -1,13 +1,10 @@
 <template>
     <div class="channel-settings">
-        <p>channel setting</p>
-        <!--
         <channel-item
             v-for="item in getMaxChannel"
             :key="item"
-            :outlet="item"
+            :index="item"
         />
-        -->
     </div>
 </template>
 
@@ -36,7 +33,6 @@ export default defineComponent({
                 [9, 4], // 四通道开关
                 [113, 2], // 双通道开关微波雷达版
                 [114, 3], // 三通道开关微波雷达版
-                [126, 2], // DualR3
             ]);
             return channelMap.get(modalParams.uiid) || 0;
         },
@@ -46,4 +42,6 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
+.channel-settings
+    margin-top -20px
 </style>

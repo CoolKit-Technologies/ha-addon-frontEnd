@@ -90,7 +90,7 @@ export async function setTags(params: {
     id: string;         // device id
     tags: any;          // example: { 0: 'name0', 1: 'name1', 2: 'name2', 3: 'name4' }
 }) {
-    return await sendHttpRequest('POST', apiPrefix + 'devices/updateChannelName', params);
+    return await sendHttpRequest('POST', apiPrefix + '/devices/updateChannelName', params);
 }
 
 /**
@@ -117,7 +117,7 @@ export async function upgradeDeviceFw(params: {
     return await sendHttpRequest('POST', apiPrefix + '/devices/device/upgrade', params);
 }
 
-/* -------- high -------- */
+/* -------- high level -------- */
 
 /**
  * Toggle device channel
@@ -240,4 +240,39 @@ export async function refreshUi(data: any) {
         params.params.uiActive = 120;
     }
     await setCloudDevice(params);
+}
+
+/**
+ * Update device or channel name
+ * @param actionType Action type
+ * @param data Device data
+ * @param value Device or channel name
+ * @param index Multi-channel index
+ */
+export async function updateDeviceOrChannelName(actionType: 'deviceName' | 'channelName', data: any, value: string, index?: number) {
+    const { deviceId, type, uiid } = data;
+    if (actionType === 'deviceName') {
+        if (type === 1 && uiid === 1) {
+            // DIY device
+            await setDiyDevice({
+                id: deviceId,
+                type: 'deviceName',
+                params: {
+                    deviceName: value
+                }
+            });
+        } else {
+            await setName({
+                id: deviceId,
+                newName: value
+            });
+        }
+    } else {
+        await setTags({
+            id: deviceId,
+            tags: {
+                [Number(index)]: value
+            }
+        });
+    }
 }

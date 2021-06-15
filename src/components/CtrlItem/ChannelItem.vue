@@ -1,6 +1,6 @@
 <template>
     <div class="channel-item">
-        <device-name type="channel" :index="outlet" />
+        <device-name type="channel" :index="index-1" />
         <inching-mode />
         <power-on-state />
     </div>
@@ -31,9 +31,9 @@ export default defineComponent({
     },
 
     props: {
-        outlet: {
-            required: true,
-        },
+        index: {
+            required: true
+        }
     },
 
     computed: {
@@ -59,7 +59,7 @@ export default defineComponent({
 <style lang="stylus" scoped>
 .channel-item
     &:not(:first-child)
-        margin-top 26px;
+        margin-top 28px;
     & > div:not(:first-child)
-        margin-top 10px
+        margin-top 14px
 </style>

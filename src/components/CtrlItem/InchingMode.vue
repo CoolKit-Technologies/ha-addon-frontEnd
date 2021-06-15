@@ -7,6 +7,7 @@
             <a-time-picker
                 format="mm:ss"
                 v-model:value="modeTime"
+                size="small"
                 @change="changeTime"
             />
             <a-switch
@@ -17,6 +18,7 @@
         </div>
     </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
@@ -28,6 +30,10 @@ export default defineComponent({
     props: {
         index: {
             default: 0
+        },
+        // If current device is multi-channel
+        multi: {
+            default: false
         }
     },
 
