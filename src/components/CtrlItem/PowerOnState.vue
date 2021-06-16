@@ -1,55 +1,46 @@
 <template>
     <div class="power-on-state">
-        <div class="title">{{ $t('modal.powerOnState') }}</div>
-        <a-select
-            v-model:value="value"
-            style="min-width: 120px"
-            size="small"
-            @change="handleChange"
-        >
-            <a-select-option value="on">On</a-select-option>
-            <a-select-option value="off">Off</a-select-option>
-            <a-select-option value="stay">Last state</a-select-option>
+        <div class="title">{{ $t('modal.powerOnState.name') }}</div>
+        <a-select v-model:value="value" style="min-width: 120px" size="small" @change="handleChange">
+            <a-select-option value="on">{{ $t('modal.powerOnState.on') }}</a-select-option>
+            <a-select-option value="off">{{ $t('modal.powerOnState.off') }}</a-select-option>
+            <a-select-option value="stay">{{ $t('modal.powerOnState.stay') }}</a-select-option>
         </a-select>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import _ from 'lodash';
 
-import { isMultiChannelDevice } from '@/utils/etc';
+import { isMultiChannelDevice, isOneChannelSwOrSockCPDevice } from '@/utils/etc';
+import { setPowerOnState } from '@/api/device';
 
 export default defineComponent({
-    name: "PowerOnState",
+    name: 'PowerOnState',
 
     props: {
         index: {
-            default: 0
+            default: 0,
         },
-        // If current device is multi-channel
-        multi: {
-            default: false
-        }
     },
 
     data() {
         return {
             value: '',
-        }
+        };
     },
 
     computed: {
-        ...mapState(['modalParams'])
+        ...mapState(['modalParams']),
     },
 
     methods: {
         handleChange() {
-            // todo 请求处理
-            console.log('当前Power-on state:', this.value);
-            
-        }
+            const { uiid, cardIndex } = this.modalParams;
+            setPowerOnState(this.value, this.modalParams, uiid === 126 ? cardIndex : this.index);
+        },
     },
 
     created() {
@@ -57,7 +48,7 @@ export default defineComponent({
         if (type === 1 && uiid === 1) {
             // DIY device
             this.value = params.data1.startup;
-        } else if (isMultiChannelDevice(uiid)) {    // TODO: complex protocol
+        } else if (isMultiChannelDevice(uiid) || isOneChannelSwOrSockCPDevice(uiid)) {
             // Multi-channel
             this.value = params.configure[this.index].startup;
         } else if (uiid === 126) {
@@ -67,7 +58,7 @@ export default defineComponent({
             // Single channel
             this.value = params.startup;
         }
-    }
+    },
 });
 </script>
 

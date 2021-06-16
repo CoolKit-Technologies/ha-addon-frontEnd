@@ -1,7 +1,8 @@
 // device api
-import { isOneChannelSPDevice } from '@/utils/etc';
+import { isOneChannelSPDevice, isMultiChannelDevice, isOneChannelSwOrSockCPDevice } from '@/utils/etc';
 import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
+import _ from 'lodash';
 
 const { apiPrefix } = getConfig();
 
@@ -25,9 +26,9 @@ export async function getDeviceListRefresh() {
  * Set DIY device status
  */
 export async function setDiyDevice(params: {
-    id: string;         // device id
-    type: string;       // set type: switch
-    params: any;        // control status
+    id: string; // device id
+    type: string; // set type: switch
+    params: any; // control status
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/diy', params);
 }
@@ -36,9 +37,9 @@ export async function setDiyDevice(params: {
  * Set LAN device status, only for toggle
  */
 export async function setLanDevice(params: {
-    id: string;         // device id
-    apikey: string;     // device apikey
-    params: any;        // control status
+    id: string; // device id
+    apikey: string; // device apikey
+    params: any; // control status
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/lan', params);
 }
@@ -47,9 +48,9 @@ export async function setLanDevice(params: {
  * Set Cloud device status
  */
 export async function setCloudDevice(params: {
-    id: string;         // device id
-    apikey: string;     // device apikey
-    params: any;        // control status
+    id: string; // device id
+    apikey: string; // device apikey
+    params: any; // control status
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/proxy2ws', params);
 }
@@ -58,8 +59,8 @@ export async function setCloudDevice(params: {
  * Remove device in HASS
  */
 export async function disableDevice(params: {
-    id: string;         // device id
-    disabled: boolean;  // true - disabled
+    id: string; // device id
+    disabled: boolean; // true - disabled
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/disabled', params);
 }
@@ -68,8 +69,8 @@ export async function disableDevice(params: {
  * Set temperature unit
  */
 export async function setTempUnit(params: {
-    id: string;         // device id
-    unit: string;       // temperature unit, 'c' or 'f'
+    id: string; // device id
+    unit: string; // temperature unit, 'c' or 'f'
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/device/unit', params);
 }
@@ -78,8 +79,8 @@ export async function setTempUnit(params: {
  * Set device name
  */
 export async function setName(params: {
-    id: string;         // device id
-    newName: string;    // new device name
+    id: string; // device id
+    newName: string; // new device name
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/updateName', params);
 }
@@ -88,8 +89,8 @@ export async function setName(params: {
  * Set device tags
  */
 export async function setTags(params: {
-    id: string;         // device id
-    tags: any;          // example: { 0: 'name0', 1: 'name1', 2: 'name2', 3: 'name4' }
+    id: string; // device id
+    tags: any; // example: { 0: 'name0', 1: 'name1', 2: 'name2', 3: 'name4' }
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/updateChannelName', params);
 }
@@ -111,9 +112,9 @@ export async function getOtaInfo(params: {
  * Upgrade device firmware version
  */
 export async function upgradeDeviceFw(params: {
-    id: string;             // device id
-    apikey: string;         // device apikey
-    params: any;            // upgrade params
+    id: string; // device id
+    apikey: string; // device apikey
+    params: any; // upgrade params
 }) {
     return await sendHttpRequest('POST', apiPrefix + '/devices/device/upgrade', params);
 }
@@ -127,12 +128,7 @@ export async function upgradeDeviceFw(params: {
  * @param index Multi-channel index
  */
 export async function toggleChannel(v: boolean, data: any, index: number) {
-    const {
-        apikey,
-        deviceId,
-        uiid,
-        type
-    } = data;
+    const { apikey, deviceId, uiid, type } = data;
     let params;
 
     if (type === 1 && uiid === 1) {
@@ -141,8 +137,8 @@ export async function toggleChannel(v: boolean, data: any, index: number) {
             id: deviceId,
             type: 'switch',
             params: {
-                state: v ? 'on' : 'off'
-            }
+                state: v ? 'on' : 'off',
+            },
         });
         return;
     } else if (isOneChannelSPDevice(uiid)) {
@@ -151,8 +147,8 @@ export async function toggleChannel(v: boolean, data: any, index: number) {
             apikey,
             id: deviceId,
             params: {
-                switch: v ? 'on' : 'off'
-            }
+                switch: v ? 'on' : 'off',
+            },
         };
     } else {
         // Multi-channel
@@ -163,10 +159,10 @@ export async function toggleChannel(v: boolean, data: any, index: number) {
                 switches: [
                     {
                         outlet: index,
-                        switch: v ? 'on' : 'off'
-                    }
-                ]
-            }
+                        switch: v ? 'on' : 'off',
+                    },
+                ],
+            },
         };
     }
 
@@ -191,7 +187,7 @@ export async function toggleAllChannels(v: boolean, data: any) {
     for (let i = 0; i < 4; i++) {
         switches.push({
             switch: v ? 'on' : 'off',
-            outlet: i
+            outlet: i,
         });
     }
 
@@ -199,8 +195,8 @@ export async function toggleAllChannels(v: boolean, data: any) {
         apikey,
         id: deviceId,
         params: {
-            switches
-        }
+            switches,
+        },
     };
 
     if (type === 2) {
@@ -217,22 +213,17 @@ export async function toggleAllChannels(v: boolean, data: any) {
  * @param data Device data
  */
 export async function refreshUi(data: any) {
-    const {
-        apikey,
-        uiid,
-        deviceId,
-        cardIndex
-    } = data;
+    const { apikey, uiid, deviceId, cardIndex } = data;
     const params: any = {
         apikey,
         id: deviceId,
-        params: {}
+        params: {},
     };
 
     if (uiid === 126) {
         params.params.uiActive = {
             time: 120,
-            outlet: cardIndex
+            outlet: cardIndex,
         };
     } else {
         params.params.uiActive = 120;
@@ -256,21 +247,21 @@ export async function updateDeviceOrChannelName(actionType: 'deviceName' | 'chan
                 id: deviceId,
                 type: 'deviceName',
                 params: {
-                    deviceName: value
-                }
+                    deviceName: value,
+                },
             });
         } else {
             await setName({
                 id: deviceId,
-                newName: value
+                newName: value,
             });
         }
     } else {
         await setTags({
             id: deviceId,
             tags: {
-                [Number(index)]: value
-            }
+                [Number(index)]: value,
+            },
         });
     }
 }
@@ -288,24 +279,24 @@ export async function toggleNetworkLed(v: boolean, data: any) {
             id: deviceId,
             type: 'sledOnline',
             params: {
-                state: v ? 'on' : 'off'
-            }
+                state: v ? 'on' : 'off',
+            },
         });
     } else if (uiid === 126) {
         await setCloudDevice({
             apikey,
             id: deviceId,
             params: {
-                sledBright: v ? 100 : 0
-            }
+                sledBright: v ? 100 : 0,
+            },
         });
     } else {
         await setCloudDevice({
             apikey,
             id: deviceId,
             params: {
-                sledOnline: v ? 'on' : 'off'
-            }
+                sledOnline: v ? 'on' : 'off',
+            },
         });
     }
 }
@@ -320,7 +311,7 @@ export async function toggleLock(v: boolean, data: any) {
     await setCloudDevice({
         apikey,
         id: deviceId,
-        params: v ? { lock: 1, zyx_clear_timers: true } : { lock: 0, zyx_clear_timers: false }
+        params: v ? { lock: 1, zyx_clear_timers: true } : { lock: 0, zyx_clear_timers: false },
     });
 }
 
@@ -334,8 +325,42 @@ export async function toggleInchingMode(v: boolean, data: any, value: number) {
             type: 'pulse',
             params: {
                 state: v ? 'on' : 'off',
-                width: value
-            }
+                width: value,
+            },
+        });
+    }
+}
+
+export async function setPowerOnState(v: string, data: any, i: number) {
+    const { type, uiid, deviceId, apikey } = data;
+    if (type === 1 && uiid === 1) {
+        await setDiyDevice({
+            id: deviceId,
+            type: 'startup',
+            params: {
+                state: v,
+            },
+        });
+        return;
+    } else if (isMultiChannelDevice(uiid) || isOneChannelSwOrSockCPDevice(uiid) || uiid === 126) {
+        // Multi-channel + OneChannelSwOrSock + DualR3
+        const configure = _.get(data, ['params', 'configure'], []);
+        _.set(configure, [i, 'startup'], v);
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                configure,
+            },
+        });
+    } else {
+        // Single channel
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                startup: v,
+            },
         });
     }
 }

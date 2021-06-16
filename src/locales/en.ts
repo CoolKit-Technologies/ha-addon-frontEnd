@@ -66,7 +66,12 @@ export const en = {
         history: 'History',
         deviceName: 'Device Name',
         channelName: 'Channel Name',
-        powerOnState: 'Power-on State',
+        powerOnState: {
+            name: 'Power-on State',
+            on: 'On',
+            off: 'Off',
+            stay: 'Last state',
+        },
         temperatureUnit: {
             name: 'Temperature unit',
             c: 'Celsius[℃]',
@@ -79,6 +84,6 @@ export const en = {
             latest: 'Newest version',
         },
         minute: 'Minute',
-        second: 'Second'
+        second: 'Second',
     },
 };

@@ -8,6 +8,9 @@
         <div class="action" @click="upgradeFw" v-if="isNonLatest">
             <img src="@/assets/upgrade.svg" alt="upgrade icon" />
         </div>
+        <div class="action" v-else>
+            <img src="@/assets/check.svg" alt="latest icon" />
+        </div>
     </div>
 </template>
 

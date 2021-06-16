@@ -66,7 +66,12 @@ export const zh = {
         history: '历史记录',
         deviceName: '设备名称',
         channelName: '通道名称',
-        powerOnState: '上电状态',
+        powerOnState: {
+            name: '通电反应',
+            on: '开启',
+            off: '关闭',
+            stay: '恢复断电前状态',
+        },
         temperatureUnit: {
             name: '温度单位',
             c: '摄氏度[℃]',
@@ -79,6 +84,6 @@ export const zh = {
             latest: '当前固件已是最新版本',
         },
         minute: '分',
-        second: '秒'
+        second: '秒',
     },
 };
