@@ -21,11 +21,15 @@
             </div>
             <!-- temperature or thermal switch -->
             <div class="th-sw" v-else-if="isThSw">
-                <div class="gauge">
+                <div class="gauge"
+                    v-if="cardData.params.currentHumidity !== 'unavailable' || cardData.params.currentTemperature !== 'unavailable'"
+                >
                     <humi-gauge
+                        v-if="cardData.params.currentHumidity !== 'unavailable'"
                         :value="cardData.params.currentHumidity"
                     />
                     <temp-gauge
+                        v-if="cardData.params.currentTemperature !== 'unavailable'"
                         :value="cardData.params.currentTemperature"
                         :tempUnit="cardData.unit"
                     />
@@ -287,7 +291,7 @@ export default defineComponent({
     .th-sw
         .gauge
             display flex
-            justify-content space-between
+            justify-content center
             align-items center
             margin -16px 0
 

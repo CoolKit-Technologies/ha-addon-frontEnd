@@ -27,12 +27,14 @@
                 v-model:value="username"
                 class="form-item"
                 :placeholder="$t('form.placeholder.username')"
+                @pressEnter="signin"
                 allowClear
             />
             <a-input-password
                 v-model:value="password"
                 class="form-item"
                 :placeholder="$t('form.placeholder.password')"
+                @pressEnter="signin"
                 allowClear
             />
             <a-button

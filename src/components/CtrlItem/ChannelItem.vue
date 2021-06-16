@@ -1,8 +1,8 @@
 <template>
     <div class="channel-item">
         <device-name type="channel" :index="index - 1" />
-        <inching-mode :index="index - 1" />
-        <power-on-state :index="index - 1" />
+        <inching-mode v-if="modalParams.params.lock === 0" :index="index - 1" />
+        <power-on-state v-if="modalParams.params.lock === 0" :index="index - 1" />
     </div>
 </template>
 
@@ -23,13 +23,6 @@ export default defineComponent({
         PowerOnState,
     },
 
-    data() {
-        return {
-            editable: false,
-            value: '',
-        };
-    },
-
     props: {
         index: {
             required: true,
@@ -38,21 +31,7 @@ export default defineComponent({
 
     computed: {
         ...mapState(['modalParams']),
-    },
-    methods: {
-        handleSave() {
-            const status = this.editable;
-            if (status) {
-                // todo 接口请求
-                // console.log(this.value);
-            }
-            this.editable = !status;
-        },
-    },
-
-    created() {
-        // console.log('o_o >>>', this.outlet);
-    },
+    }
 });
 </script>
 
