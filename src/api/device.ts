@@ -2,8 +2,8 @@
 import { isOneChannelSPDevice } from '@/utils/etc';
 import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
-
 const { apiPrefix } = getConfig();
+import _ from 'lodash';
 
 /**
  * Get device list when page loading
@@ -337,5 +337,112 @@ export async function toggleInchingMode(v: boolean, data: any, value: number) {
                 width: value
             }
         });
+    }
+}
+
+/**
+ * power statistic
+ * @param startTime 
+ * @param endTime
+ * @param data
+ */
+export async function startStatistic(startTime:string,data:any) {
+    const {deviceId,apikey,uiid,cardIndex} = data;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {},
+    };
+    if (uiid === 126) {
+        cardIndex === 1
+        ? _.assign(params.params, { startTime_01: startTime, endTime_01: '' })
+        : _.assign(params.params, { startTime_00: startTime, endTime_00: '' });
+    } else {
+        _.assign(params.params, {
+            onKwh: 'start',
+            startTime: startTime,
+            endTime: '',
+        });
+    }
+    console.log(`ML ~ file: device.ts ~ line 353 ~ startStatistic ~ params`, params);
+    const res = await setCloudDevice(params);
+    console.log(`ML ~ file: device.ts ~ line 366 ~ startStatistic ~ res`, res);
+}
+export async function endStatistic(startTime:string,endTime:string,data:any) {
+    const {deviceId,apikey,uiid,cardIndex} = data;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {},
+    };
+    if (uiid === 126) {
+        cardIndex === 1
+          ? _.assign(params.params, {
+              startTime_01: startTime,
+              endTime_01:endTime,
+            })
+          : _.assign(params.params, {
+              startTime_00: startTime,
+              endTime_00: endTime,
+            });
+      } else {
+        _.assign(params.params, {
+          onKwh: "stop",
+          startTime: startTime,
+          endTime: endTime,
+        });
+      }
+      console.log(`ML ~ file: device.ts ~ line 375 ~ endStatistic ~ params`, params);
+      const res = await setCloudDevice(params);
+      console.log(`ML ~ file: device.ts ~ line 394 ~ endStatistic ~ res`, res);
+}
+export async function refreshStatistic(data:any) {
+    const {deviceId,apikey,uiid,cardIndex} = data;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {},
+    };
+    if (uiid === 126) {
+        cardIndex === 1
+          ? _.assign(params.params, {
+              getKwh_01: 1,
+            })
+          : _.assign(params.params, {
+              getKwh_00: 1,
+            });
+    } else {
+        _.assign(params.params, {
+          oneKwh: "get",
+        });
+    }
+    console.log(`ML ~ file: device.ts ~ line 404 ~ refresh ~ params`, params);
+    const res = await setCloudDevice(params);
+    return res;
+}
+
+/**
+ * get history use power data
+ */
+export async function getHistoryData(data:any) {
+    const {deviceId,apikey,uiid,cardIndex} = data
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {},
+    };
+    if(uiid === 126){
+        cardIndex === 1 ? _.assign(params.params,{getKwh_01: 2}) : _.assign(params.params,{getKwh_00: 2})
+    }else{
+        _.assign(params.params,{ hundredDaysKwh: 'get' })
+    }
+    const res = await setCloudDevice(params);
+    console.log(`ML ~ file: device.ts ~ line 440 ~ getHistoryData ~ res`, res);
+    if(res.error === 0 && res.data && res.data.config){
+        if(uiid === 126){
+            return cardIndex === 1 ? res.data.config.kwhHistories_01 : res.data.config.kwhHistories_00;
+        }else{
+            return res.data.config.hundredDaysKwhData;
+        }
     }
 }
