@@ -52,8 +52,10 @@ export async function sendHttpRequest(
 
         // Redir to HA
         if (res.data.error === 302 && window.location.search.indexOf('code=') === -1) {
-            const tmp = window.location.href;
-            window.location.href = genAuthorizeUrl(res.data.data, tmp, tmp);
+            const { href } = window.location;
+            const tmp = href.replace(/\/$/, '');
+            const url = genAuthorizeUrl(res.data.data, tmp, tmp);
+            window.location.href = url;
         }
 
         if (res.status === 200 && res.data.error === 0) {

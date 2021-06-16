@@ -43,7 +43,7 @@ export default defineComponent({
                 if (res.data.isAuth) {
                     this.setPageLoading(false);
                 }
-            }, 1000);
+            }, 2000);
         },
         ...mapMutations(['setPageLoading'])
     },
