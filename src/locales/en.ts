@@ -62,11 +62,16 @@ export const en = {
         channelSettings: 'Channel Settings',
         deviceSettings: 'Device Settings',
         stats: 'Stats',
-        realtimeStats:"Realtime stats",
+        realtimeStats: 'Realtime stats',
         history: 'History',
         deviceName: 'Device Name',
         channelName: 'Channel Name',
-        powerOnState: 'Power-on State',
+        powerOnState: {
+            name: 'Power-on State',
+            on: 'On',
+            off: 'Off',
+            stay: 'Last state',
+        },
         temperatureUnit: {
             name: 'Temperature unit',
             c: 'Celsius[℃]',
@@ -75,9 +80,10 @@ export const en = {
         inchingmode: 'Inching mode',
         firmwareUpgrade: {
             title: 'Firmware Upgrade',
-            desc: 'Newest version { version }.',
+            nonLatest: 'Newest version available: { version }',
+            latest: 'Newest version',
         },
         minute: 'Minute',
-        second: 'Second'
+        second: 'Second',
     },
 };

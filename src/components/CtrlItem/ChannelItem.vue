@@ -1,8 +1,8 @@
 <template>
     <div class="channel-item">
-        <device-name type="channel" :index="index-1" />
-        <inching-mode />
-        <power-on-state />
+        <device-name type="channel" :index="index - 1" />
+        <inching-mode :index="index - 1" />
+        <power-on-state :index="index - 1" />
     </div>
 </template>
 
@@ -32,8 +32,8 @@ export default defineComponent({
 
     props: {
         index: {
-            required: true
-        }
+            required: true,
+        },
     },
 
     computed: {

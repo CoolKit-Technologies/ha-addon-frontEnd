@@ -2,10 +2,14 @@
     <div class="firmware-upgrade-item">
         <div class="text-box">
             <div class="title">{{ $t('modal.firmwareUpgrade.title') }}</div>
-            <div class="desc">{{ $t('modal.firmwareUpgrade.desc', { version: '1.2.3' }) }}</div>
+            <div class="desc" v-if="isNonLatest">{{ $t('modal.firmwareUpgrade.nonLatest', { version: otaInfo.version }) }}</div>
+            <div class="desc" v-else>{{ $t('modal.firmwareUpgrade.latest') }}</div>
         </div>
-        <div class="action" @click="upgradeFw">
+        <div class="action" @click="upgradeFw" v-if="isNonLatest">
             <img src="@/assets/upgrade.svg" alt="upgrade icon" />
+        </div>
+        <div class="action" v-else>
+            <img src="@/assets/check.svg" alt="latest icon" />
         </div>
     </div>
 </template>
@@ -14,28 +18,64 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import _ from 'lodash';
+import { getOtaInfo, upgradeDeviceFw } from '@/api/device';
 
 export default defineComponent({
     name: 'FirmwareUpgrade',
 
     data() {
         return {
-            value: '',
+            otaInfo: {},
         };
     },
 
     computed: {
         ...mapState(['modalParams']),
+        isNonLatest() {
+            const _this = this as any;
+            const oldVersion = _.get(this, 'modalParams.params.fwVersion');
+            const newVersion = _.get(this, 'otaInfo.version');
+            if (!oldVersion || !newVersion) {
+                return false;
+            }
+            return oldVersion !== newVersion;
+        },
     },
 
     methods: {
-        upgradeFw() {
-            // console.log('upgrade');
-        }
+        async upgradeFw() {
+            const { deviceId, apikey, model } = this.modalParams;
+            const res = await upgradeDeviceFw({
+                id: deviceId,
+                apikey,
+                params: {
+                    model,
+                    binList: _.get(this, ['otaInfo', 'binList']),
+                    version: _.get(this, ['otaInfo', 'version']),
+                },
+            });
+        },
     },
 
-    created() {
-        this.value = _.get(this, ['modalParams', 'params', 'sledOnline'], '');
+    async created() {
+        const {
+            deviceId,
+            model,
+            params: { fwVersion },
+        } = this.modalParams;
+
+        const res = await getOtaInfo({
+            list: [
+                {
+                    deviceid: deviceId,
+                    model,
+                    version: fwVersion,
+                },
+            ],
+        });
+        if (res.error === 0) {
+            this.$data.otaInfo = _.get(res, ['data', 'otaInfoList', 0], {});
+        }
     },
 });
 </script>
