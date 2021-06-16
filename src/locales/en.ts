@@ -62,7 +62,7 @@ export const en = {
         channelSettings: 'Channel Settings',
         deviceSettings: 'Device Settings',
         stats: 'Stats',
-        realtimeStats:"Realtime stats",
+        realtimeStats: 'Realtime stats',
         history: 'History',
         deviceName: 'Device Name',
         channelName: 'Channel Name',
@@ -75,7 +75,8 @@ export const en = {
         inchingmode: 'Inching mode',
         firmwareUpgrade: {
             title: 'Firmware Upgrade',
-            desc: 'Newest version { version }.',
+            nonLatest: 'Newest version available: { version }',
+            latest: 'Newest version',
         },
         minute: 'Minute',
         second: 'Second'

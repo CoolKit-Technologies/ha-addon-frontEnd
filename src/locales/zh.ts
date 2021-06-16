@@ -75,7 +75,8 @@ export const zh = {
         inchingmode: '点动模式',
         firmwareUpgrade: {
             title: '固件升级',
-            desc: '最新版本：{ version }',
+            nonLatest: '可升级到最新版本：{ version }',
+            latest: '当前固件已是最新版本',
         },
         minute: '分',
         second: '秒'
