@@ -29,6 +29,7 @@ import { mapState } from 'vuex';
 import moment from 'moment';
 
 import { toggleInchingMode } from '@/api/device';
+import { isOneChannelSPDevice } from '@/utils/etc';
 
 export default defineComponent({
     name: 'InchingMode',
@@ -36,10 +37,6 @@ export default defineComponent({
     props: {
         index: {
             default: 0
-        },
-        // If current device is multi-channel
-        multi: {
-            default: false
         }
     },
 
@@ -53,14 +50,18 @@ export default defineComponent({
 
     computed: {
         modeStat() {
-            // const { modalParams } = this as any;
-            // return modalParams.params.pulses[0].pulse === 'on';
-            const { type, uiid, params } = this.modalParams as any;
+            const { type, uiid, params, cardIndex } = this.modalParams as any;
+            const { index } = this as any;
 
             if (type === 1 && uiid === 1) {
                 return params.data1.pulse === 'on';
+            } else if (isOneChannelSPDevice(uiid)) {
+                return params.pulse === 'on';
+            } else if (uiid === 126) {
+                return params.pulses[cardIndex].pulse === 'on';
+            } else {
+                return params.pulses[index].pulse === 'on';
             }
-            return true;
         },
         ...mapState(['modalParams'])
     },
@@ -71,14 +72,17 @@ export default defineComponent({
 
     methods: {
         initTime() {
-            console.log('modal params', this.modalParams);
-
-            const { type, uiid, params } = this.modalParams as any;
+            const { type, uiid, params, cardIndex } = this.modalParams as any;
             let ms = 0;
 
             if (type === 1 && uiid === 1) {
                 ms = params.data1.pulseWidth;
-                console.log(ms);
+            } else if (isOneChannelSPDevice(uiid)) {
+                ms = params.pulseWidth;
+            } else if (uiid === 126) {
+                ms = params.pulses[cardIndex].width;
+            } else {
+                ms = params.pulses[this.index].width;
             }
             this.modeTime = this.ms2time(ms);
         },
@@ -98,17 +102,19 @@ export default defineComponent({
                 }
             }
         },
-        changeTime() {
-            const mm = moment(this.modeTime).get('minute');
-            const ss = moment(this.modeTime).get('second');
+        getMs() {
+            const min = moment(this.modeTime).get('minute');
+            const sec = moment(this.modeTime).get('second');
+            const ms = (60 * min + sec) * 1000;
+            return ms;
+        },
+        async changeTime() {
             if (this.modeStat) {
-                // When stat is 'on', send request
+                await toggleInchingMode(true, this.modalParams, this.getMs(), this.index);
             }
         },
         async toggle(v: boolean) {
-            // TODO: send request
-            console.log('>_< ::', v);
-            await toggleInchingMode(v, this.modalParams, 500);
+            await toggleInchingMode(v, this.modalParams, this.getMs(), this.index);
         },
     },
 });

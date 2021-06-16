@@ -1,4 +1,6 @@
 // device api
+import _ from 'lodash';
+
 import { isOneChannelSPDevice } from '@/utils/etc';
 import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
@@ -324,18 +326,49 @@ export async function toggleLock(v: boolean, data: any) {
     });
 }
 
-export async function toggleInchingMode(v: boolean, data: any, value: number) {
-    const { type, uiid, deviceId } = data;
+/**
+ * Toggle device inching mode
+ * @param v State value
+ * @param data Device data
+ * @param value Millisecond value
+ * @param index Channel index
+ */
+export async function toggleInchingMode(v: boolean, data: any, value: number, index: number) {
+    const { type, uiid, deviceId, apikey, params, cardIndex } = data;
+    const pulses = _.cloneDeep(params.pulses);
 
-    // TODO: finish this
     if (type === 1 && uiid === 1) {
         await setDiyDevice({
             id: deviceId,
             type: 'pulse',
             params: {
                 state: v ? 'on' : 'off',
-                width: value
+                width: v ? value : 500
             }
         });
+        return;
+    } else if (isOneChannelSPDevice(uiid)) {
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                pulse: v ? 'on' : 'off',
+                pulseWidth: v ? value : 500
+            }
+        });
+        return;
+    } else if (uiid === 126) {
+        pulses[cardIndex].width = value;
+        pulses[cardIndex].pulse = v ? 'on' : 'off';
+    } else {
+        pulses[index].width = value;
+        pulses[index].pulse = v ? 'on' : 'off';
     }
+    await setCloudDevice({
+        apikey,
+        id: deviceId,
+        params: {
+	        pulses
+        }
+    });
 }
