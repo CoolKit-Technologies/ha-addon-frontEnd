@@ -11,6 +11,15 @@ export interface HttpResponse {
     data: any;
 }
 
+function genAuthorizeUrl(hassUrl: string, clientId: string, redirectUrl: string, state?: string) {
+    let authorizeUrl = `${hassUrl}/auth/authorize?response_type=code&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+    authorizeUrl += `&client_id=${encodeURIComponent(clientId)}`;
+    if (state) {
+        authorizeUrl += `&state=${encodeURIComponent(state)}`;
+    }
+    return authorizeUrl;
+}
+
 /**
  * Send HTTP request
  * @param method HTTP method
@@ -40,6 +49,12 @@ export async function sendHttpRequest(
 
     try {
         const res = await axios(config);
+
+        // Redir to HA
+        if (res.data.error === 302 && window.location.search.indexOf('code=') === -1) {
+            const tmp = window.location.href;
+            window.location.href = genAuthorizeUrl(res.data.data, tmp, tmp);
+        }
 
         if (res.status === 200 && res.data.error === 0) {
             return {

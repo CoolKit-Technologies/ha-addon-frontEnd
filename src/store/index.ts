@@ -13,7 +13,7 @@ export default createStore({
         windowSize: 'lg',
 
         // Hold on until page complete
-        pageLoading: false,
+        pageLoading: true,
 
         // Component 'ModalBox' visibility
         modalVisible: false,
@@ -210,6 +210,9 @@ export default createStore({
             } else {
                 state.windowSize = 'xm';
             }
+        },
+        setPageLoading(state, v) {
+            state.pageLoading = v;
         }
     },
 
