@@ -14,10 +14,10 @@
         :disabled-date="(current) => disabledDate(current)"
       ></a-month-picker>
     </div>
-    <Divider class="divider"></Divider>
+    <a-divider class="divider"></a-divider>
     <div class="description-item">
       <div>
-        <Statistic title="Consumed" :value="total" suffix="KWh" />
+        <a-statistic title="Consumed" :value="total" suffix="KWh" />
       </div>
     </div>
     <div class="line-item">
@@ -60,13 +60,9 @@ export default defineComponent({
 
   computed: {
     ...mapState(["modalParams"]),
-    staValue(total: number): number {
-      return 14;
-      return total;
-    },
-    async option() {
+    option() {
       const { calculateHistoryData, month } = this as any;
-      const data = await calculateHistoryData(month);
+      const data = calculateHistoryData(month);
       return {
         xAxis: {
           type: "category",
@@ -104,13 +100,8 @@ export default defineComponent({
       const month = moment(date).month() + 1;
       this.month = month;
     },
-    async calculateHistoryData(month: number) {
+    calculateHistoryData(month: number) {
       const datas = this.historyData;
-      //   const datas = await getHistoryData(this.modalParams);
-      console.log(
-        `ML ~ file: HistoryItem.vue ~ line 109 ~ calculateHistoryData ~ datas`,
-        datas
-      );
       //   const datas =
       //     "190101190301000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
       interface IHistoryData {
@@ -157,7 +148,7 @@ export default defineComponent({
       this.avaliableMonth = Object.keys(result);
       const obj = result[month];
       if (!obj) {
-        return false;
+        return [];
       }
       const currentDays = moment().daysInMonth();
       const lastDay = Object.keys(obj).length;
@@ -188,7 +179,7 @@ export default defineComponent({
   }
 
   .chart {
-    height: 500px;
+    height: 400px;
     width: 500px;
   }
 }
