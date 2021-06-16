@@ -3,13 +3,13 @@
         <device-name />
         <!-- DIY device could not toggle network LED -->
         <ctrl-switch type="led" v-if="!(modalParams.type === 1 && modalParams.uiid === 1)" />
+        <ctrl-switch type="lock" v-if="isMultiChannel" />
+        <inching-mode v-if="!isMultiChannel" />
+        <power-on-state v-if="!isMultiChannel" />
         <temperature-unit v-if="modalParams.uiid === 15" />
         <ctrl-switch type="disable" />
         <!-- DIY device could not upgrade firmware -->
         <firmware-upgrade v-if="!(modalParams.type === 1 && modalParams.uiid === 1)" />
-        <!-- TODO: multi-channel
-        <ctrl-switch type="lock" />
-        -->
     </div>
 </template>
 
@@ -23,6 +23,7 @@ import InchingMode from '@/components/CtrlItem/InchingMode.vue';
 import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
 import CtrlSwitch from '@/components/CtrlItem/CtrlSwitch.vue';
 import FirmwareUpgrade from '@/components/CtrlItem/FirmwareUpgrade.vue';
+import { isMultiChannelDevice } from '@/utils/etc';
 
 export default defineComponent({
     name: 'DeviceCtrl',
@@ -37,6 +38,10 @@ export default defineComponent({
     },
 
     computed: {
+        isMultiChannel() {
+            const { uiid } = this.modalParams as any;
+            return isMultiChannelDevice(uiid);
+        },
         ...mapState(['modalParams']),
     },
 });

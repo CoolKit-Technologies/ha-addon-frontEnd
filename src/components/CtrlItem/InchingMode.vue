@@ -9,7 +9,11 @@
                 v-model:value="modeTime"
                 size="small"
                 @change="changeTime"
-            />
+            >
+                <template #addon>
+                    <span style="display:inline-block; text-align:center; width:100%;">{{ $t('modal.minute') }} : {{ $t('modal.second') }}</span>
+                </template>
+            </a-time-picker>
             <a-switch
                 class="switch"
                 :checked="modeStat"
@@ -23,6 +27,8 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import moment from 'moment';
+
+import { toggleInchingMode } from '@/api/device';
 
 export default defineComponent({
     name: 'InchingMode',
@@ -49,7 +55,12 @@ export default defineComponent({
         modeStat() {
             // const { modalParams } = this as any;
             // return modalParams.params.pulses[0].pulse === 'on';
-            return false;
+            const { type, uiid, params } = this.modalParams as any;
+
+            if (type === 1 && uiid === 1) {
+                return params.data1.pulse === 'on';
+            }
+            return true;
         },
         ...mapState(['modalParams'])
     },
@@ -60,8 +71,15 @@ export default defineComponent({
 
     methods: {
         initTime() {
-            // const ms = this.modalParams.params.pulses[0].width;
-            const ms = 5000;
+            console.log('modal params', this.modalParams);
+
+            const { type, uiid, params } = this.modalParams as any;
+            let ms = 0;
+
+            if (type === 1 && uiid === 1) {
+                ms = params.data1.pulseWidth;
+                console.log(ms);
+            }
             this.modeTime = this.ms2time(ms);
         },
         // Convert time format (ms => min:sec)
@@ -87,8 +105,10 @@ export default defineComponent({
                 // When stat is 'on', send request
             }
         },
-        toggle(v: boolean) {
+        async toggle(v: boolean) {
             // TODO: send request
+            console.log('>_< ::', v);
+            await toggleInchingMode(v, this.modalParams, 500);
         },
     },
 });

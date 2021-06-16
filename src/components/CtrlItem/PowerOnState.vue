@@ -57,7 +57,7 @@ export default defineComponent({
         if (type === 1 && uiid === 1) {
             // DIY device
             this.value = params.data1.startup;
-        } else if (isMultiChannelDevice(uiid)) {
+        } else if (isMultiChannelDevice(uiid)) {    // TODO: complex protocol
             // Multi-channel
             this.value = params.configure[this.index].startup;
         } else if (uiid === 126) {

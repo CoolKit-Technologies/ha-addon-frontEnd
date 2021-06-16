@@ -309,3 +309,33 @@ export async function toggleNetworkLed(v: boolean, data: any) {
         });
     }
 }
+
+/**
+ * Toggle device interlock
+ * @param v State value
+ * @param data Device data
+ */
+export async function toggleLock(v: boolean, data: any) {
+    const { apikey, deviceId } = data;
+    await setCloudDevice({
+        apikey,
+        id: deviceId,
+        params: v ? { lock: 1, zyx_clear_timers: true } : { lock: 0, zyx_clear_timers: false }
+    });
+}
+
+export async function toggleInchingMode(v: boolean, data: any, value: number) {
+    const { type, uiid, deviceId } = data;
+
+    // TODO: finish this
+    if (type === 1 && uiid === 1) {
+        await setDiyDevice({
+            id: deviceId,
+            type: 'pulse',
+            params: {
+                state: v ? 'on' : 'off',
+                width: value
+            }
+        });
+    }
+}

@@ -77,5 +77,7 @@ export const zh = {
             title: '固件升级',
             desc: '最新版本：{ version }',
         },
+        minute: '分',
+        second: '秒'
     },
 };

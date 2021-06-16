@@ -77,5 +77,7 @@ export const en = {
             title: 'Firmware Upgrade',
             desc: 'Newest version { version }.',
         },
+        minute: 'Minute',
+        second: 'Second'
     },
 };

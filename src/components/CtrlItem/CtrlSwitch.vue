@@ -17,7 +17,7 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 
-import { disableDevice, setLanDevice, setCloudDevice, toggleNetworkLed } from '@/api/device';
+import { disableDevice, toggleNetworkLed, toggleLock } from '@/api/device';
 
 export default defineComponent({
     name: 'CtrlSwitch',
@@ -64,23 +64,6 @@ export default defineComponent({
             return result;
         },
         stat() {
-            /*const { disabled, params } = this.modalParams as any;
-            let result = false;
-
-            switch (this.type) {
-                case 'lock':
-                    result = params.lock === 1;
-                    break;
-                case 'led':
-                    result = params.sledOnline === 'on' || params.sledBright !== 0;
-                    break;
-                case 'disable':
-                    result = disabled;
-                    // fall through
-                default:
-                    break;
-            }
-            return result;*/
             const { params, type, uiid, disabled } = this.modalParams as any;
 
             if (this.type === 'led') {
@@ -93,6 +76,8 @@ export default defineComponent({
                 }
             } else if (this.type === 'disable') {
                 return disabled;
+            } else if (this.type === 'lock') {
+                return params.lock === 1;
             }
         },
         ...mapState(['modalParams'])
@@ -107,6 +92,8 @@ export default defineComponent({
                     id: this.modalParams.deviceId,
                     disabled: v
                 });
+            } else if (this.type === 'lock') {
+                await toggleLock(v, this.modalParams);
             }
         }
     }
