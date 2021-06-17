@@ -37,8 +37,8 @@ export default defineComponent({
     },
 
     async created() {
-        // TODO: uncomment for test
-        return;
+        // TEST: uncomment for test
+        // return;
         const res = await getContent(this.locale);
         if (res.error === 0) {
             const { top, push } = res.data;

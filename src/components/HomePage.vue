@@ -58,10 +58,10 @@ export default defineComponent({
 
     methods: {
         initWinSize() {
-            console.log('init size:', window.innerWidth);
+            // console.log('init size:', window.innerWidth);
             this.setWindowSize(window.innerWidth);
             this.windowResizeHandler = _.throttle(() => {
-                console.log('resize', window.innerWidth);
+                // console.log('resize', window.innerWidth);
                 this.setWindowSize(window.innerWidth);
             }, 1000, { 'leading': false, 'trailing': true });
             window.addEventListener('resize', this.windowResizeHandler);
