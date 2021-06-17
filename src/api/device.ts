@@ -493,7 +493,6 @@ export async function getHistoryData(data:any) {
         _.assign(params.params,{ hundredDaysKwh: 'get' })
     }
     const res = await setCloudDevice(params);
-    console.log(`ML ~ file: device.ts ~ line 440 ~ getHistoryData ~ res`, res);
     if(res.error === 0 && res.data && res.data.config){
         if(uiid === 126){
             return cardIndex === 1 ? res.data.config.kwhHistories_01 : res.data.config.kwhHistories_00;
