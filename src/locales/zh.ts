@@ -87,6 +87,7 @@ export const zh = {
         second: '秒',
         from: '起始时间',
         to: '结束时间',
-        consumption: '用电量'
+        consumption: '用电量',
+        consumed: '已使用'
     },
 };

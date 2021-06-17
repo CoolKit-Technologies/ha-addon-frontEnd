@@ -1,4 +1,6 @@
 import { createStore } from 'vuex';
+import enUS from 'ant-design-vue/es/locale/en_US';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import _ from 'lodash';
 
 import { getRegionMap } from '@/utils/etc';
@@ -25,127 +27,11 @@ export default createStore({
         // Locale for i18n: 'en' or 'zh'
         locale: 'en',
 
+        // antd locale
+        antdLocale: enUS,
+
         // Origin device list
-        originDeviceList: [
-            {
-                key: '01',
-                uiid: 15,
-                type: 4,
-                online: true,
-                deviceName: 'T H',
-                deviceId: '100086af3c',
-                params: {
-                    deviceType: 'Normal',
-                    currentHumidity: 19.23,
-                    currentTemperature: 30,
-                    switch: 'off',
-                    sledOnline: "on"
-                },
-                
-                unit: 'c'
-            },
-            {
-                key: '0001',
-                uiid: 3,
-                type: 4,
-                online: true,
-                deviceName: 'socket',
-                apikey: 'dddd',
-                deviceId: '2008',
-                params: {
-                    startup: 'on',
-                    switches: [{
-                        switch: 'on'
-                    },{
-                        switch: 'on'
-                    },{
-                        switch: 'on'
-                    },{
-                        switch: 'off'
-                    }],
-                    pulses:[{
-                            pulse:'on',
-                            width:500,
-                            outlet:0
-                        },{
-                            pulse:'on',
-                            width:1000,
-                            outlet: 1
-                        },{
-                            pulse:'off',
-                            width:1000,
-                            outlet: 2
-                        },{
-                            pulse:'on',
-                            width:1000,
-                            outlet: 3
-                        }
-                    ]
-                }
-            },
-            {
-                key: '03',
-                uiid: 5,
-                type: 4,
-                online: true,
-                deviceName: 'UIID5',
-                deviceId: '1000093c3d',
-                params: {
-                    switch: 'on',
-                    power: 120
-                }
-            },
-            {
-                key: '0x',
-                uiid: 32,
-                type: 4,
-                online: true,
-                deviceName: 'IW100',
-                deviceId: '1000093c3d',
-                params: {
-                    switch: 'off',
-                    power: 120,
-                    voltage: 120,
-                    current: 1
-                }
-            },
-            {
-                key: '0y',
-                uiid: 126,
-                type: 4,
-                online: true,
-                deviceName: 'Dual R3',
-                deviceId: '1000093c3x',
-                params: {
-                    voltage_00: 120,
-                    voltage_01: 140,
-                    current_00: 2.0,
-                    current_01: 3.0,
-                    actPow_00: 110,
-                    actPow_01: 120,
-                    reactPow_00: 130,
-                    reactPow_01: 140,
-                    apparentPow_00: 150,
-                    apparentPow_01: 160,
-                    switches: [
-                        {
-                            switch: 'on'
-                        },
-                        {
-                            switch: 'off'
-                        }
-                    ]
-                }
-            },
-            {
-                key: '0z',
-                uiid: 226,
-                type: 1,
-                online: true,
-                deviceName: 'fake dev',
-                deviceId: '111'
-            }
-        ]
+        originDeviceList: []
     },
 
     getters: {
@@ -213,6 +99,13 @@ export default createStore({
         },
         setPageLoading(state, v) {
             state.pageLoading = v;
+        },
+        setAntdLocale(state, v) {
+            if (v === 'zh') {
+                state.antdLocale = zhCN as any;
+            } else {
+                state.antdLocale = enUS as any;
+            }
         }
     },
 

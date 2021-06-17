@@ -79,9 +79,11 @@ export default defineComponent({
             if (res.error === 0 && res.data === 'zh-Hans') {
                 this.$root!.$i18n.locale = 'zh';
                 this.setLocale('zh');
+                this.setAntdLocale('zh');
             } else {
                 this.$root!.$i18n.locale = 'en';
                 this.setLocale('en');
+                this.setAntdLocale('en');
             }
         },
         initSse() {
@@ -112,7 +114,7 @@ export default defineComponent({
                 }
             });
         },
-        ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList', 'setWindowSize', 'setModalParams'])
+        ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList', 'setWindowSize', 'setModalParams', 'setAntdLocale'])
     }
 });
 </script>

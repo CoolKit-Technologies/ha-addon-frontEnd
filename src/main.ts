@@ -15,7 +15,8 @@ import {
     DatePicker,
     Tabs,
     Divider,
-    Statistic
+    Statistic,
+    ConfigProvider
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -49,5 +50,6 @@ app.use(DatePicker);
 app.use(Tabs);
 app.use(Divider);
 app.use(Statistic);
+app.use(ConfigProvider);
 
 app.mount('#app');

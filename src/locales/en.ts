@@ -87,6 +87,7 @@ export const en = {
         second: 'Second',
         from: 'From',
         to: 'To',
-        consumption: 'Consumption'
+        consumption: 'Consumption',
+        consumed: 'Consumed'
     },
 };
