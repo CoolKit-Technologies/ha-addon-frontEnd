@@ -1,11 +1,14 @@
 <template>
     <div class="intro-bar">
-        <intro-card
-            class="intro-card"
-            v-for="card in cardList"
-            :key="card.pageid"
-            :cardData="card"
-        />
+        <intro-carousel v-if="smallScreen" :cardList="cardList" />
+        <div class="wrapper" v-else>
+            <intro-card
+                class="intro-card"
+                v-for="card in cardList"
+                :key="card.pageid"
+                :cardData="card"
+            />
+        </div>
     </div>
 </template>
 
@@ -16,6 +19,7 @@ import { message } from 'ant-design-vue';
 
 import { getContent, Content } from '@/api/content';
 import IntroCard from '@/components/IntroCard.vue';
+import IntroCarousel from '@/components/IntroCarousel.vue';
 
 export default defineComponent({
     name: 'IntroBar',
@@ -29,16 +33,20 @@ export default defineComponent({
     },
 
     components: {
-        IntroCard
+        IntroCard,
+        IntroCarousel
     },
 
     computed: {
-        ...mapState(['locale'])
+        smallScreen() {
+            const { windowSize } = this as any;
+            return windowSize === 'xm' || windowSize === 'sm';
+        },
+        ...mapState(['locale', 'windowSize'])
     },
 
     async created() {
         // TEST: uncomment for test
-        // return;
         const res = await getContent(this.locale);
         if (res.error === 0) {
             const { top, push } = res.data;
@@ -53,12 +61,13 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .intro-bar
-    display flex
-    padding 20px 10px
+    padding 10px
+    .wrapper
+        display flex
 
-    .intro-card
-        flex 1
-        max-width calc((100% - 40px) / 5)
-        &:not(:last-child)
-            margin-right 10px
+        .intro-card
+            flex 1
+            max-width calc((100% - 40px) / 5)
+            &:not(:last-child)
+                margin-right 10px
 </style>

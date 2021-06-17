@@ -16,7 +16,8 @@ import {
     Tabs,
     Divider,
     Statistic,
-    ConfigProvider
+    ConfigProvider,
+    Carousel
 } from 'ant-design-vue';
 
 import store from '@/store';
@@ -51,5 +52,6 @@ app.use(Tabs);
 app.use(Divider);
 app.use(Statistic);
 app.use(ConfigProvider);
+app.use(Carousel);
 
 app.mount('#app');
