@@ -404,13 +404,12 @@ export async function setPowerOnState(v: string, data: any, i: number) {
 }
 
 /**
- * power statistic
- * @param startTime
- * @param endTime
- * @param data
+ * Start statistic
+ * @param startTime Statistic start time
+ * @param data Device data
  */
-export async function startStatistic(startTime:string,data:any) {
-    const {deviceId,apikey,uiid,cardIndex} = data;
+export async function startStatistic(startTime: string, data: any) {
+    const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
         apikey:apikey,
@@ -418,8 +417,8 @@ export async function startStatistic(startTime:string,data:any) {
     };
     if (uiid === 126) {
         cardIndex === 1
-        ? _.assign(params.params, { startTime_01: startTime, endTime_01: '' })
-        : _.assign(params.params, { startTime_00: startTime, endTime_00: '' });
+            ? _.assign(params.params, { startTime_01: startTime, endTime_01: '' })
+            : _.assign(params.params, { startTime_00: startTime, endTime_00: '' });
     } else {
         _.assign(params.params, {
             onKwh: 'start',
@@ -427,12 +426,17 @@ export async function startStatistic(startTime:string,data:any) {
             endTime: '',
         });
     }
-    console.log(`ML ~ file: device.ts ~ line 353 ~ startStatistic ~ params`, params);
-    const res = await setCloudDevice(params);
-    console.log(`ML ~ file: device.ts ~ line 366 ~ startStatistic ~ res`, res);
+    await setCloudDevice(params);
 }
-export async function endStatistic(startTime:string,endTime:string,data:any) {
-    const {deviceId,apikey,uiid,cardIndex} = data;
+
+/**
+ * End statistic
+ * @param startTime Statistic start time
+ * @param endTime Statistic end time
+ * @param data Device data
+ */
+export async function endStatistic(startTime: string, endTime: string, data: any) {
+    const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
         apikey:apikey,
@@ -440,48 +444,37 @@ export async function endStatistic(startTime:string,endTime:string,data:any) {
     };
     if (uiid === 126) {
         cardIndex === 1
-          ? _.assign(params.params, {
-              startTime_01: startTime,
-              endTime_01:endTime,
-            })
-          : _.assign(params.params, {
-              startTime_00: startTime,
-              endTime_00: endTime,
-            });
-      } else {
-        _.assign(params.params, {
-          onKwh: "stop",
-          startTime: startTime,
-          endTime: endTime,
-        });
-      }
-      console.log(`ML ~ file: device.ts ~ line 375 ~ endStatistic ~ params`, params);
-      const res = await setCloudDevice(params);
-      console.log(`ML ~ file: device.ts ~ line 394 ~ endStatistic ~ res`, res);
-}
-export async function refreshStatistic(data:any) {
-    const {deviceId,apikey,uiid,cardIndex} = data;
-    let params = {
-        id: deviceId,
-        apikey:apikey,
-        params: {},
-    };
-    if (uiid === 126) {
-        cardIndex === 1
-          ? _.assign(params.params, {
-              getKwh_01: 1,
-            })
-          : _.assign(params.params, {
-              getKwh_00: 1,
-            });
+            ? _.assign(params.params, { startTime_01: startTime, endTime_01: endTime })
+            : _.assign(params.params, { startTime_00: startTime, endTime_00: endTime });
     } else {
         _.assign(params.params, {
-          oneKwh: "get",
+            onKwh: "stop",
+            startTime: startTime,
+            endTime: endTime,
         });
     }
-    console.log(`ML ~ file: device.ts ~ line 404 ~ refresh ~ params`, params);
-    const res = await setCloudDevice(params);
-    return res;
+    await setCloudDevice(params);
+}
+
+/**
+ * Refresh statistic
+ * @param data Device data
+ */
+export async function refreshStatistic(data: any) {
+    const { deviceId, apikey, uiid, cardIndex } = data;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {},
+    };
+    if (uiid === 126) {
+        cardIndex === 1
+            ? _.assign(params.params, { getKwh_01: 1 })
+            : _.assign(params.params, { getKwh_00: 1 });
+    } else {
+        _.assign(params.params, { oneKwh: "get" });
+    }
+    return await setCloudDevice(params);
 }
 
 /**

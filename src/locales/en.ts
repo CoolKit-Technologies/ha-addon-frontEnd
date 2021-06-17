@@ -85,5 +85,8 @@ export const en = {
         },
         minute: 'Minute',
         second: 'Second',
+        from: 'From',
+        to: 'To',
+        consumption: 'Consumption'
     },
 };

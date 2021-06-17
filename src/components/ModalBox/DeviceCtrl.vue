@@ -4,7 +4,7 @@
         <!-- DIY device could not toggle network LED -->
         <ctrl-switch type="led" v-if="!(isDiyDevice || isOldUiid15Device)" />
         <ctrl-switch type="lock" v-if="isMultiChannel" />
-        <inching-mode v-if="!isMultiChannel && !isOldUiid15Device" />
+        <inching-mode v-if="!isMultiChannel && !isOldUiid15Device && modalParams.uiid !== 5" />
         <power-on-state v-if="!isMultiChannel && !isOldUiid15Device" />
         <temperature-unit v-if="modalParams.uiid === 15 && hasCurTempFunc" />
         <ctrl-switch type="disable" />
