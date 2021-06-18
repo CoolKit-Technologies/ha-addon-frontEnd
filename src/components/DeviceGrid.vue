@@ -74,8 +74,6 @@ export default defineComponent({
     },
 
     async created() {
-        // TEST: uncomment for test
-        return;
         const res = await getDeviceListInit();
         if (res.error === 0) {
             this.setOriginDeviceList(res.data);

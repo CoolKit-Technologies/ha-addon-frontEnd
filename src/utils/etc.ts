@@ -467,18 +467,28 @@ export function isSupportedDevice(uiid: number) {
         7,
         8,
         9,
+        11,
         14,
         15,
         22,
         32,
+        59,
         77,
         78,
+        102,
+        103,
         104,
         107,
         112,
         113,
         114,
-        126
+        126,
+        1000,
+        1009,
+        1256,
+        1770,
+        2026,
+        3026
     ];
     return uiids.indexOf(uiid) !== -1;
 }

@@ -46,7 +46,6 @@ export default defineComponent({
     },
 
     async created() {
-        // TEST: uncomment for test
         const res = await getContent(this.locale);
         if (res.error === 0) {
             const { top, push } = res.data;
