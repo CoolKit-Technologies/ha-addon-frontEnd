@@ -473,6 +473,7 @@ export function isSupportedDevice(uiid: number) {
         32,
         77,
         78,
+        102,
         104,
         107,
         112,

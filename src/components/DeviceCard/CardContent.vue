@@ -123,6 +123,15 @@
                     :index="cardData.cardIndex"
                 />
             </div>
+            <!--  wifi door sensor  -->
+            <div v-else-if="isDoorSendor">
+                <door-sensor             
+                    :switch="cardData.params.switch"
+                ></door-sensor>
+            </div>
+            <div v-else-if="isFiveBulb">
+                <five-bulb></five-bulb>
+            </div>
         </div>
     </div>
 </template>
@@ -141,10 +150,11 @@ import {
 } from '@/utils/etc';
 import ChannelSwitch from '@/components/CtrlItem/ChannelSwitch.vue';
 import ChannelMode from '@/components/CtrlItem/ChannelMode.vue';
+import DoorSensor from '@/components/CtrlItem/DoorSensor.vue'
+import FiveBulb from '@/components/CtrlItem/FiveBulb.vue'
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
-
 export default defineComponent({
     name: 'CardContent',
 
@@ -154,6 +164,8 @@ export default defineComponent({
         HumiGauge,
         TempGauge,
         CircleChart,
+        DoorSensor,
+        FiveBulb
     },
 
     props: {
@@ -214,6 +226,14 @@ export default defineComponent({
         isDualPwSw() {
             const { uiid } = this.cardData as any;
             return uiid === 126;
+        },
+        isDoorSendor(){
+            const { uiid } = this.cardData as any;
+            return uiid === 102;
+        },
+        isFiveBulb(){
+            const { uiid } = this.cardData as any;
+            return uiid === 104;
         },
         dualPwSwData() {
             const { $t, cardData } = this as any;

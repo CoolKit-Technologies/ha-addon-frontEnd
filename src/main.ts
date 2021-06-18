@@ -16,9 +16,9 @@ import {
     Tabs,
     Divider,
     Statistic,
-    ConfigProvider
+    ConfigProvider,
+    Slider,
 } from 'ant-design-vue';
-
 import store from '@/store';
 import App from '@/App.vue';
 import { messages } from '@/locales';
@@ -51,5 +51,5 @@ app.use(Tabs);
 app.use(Divider);
 app.use(Statistic);
 app.use(ConfigProvider);
-
+app.use(Slider)
 app.mount('#app');
