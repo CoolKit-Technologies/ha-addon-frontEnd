@@ -51,6 +51,9 @@ export const zh = {
         realpower: '有功功率',
         reactivepower: '无功功率',
         apparentpower: '视在功率',
+        doorsensor:'门磁',
+        doorsensoropen:'分开',
+        doorsensorclose:'闭合',
     },
 
     modal: {
