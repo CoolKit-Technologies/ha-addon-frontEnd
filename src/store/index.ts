@@ -15,7 +15,7 @@ export default createStore({
         windowSize: 'lg',
 
         // Hold on until page complete
-        pageLoading: true,
+        pageLoading: false,
 
         // Component 'ModalBox' visibility
         modalVisible: false,
@@ -31,7 +31,14 @@ export default createStore({
         antdLocale: enUS,
 
         // Origin device list
-        originDeviceList: []
+        originDeviceList: [
+            {
+                uiid: 22,
+                type: 4,
+                deviceName: 'Five Color Bulb Light',
+                online: true
+            }
+        ]
     },
 
     getters: {

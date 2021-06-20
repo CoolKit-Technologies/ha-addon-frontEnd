@@ -46,6 +46,7 @@ export default defineComponent({
     },
 
     async created() {
+        return;
         const res = await getContent(this.locale);
         if (res.error === 0) {
             const { top, push } = res.data;

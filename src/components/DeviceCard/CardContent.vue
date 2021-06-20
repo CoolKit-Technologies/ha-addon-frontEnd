@@ -123,6 +123,10 @@
                     :index="cardData.cardIndex"
                 />
             </div>
+            <!-- five color bulb light -->
+            <div class="five-color-bulb-light" v-else-if="isFiveColorBulbLt">
+                <color-picker class="mg-14" />
+            </div>
         </div>
     </div>
 </template>
@@ -144,6 +148,7 @@ import ChannelMode from '@/components/CtrlItem/ChannelMode.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
+import ColorPicker from '@/components/CtrlItem/ColorPicker.vue';
 
 export default defineComponent({
     name: 'CardContent',
@@ -154,6 +159,7 @@ export default defineComponent({
         HumiGauge,
         TempGauge,
         CircleChart,
+        ColorPicker,
     },
 
     props: {
@@ -237,6 +243,11 @@ export default defineComponent({
                     key: 2
                 }
             ];
+        },
+        // Current device is five color bulb light
+        isFiveColorBulbLt() {
+            const { uiid } = this.cardData as any;
+            return uiid === 22;
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;
