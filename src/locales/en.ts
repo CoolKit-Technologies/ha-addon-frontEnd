@@ -51,6 +51,9 @@ export const en = {
         realpower: 'Real power',
         reactivepower: 'Reactive power',
         apparentpower: 'Apparent power',
+        doorsensor:'Door sensor',
+        doorsensoropen:'open',
+        doorsensorclose:'close',
     },
 
     modal: {

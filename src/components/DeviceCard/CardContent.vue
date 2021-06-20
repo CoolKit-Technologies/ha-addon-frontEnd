@@ -127,6 +127,15 @@
             <div class="five-color-bulb-light" v-else-if="isFiveColorBulbLt">
                 <color-picker class="mg-14" />
             </div>
+            <!--  wifi door sensor  -->
+            <div v-else-if="isWifiDoorSensor">
+                <door-sensor
+                    :switch="cardData.params.switch"
+                ></door-sensor>
+            </div>
+            <div v-else-if="isFiveColorLt">
+                <five-bulb></five-bulb>
+            </div>
         </div>
     </div>
 </template>
@@ -145,6 +154,8 @@ import {
 } from '@/utils/etc';
 import ChannelSwitch from '@/components/CtrlItem/ChannelSwitch.vue';
 import ChannelMode from '@/components/CtrlItem/ChannelMode.vue';
+import DoorSensor from '@/components/CtrlItem/DoorSensor.vue'
+import FiveBulb from '@/components/CtrlItem/FiveBulb.vue'
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
@@ -160,6 +171,8 @@ export default defineComponent({
         TempGauge,
         CircleChart,
         ColorPicker,
+        DoorSensor,
+        FiveBulb
     },
 
     props: {
@@ -220,6 +233,14 @@ export default defineComponent({
         isDualPwSw() {
             const { uiid } = this.cardData as any;
             return uiid === 126;
+        },
+        isWifiDoorSensor(){
+            const { uiid } = this.cardData as any;
+            return uiid === 102;
+        },
+        isFiveColorLt(){
+            const { uiid } = this.cardData as any;
+            return uiid === 104;
         },
         dualPwSwData() {
             const { $t, cardData } = this as any;
