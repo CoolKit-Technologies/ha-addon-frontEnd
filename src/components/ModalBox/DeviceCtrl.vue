@@ -1,18 +1,57 @@
 <template>
     <div class="device-ctrl">
+        <!-- Set device name -->
         <device-name />
-        <!-- DIY device could not toggle network LED -->
-        <ctrl-switch type="led" v-if="!(isDiyDevice || isOldUiid15Device)" />
-        <ctrl-switch type="lock" v-if="isMultiChannel" />
-        <inching-mode v-if="!isMultiChannel && !isOldUiid15Device && modalParams.uiid !== 5" />
-        <ctrl-select type="power-on-state" v-if="!isMultiChannel && !isOldUiid15Device" />
+
+        <!-- Toggle device network LED -->
+        <ctrl-switch
+            v-if="!(isDiyDevice || isOldUiid15Device || isLight)"
+            type="led"
+        />
+
+        <!-- Toggle multi-channel device interlock -->
+        <ctrl-switch
+            v-if="isMultiChannel"
+            type="lock"
+        />
+
+        <!-- Set device inching mode -->
+        <inching-mode
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || modalParams.uiid === 5)"
+        />
+
+        <!-- Set device power on state -->
+        <ctrl-select
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight)"
+            type="power-on-state"
+        />
+
+        <!-- Set temperature unit -->
         <temperature-unit v-if="modalParams.uiid === 15 && hasCurTempFunc" />
+
+        <!-- Set rhythm light strip mode -->
+        <ctrl-select
+            v-if="modalParams.uiid === 59"
+            type="rhythm-light-strip"
+        />
+
+        <!-- Set five color bulb light mode -->
+        <ctrl-select
+            v-if="modalParams.uiid === 22"
+            type="five-color-bulb-light"
+        />
+
+        <!-- Set five color light mode -->
+        <ctrl-select
+            v-if="modalParams.uiid === 104"
+            type="five-color-light"
+        />
+
+        <!-- Set device disable -->
         <ctrl-switch type="disable" />
-        <!-- DIY device could not upgrade firmware -->
-        <firmware-upgrade v-if="!(modalParams.type === 1 && modalParams.uiid === 1)" />
-        <ctrl-select type="five-color-bulb-light" />
-        <ctrl-select type="five-color-light" />
-        <ctrl-select type="rhythm-light-strip" />
+
+        <!-- Upgrade device firmware -->
+        <firmware-upgrade v-if="!isDiyDevice" />
     </div>
 </template>
 
@@ -60,6 +99,10 @@ export default defineComponent({
         isMultiChannel() {
             const { uiid } = this.modalParams as any;
             return isMultiChannelDevice(uiid);
+        },
+        isLight() {
+            const { uiid } = this.modalParams as any;
+            return (uiid === 59 || uiid === 22 || uiid === 104);
         },
         ...mapState(['modalParams']),
     },
