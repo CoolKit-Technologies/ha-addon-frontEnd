@@ -126,7 +126,7 @@
             <!-- five color bulb light -->
             <div class="five-color-bulb-light" v-else-if="isFiveColorBulbLt">
                 <color-picker class="mg-14" />
-                <five-bulb-light class="mg-14" />
+                <five-bulb-light class="mg-14" :cardData="cardData"/>
             </div>
             <!--  wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
@@ -138,10 +138,11 @@
             <!--  five color light -->
             <div v-else-if="isFiveColorLt">
                 <five-color-light class="mg-14"/>
+                <curtain class="mg-14" />
             </div>
             <!--  elec curtain -->
             <div v-else-if="isCurtain">
-                <curtain></curtain>
+                <curtain class="mg-14" />
             </div>
         </div>
     </div>

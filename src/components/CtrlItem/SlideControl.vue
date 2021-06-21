@@ -16,7 +16,7 @@
         <template v-else-if="$props.type === 'curtain'">
             <div class="left">
                 <div class="icon">
-                    <img class="control" src="@/assets/lignt-bulb-control.png" alt="control">
+                    <img class="control" src="@/assets/curtain.png" alt="control">
                 </div>
                 <div class="text">
                     Manual

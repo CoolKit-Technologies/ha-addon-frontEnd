@@ -2,9 +2,9 @@
     <div class="five-bulb-light">
         <div class="mode1" v-if="mode === 'mode1'">
             <div class="bulbs">
-                <control-circle type="bulb" color="blue" />
-                <control-circle type="bulb" color="yellow" />
-                <control-circle type="bulb" color="red" />
+                <control-circle type="bulb" :color="color[0]" />
+                <control-circle type="bulb" :color="color[1]" />
+                <control-circle type="bulb" :color="color[2]" />
             </div>
             <div class="control">
                 <slide-control type="bulb" value="20"/>
@@ -31,10 +31,33 @@ export default defineComponent({
         ControlCircle,
         SlideControl
     },
+    props:{
+        cardData: {
+            required: true
+        }
+    },
     data(){
         return {
             mode:'mode1'
         }
+    },
+    computed:{
+        color(){
+            const { params } = this.$props.cardData as any;
+            if(!params) return[]
+            if(params.channel0 === params.channel1 ){
+                return ['gray','yellow','gray']
+            }
+            if(params.channel0 < params.channel1 ){
+                return ['gray','gary','blue']
+            }
+            if(params.channel0 > params.channel1 ){
+                return ['red','gary','gray']
+            }
+        }
+    },
+    mounted(){
+        console.log('-------------',this.$props.cardData);
     },
     methods:{
         changeMode(mode:string){
