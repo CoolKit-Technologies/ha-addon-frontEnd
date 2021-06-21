@@ -133,6 +133,7 @@
                     :switch="cardData.params.switch"
                 ></door-sensor>
             </div>
+            <!-- five color light -->
             <div v-else-if="isFiveColorLt">
                 <five-bulb></five-bulb>
             </div>

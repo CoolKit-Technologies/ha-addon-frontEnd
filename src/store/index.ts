@@ -31,14 +31,7 @@ export default createStore({
         antdLocale: enUS,
 
         // Origin device list
-        originDeviceList: [
-            {
-                uiid: 22,
-                type: 4,
-                deviceName: 'Five Color Bulb Light',
-                online: true
-            }
-        ]
+        originDeviceList: []
     },
 
     getters: {

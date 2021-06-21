@@ -2,7 +2,7 @@
     <div class="channel-item">
         <device-name type="channel" :index="index - 1" />
         <inching-mode v-if="modalParams.params.lock === 0" :index="index - 1" />
-        <power-on-state v-if="modalParams.params.lock === 0" :index="index - 1" />
+        <ctrl-select type="power-on-state" v-if="modalParams.params.lock === 0" :index="index - 1" />
     </div>
 </template>
 
@@ -12,7 +12,7 @@ import { mapState } from 'vuex';
 
 import DeviceName from './DeviceName.vue';
 import InchingMode from './InchingMode.vue';
-import PowerOnState from './PowerOnState.vue';
+import CtrlSelect from './CtrlSelect.vue';
 
 export default defineComponent({
     name: 'ChannelItem',
@@ -20,7 +20,7 @@ export default defineComponent({
     components: {
         DeviceName,
         InchingMode,
-        PowerOnState,
+        CtrlSelect,
     },
 
     props: {

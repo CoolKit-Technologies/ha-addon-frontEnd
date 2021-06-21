@@ -91,6 +91,29 @@ export const zh = {
         from: '起始时间',
         to: '结束时间',
         consumption: '用电量',
-        consumed: '已使用'
+        consumed: '已使用',
+        mode: '模式',
+        modeOps: {
+            bright: 'Bright',
+            sleep: 'Sleep',
+            reading: 'Reading',
+            party: 'Party',
+            night: 'Night',
+            relax: 'Relax',
+            soft: 'Soft',
+            vivid: 'Vivid',
+
+            colorful: '七彩',
+            colorfulgra: '七彩渐变',
+            colorfulbre: '七彩跳变',
+            rgbstr: 'RGB 频闪',
+            rgbgra: 'RGB 渐变',
+            rgbpul: 'RGB 流光',
+            rgbbre: 'RGB 跳变',
+            diypul: 'DIY 流光',
+            diybre: 'DIY 跳变',
+            diygra: 'DIY 渐变',
+            diystr: 'DIY 频闪',
+        }
     },
 };

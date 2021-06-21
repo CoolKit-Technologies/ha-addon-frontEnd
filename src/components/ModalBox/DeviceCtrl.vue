@@ -5,11 +5,14 @@
         <ctrl-switch type="led" v-if="!(isDiyDevice || isOldUiid15Device)" />
         <ctrl-switch type="lock" v-if="isMultiChannel" />
         <inching-mode v-if="!isMultiChannel && !isOldUiid15Device && modalParams.uiid !== 5" />
-        <power-on-state v-if="!isMultiChannel && !isOldUiid15Device" />
+        <ctrl-select type="power-on-state" v-if="!isMultiChannel && !isOldUiid15Device" />
         <temperature-unit v-if="modalParams.uiid === 15 && hasCurTempFunc" />
         <ctrl-switch type="disable" />
         <!-- DIY device could not upgrade firmware -->
         <firmware-upgrade v-if="!(modalParams.type === 1 && modalParams.uiid === 1)" />
+        <ctrl-select type="five-color-bulb-light" />
+        <ctrl-select type="five-color-light" />
+        <ctrl-select type="rhythm-light-strip" />
     </div>
 </template>
 
@@ -18,11 +21,11 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 
 import DeviceName from '@/components/CtrlItem/DeviceName.vue';
-import PowerOnState from '@/components/CtrlItem/PowerOnState.vue';
 import InchingMode from '@/components/CtrlItem/InchingMode.vue';
 import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
 import CtrlSwitch from '@/components/CtrlItem/CtrlSwitch.vue';
 import FirmwareUpgrade from '@/components/CtrlItem/FirmwareUpgrade.vue';
+import CtrlSelect from '@/components/CtrlItem/CtrlSelect.vue';
 import { isMultiChannelDevice } from '@/utils/etc';
 
 export default defineComponent({
@@ -30,11 +33,11 @@ export default defineComponent({
 
     components: {
         DeviceName,
-        PowerOnState,
         CtrlSwitch,
         TemperatureUnit,
         InchingMode,
         FirmwareUpgrade,
+        CtrlSelect
     },
 
     computed: {

@@ -91,6 +91,29 @@ export const en = {
         from: 'From',
         to: 'To',
         consumption: 'Consumption',
-        consumed: 'Consumed'
+        consumed: 'Consumed',
+        mode: 'Mode',
+        modeOps: {
+            bright: 'Bright',
+            sleep: 'Sleep',
+            reading: 'Reading',
+            party: 'Party',
+            night: 'Night',
+            relax: 'Relax',
+            soft: 'Soft',
+            vivid: 'Vivid',
+
+            colorful: 'Colorful',
+            colorfulgra: 'Colorful Gradient',
+            colorfulbre: 'Colorful Breath',
+            rgbstr: 'RGB Strobe',
+            rgbgra: 'RGB Gradient',
+            rgbpul: 'RGB Pulse',
+            rgbbre: 'RGB Breath',
+            diypul: 'DIY Pulse',
+            diybre: 'DIY Breath',
+            diygra: 'DIY Gradient',
+            diystr: 'DIY Strobe',
+        }
     },
 };
