@@ -1,14 +1,18 @@
 <template>
     <div class="control-circle" :style="circleColor">
-        <div v-if="$props.type === 'bulb'">
+        <template v-if="$props.type === 'bulb'">
             <img class="bulb" src="@/assets/bulb-blue.png" alt="bulb" v-if="$props.color === 'blue'">
             <img class="bulb" src="@/assets/bulb-yellow.png" alt="bulb" v-else-if="$props.color === 'yellow'">
             <img class="bulb" src="@/assets/bulb-red.png" alt="bulb" v-else-if="$props.color === 'red'">
             <img class="bulb" src="@/assets/bulb-gray.png" alt="bulb" v-else-if="$props.color === 'gray'">
-        </div>
-        <div v-if="$props.type === 'curtain'">
-
-        </div>
+        </template>
+        <template v-if="$props.type === 'curtain'">
+            <img src="@/assets/curtain-pause.png" alt="curtain"  v-if="$props.curtainType === 'pause'">
+            <img src="@/assets/curtain-off.png" alt="curtain" class="curtain" v-if="$props.curtainType === 'off'">
+            <img src="@/assets/curtain-on.png" alt="curtain" class="curtain" v-if="$props.curtainType === 'on'">
+            <img src="@/assets/curtain-alloff.png" alt="curtain" class="curtain" v-if="$props.curtainType === 'alloff'">
+            <img src="@/assets/curtain-allon.png" alt="curtain" class="curtain" v-if="$props.curtainType === 'allon'">
+        </template>
     </div>
 </template>
 <script lang="ts">
@@ -21,9 +25,11 @@ export default defineComponent({
             type:String,
             required:true,
         },
+        curtainType:{
+            type:String,
+        },
         color:{
             type:String,
-            required:true
         },
     },
     data(){
@@ -60,8 +66,7 @@ export default defineComponent({
     mounted(){
         // this.circleColor()
     },
-    methods:{
-    }
+    methods:{}
 })
 </script>
 <style lang="stylus">
@@ -75,4 +80,7 @@ export default defineComponent({
     .bulb
         width 27px
         height 39px
+    .curtain
+        width 69px
+        height 28px
 </style>

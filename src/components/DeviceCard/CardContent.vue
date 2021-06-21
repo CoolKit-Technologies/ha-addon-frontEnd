@@ -160,7 +160,7 @@
             </div>
             <!-- elec curtain -->
             <div v-else-if="isCurtain">
-                <curtain></curtain>
+                <curtain class="mg-14" />
             </div>
         </div>
     </div>
