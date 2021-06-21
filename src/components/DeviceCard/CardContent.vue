@@ -123,10 +123,9 @@
                     :index="cardData.cardIndex"
                 />
             </div>
-            <!-- five color bulb light -->
-            <div v-else-if="isFiveColorBulbLt">
-                <color-picker class="mg-14" />
-                <five-bulb-light class="mg-14" />
+            <!-- five color bulb light or five color light -->
+            <div v-else-if="isFiveColorBulbLt || isFiveColorLt">
+                <five-color-light-content />
             </div>
             <!-- wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
@@ -134,10 +133,6 @@
                     type='doorSensor'
                     :switch="cardData.params.switch"
                 ></content-item>
-            </div>
-            <!-- five color light -->
-            <div v-else-if="isFiveColorLt">
-                <five-color-light class="mg-14"/>
             </div>
             <!-- two color light -->
             <div v-else-if="isTwoColorLt">
@@ -149,6 +144,19 @@
                     class="mg-14"
                     type="color-temp"
                 />
+            </div>
+            <!-- rhythm light strip -->
+            <div v-else-if="isRhythmLtStrip">
+                <color-picker class="mg-14" />
+                <ctrl-slider
+                    class="mg-14"
+                    type="brightness"
+                />
+                <ctrl-slider
+                    class="mg-14"
+                    type="color-temp"
+                />
+                <rhythm-switch />
             </div>
             <!-- elec curtain -->
             <div v-else-if="isCurtain">
@@ -181,6 +189,8 @@ import CircleChart from '@/components/CircleChart.vue';
 import ColorPicker from '@/components/CtrlItem/ColorPicker.vue';
 import FiveColorLight from '@/components/CtrlItem/FiveColorLight.vue';
 import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
+import FiveColorLightContent from '@/components/CtrlItem/FiveColorLightContent.vue';
+import RhythmSwitch from '@/components/CtrlItem/RhythmSwitch.vue';
 
 export default defineComponent({
     name: 'CardContent',
@@ -196,7 +206,9 @@ export default defineComponent({
         FiveBulbLight,
         Curtain,
         CtrlSlider,
-        FiveColorLight
+        FiveColorLight,
+        FiveColorLightContent,
+        RhythmSwitch
     },
 
     props: {
@@ -302,6 +314,11 @@ export default defineComponent({
         isTwoColorLt() {
             const { uiid } = this.cardData as any;
             return uiid === 103;
+        },
+        // Current device is rhythm light strip
+        isRhythmLtStrip() {
+            const { uiid } = this.cardData as any;
+            return uiid === 59;
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;

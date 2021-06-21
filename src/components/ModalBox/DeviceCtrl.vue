@@ -102,7 +102,7 @@ export default defineComponent({
         },
         isLight() {
             const { uiid } = this.modalParams as any;
-            return (uiid === 59 || uiid === 22 || uiid === 104);
+            return (uiid === 59 || uiid === 22 || uiid === 103 || uiid === 104);
         },
         ...mapState(['modalParams']),
     },
