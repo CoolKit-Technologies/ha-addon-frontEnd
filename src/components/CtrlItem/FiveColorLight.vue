@@ -1,13 +1,9 @@
 <template>
-    <div class="five-bulb">
+    <div class="five-color-light">
         <div class="mode1" v-if="mode === 'mode1'">
-            <div class="bulbs">
-                <control-circle type="bulb" color="blue" />
-                <control-circle type="bulb" color="yellow" />
-                <control-circle type="bulb" color="red" />
-            </div>
             <div class="control">
-                <five-bulb-control />
+                <slide-control type="bulb" value="30"/>
+                <slide-control type="color-temp" value='40'/>
             </div>
         </div>
         <div class="mode2" v-if="mode === 'mode2'">
@@ -23,13 +19,11 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import ControlCircle from '@/components/CtrlItem/ControlCircle.vue'
-import FiveBulbControl from '@/components/CtrlItem/FiveBulbControl.vue'
+import SlideControl from '@/components/CtrlItem/SlideControl.vue';
 export default defineComponent({
-    name:'FiveBulb',
+    name:'FiveColorLight',
     components:{
-        ControlCircle,
-        FiveBulbControl
+        SlideControl
     },
     data(){
         return {
@@ -44,15 +38,11 @@ export default defineComponent({
 })
 </script>
 <style lang="stylus" scoped>
-.five-bulb
+.five-color-light
     display flex
     flex-direction column
     justify-content space-between
     margin 20px 0
-    .bulbs
-        display flex
-        justify-content space-between
-        align-items center
     .icon
         display flex
         justify-content center

@@ -126,16 +126,22 @@
             <!-- five color bulb light -->
             <div class="five-color-bulb-light" v-else-if="isFiveColorBulbLt">
                 <color-picker class="mg-14" />
+                <five-bulb-light class="mg-14" />
             </div>
             <!--  wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
-                <door-sensor
+                <content-item
+                    type='doorSensor'
                     :switch="cardData.params.switch"
-                ></door-sensor>
+                ></content-item>
             </div>
             <!-- five color light -->
             <div v-else-if="isFiveColorLt">
-                <five-bulb></five-bulb>
+                <five-color-light class="mg-14"/>
+            </div>
+            <!--  elec curtain -->
+            <div v-else-if="isCurtain">
+                <curtain></curtain>
             </div>
         </div>
     </div>
@@ -155,13 +161,14 @@ import {
 } from '@/utils/etc';
 import ChannelSwitch from '@/components/CtrlItem/ChannelSwitch.vue';
 import ChannelMode from '@/components/CtrlItem/ChannelMode.vue';
-import DoorSensor from '@/components/CtrlItem/DoorSensor.vue'
-import FiveBulb from '@/components/CtrlItem/FiveBulb.vue'
+import ContentItem from '@/components/CtrlItem/ContentItem.vue'
+import FiveBulbLight from '@/components/CtrlItem/FiveBulbLight.vue'
+import Curtain from '@/components/CtrlItem/Curtain.vue'
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
 import ColorPicker from '@/components/CtrlItem/ColorPicker.vue';
-
+import FiveColorLight from '@/components/CtrlItem/FiveColorLight.vue'
 export default defineComponent({
     name: 'CardContent',
 
@@ -172,8 +179,10 @@ export default defineComponent({
         TempGauge,
         CircleChart,
         ColorPicker,
-        DoorSensor,
-        FiveBulb
+        ContentItem,
+        FiveBulbLight,
+        Curtain,
+        FiveColorLight
     },
 
     props: {
@@ -242,6 +251,10 @@ export default defineComponent({
         isFiveColorLt(){
             const { uiid } = this.cardData as any;
             return uiid === 104;
+        },
+        isCurtain(){
+            const { uiid } = this.cardData as any;
+            return uiid === 11;
         },
         dualPwSwData() {
             const { $t, cardData } = this as any;
