@@ -124,11 +124,11 @@
                 />
             </div>
             <!-- five color bulb light -->
-            <div class="five-color-bulb-light" v-else-if="isFiveColorBulbLt">
+            <div v-else-if="isFiveColorBulbLt">
                 <color-picker class="mg-14" />
                 <five-bulb-light class="mg-14" />
             </div>
-            <!--  wifi door sensor  -->
+            <!-- wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
                 <content-item
                     type='doorSensor'
@@ -139,7 +139,18 @@
             <div v-else-if="isFiveColorLt">
                 <five-color-light class="mg-14"/>
             </div>
-            <!--  elec curtain -->
+            <!-- two color light -->
+            <div v-else-if="isTwoColorLt">
+                <ctrl-slider
+                    class="mg-14"
+                    type="brightness"
+                />
+                <ctrl-slider
+                    class="mg-14"
+                    type="color-temp"
+                />
+            </div>
+            <!-- elec curtain -->
             <div v-else-if="isCurtain">
                 <curtain></curtain>
             </div>
@@ -168,7 +179,9 @@ import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
 import ColorPicker from '@/components/CtrlItem/ColorPicker.vue';
-import FiveColorLight from '@/components/CtrlItem/FiveColorLight.vue'
+import FiveColorLight from '@/components/CtrlItem/FiveColorLight.vue';
+import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
+
 export default defineComponent({
     name: 'CardContent',
 
@@ -182,6 +195,7 @@ export default defineComponent({
         ContentItem,
         FiveBulbLight,
         Curtain,
+        CtrlSlider,
         FiveColorLight
     },
 
@@ -283,6 +297,11 @@ export default defineComponent({
         isFiveColorBulbLt() {
             const { uiid } = this.cardData as any;
             return uiid === 22;
+        },
+        // Current device is two color light
+        isTwoColorLt() {
+            const { uiid } = this.cardData as any;
+            return uiid === 103;
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;

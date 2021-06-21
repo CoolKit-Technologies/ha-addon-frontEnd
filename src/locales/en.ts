@@ -54,6 +54,8 @@ export const en = {
         doorsensor:'Door sensor',
         doorsensoropen:'open',
         doorsensorclose:'close',
+        brightness: 'Brightness',
+        colortemp: 'Color temp.'
     },
 
     modal: {
@@ -114,6 +116,6 @@ export const en = {
             diybre: 'DIY Breath',
             diygra: 'DIY Gradient',
             diystr: 'DIY Strobe',
-        }
+        },
     },
 };

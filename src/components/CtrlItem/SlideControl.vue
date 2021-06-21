@@ -3,7 +3,7 @@
         <template v-if="$props.type === 'bulb'">
             <div class="left">
                 <div class="icon">
-                    <img class="control" src="@/assets/lignt-bulb-control.png" alt="control">
+                    <img class="control" src="@/assets/light-brightness.png" alt="control">
                 </div>
                 <div class="text">
                     Brightness
@@ -16,7 +16,7 @@
         <template v-else-if="$props.type === 'curtain'">
             <div class="left">
                 <div class="icon">
-                    <img class="control" src="@/assets/lignt-bulb-control.png" alt="control">
+                    <img class="control" src="@/assets/light-brightness.png" alt="control">
                 </div>
                 <div class="text">
                     Manual

@@ -54,6 +54,8 @@ export const zh = {
         doorsensor:'门磁',
         doorsensoropen:'分开',
         doorsensorclose:'闭合',
+        brightness: 'Brightness',
+        colortemp: 'Color temp.'
     },
 
     modal: {
@@ -114,6 +116,6 @@ export const zh = {
             diybre: 'DIY 跳变',
             diygra: 'DIY 渐变',
             diystr: 'DIY 频闪',
-        }
+        },
     },
 };
