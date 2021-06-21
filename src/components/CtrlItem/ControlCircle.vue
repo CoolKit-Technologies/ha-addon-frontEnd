@@ -38,21 +38,21 @@ export default defineComponent({
                 case 'blue':
                     return {
                         background:'rgba(24, 144, 255, 0.1)',
-                        border:'4px solid #1890FF'
+                        border:'2px solid #1890FF'
                     }
                 case 'yellow':
                     return {
                         background:'rgba(252, 220, 92, 0.1)',
-                        border:'4px solid #FCDC5C'
+                        border:'2px solid #FCDC5C'
                     }
                 case 'red':
                     return {
                         background:'rgba(230, 1, 1, 0.1)',
-                        border:'4px solid #E60101'
+                        border:'2px solid #E60101'
                     }
                 default:
                     return {
-                        border:'4px solid #BFBFBF'
+                        border:'2px solid #BFBFBF'
                     }
             }
         }
