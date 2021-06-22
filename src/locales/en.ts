@@ -55,7 +55,19 @@ export const en = {
         doorsensoropen:'open',
         doorsensorclose:'close',
         brightness: 'Brightness',
-        colortemp: 'Color temp.'
+        colortemp: 'Color temp.',
+        curtainallon:'All On',
+        curtainalloff:'All Off',
+        zigbee:{
+            mobilesensor:'Mobile sensor',
+            zigbeedoorsensor:'Door and window sensor',
+            unlimitedbutton:'Unlimited buttons(1000)',
+            doorlock:'未触发',
+            dooropen:'触发',
+            click:'click',
+            doubleclick:'double click',
+            longclick:'long click'
+        }
     },
 
     modal: {

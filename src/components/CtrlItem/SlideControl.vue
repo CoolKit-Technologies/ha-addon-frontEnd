@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="slide">
-                <a-slider v-model:value="prograssValue" @afterChange='afterChange' />
+                <a-slider v-model:value="prograssValue" @afterChange="(value) => afterChange(value,'curtain')" />
             </div>
         </template>
         <template v-else-if="$props.type === 'color-temp'">
@@ -44,6 +44,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import { setCurtainValue } from '@/api/device'
+
 export default defineComponent({
     name:'SlideControl',
     props:{
@@ -53,11 +55,14 @@ export default defineComponent({
         value:{
             required:true,
             type :Number
+        },
+        cardData:{
+            required:true
         }
     },
     data(){
         return {
-            prograssValue:0
+            prograssValue: 0
         }
     },
     computed:{
@@ -65,15 +70,29 @@ export default defineComponent({
             return {
                 background: 'linear-gradient(to right, #AAD3FF 0%, #FBFDFF 60%, #FFA205 100%)'
             }
-        }
+        },
     },
     mounted(){
         this.prograssValue = this.$props.value
     },
+    watch:{
+        '$props.value':function (newV,oldV) {
+            this.prograssValue = newV;
+        }
+    },
     methods:{
-        afterChange(value:any){
-            console.log(`ML ~ file: FiveBulbControl.vue ~ line 26 ~ afterChange ~ value`, value);
-            this.prograssValue = value
+        async afterChange(value:any,type:string){
+            // console.log(`ML ~ file: SlideControl.vue ~ line 75 ~ afterChange ~ type`, type);
+            // console.log(`ML ~ file: FiveBulbControl.vue ~ line 26 ~ afterChange ~ value`, value);
+            switch (type){
+                case 'curtain':
+                    await setCurtainValue(this.cardData,value);
+                    return;
+                case 'bulb':
+                    return;
+                case 'color-temp':
+                    return;
+            }
         }
     }
 })

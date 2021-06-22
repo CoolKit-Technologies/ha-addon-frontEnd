@@ -131,7 +131,7 @@
             <div v-else-if="isWifiDoorSensor">
                 <content-item
                     type='doorSensor'
-                    :switch="cardData.params.switch"
+                    :params="cardData.params"
                 ></content-item>
             </div>
             <!-- two color light -->
@@ -160,7 +160,24 @@
             </div>
             <!-- elec curtain -->
             <div v-else-if="isCurtain">
-                <curtain class="mg-14" />
+                <curtain class="mg-14" :cardData="cardData" />
+            </div>
+            <!--  zigbee temprature and humidity -->
+            <div class="zigbee-th" v-else-if="isZigbeeTempAndHumi">
+                <div class="gauge" v-if="cardData.params.humidity !== 'unavailable' || cardData.params.temperature !== 'unavailable'">
+                    <humi-gauge
+                        v-if="cardData.params.humidity !== 'unavailable'"
+                        :value="(cardData.params.humidity / 100)"
+                        />
+                    <temp-gauge
+                        v-if="cardData.params.temperature !== 'unavailable'"
+                        :value="(cardData.params.temperature / 100)"
+                    />
+                </div>
+            </div>
+            <!--  other zigbee  -->
+            <div v-else-if="isZigbeeOther">
+                <other-zigbee-item class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
             </div>
         </div>
     </div>
@@ -191,7 +208,7 @@ import FiveColorLight from '@/components/CtrlItem/FiveColorLight.vue';
 import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 import FiveColorLightContent from '@/components/CtrlItem/FiveColorLightContent.vue';
 import RhythmSwitch from '@/components/CtrlItem/RhythmSwitch.vue';
-
+import OtherZigbeeItem from '@/components/CtrlItem/OtherZigbeeItem.vue'
 export default defineComponent({
     name: 'CardContent',
 
@@ -208,7 +225,8 @@ export default defineComponent({
         CtrlSlider,
         FiveColorLight,
         FiveColorLightContent,
-        RhythmSwitch
+        RhythmSwitch,
+        OtherZigbeeItem
     },
 
     props: {
@@ -281,6 +299,14 @@ export default defineComponent({
         isCurtain(){
             const { uiid } = this.cardData as any;
             return uiid === 11;
+        },
+        isZigbeeOther(){
+            const { uiid } = this.cardData as any;
+            return uiid === 1000 || 2026 || 3026;
+        },
+        isZigbeeTempAndHumi(){
+            const { uiid } = this.cardData as any;
+            return uiid === 1770; 
         },
         dualPwSwData() {
             const { $t, cardData } = this as any;
@@ -420,7 +446,12 @@ export default defineComponent({
                     font-size 26px
             p
                 margin 0
-
+    .zigbee-th
+        .gauge
+            display flex
+            justify-content center
+            align-items center
+            margin -6px 0
 /* -------- >8 -------- */
 
 .mg-14
