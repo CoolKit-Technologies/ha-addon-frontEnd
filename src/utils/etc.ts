@@ -527,7 +527,9 @@ export function isPureSwOrSockDevice(uiid: number) {
         107,
         112,
         113,
-        114
+        114,
+        1009,
+        1256
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -614,7 +616,9 @@ export function isOneChannelSwOrSockSPDevice(uiid: number) {
     const uiids = [
         1,
         6,
-        14
+        14,
+        1009,
+        1256
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -637,6 +641,18 @@ export function isLightDevice(uiid: number) {
         59,
         103,
         104
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+export function isZigbeeDevice(uiid: number) {
+    const uiids = [
+        1000,
+        1009,
+        1256,
+        1770,
+        2026,
+        3026
     ];
     return uiids.indexOf(uiid) !== -1;
 }

@@ -5,24 +5,24 @@
 
         <!-- Toggle device network LED -->
         <ctrl-switch
-            v-if="!(isDiyDevice || isOldUiid15Device || isLight)"
+            v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor)"
             type="led"
         />
 
         <!-- Toggle multi-channel device interlock -->
         <ctrl-switch
-            v-if="isMultiChannel"
+            v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor"
             type="lock"
         />
 
         <!-- Set device inching mode -->
         <inching-mode
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5 || isZigbee || isWifiDoorSensor)"
         />
 
         <!-- Set device power on state -->
         <ctrl-select
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor)"
             type="power-on-state"
         />
 
@@ -56,7 +56,7 @@
         <ctrl-switch type="disable" />
 
         <!-- Upgrade device firmware -->
-        <firmware-upgrade v-if="!isDiyDevice" />
+        <firmware-upgrade v-if="!isDiyDevice && !isZigbee" />
     </div>
 </template>
 
@@ -70,7 +70,7 @@ import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
 import CtrlSwitch from '@/components/CtrlItem/CtrlSwitch.vue';
 import FirmwareUpgrade from '@/components/CtrlItem/FirmwareUpgrade.vue';
 import CtrlSelect from '@/components/CtrlItem/CtrlSelect.vue';
-import { isMultiChannelDevice } from '@/utils/etc';
+import { isMultiChannelDevice, isZigbeeDevice } from '@/utils/etc';
 
 export default defineComponent({
     name: 'DeviceCtrl',
@@ -112,6 +112,14 @@ export default defineComponent({
         isCurtain(){
             const { uiid } = this.modalParams as any;
             return uiid === 11;
+        },
+        isZigbee() {
+            const { uiid } = this.modalParams as any;
+            return isZigbeeDevice(uiid);
+        },
+        isWifiDoorSensor() {
+            const { uiid } = this.modalParams as any;
+            return uiid === 102;
         },
         ...mapState(['modalParams']),
     },
