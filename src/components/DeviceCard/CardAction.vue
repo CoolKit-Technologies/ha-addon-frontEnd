@@ -26,7 +26,8 @@ import {
     isTwoChannelDevice,
     isThreeChannelDevice,
     isFourChannelDevice,
-    hasRefreshUiDevice
+    hasRefreshUiDevice,
+    isLightDevice
 } from '@/utils/etc';
 
 export default defineComponent({
@@ -57,7 +58,9 @@ export default defineComponent({
         hasAllToggleFunc() {
             const { uiid, params } = this.cardData as any;
 
-            if (params) {
+            if (isLightDevice(uiid)) {
+                return true;
+            } else if (params) {
                 const isLock = params.lock === 1;
                 return isMultiChannelDevice(uiid) && !isLock;
             } else {
@@ -66,21 +69,30 @@ export default defineComponent({
         },
         allOn() {
             const { uiid, params } = this.cardData as any;
-            let cnt = 0;
 
-            if (isTwoChannelDevice(uiid)) {
-                // 2 channels
-                cnt = 2;
-            } else if (isThreeChannelDevice(uiid)) {
-                // 3 channels
-                cnt = 3;
-            } else if (isFourChannelDevice(uiid)) {
-                // 4 channels
-                cnt = 4;
+            if (isLightDevice(uiid)) {
+                if (uiid === 22) {
+                    return params.state === 'on';
+                } else {
+                    return params.switch === 'on';
+                }
+            } else {
+                let cnt = 0;
+
+                if (isTwoChannelDevice(uiid)) {
+                    // 2 channels
+                    cnt = 2;
+                } else if (isThreeChannelDevice(uiid)) {
+                    // 3 channels
+                    cnt = 3;
+                } else if (isFourChannelDevice(uiid)) {
+                    // 4 channels
+                    cnt = 4;
+                }
+
+                const channels = params.switches.slice(0, cnt) as any[];
+                return channels.every((channel) => channel.switch === 'on');
             }
-
-            const channels = params.switches.slice(0, cnt) as any[];
-            return channels.every((channel) => channel.switch === 'on');
         }
     },
 

@@ -471,6 +471,7 @@ export function isSupportedDevice(uiid: number) {
         14,
         15,
         22,
+        28,
         32,
         59,
         77,
@@ -625,6 +626,17 @@ export function isOneChannelSwOrSockCPDevice(uiid: number) {
         78,
         107,
         112
+    ];
+    return uiids.indexOf(uiid) !== -1;
+}
+
+// light device
+export function isLightDevice(uiid: number) {
+    const uiids = [
+        22,
+        59,
+        103,
+        104
     ];
     return uiids.indexOf(uiid) !== -1;
 }

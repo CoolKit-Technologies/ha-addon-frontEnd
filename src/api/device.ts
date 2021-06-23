@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { isOneChannelSPDevice, isMultiChannelDevice, isOneChannelSwOrSockCPDevice } from '@/utils/etc';
 import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
+import { isLightDevice } from '@/utils/etc';
 
 const { apiPrefix } = getConfig();
 
@@ -182,30 +183,50 @@ export async function toggleChannel(v: boolean, data: any, index: number) {
  * @param data Device data
  */
 export async function toggleAllChannels(v: boolean, data: any) {
-    const { type, deviceId, apikey } = data;
+    const { type, deviceId, apikey, uiid } = data;
     const switches = [];
 
-    for (let i = 0; i < 4; i++) {
-        switches.push({
-            switch: v ? 'on' : 'off',
-            outlet: i,
-        });
-    }
-
-    const params = {
-        apikey,
-        id: deviceId,
-        params: {
-            switches,
-        },
-    };
-
-    if (type === 2) {
-        // LAN device
-        await setLanDevice(params);
+    if (isLightDevice(uiid)) {
+        if (uiid === 22) {
+            await setCloudDevice({
+                apikey,
+                id: deviceId,
+                params: {
+                    state: v ? 'on' : 'off'
+                }
+            });
+        } else {
+            await setCloudDevice({
+                apikey,
+                id: deviceId,
+                params: {
+                    switch: v ? 'on' : 'off'
+                }
+            });
+        }
     } else {
-        // Cloud device
-        await setCloudDevice(params);
+        for (let i = 0; i < 4; i++) {
+            switches.push({
+                switch: v ? 'on' : 'off',
+                outlet: i,
+            });
+        }
+
+        const params = {
+            apikey,
+            id: deviceId,
+            params: {
+                switches,
+            },
+        };
+
+        if (type === 2) {
+            // LAN device
+            await setLanDevice(params);
+        } else {
+            // Cloud device
+            await setCloudDevice(params);
+        }
     }
 }
 

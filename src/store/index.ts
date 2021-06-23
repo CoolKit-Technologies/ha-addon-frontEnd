@@ -57,6 +57,15 @@ export default createStore({
                         item.cardIndex = j;
                         result.push(item);
                     }
+                } else if (origin[i].uiid === 28) {
+                    // RF bridge
+                    const len = origin[i].tags.zyx_info.length;
+                    for (let j = 0; j < len; j++) {
+                        const item = _.cloneDeep(origin[i]);
+                        item.cardId = `${i}_${origin[i].key}_${j}`;
+                        item.cardIndex = j;
+                        result.push(item);
+                    }
                 } else {
                     const item = _.cloneDeep(origin[i]);
                     item.cardId = `${i}_${origin[i].key}`;
