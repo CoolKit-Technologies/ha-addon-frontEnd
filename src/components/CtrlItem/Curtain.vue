@@ -16,7 +16,8 @@
             </div>
         </div>
         <div class="slide">
-            <slide-control type="curtain" :value="curtainValue" :cardData="$props.cardData"/>
+            <!-- <slide-control type="curtain" :value="curtainValue" :cardData="$props.cardData"/> -->
+            <ctrl-slider type="curtain" :value="curtainValue" :cardData="$props.cardData"/>
         </div>
     </div>
 </template>
@@ -25,13 +26,16 @@ import { defineComponent } from 'vue'
 
 import ControlCircle from '@/components/CtrlItem/ControlCircle.vue';
 import SlideControl from '@/components/CtrlItem/SlideControl.vue';
+import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 
 import { curtainControl } from '@/api/device'
+
 export default defineComponent({
     name:'Curtain',
     components:{
         SlideControl,
-        ControlCircle
+        ControlCircle,
+        CtrlSlider
     },
     props:{
         cardData:{

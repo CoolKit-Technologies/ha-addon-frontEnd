@@ -552,3 +552,39 @@ export async function setCurtainValue(data:any,value:number) {
     console.log(`ML ~ file: device.ts ~ line 529 ~ setCurtainValue ~ params`, params);
     await setCloudDevice(params);
 }
+/**
+ * set five bulb color temp
+ */
+export async function setFiveColorBulbTemp(data:any,type:string) {
+    const { deviceId, apikey } = data;
+    const { channel0,channel1 } = data.params;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {
+            type:type,
+        },
+    };
+    switch(type){
+        case 'middle':
+            _.assign(params.params,{
+                channel0:Math.max(channel0,channel1),
+                channel1:Math.max(channel0,channel1)
+            });
+            break;
+        case 'warm':
+            _.assign(params.params,{
+                channel0:0,
+                channel1:Math.max(channel0,channel1)
+            });
+            break;
+        case 'cold':
+            _.assign(params.params,{
+                channel0:Math.max(channel0,channel1),
+                channel1:0
+            });
+            break;
+    }
+    console.log(`ML ~ file: device.ts ~ line 570 ~ setFiveColorBulbTemp ~ params`, params);
+    await setCloudDevice(params);
+}
