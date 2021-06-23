@@ -41,6 +41,11 @@
             type="five-color-bulb-light"
         />
 
+        <ctrl-select
+            v-if="modalParams.uiid === 103"
+            type="two-color-light"
+        />
+
         <!-- Set five color light mode -->
         <ctrl-select
             v-if="modalParams.uiid === 104"

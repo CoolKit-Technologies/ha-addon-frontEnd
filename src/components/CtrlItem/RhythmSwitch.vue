@@ -10,7 +10,11 @@
             <span>Rhythm</span>
         </div>
         <div class="action">
-            <a-switch/>
+            <a-switch
+                :checked="stat"
+                @change="toggle"
+                :disabled="!cardData.online"
+            />
         </div>
     </div>
 </template>
@@ -18,8 +22,38 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import { setCloudDevice } from '@/api/device';
+
 export default defineComponent({
-    name: 'RhythmSwitch'
+    name: 'RhythmSwitch',
+
+    props: {
+        cardData: {
+            required: true
+        }
+    },
+
+    computed: {
+        stat() {
+            const { params } = this.cardData as any;
+            return params.mode === 12;
+        }
+    },
+
+    methods: {
+        async toggle(v: boolean, e: any) {
+            const { apikey, deviceId } = this.cardData as any;
+            e.stopPropagation();
+            await setCloudDevice({
+                apikey,
+                id: deviceId,
+                params: {
+                    mode: 12,
+                    switch: v ? 'on' : 'off'
+                }
+            });
+        }
+    }
 });
 </script>
 

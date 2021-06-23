@@ -21,7 +21,38 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 
 import { isMultiChannelDevice, isOneChannelSwOrSockCPDevice } from '@/utils/etc';
-import { setPowerOnState } from '@/api/device';
+import { setPowerOnState, setCloudDevice } from '@/api/device';
+
+const twoColorLightMap: any = {
+    bright: {
+        ltype: 'bright',
+        bright: {
+            br: 100,
+            ct: 255
+        }
+    },
+    read: {
+        ltype: 'read',
+        read: {
+            br: 50,
+            ct: 0
+        }
+    },
+    computer: {
+        ltype: 'computer',
+        computer: {
+            br: 20,
+            ct: 255
+        }
+    },
+    nightLight: {
+        ltype: 'nightLight',
+        nightLight: {
+            br: 5,
+            ct: 0
+        }
+    }
+};
 
 export default defineComponent({
     name: 'CtrlSelect',
@@ -31,6 +62,7 @@ export default defineComponent({
         // 'five-color-light'
         // 'five-color-bulb-light'
         // 'rhythm-light-strip'
+        // 'two-color-light'
         type: {
             required: true
         },
@@ -100,57 +132,57 @@ export default defineComponent({
                 return [
                     {
                         id: 0,
-                        value: '0',
+                        value: 1,
                         text: $t('modal.modeOps.colorful')
                     },
                     {
                         id: 1,
-                        value: '1',
+                        value: 2,
                         text: $t('modal.modeOps.colorfulgra')
                     },
                     {
                         id: 2,
-                        value: '2',
+                        value: 3,
                         text: $t('modal.modeOps.colorfulbre')
                     },
                     {
                         id: 3,
-                        value: '3',
+                        value: 11,
                         text: $t('modal.modeOps.rgbstr')
                     },
                     {
                         id: 4,
-                        value: '4',
+                        value: 8,
                         text: $t('modal.modeOps.rgbgra')
                     },
                     {
                         id: 5,
-                        value: '5',
+                        value: 9,
                         text: $t('modal.modeOps.rgbpul')
                     },
                     {
                         id: 6,
-                        value: '6',
+                        value: 10,
                         text: $t('modal.modeOps.rgbbre')
                     },
                     {
                         id: 7,
-                        value: '7',
+                        value: 5,
                         text: $t('modal.modeOps.diypul')
                     },
                     {
                         id: 8,
-                        value: '8',
+                        value: 6,
                         text: $t('modal.modeOps.diybre')
                     },
                     {
                         id: 9,
-                        value: '9',
+                        value: 4,
                         text: $t('modal.modeOps.diygra')
                     },
                     {
                         id: 10,
-                        value: '10',
+                        value: 7,
                         text: $t('modal.modeOps.diystr')
                     },
                 ];
@@ -197,6 +229,29 @@ export default defineComponent({
                         text: $t('modal.modeOps.vivid')
                     },
                 ];
+            } else if (type === 'two-color-light') {
+                return [
+                    {
+                        id: 0,
+                        value: 'bright',
+                        text: $t('modal.modeOps.bright')
+                    },
+                    {
+                        id: 1,
+                        value: 'read',
+                        text: $t('modal.modeOps.read')
+                    },
+                    {
+                        id: 2,
+                        value: 'computer',
+                        text: $t('modal.modeOps.computer')
+                    },
+                    {
+                        id: 3,
+                        value: 'nightLight',
+                        text: $t('modal.modeOps.nightlight')
+                    }
+                ];
             }
             return [];
         },
@@ -204,10 +259,25 @@ export default defineComponent({
     },
 
     methods: {
-        handleChange() {
-            const { uiid, cardIndex } = this.modalParams;
+        async handleChange() {
+            const { uiid, cardIndex, deviceId, apikey } = this.modalParams;
             if (this.type === 'power-on-state') {
-                setPowerOnState(this.value, this.modalParams, uiid === 126 ? cardIndex : this.index);
+                await setPowerOnState(this.value, this.modalParams, uiid === 126 ? cardIndex : this.index);
+            } else if (this.type === 'two-color-light') {
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: twoColorLightMap[this.value]
+                });
+            } else if (this.type === 'rhythm-light-strip') {
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+                        mode: this.value,
+                        switch: 'on'
+                    }
+                });
             }
         },
         initPowerOnStateValue() {
@@ -226,9 +296,23 @@ export default defineComponent({
                 this.value = params.startup;
             }
         },
+        initTwoColorLightValue() {
+            if (!(this.modalParams.params.ltype === 'white')) {
+                this.value = this.modalParams.params.ltype;
+            }
+        },
+        initRhythmLightStripValue() {
+            if (this.modalParams.params.mode !== 12) {
+                this.value = this.modalParams.params.mode;
+            }
+        },
         initValue() {
             if (this.type === 'power-on-state') {
                 this.initPowerOnStateValue();
+            } else if (this.type === 'two-color-light') {
+                this.initTwoColorLightValue();
+            } else if (this.type === 'rhythm-light-strip') {
+                this.initRhythmLightStripValue();
             }
         }
     },

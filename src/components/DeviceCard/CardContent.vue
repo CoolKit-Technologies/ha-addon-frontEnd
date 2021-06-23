@@ -125,7 +125,9 @@
             </div>
             <!-- five color bulb light or five color light -->
             <div v-else-if="isFiveColorBulbLt || isFiveColorLt">
+                <!--
                 <five-color-light-content />
+                -->
             </div>
             <!-- wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
@@ -135,28 +137,35 @@
                 ></content-item>
             </div>
             <!-- two color light -->
-            <div v-else-if="isTwoColorLt">
+            <div v-else-if="isTwoColorLt && cardData.params.switch === 'on'">
                 <ctrl-slider
                     class="mg-14"
                     type="brightness"
+                    :cardData="cardData"
                 />
                 <ctrl-slider
                     class="mg-14"
                     type="color-temp"
+                    :cardData="cardData"
                 />
             </div>
             <!-- rhythm light strip -->
-            <div v-else-if="isRhythmLtStrip">
+            <div v-else-if="isRhythmLtStrip && cardData.params.switch === 'on'">
                 <color-picker class="mg-14" />
                 <ctrl-slider
                     class="mg-14"
                     type="brightness"
+                    :cardData="cardData"
                 />
                 <ctrl-slider
                     class="mg-14"
                     type="color-temp"
+                    :cardData="cardData"
                 />
-                <rhythm-switch />
+                <rhythm-switch
+                    class="mg-14"
+                    :cardData="cardData"
+                />
             </div>
             <!-- elec curtain -->
             <div v-else-if="isCurtain">

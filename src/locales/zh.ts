@@ -54,8 +54,8 @@ export const zh = {
         doorsensor:'门磁',
         doorsensoropen:'分开',
         doorsensorclose:'闭合',
-        brightness: 'Brightness',
-        colortemp: 'Color temp.',
+        brightness: '亮度',
+        colortemp: '色温',
         curtainallon:'全开',
         curtainalloff:'全关',
         zigbee:{
@@ -116,6 +116,9 @@ export const zh = {
             relax: 'Relax',
             soft: 'Soft',
             vivid: 'Vivid',
+            computer: 'Computer',
+            nightlight: 'Night Light',
+            read: 'Read',
 
             colorful: '七彩',
             colorfulgra: '七彩渐变',

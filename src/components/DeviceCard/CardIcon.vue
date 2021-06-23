@@ -4,6 +4,7 @@
             type 1 - DIY
             type 2 - LAN
             type 4 - CLOUD
+            type 8 - Zigbee
         -->
         <img
             v-if="cardData.online && cardData.type === 1"
@@ -15,6 +16,7 @@
             src="@/assets/diy-offline.svg"
             :alt="alt"
         />
+
         <img
             v-else-if="cardData.online && cardData.type === 2"
             src="@/assets/lan-online.svg"
@@ -25,6 +27,7 @@
             src="@/assets/lan-offline.svg"
             :alt="alt"
         />
+
         <img
             v-else-if="cardData.online && cardData.type === 4"
             src="@/assets/cloud-online.svg"
@@ -34,6 +37,19 @@
             v-else-if="!cardData.online && cardData.type === 4"
             src="@/assets/cloud-offline.svg"
             :alt="alt"
+        />
+
+        <img
+            v-else-if="cardData.online && cardData.type === 8"
+            src="@/assets/zigbee-online.png"
+            :alt="alt"
+            style="width:26px; height:24px;"
+        />
+        <img
+            v-else-if="!cardData.online && cardData.type === 8"
+            src="@/assets/zigbee-offline.png"
+            :alt="alt"
+            style="width:26px; height:24px;"
         />
     </div>
 </template>

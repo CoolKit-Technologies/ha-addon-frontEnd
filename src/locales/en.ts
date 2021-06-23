@@ -116,6 +116,9 @@ export const en = {
             relax: 'Relax',
             soft: 'Soft',
             vivid: 'Vivid',
+            computer: 'Computer',
+            nightlight: 'Night Light',
+            read: 'Read',
 
             colorful: 'Colorful',
             colorfulgra: 'Colorful Gradient',
