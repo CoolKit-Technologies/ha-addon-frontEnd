@@ -56,6 +56,7 @@ export const en = {
         doorsensorclose:'close',
         brightness: 'Brightness',
         colortemp: 'Color temp.',
+        manual: 'Manual',
         curtainallon:'All On',
         curtainalloff:'All Off',
         zigbee:{

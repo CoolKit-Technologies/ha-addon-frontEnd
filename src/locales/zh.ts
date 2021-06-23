@@ -56,6 +56,7 @@ export const zh = {
         doorsensorclose:'闭合',
         brightness: '亮度',
         colortemp: '色温',
+        manual: '手动',
         curtainallon:'全开',
         curtainalloff:'全关',
         zigbee:{

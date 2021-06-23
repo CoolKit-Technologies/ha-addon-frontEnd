@@ -3,11 +3,12 @@
         <div class="content">
             <div class="color" v-if="mode === 'color'">
                 <color-picker />
-                <ctrl-slider type="color-temp" />
+                <ctrl-slider type="brightness" v-if="isFiveLt"/>
             </div>
             <div class="white" v-else-if="mode === 'white'">
+                <five-bulb-light v-if="isFiveBulbLt" :cardData="$props.cardData"/>
+                <ctrl-slider type="color-temp" v-if="isFiveLt"/>
                 <ctrl-slider type="brightness" />
-                <ctrl-slider type="color-temp" />
             </div>
         </div>
         <div class="tab">
@@ -47,20 +48,22 @@ import { defineComponent } from 'vue';
 
 import ColorPicker from '@/components/CtrlItem/ColorPicker.vue';
 import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
+import FiveBulbLight from '@/components/CtrlItem/FiveBulbLight.vue';
 
 export default defineComponent({
     name: 'FiveColorLightContent',
 
     components: {
         ColorPicker,
-        CtrlSlider
+        CtrlSlider,
+        FiveBulbLight,
     },
 
     props: {
         // uiid: 22
         // uiid: 104
-        uiid: {
-            required: true
+        cardData:{
+            required:true
         }
     },
 
@@ -68,17 +71,31 @@ export default defineComponent({
         return {
             // 'white'
             // 'color'
-            mode: 'white'
+            mode: 'color'
         };
     },
-
+    mounted(){
+        // console.log(this.$props.cardData);
+    },
+    computed:{
+        // 五色球泡灯(已停产)
+        isFiveBulbLt(){
+            const { uiid } = this.$props.cardData as any;
+            return uiid === 22;
+        },
+        // 五色灯
+        isFiveLt(){
+            const { uiid } = this.$props.cardData as any;
+            return uiid === 104
+        }
+    },
     methods: {
         changeMode(mode: string) {
             this.mode = mode;
         },
         handleClick(e: any) {
             e.stopPropagation();
-        }
+        },
     }
 });
 </script>

@@ -126,7 +126,7 @@
             <!-- five color bulb light or five color light -->
             <div v-else-if="isFiveColorBulbLt || isFiveColorLt">
                 <!--
-                <five-color-light-content />
+                <five-color-light-content :cardData="cardData" />
                 -->
             </div>
             <!-- wifi door sensor  -->
@@ -170,6 +170,10 @@
             <!-- elec curtain -->
             <div v-else-if="isCurtain">
                 <curtain class="mg-14" :cardData="cardData" />
+            </div>
+            <!--  RF Brige  -->
+            <div v-else-if="isRFGateway">
+                <rf-gateway :params="cardData.params" :online="cardData.online" />
             </div>
             <!--  zigbee temprature and humidity -->
             <div class="zigbee-th" v-else-if="isZigbeeTempAndHumi">
@@ -218,6 +222,7 @@ import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 import FiveColorLightContent from '@/components/CtrlItem/FiveColorLightContent.vue';
 import RhythmSwitch from '@/components/CtrlItem/RhythmSwitch.vue';
 import OtherZigbeeItem from '@/components/CtrlItem/OtherZigbeeItem.vue'
+import RfGateway from '@/components/CtrlItem/RfGateway.vue'
 export default defineComponent({
     name: 'CardContent',
 
@@ -235,7 +240,8 @@ export default defineComponent({
         FiveColorLight,
         FiveColorLightContent,
         RhythmSwitch,
-        OtherZigbeeItem
+        OtherZigbeeItem,
+        RfGateway
     },
 
     props: {
@@ -316,6 +322,10 @@ export default defineComponent({
         isZigbeeTempAndHumi(){
             const { uiid } = this.cardData as any;
             return uiid === 1770; 
+        },
+        isRFGateway(){
+            const { uiid,cardIndex } = this.cardData as any;
+            return uiid === 28 && cardIndex === -1; 
         },
         dualPwSwData() {
             const { $t, cardData } = this as any;
