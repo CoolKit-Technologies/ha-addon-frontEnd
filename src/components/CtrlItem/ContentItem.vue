@@ -1,65 +1,39 @@
 <template>
     <div class="content-item">
-        <template v-if="$props.type === 'doorSensor'">
-            <div class="icon">
-                <img
-                    alt="door-sensor icon"
-                    src="@/assets/door-sensor.png"
-                    class="door"
-                />
-            </div>
-            <div class="text">
-                <span>{{ $t('card.doorsensor') }}</span>
-            </div>
-            <div class="action">
-                <span>{{ switchAttr }}</span>
-            </div>
-        </template>
-        <template v-else-if="$props.type === 'zigbeeDoorSensor'">
-            <div class="icon">
-                <img
-                    alt="door-sensor icon"
-                    src="@/assets/zigbee-door-sensor.png"
-                    class="door"
-                />
-            </div>
-            <div class="text">
-                <span>Door and window sensor</span>
-            </div>
-            <div class="action">
-                <span>{{ switchAttr }}</span>
-            </div>
-        </template>
-        <template v-else-if="$props.type === 'zigbeeMobileSensor'">
-            <div class="icon">
-                <img
-                    alt="door-sensor icon"
-                    src="@/assets/zigbee-mobile-sensor.png"
-                    class="door"
-                />
-            </div>
-            <div class="text">
-                <span>Mobile sensor</span>
-            </div>
-            <div class="action">
-                <span>{{ switchAttr }}</span>
-            </div>
-        </template>
-        <template v-else-if="$props.type === 'zigbeeButtons'">
-            <div class="icon">
-                <img
-                    alt="door-sensor icon"
-                    src="@/assets/zigbee-buttons.png"
-                    class="door"
-                />
-            </div>
-            <div class="text">
-                <span>Unlimited buttons(1000)</span>
-            </div>
-            <div class="action">
-                <span>{{ switchAttr }}</span>
-            </div>
-        </template>
+        <div class="icon">
+            <img
+                alt="door-sensor icon"
+                src="@/assets/door-sensor.png"
+                class="door"
+                v-if="$props.type === 'doorSensor'"
+            />
+            <img
+                alt="zigbee-door-sensor icon"
+                src="@/assets/zigbee-door-sensor.png"
+                class="door"
+                v-else-if="$props.type === 'zigbeeDoorSensor'"
+            />
+            <img
+                alt="zigbee-mobile-sensor icon"
+                src="@/assets/zigbee-mobile-sensor.png"
+                class="door"
+                v-else-if="$props.type === 'zigbeeMobileSensor'"
+            />
+            <img
+                alt="zigbee-buttons icon"
+                src="@/assets/zigbee-buttons.png"
+                class="door"
+                v-else-if="$props.type === 'zigbeeButtons'"
+            />
+        </div>
+        <div class="text">
+            <span>
+                {{ title }}
+            </span>
+        </div>
+        <div class="action">
+            <span>{{ action }}</span>
+        </div>
     </div>
 </template>
 
@@ -70,7 +44,7 @@ export default defineComponent({
     name: 'ContentItem',
 
     props: {
-        switch: {
+        params: {
             required: true
         },
         type:{
@@ -79,9 +53,41 @@ export default defineComponent({
         }
     },
     computed:{
-        switchAttr():string{
-            return this.$props.switch === 'on' ? this.$t('card.doorsensoropen') : this.$t('card.doorsensorclose');
-        }
+        title(){
+            const { $t, type } = this as any;
+            switch(type){
+                case 'doorSensor':
+                    return $t('card.doorsensor');
+                case 'zigbeeDoorSensor':
+                    return  $t('card.zigbee.zigbeedoorsensor')
+                case 'zigbeeMobileSensor':
+                    return $t('card.zigbee.mobilesensor')
+                case 'zigbeeButtons':
+                    return $t('card.zigbee.unlimitedbutton')
+            }
+        },
+        action(){
+            const { $t, type, params } = this as any;
+            switch(type){
+                case 'doorSensor':
+                    return params && params.switch === 'on' ? $t('card.doorsensoropen') : $t('card.doorsensorclose');
+                case 'zigbeeDoorSensor':
+                    return params && params.lock === 1 ? $t('card.zigbee.dooropen') : $t('card.zigbee.doorlock');
+                case 'zigbeeMobileSensor':
+                    return '12:58'
+                case 'zigbeeButtons':
+                    switch (params && params.key){
+                        case 1:
+                            return $t('card.zigbee.doubleclick');
+                        case 2:
+                            return $t('card.zigbee.longclick')
+                        default:
+                            return $t('card.zigbee.click');
+                    }
+                default:
+                    return ''
+            }
+        },
     }
 });
 </script>

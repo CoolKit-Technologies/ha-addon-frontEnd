@@ -17,12 +17,12 @@
 
         <!-- Set device inching mode -->
         <inching-mode
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || modalParams.uiid === 5)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5)"
         />
 
         <!-- Set device power on state -->
         <ctrl-select
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain)"
             type="power-on-state"
         />
 
@@ -103,6 +103,10 @@ export default defineComponent({
         isLight() {
             const { uiid } = this.modalParams as any;
             return (uiid === 59 || uiid === 22 || uiid === 103 || uiid === 104);
+        },
+        isCurtain(){
+            const { uiid } = this.modalParams as any;
+            return uiid === 11;
         },
         ...mapState(['modalParams']),
     },

@@ -55,7 +55,19 @@ export const zh = {
         doorsensoropen:'分开',
         doorsensorclose:'闭合',
         brightness: 'Brightness',
-        colortemp: 'Color temp.'
+        colortemp: 'Color temp.',
+        curtainallon:'全开',
+        curtainalloff:'全关',
+        zigbee:{
+            mobilesensor:'移动传感器',
+            zigbeedoorsensor:'门窗传感器',
+            unlimitedbutton:'Unlimited buttons(1000)',
+            doorlock:'未触发',
+            dooropen:'触发',
+            click:'单击',
+            doubleclick:'双击',
+            longclick:'长按'
+        }
     },
 
     modal: {

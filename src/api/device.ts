@@ -522,3 +522,33 @@ export async function getHistoryData(data:any) {
         }
     }
 }
+
+/**
+ * curtain control button
+ */
+export async function curtainControl(data:any,action:string) {
+    const {deviceId,apikey} = data;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {
+            switch:action
+        },
+    };
+    await setCloudDevice(params);
+}
+/**
+ *  set curtain value slider
+ */
+export async function setCurtainValue(data:any,value:number) {
+    const {deviceId,apikey} = data;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {
+            setclose:value
+        },
+    };
+    console.log(`ML ~ file: device.ts ~ line 529 ~ setCurtainValue ~ params`, params);
+    await setCloudDevice(params);
+}
