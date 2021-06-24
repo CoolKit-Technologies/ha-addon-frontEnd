@@ -67,7 +67,9 @@ export const en = {
             dooropen:'触发',
             click:'click',
             doubleclick:'double click',
-            longclick:'long click'
+            longclick:'long click',
+            motion0:'clear',
+            motion1:'motion',
         }
     },
 

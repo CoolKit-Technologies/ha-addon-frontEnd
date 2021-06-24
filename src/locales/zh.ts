@@ -67,7 +67,9 @@ export const zh = {
             dooropen:'触发',
             click:'单击',
             doubleclick:'双击',
-            longclick:'长按'
+            longclick:'长按',
+            motion0:'无人',
+            motion1:'有人',
         }
     },
 

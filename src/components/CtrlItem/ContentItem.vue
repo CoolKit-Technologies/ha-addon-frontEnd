@@ -39,6 +39,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import moment from 'moment';
 
 export default defineComponent({
     name: 'ContentItem',
@@ -54,16 +55,15 @@ export default defineComponent({
     },
     computed:{
         title(){
-            const { $t, type } = this as any;
+            const { $t, type, params } = this as any;
+            if(!params) return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
             switch(type){
                 case 'doorSensor':
                     return $t('card.doorsensor');
                 case 'zigbeeDoorSensor':
-                    return  $t('card.zigbee.zigbeedoorsensor')
                 case 'zigbeeMobileSensor':
-                    return $t('card.zigbee.mobilesensor')
                 case 'zigbeeButtons':
-                    return $t('card.zigbee.unlimitedbutton')
+                    return params.trigTime ? moment(parseInt(params.trigTime)).format('YYYY-MM-DD HH:mm:ss') : moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
             }
         },
         action(){
@@ -74,7 +74,7 @@ export default defineComponent({
                 case 'zigbeeDoorSensor':
                     return params && params.lock === 1 ? $t('card.zigbee.dooropen') : $t('card.zigbee.doorlock');
                 case 'zigbeeMobileSensor':
-                    return '12:58'
+                    return params && params.motion === 1 ? $t('card.zigbee.motion1') : $t('card.zigbee.motion0');
                 case 'zigbeeButtons':
                     switch (params && params.key){
                         case 1:
