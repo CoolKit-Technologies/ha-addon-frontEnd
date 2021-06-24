@@ -614,6 +614,14 @@ export async function setPickerColor(data:any,obj:any) {
             channel3:obj.g,
             channel4:obj.b,
         })
+    }else if(uiid === 59){
+        _.assign(params.params,{
+            mode:1,
+            colorR: obj.r,
+            colorG: obj.g,
+            colorB: obj.b,
+            light_type: 1
+        })
     }
     console.log(`ML ~ file: device.ts ~ line 605 ~ setPickerColor ~ params`, params);
     await setCloudDevice(params);
