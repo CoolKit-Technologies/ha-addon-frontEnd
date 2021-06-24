@@ -54,9 +54,13 @@ export default defineComponent({
     },
 
     created() {
-        this.bgColor = this.dealFiveLtPropColor();
+        this.bgColor = this.dealPropColor();
     },
-
+    watch:{
+        '$props.cardData':function (newV,oldV){
+            this.bgColor = this.dealPropColor()
+        }
+    },
     methods: {
         firePickColor(e: any) {
             const colorInput = this.$refs['color-input'] as any;
@@ -72,26 +76,40 @@ export default defineComponent({
         },
         changeColor() {
             console.log('change change color');
-            const obj = this.dealColor(this.bgColor);
+            const obj = this.deal16Color(this.bgColor);
             console.log(`ML ~ file: ColorPicker.vue ~ line 71 ~ changeColor ~ obj`, obj);
             setPickerColor(this.$props.cardData,obj)
         },
-        dealFiveLtPropColor(){
+        dealPropColor(){
             if(!this.$props.cardData) return '#000000';
             const { params, uiid } = this.$props.cardData as any;
-            console.log(`ML ~ file: ColorPicker.vue ~ line 82 ~ dealFiveLtPropColor ~ params`, params);
             if(uiid === 22){
                 const {channel2,channel3,channel4} = params;
-                return `#${channel2.toString(16)}${channel3.toString(16)}${channel4.toString(16)}`;
+                return this.dealRGBColor({
+                    r:channel2,g:channel3,b:channel4
+                })
             }else if(uiid === 104){
                 const {r,g,b} = params.color;
-                console.log(`ML ~ file: ColorPicker.vue ~ line 89 ~ dealFiveLtPropColor`, `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`);
-                return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+                return this.dealRGBColor({
+                    r,g,b
+                })
+            }else if(uiid === 59){
+                const { colorR, colorG, colorB } = params;
+                console.log(`ML ~ file: ColorPicker.vue ~ line 99 ~ dealPropColor ~ `, this.dealRGBColor({
+                    r:colorR,g:colorG,b:colorB
+                }));
+                return this.dealRGBColor({
+                    r:colorR,g:colorG,b:colorB
+                })         
             }else{
                 return '#000000'
             }
         },
-        dealColor(color:string){
+        dealRGBColor(data:any){
+            const { r, g, b } = data;
+            return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`
+        },
+        deal16Color(color:string){
             const rgb = color.substring(1,7)
             const r =parseInt(rgb.substring(0,2),16);
             const g = parseInt(rgb.substring(2,4),16);

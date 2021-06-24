@@ -88,7 +88,7 @@
             </div>
             <!-- rhythm light strip -->
             <div v-else-if="isRhythmLtStrip && cardData.params.switch === 'on'">
-                <color-picker class="mg-14" />
+                <color-picker class="mg-14" :cardData="cardData"/>
                 <ctrl-slider class="mg-14" type="brightness" :cardData="cardData" />
                 <ctrl-slider class="mg-14" type="color-temp" :cardData="cardData" />
                 <rhythm-switch class="mg-14" :cardData="cardData" />
@@ -99,7 +99,7 @@
             </div>
             <!--  RF Brige  -->
             <div v-else-if="isRFGateway">
-                <rf-gateway :tags="cardData.tags" :online="cardData.online" />
+                <!-- <rf-gateway :tags="cardData.tags" :online="cardData.online" /> -->
             </div>
             <!--  zigbee temprature and humidity -->
             <div class="zigbee-th" v-else-if="isZigbeeTempAndHumi">
@@ -152,7 +152,6 @@ import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
 import ColorPicker from '@/components/CtrlItem/ColorPicker.vue';
-import FiveColorLight from '@/components/CtrlItem/FiveColorLight.vue';
 import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 import FiveColorLightContent from '@/components/CtrlItem/FiveColorLightContent.vue';
 import RhythmSwitch from '@/components/CtrlItem/RhythmSwitch.vue';
@@ -173,7 +172,6 @@ export default defineComponent({
         FiveBulbLight,
         Curtain,
         CtrlSlider,
-        FiveColorLight,
         FiveColorLightContent,
         RhythmSwitch,
         OtherZigbeeItem,
