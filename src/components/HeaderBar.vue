@@ -14,6 +14,7 @@
                 </template>
                 {{ $t('common.text.signin') }}
             </a-button>
+            <a-button style="margin-right:10px;" @click="changeLang">{{ lang }}</a-button>
             <sync-outlined class="action-icon" :spin="spin" @click="refresh" />
             <a-dropdown>
                 <more-outlined class="action-icon" />
@@ -78,6 +79,13 @@ export default defineComponent({
     },
 
     computed: {
+        lang() {
+            if (this.$root?.$i18n.locale === 'en') {
+                return '中文';
+            } else {
+                return 'English';
+            }
+        },
         ...mapState(['isLogin'])
     },
 
@@ -111,6 +119,13 @@ export default defineComponent({
                 type: 'login',
                 params: null
             });
+        },
+        changeLang() {
+            if (this.$root?.$i18n.locale === 'en') {
+                this.$root.$i18n.locale = 'zh';
+            } else if (this.$root?.$i18n.locale === 'zh') {
+                this.$root.$i18n.locale = 'en';
+            }
         },
         ...mapMutations(['setIsLogin', 'setOriginDeviceList']),
         ...mapActions(['openModal'])
@@ -146,7 +161,7 @@ $color-white = #ffffff
         align-items center
 
         .signin-btn
-            margin-right 24px
+            margin-right 18px
 
         .action-icon
             border-radius 50%

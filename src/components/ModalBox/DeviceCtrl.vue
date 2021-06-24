@@ -1,28 +1,39 @@
 <template>
     <div class="device-ctrl">
         <!-- Set device name -->
-        <device-name />
+        <device-name v-if="!isRfSub" />
+
+        <!-- Set remote and button name -->
+        <template v-if="isRfSub">
+            <device-name type="remote" />
+            <device-name
+                type="button"
+                v-for="(item, i) in modalParams.tags.zyx_info[modalParams.cardIndex].buttonName"
+                :key="i"
+                :index="i"
+            />
+        </template>
 
         <!-- Toggle device network LED -->
         <ctrl-switch
-            v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor)"
+            v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub)"
             type="led"
         />
 
         <!-- Toggle multi-channel device interlock -->
         <ctrl-switch
-            v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor"
+            v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub"
             type="lock"
         />
 
         <!-- Set device inching mode -->
         <inching-mode
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5 || isZigbee || isWifiDoorSensor)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5 || isZigbee || isWifiDoorSensor || isRfGw || isRfSub)"
         />
 
         <!-- Set device power on state -->
         <ctrl-select
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub)"
             type="power-on-state"
         />
 
@@ -53,10 +64,10 @@
         />
 
         <!-- Set device disable -->
-        <ctrl-switch type="disable" />
+        <ctrl-switch type="disable" v-if="!isRfSub" />
 
         <!-- Upgrade device firmware -->
-        <firmware-upgrade v-if="!isDiyDevice && !isZigbee" />
+        <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub" />
     </div>
 </template>
 
@@ -120,6 +131,16 @@ export default defineComponent({
         isWifiDoorSensor() {
             const { uiid } = this.modalParams as any;
             return uiid === 102;
+        },
+        // is RF gateway
+        isRfGw() {
+            const { uiid, cardIndex } = this.modalParams as any;
+            return uiid === 28 && cardIndex === -1;
+        },
+        // is RF sub-device
+        isRfSub() {
+            const { uiid, cardIndex } = this.modalParams as any;
+            return uiid === 28 && cardIndex !== -1;
         },
         ...mapState(['modalParams']),
     },

@@ -638,3 +638,25 @@ export async function setFiveLtMode(data:any){
     }
     await setCloudDevice(params);
 }
+
+/**
+ * Update remote or button name
+ * @param nameType Action type
+ * @param data Device data
+ * @param v Name
+ * @param bi Button index
+ */
+export async function updateRemoteOrButtonName(nameType: 'remote' | 'button', data: any, v: string, bi: number) {
+    const { cardIndex, deviceId } = data;
+    const tags = _.cloneDeep(data.tags);
+    if (nameType === 'remote') {
+        tags.zyx_info[cardIndex].name = v;
+    } else {
+        const key = Object.keys(tags.zyx_info[cardIndex].buttonName[bi])[0];
+        tags.zyx_info[cardIndex].buttonName[bi][key] = v;
+    }
+    await setTags({
+        id: deviceId,
+        tags
+    });
+}

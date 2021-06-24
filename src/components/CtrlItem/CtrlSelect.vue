@@ -56,6 +56,16 @@ const twoColorLightMap: any = {
 
 const fiveColorBulbLightMap: any = [
     {
+        a: 'b'
+    },
+    {
+        b: 'c'
+    },
+    {
+        c: 'd'
+    },
+    /* above useless */
+    {
         channel0: '0',
         channel1: '0',
         channel2: '189',
@@ -231,22 +241,22 @@ export default defineComponent({
                 return [
                     {
                         id: 0,
-                        value: 0,
+                        value: 3,
                         text: $t('modal.modeOps.sleep')
                     },
                     {
                         id: 1,
-                        value: 1,
+                        value: 4,
                         text: $t('modal.modeOps.reading')
                     },
                     {
                         id: 2,
-                        value: 2,
+                        value: 5,
                         text: $t('modal.modeOps.party')
                     },
                     {
                         id: 3,
-                        value: 3,
+                        value: 6,
                         text: $t('modal.modeOps.relax')
                     },
                 ];
@@ -431,7 +441,7 @@ export default defineComponent({
             }
         },
         initTwoColorLightValue() {
-            if (!(this.modalParams.params.ltype === 'white')) {
+            if (this.modalParams.params.ltype !== 'white') {
                 this.value = this.modalParams.params.ltype;
             }
         },
@@ -441,10 +451,14 @@ export default defineComponent({
             }
         },
         initFiveColorBulbLightValue() {
-            // init
+            if (this.modalParams.params.zyx_mode !== 1 && this.modalParams.params.zyx_mode !== 2) {
+                this.value = this.modalParams.params.zyx_mode;
+            }
         },
         initFiveColorLightValue() {
-            // init
+            if (this.modalParams.params.ltype !== 'white') {
+                this.value = this.modalParams.params.ltype;
+            }
         },
         initValue() {
             if (this.type === 'power-on-state') {

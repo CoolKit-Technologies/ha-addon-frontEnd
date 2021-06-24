@@ -2,16 +2,16 @@
     <div class="container">
         <div class="content">
             <div class="color" v-if="mode === 'color'">
-                <color-picker :cardData="cardData" />
-                <ctrl-slider type="brightness" v-if="isFiveLt" :cardData="cardData"/>
+                <color-picker class="mg-14" :cardData="cardData" />
+                <ctrl-slider class="mg-14" type="brightness" v-if="isFiveLt" :cardData="cardData"/>
             </div>
             <div class="white" v-else-if="mode === 'white'">
-                <five-bulb-light v-if="isFiveBulbLt" :cardData="cardData"/>
-                <ctrl-slider type="color-temp" v-if="isFiveLt" :cardData="cardData"/>
-                <ctrl-slider type="brightness" :cardData="cardData" />
+                <five-bulb-light class="mg-14" v-if="isFiveBulbLt" :cardData="cardData"/>
+                <ctrl-slider class="mg-14" type="color-temp" v-if="isFiveLt" :cardData="cardData"/>
+                <ctrl-slider class="mg-14" type="brightness" :cardData="cardData" />
             </div>
         </div>
-        <div class="tab">
+        <div class="tab mg-14">
             <div class="tab-content" @click="handleClick">
                 <div class="wrapper on" v-if="mode === 'white'">
                     <img
@@ -122,4 +122,9 @@ export default defineComponent({
 .on
     background rgba(24, 144, 255, 0.1)
     border-radius 50%
+
+.mg-14
+    margin 14px 0
+    &:last-child
+        margin-bottom 0
 </style>

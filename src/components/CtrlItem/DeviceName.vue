@@ -1,8 +1,6 @@
 <template>
     <div class="device-name">
-        <div class="title">
-            {{ type === 'device' ? $t('modal.deviceName') : $t('modal.channelName') }}
-        </div>
+        <div class="title">{{ title }}</div>
         <div class="input-box">
             <a-input v-model:value="value" v-if="editable" :maxlength="14" />
             <p class="text" v-else>{{ value }}</p>
@@ -19,7 +17,7 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons-vue';
 
-import { updateDeviceOrChannelName } from '@/api/device';
+import { updateDeviceOrChannelName, updateRemoteOrButtonName } from '@/api/device';
 
 export default defineComponent({
     name: 'DeviceName',
@@ -40,6 +38,8 @@ export default defineComponent({
         // type: 'device', 'channel'
         // 'device' - update device name
         // 'channel' - update device channel name
+        // 'remote' - update remote name
+        // 'button' - update button name
         type: {
             default: 'device',
             required: false,
@@ -50,6 +50,18 @@ export default defineComponent({
     },
 
     computed: {
+        title() {
+            const { type, $t } = this as any;
+            if (type === 'device') {
+                return $t('modal.deviceName');
+            } else if (type === 'channel') {
+                return $t('modal.channelName');
+            } else if (type === 'remote') {
+                return $t('modal.remoteName');
+            } else if (type === 'button') {
+                return $t('modal.buttonName');
+            }
+        },
         ...mapState(['modalParams']),
     },
 
@@ -58,8 +70,12 @@ export default defineComponent({
             if (this.editable) {
                 if (this.type === 'device') {
                     await updateDeviceOrChannelName('deviceName', this.modalParams, this.value);
-                } else {
+                } else if (this.type === 'channel') {
                     await updateDeviceOrChannelName('channelName', this.modalParams, this.value, this.index);
+                } else if (this.type === 'remote') {
+                    await updateRemoteOrButtonName('remote', this.modalParams, this.value, -1);
+                } else if (this.type === 'button') {
+                    await updateRemoteOrButtonName('button', this.modalParams, this.value, this.index);
                 }
             }
             this.editable = !this.editable;
@@ -69,8 +85,12 @@ export default defineComponent({
     created() {
         if (this.type === 'device') {
             this.value = this.modalParams.deviceName;
-        } else {
+        } else if (this.type === 'channel') {
             this.value = this.modalParams.tags[this.index];
+        } else if (this.type === 'remote') {
+            this.value = this.modalParams.tags.zyx_info[this.modalParams.cardIndex].name;
+        } else if (this.type === 'button') {
+            this.value = Object.values(this.modalParams.tags.zyx_info[this.modalParams.cardIndex].buttonName[this.index])[0] as string;
         }
     },
 });

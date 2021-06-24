@@ -84,6 +84,8 @@ export const en = {
         history: 'History',
         deviceName: 'Device Name',
         channelName: 'Channel Name',
+        remoteName: 'Remote Name',
+        buttonName: 'Button Name',
         powerOnState: {
             name: 'Power-on State',
             on: 'On',

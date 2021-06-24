@@ -84,6 +84,8 @@ export const zh = {
         history: '历史记录',
         deviceName: '设备名称',
         channelName: '通道名称',
+        remoteName: '遥控名称',
+        buttonName: '按钮名称',
         powerOnState: {
             name: '通电反应',
             on: '开启',

@@ -74,10 +74,8 @@
                 />
             </div>
             <!-- five color bulb light or five color light -->
-            <div v-else-if="isFiveColorBulbLt || isFiveColorLt">
-                
+            <div v-else-if="(isFiveColorBulbLt && cardData.params.state === 'on') || (isFiveColorLt && cardData.params.switch === 'on')">
                 <five-color-light-content :cardData="cardData" />
-               
             </div>
             <!-- wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
