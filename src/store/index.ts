@@ -31,7 +31,7 @@ export default createStore({
         antdLocale: enUS,
 
         // Origin device list
-        originDeviceList: []
+        originDeviceList: [],
     },
 
     getters: {
@@ -65,6 +65,7 @@ export default createStore({
                         item.cardId = `${i}_${origin[i].key}_${j}`;
                         item.cardIndex = j;
                         result.push(item);
+                        console.log("Jia ~ file: index.ts ~ line 68 ~ deviceCardList ~ item", item);
                     }
                 } else {
                     const item = _.cloneDeep(origin[i]);
@@ -73,7 +74,7 @@ export default createStore({
                 }
             }
             return result;
-        }
+        },
     },
 
     mutations: {
@@ -115,7 +116,7 @@ export default createStore({
             } else {
                 state.antdLocale = enUS as any;
             }
-        }
+        },
     },
 
     actions: {
@@ -131,6 +132,6 @@ export default createStore({
             context.commit('setModalVisible', false);
             context.commit('setModalType', '');
             context.commit('setModalParams', null);
-        }
-    }
+        },
+    },
 });

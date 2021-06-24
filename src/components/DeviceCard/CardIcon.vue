@@ -7,7 +7,13 @@
             type 8 - Zigbee
         -->
         <img
-            v-if="cardData.online && cardData.type === 1"
+            v-if="cardData.online && cardData.uiid===28 && cardData.cardIndex !== -1"
+            style="width:26px; height:24px;"
+            src="@/assets/rf.png"
+            :alt="alt"
+        />
+        <img
+            v-else-if="cardData.online && cardData.type === 1"
             src="@/assets/diy-online.svg"
             :alt="alt"
         />

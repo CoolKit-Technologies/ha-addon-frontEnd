@@ -1,12 +1,13 @@
 <template>
     <div class="card-header">
         <card-icon :cardData="cardData" />
-        <span class="title">{{ cardData.deviceName || cardData.deviceId }}</span>
+        <span class="title">{{ title }}</span>
         <card-action :cardData="cardData" />
     </div>
 </template>
 
 <script lang="ts">
+import _ from 'lodash';
 import { defineComponent } from 'vue';
 
 import CardIcon from './CardIcon.vue';
@@ -17,14 +18,25 @@ export default defineComponent({
 
     components: {
         CardIcon,
-        CardAction
+        CardAction,
     },
 
     props: {
         cardData: {
-            required: true
-        }
-    }
+            required: true,
+        },
+    },
+    computed: {
+        title() {
+            const cardData = this.cardData as any;
+            if (cardData.uiid === 28 && cardData.cardIndex !== -1) {
+                const zyxInfo = _.get(cardData, ['tags', 'zyx_info'], []);
+                const index = _.get(cardData, ['cardIndex']);
+                return _.get(zyxInfo, [index, 'name']);
+            }
+            return cardData.deviceName || cardData.deviceId;
+        },
+    },
 });
 </script>
 
