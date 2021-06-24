@@ -30,13 +30,13 @@ export default defineComponent({
         color(){
             const { params } = this.$props.cardData as any;
             if(!params) return[]
-            if(params.channel0 === params.channel1 ){
+            if(parseInt(params.channel0) === parseInt(params.channel1) ){
                 return ['gray','yellow','gray']
             }
-            if(params.channel0 < params.channel1 ){
+            if(parseInt(params.channel0) < parseInt(params.channel1) ){
                 return ['gray','gray','red']
             }
-            if(params.channel0 > params.channel1 ){
+            if(parseInt(params.channel0) > parseInt(params.channel1) ){
                 return ['blue','gray','gray']
             }
         }

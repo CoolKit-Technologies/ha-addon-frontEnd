@@ -4,8 +4,6 @@
             <control-circle type="curtain" curtainType="allon" @click.stop="curtainAction('on')"/>
             <control-circle type="curtain" curtainType="pause" @click.stop="curtainAction('pause')"/>
             <control-circle type="curtain" curtainType="alloff" @click.stop="curtainAction('off')"/>
-            <!-- <control-circle type="curtain" curtainType="off"/>
-            <control-circle type="curtain" curtainType="on" /> -->
         </div>
         <div class="status">
             <div class="topText">
@@ -16,8 +14,7 @@
             </div>
         </div>
         <div class="slide">
-            <!-- <slide-control type="curtain" :value="curtainValue" :cardData="$props.cardData"/> -->
-            <ctrl-slider type="curtain" :value="curtainValue" :cardData="$props.cardData"/>
+            <ctrl-slider type="curtain" :cardData="cardData"/>
         </div>
     </div>
 </template>

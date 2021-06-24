@@ -2,13 +2,13 @@
     <div class="container">
         <div class="content">
             <div class="color" v-if="mode === 'color'">
-                <color-picker />
-                <ctrl-slider type="brightness" v-if="isFiveLt"/>
+                <color-picker :cardData="cardData" />
+                <ctrl-slider type="brightness" v-if="isFiveLt" :cardData="cardData"/>
             </div>
             <div class="white" v-else-if="mode === 'white'">
-                <five-bulb-light v-if="isFiveBulbLt" :cardData="$props.cardData"/>
-                <ctrl-slider type="color-temp" v-if="isFiveLt"/>
-                <ctrl-slider type="brightness" />
+                <five-bulb-light v-if="isFiveBulbLt" :cardData="cardData"/>
+                <ctrl-slider type="color-temp" v-if="isFiveLt" :cardData="cardData"/>
+                <ctrl-slider type="brightness" :cardData="cardData" />
             </div>
         </div>
         <div class="tab">
@@ -49,7 +49,7 @@ import { defineComponent } from 'vue';
 import ColorPicker from '@/components/CtrlItem/ColorPicker.vue';
 import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 import FiveBulbLight from '@/components/CtrlItem/FiveBulbLight.vue';
-
+import { setFiveLtMode } from '@/api/device'
 export default defineComponent({
     name: 'FiveColorLightContent',
 
@@ -90,8 +90,9 @@ export default defineComponent({
         }
     },
     methods: {
-        changeMode(mode: string) {
+        async changeMode(mode: string) {
             this.mode = mode;
+            await setFiveLtMode(this.$props.cardData);
         },
         handleClick(e: any) {
             e.stopPropagation();
