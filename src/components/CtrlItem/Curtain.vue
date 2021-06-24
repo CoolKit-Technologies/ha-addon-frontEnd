@@ -6,9 +6,7 @@
             <control-circle type="curtain" curtainType="alloff" @click.stop="curtainAction('off')"/>
         </div>
         <div class="status">
-            <div class="topText">
-                Status
-            </div>
+            <div class="topText">{{ $t('card.status') }}</div>
             <div class="curtain-status">
                 {{ status }}
             </div>
@@ -81,6 +79,7 @@ export default defineComponent({
         display flex
         flex-direction column
         justify-content center
+        margin-top 14px
         .topText
             text-align center
             font-size 16px

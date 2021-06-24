@@ -1,6 +1,6 @@
 <template>
     <div class="rf-gateway" :style="notOnline">
-        Number of remotes: {{ value }}
+        {{ $t('card.remotenum') }}: {{ value }}
     </div>
 </template>
 <script lang="ts">

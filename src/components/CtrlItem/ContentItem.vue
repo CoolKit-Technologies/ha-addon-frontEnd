@@ -61,17 +61,6 @@ export default defineComponent({
                 case 'doorSensor':
                     return $t('card.doorsensor');
                 case 'zigbeeDoorSensor':
-                case 'zigbeeMobileSensor':
-                case 'zigbeeButtons':
-                    return params.trigTime ? moment(parseInt(params.trigTime)).format('YYYY-MM-DD HH:mm:ss') : moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-            }
-        },
-        action(){
-            const { $t, type, params } = this as any;
-            switch(type){
-                case 'doorSensor':
-                    return params && params.switch === 'on' ? $t('card.doorsensoropen') : $t('card.doorsensorclose');
-                case 'zigbeeDoorSensor':
                     return params && params.lock === 1 ? $t('card.zigbee.dooropen') : $t('card.zigbee.doorlock');
                 case 'zigbeeMobileSensor':
                     return params && params.motion === 1 ? $t('card.zigbee.motion1') : $t('card.zigbee.motion0');
@@ -84,6 +73,17 @@ export default defineComponent({
                         default:
                             return $t('card.zigbee.click');
                     }
+            }
+        },
+        action(){
+            const { $t, type, params } = this as any;
+            switch(type){
+                case 'doorSensor':
+                    return params && params.switch === 'on' ? $t('card.doorsensoropen') : $t('card.doorsensorclose');
+                case 'zigbeeDoorSensor':
+                case 'zigbeeMobileSensor':
+                case 'zigbeeButtons':
+                    return params.trigTime ? moment(parseInt(params.trigTime)).format('YYYY-MM-DD HH:mm:ss') : moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
                 default:
                     return ''
             }

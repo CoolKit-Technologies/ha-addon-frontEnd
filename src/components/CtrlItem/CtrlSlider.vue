@@ -221,7 +221,7 @@ export default defineComponent({
             } else if (type === 'color-temp') {
                 return $t('card.colortemp');
             } else if (type === 'curtain') {
-                return 'manual';
+                return $t('card.manual');
             } else {
                 return '';
             }
