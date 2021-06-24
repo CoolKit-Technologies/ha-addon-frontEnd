@@ -1,9 +1,6 @@
 <template>
     <div class="card-content">
-        <div
-            v-if="isUnsupport"
-            class="unsupport"
-        >
+        <div v-if="isUnsupport" class="unsupport">
             <p>{{ $t('card.unsupport') }}</p>
         </div>
         <div v-else class="content">
@@ -21,85 +18,38 @@
             </div>
             <!-- temperature or thermal switch -->
             <div class="th-sw" v-else-if="isThSw">
-                <div class="gauge"
-                    v-if="cardData.params.currentHumidity !== 'unavailable' || cardData.params.currentTemperature !== 'unavailable'"
-                >
-                    <humi-gauge
-                        v-if="cardData.params.currentHumidity !== 'unavailable'"
-                        :value="cardData.params.currentHumidity"
-                    />
-                    <temp-gauge
-                        v-if="cardData.params.currentTemperature !== 'unavailable'"
-                        :value="cardData.params.currentTemperature"
-                        :tempUnit="cardData.unit"
-                    />
+                <div class="gauge" v-if="cardData.params.currentHumidity !== 'unavailable' || cardData.params.currentTemperature !== 'unavailable'">
+                    <humi-gauge v-if="cardData.params.currentHumidity !== 'unavailable'" :value="cardData.params.currentHumidity" />
+                    <temp-gauge v-if="cardData.params.currentTemperature !== 'unavailable'" :value="cardData.params.currentTemperature" :tempUnit="cardData.unit" />
                 </div>
-                <channel-mode
-                    class="mg-14"
-                    :mode="cardData.params.deviceType"
-                />
-                <channel-switch
-                    class="mg-14"
-                    :title="$t('card.channel')"
-                    :stat="cardData.params.switch === 'on' ? true : false"
-                    :cardData="cardData"
-                />
+                <channel-mode class="mg-14" :mode="cardData.params.deviceType" />
+                <channel-switch class="mg-14" :title="$t('card.channel')" :stat="cardData.params.switch === 'on' ? true : false" :cardData="cardData" />
             </div>
             <!-- power detection -->
             <div class="pw-det" v-else-if="isPwDet">
                 <div class="chart">
-                    <circle-chart
-                        width="180px"
-                        height="180px"
-                        color="blue"
-                    />
+                    <circle-chart width="180px" height="180px" color="blue" />
                     <span class="title">{{ $t('card.realtimestats') }}</span>
                     <span class="value">{{ cardData.params.power }}W</span>
                 </div>
-                <channel-switch
-                    class="mg-14"
-                    :title="$t('card.channel')"
-                    :stat="cardData.params.switch === 'on' ? true : false"
-                    :cardData="cardData"
-                />
+                <channel-switch class="mg-14" :title="$t('card.channel')" :stat="cardData.params.switch === 'on' ? true : false" :cardData="cardData" />
             </div>
             <!-- power voltage current socket -->
             <div class="pvc-sct" v-else-if="isPvcSct">
                 <div class="chart-grp">
-                    <div
-                        class="chart"
-                        v-for="item in pvcSctData"
-                        :key="item.key"
-                    >
-                        <circle-chart
-                            width="110px"
-                            height="110px"
-                            :color="item.color"
-                        />
+                    <div class="chart" v-for="item in pvcSctData" :key="item.key">
+                        <circle-chart width="110px" height="110px" :color="item.color" />
                         <span class="title">{{ item.title }}</span>
                         <span class="value">{{ item.value }}</span>
                     </div>
                 </div>
-                <channel-switch
-                    class="mg-14"
-                    :title="$t('card.channel')"
-                    :stat="cardData.params.switch === 'on' ? true : false"
-                    :cardData="cardData"
-                />
+                <channel-switch class="mg-14" :title="$t('card.channel')" :stat="cardData.params.switch === 'on' ? true : false" :cardData="cardData" />
             </div>
             <!-- dual power switch -->
             <div class="dual-pw-sw" v-else-if="isDualPwSw">
                 <div class="chart-grp">
-                    <div
-                        class="chart"
-                        v-for="item in dualPwSwData"
-                        :key="item.key"
-                    >
-                        <circle-chart
-                            width="110px"
-                            height="110px"
-                            :color="item.color"
-                        />
+                    <div class="chart" v-for="item in dualPwSwData" :key="item.key">
+                        <circle-chart width="110px" height="110px" :color="item.color" />
                         <span class="title">{{ item.title }}</span>
                         <span class="value">{{ item.value }}</span>
                     </div>
@@ -131,41 +81,19 @@
             </div>
             <!-- wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
-                <content-item
-                    type='doorSensor'
-                    :params="cardData.params"
-                ></content-item>
+                <content-item type="doorSensor" :params="cardData.params"></content-item>
             </div>
             <!-- two color light -->
             <div v-else-if="isTwoColorLt && cardData.params.switch === 'on'">
-                <ctrl-slider
-                    class="mg-14"
-                    type="brightness"
-                    :cardData="cardData"
-                />
-                <ctrl-slider
-                    class="mg-14"
-                    type="color-temp"
-                    :cardData="cardData"
-                />
+                <ctrl-slider class="mg-14" type="brightness" :cardData="cardData" />
+                <ctrl-slider class="mg-14" type="color-temp" :cardData="cardData" />
             </div>
             <!-- rhythm light strip -->
             <div v-else-if="isRhythmLtStrip && cardData.params.switch === 'on'">
                 <color-picker class="mg-14" />
-                <ctrl-slider
-                    class="mg-14"
-                    type="brightness"
-                    :cardData="cardData"
-                />
-                <ctrl-slider
-                    class="mg-14"
-                    type="color-temp"
-                    :cardData="cardData"
-                />
-                <rhythm-switch
-                    class="mg-14"
-                    :cardData="cardData"
-                />
+                <ctrl-slider class="mg-14" type="brightness" :cardData="cardData" />
+                <ctrl-slider class="mg-14" type="color-temp" :cardData="cardData" />
+                <rhythm-switch class="mg-14" :cardData="cardData" />
             </div>
             <!-- elec curtain -->
             <div v-else-if="isCurtain">
@@ -178,19 +106,18 @@
             <!--  zigbee temprature and humidity -->
             <div class="zigbee-th" v-else-if="isZigbeeTempAndHumi">
                 <div class="gauge" v-if="cardData.params.humidity !== 'unavailable' || cardData.params.temperature !== 'unavailable'">
-                    <humi-gauge
-                        v-if="cardData.params.humidity !== 'unavailable'"
-                        :value="(cardData.params.humidity / 100)"
-                        />
-                    <temp-gauge
-                        v-if="cardData.params.temperature !== 'unavailable'"
-                        :value="(cardData.params.temperature / 100)"
-                    />
+                    <humi-gauge v-if="cardData.params.humidity !== 'unavailable'" :value="cardData.params.humidity / 100" />
+                    <temp-gauge v-if="cardData.params.temperature !== 'unavailable'" :value="cardData.params.temperature / 100" />
                 </div>
             </div>
             <!--  other zigbee  -->
             <div v-else-if="isZigbeeOther">
                 <other-zigbee-item class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
+            </div>
+
+            <!--  rf-bridge  -->
+            <div v-else-if="isRFBridge">
+                <r-f-bridge-content class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
             </div>
         </div>
     </div>
@@ -206,13 +133,13 @@ import {
     isOneChannelSwOrSockCPDevice,
     isTwoChannelDevice,
     isThreeChannelDevice,
-    isFourChannelDevice
+    isFourChannelDevice,
 } from '@/utils/etc';
 import ChannelSwitch from '@/components/CtrlItem/ChannelSwitch.vue';
 import ChannelMode from '@/components/CtrlItem/ChannelMode.vue';
-import ContentItem from '@/components/CtrlItem/ContentItem.vue'
-import FiveBulbLight from '@/components/CtrlItem/FiveBulbLight.vue'
-import Curtain from '@/components/CtrlItem/Curtain.vue'
+import ContentItem from '@/components/CtrlItem/ContentItem.vue';
+import FiveBulbLight from '@/components/CtrlItem/FiveBulbLight.vue';
+import Curtain from '@/components/CtrlItem/Curtain.vue';
 import HumiGauge from '@/components/GaugeChart/Humidity.vue';
 import TempGauge from '@/components/GaugeChart/Temperature.vue';
 import CircleChart from '@/components/CircleChart.vue';
@@ -221,8 +148,9 @@ import FiveColorLight from '@/components/CtrlItem/FiveColorLight.vue';
 import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 import FiveColorLightContent from '@/components/CtrlItem/FiveColorLightContent.vue';
 import RhythmSwitch from '@/components/CtrlItem/RhythmSwitch.vue';
-import OtherZigbeeItem from '@/components/CtrlItem/OtherZigbeeItem.vue'
-import RfGateway from '@/components/CtrlItem/RfGateway.vue'
+import OtherZigbeeItem from '@/components/CtrlItem/OtherZigbeeItem.vue';
+import RfGateway from '@/components/CtrlItem/RfGateway.vue';
+import RFBridgeContent from '@/components/CtrlItem/RFBridgeContent.vue';
 export default defineComponent({
     name: 'CardContent',
 
@@ -241,13 +169,14 @@ export default defineComponent({
         FiveColorLightContent,
         RhythmSwitch,
         OtherZigbeeItem,
-        RfGateway
+        RFBridgeContent,
+        RfGateway,
     },
 
     props: {
         cardData: {
-            required: true
-        }
+            required: true,
+        },
     },
 
     computed: {
@@ -282,20 +211,20 @@ export default defineComponent({
                     title: $t('card.power'),
                     value: cardData.params.power + 'W',
                     color: 'blue',
-                    key: 0
+                    key: 0,
                 },
                 {
                     title: $t('card.voltage'),
                     value: cardData.params.voltage + 'V',
                     color: 'green',
-                    key: 1
+                    key: 1,
                 },
                 {
                     title: $t('card.current'),
                     value: cardData.params.current + 'A',
                     color: 'yellow',
-                    key: 2
-                }
+                    key: 2,
+                },
             ];
         },
         // Current device is dual power detection switch
@@ -303,29 +232,33 @@ export default defineComponent({
             const { uiid } = this.cardData as any;
             return uiid === 126;
         },
-        isWifiDoorSensor(){
+        isWifiDoorSensor() {
             const { uiid } = this.cardData as any;
             return uiid === 102;
         },
-        isFiveColorLt(){
+        isFiveColorLt() {
             const { uiid } = this.cardData as any;
             return uiid === 104;
         },
-        isCurtain(){
+        isCurtain() {
             const { uiid } = this.cardData as any;
             return uiid === 11;
         },
-        isZigbeeOther(){
+        isZigbeeOther() {
             const { uiid } = this.cardData as any;
-            return uiid === 1000 || 2026 || 3026;
+            return uiid === 1000 || uiid === 2026 || uiid === 3026;
         },
-        isZigbeeTempAndHumi(){
+        isZigbeeTempAndHumi() {
             const { uiid } = this.cardData as any;
-            return uiid === 1770; 
+            return uiid === 1770;
         },
-        isRFGateway(){
-            const { uiid,cardIndex } = this.cardData as any;
-            return uiid === 28 && cardIndex === -1; 
+        isRFBridge() {
+            const { uiid } = this.cardData as any;
+            return uiid === 28;
+        },
+        isRFGateway() {
+            const { uiid, cardIndex } = this.cardData as any;
+            return uiid === 28 && cardIndex === -1;
         },
         dualPwSwData() {
             const { $t, cardData } = this as any;
@@ -334,20 +267,20 @@ export default defineComponent({
                     title: $t('card.realpower'),
                     value: cardData.params['actPow_0' + cardData.cardIndex] / 100 + 'W',
                     color: 'blue',
-                    key: 0
+                    key: 0,
                 },
                 {
                     title: $t('card.reactivepower'),
                     value: cardData.params['reactPow_0' + cardData.cardIndex] / 100 + 'W',
                     color: 'green',
-                    key: 1
+                    key: 1,
                 },
                 {
                     title: $t('card.apparentpower'),
                     value: cardData.params['apparentPow_0' + cardData.cardIndex] / 100 + 'W',
                     color: 'yellow',
-                    key: 2
-                }
+                    key: 2,
+                },
             ];
         },
         // Current device is five color bulb light
@@ -368,7 +301,7 @@ export default defineComponent({
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;
             const channelName = this.$t('card.channel');
-            const result: Array<{ key: number; name: string; stat: string; }> = [];
+            const result: Array<{ key: number; name: string; stat: string }> = [];
             let cnt = 0;
 
             if (type === 1 && uiid === 1) {
@@ -400,8 +333,8 @@ export default defineComponent({
             }
 
             return result;
-        }
-    }
+        },
+    },
 });
 </script>
 
