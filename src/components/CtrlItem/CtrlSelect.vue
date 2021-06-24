@@ -54,6 +54,128 @@ const twoColorLightMap: any = {
     }
 };
 
+const fiveColorBulbLightMap: any = [
+    {
+        channel0: '0',
+        channel1: '0',
+        channel2: '189',
+        channel3: '118',
+        channel4: '0',
+        zyx_mode: 3,
+        type: 'middle'
+    },
+    {
+        channel0: '0',
+        channel1: '0',
+        channel2: '255',
+        channel3: '255',
+        channel4: '255',
+        zyx_mode: 4,
+        type: 'middle'
+    },
+    {
+        channel0: '0',
+        channel1: '0',
+        channel2: '207',
+        channel3: '56',
+        channel4: '3',
+        zyx_mode: 5,
+        type: 'middle'
+    },
+    {
+        channel0: '0',
+        channel1: '0',
+        channel2: '56',
+        channel3: '85',
+        channel4: '179',
+        zyx_mode: 6,
+        type: 'middle'
+    }
+];
+
+const fiveColorLightMap: any = {
+    bright: {
+        ltype: 'bright',
+        bright: {
+            r: 255,
+            g: 255,
+            b: 255,
+            br: 100
+        }
+    },
+    goodNight: {
+        ltype: 'goodNight',
+        goodNight: {
+            r: 255,
+            g: 254,
+            b: 127,
+            br: 25
+        }
+    },
+    read: {
+        ltype: 'read',
+        read: {
+            r: 255,
+            g: 255,
+            b: 255,
+            br: 60
+        }
+    },
+    nightLight: {
+        ltype: 'nightLight',
+        nightLight: {
+            r: 255,
+            g: 242,
+            b: 226,
+            br: 5
+        }
+    },
+    party: {
+        ltype: 'party',
+        party: {
+            r: 254,
+            g: 132,
+            b: 0,
+            br: 45,
+            tf: 1,
+            sp: 1
+        }
+    },
+    leisure: {
+        ltype: 'leisure',
+        leisure: {
+            r: 0,
+            g: 40,
+            b: 254,
+            br: 55,
+            tf: 1,
+            sp: 1
+        }
+    },
+    soft: {
+        ltype: 'soft',
+        soft: {
+            r: 38,
+            g: 254,
+            b: 0,
+            br: 20,
+            tf: 1,
+            sp: 1
+        }
+    },
+    colorful: {
+        ltype: 'colorful',
+        colorful: {
+            r: 255,
+            g: 0,
+            b: 0,
+            br: 100,
+            tf: 1,
+            sp: 1
+        }
+    }
+};
+
 export default defineComponent({
     name: 'CtrlSelect',
 
@@ -109,23 +231,23 @@ export default defineComponent({
                 return [
                     {
                         id: 0,
-                        value: '0',
+                        value: 0,
                         text: $t('modal.modeOps.sleep')
                     },
                     {
                         id: 1,
-                        value: '1',
+                        value: 1,
                         text: $t('modal.modeOps.reading')
                     },
                     {
                         id: 2,
-                        value: '2',
+                        value: 2,
                         text: $t('modal.modeOps.party')
                     },
                     {
                         id: 3,
-                        value: '3',
-                        text: $t('modal.modeOps.soft')
+                        value: 3,
+                        text: $t('modal.modeOps.relax')
                     },
                 ];
             } else if (type === 'rhythm-light-strip') {
@@ -190,42 +312,42 @@ export default defineComponent({
                 return [
                     {
                         id: 0,
-                        value: '0',
+                        value: 'bright',
                         text: $t('modal.modeOps.bright')
                     },
                     {
                         id: 1,
-                        value: '1',
+                        value: 'goodNight',
                         text: $t('modal.modeOps.sleep')
                     },
                     {
                         id: 2,
-                        value: '2',
+                        value: 'read',
                         text: $t('modal.modeOps.reading')
                     },
                     {
                         id: 3,
-                        value: '3',
+                        value: 'party',
                         text: $t('modal.modeOps.party')
                     },
                     {
                         id: 4,
-                        value: '4',
+                        value: 'nightLight',
                         text: $t('modal.modeOps.night')
                     },
                     {
                         id: 5,
-                        value: '5',
+                        value: 'leisure',
                         text: $t('modal.modeOps.relax')
                     },
                     {
                         id: 6,
-                        value: '6',
+                        value: 'soft',
                         text: $t('modal.modeOps.soft')
                     },
                     {
                         id: 7,
-                        value: '7',
+                        value: 'colorful',
                         text: $t('modal.modeOps.vivid')
                     },
                 ];
@@ -278,6 +400,18 @@ export default defineComponent({
                         switch: 'on'
                     }
                 });
+            } else if (this.type === 'five-color-bulb-light') {
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: fiveColorBulbLightMap[this.value]
+                });
+            } else if (this.type === 'five-color-light') {
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: fiveColorLightMap[this.value]
+                });
             }
         },
         initPowerOnStateValue() {
@@ -306,6 +440,12 @@ export default defineComponent({
                 this.value = this.modalParams.params.mode;
             }
         },
+        initFiveColorBulbLightValue() {
+            // init
+        },
+        initFiveColorLightValue() {
+            // init
+        },
         initValue() {
             if (this.type === 'power-on-state') {
                 this.initPowerOnStateValue();
@@ -313,6 +453,10 @@ export default defineComponent({
                 this.initTwoColorLightValue();
             } else if (this.type === 'rhythm-light-strip') {
                 this.initRhythmLightStripValue();
+            } else if (this.type === 'five-color-bulb-light') {
+                this.initFiveColorBulbLightValue();
+            } else if (this.type === 'five-color-light') {
+                this.initFiveColorLightValue();
             }
         }
     },
