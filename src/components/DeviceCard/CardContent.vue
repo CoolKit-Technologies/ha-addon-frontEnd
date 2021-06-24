@@ -75,9 +75,9 @@
             </div>
             <!-- five color bulb light or five color light -->
             <div v-else-if="isFiveColorBulbLt || isFiveColorLt">
-                <!--
+                
                 <five-color-light-content :cardData="cardData" />
-                -->
+               
             </div>
             <!-- wifi door sensor  -->
             <div v-else-if="isWifiDoorSensor">
@@ -101,13 +101,23 @@
             </div>
             <!--  RF Brige  -->
             <div v-else-if="isRFGateway">
-                <rf-gateway :params="cardData.params" :online="cardData.online" />
+                <rf-gateway :tags="cardData.tags" :online="cardData.online" />
             </div>
             <!--  zigbee temprature and humidity -->
             <div class="zigbee-th" v-else-if="isZigbeeTempAndHumi">
                 <div class="gauge" v-if="cardData.params.humidity !== 'unavailable' || cardData.params.temperature !== 'unavailable'">
-                    <humi-gauge v-if="cardData.params.humidity !== 'unavailable'" :value="cardData.params.humidity / 100" />
-                    <temp-gauge v-if="cardData.params.temperature !== 'unavailable'" :value="cardData.params.temperature / 100" />
+                    <!-- <humi-gauge v-if="cardData.params.humidity !== 'unavailable'" :value="cardData.params.humidity / 100" />
+                    <temp-gauge v-if="cardData.params.temperature !== 'unavailable'" :value="cardData.params.temperature / 100" /> -->
+                    <humi-gauge
+                        v-if="cardData.params.humidity !== 'unavailable'"
+                        :value="(cardData.params.humidity / 100)"
+                        />
+                    <temp-gauge
+                        v-if="cardData.params.temperature !== 'unavailable'"
+                        :value="(cardData.params.temperature / 100)"
+                        tempUnit="c"
+                    />
+
                 </div>
             </div>
             <!--  other zigbee  -->

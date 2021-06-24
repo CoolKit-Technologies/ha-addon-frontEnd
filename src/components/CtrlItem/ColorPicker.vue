@@ -22,6 +22,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import _ from 'lodash';
+import { setPickerColor }from '@/api/device'
 
 export default defineComponent({
     name: 'ColorPicker',
@@ -31,7 +32,11 @@ export default defineComponent({
             bgColor: ''
         };
     },
-
+    props:{
+        cardData:{
+            required:true
+        }
+    },
     mounted() {
         // Register event
         const colorInput = this.$refs['color-input'] as any;
@@ -49,7 +54,7 @@ export default defineComponent({
     },
 
     created() {
-        this.bgColor = '#ccccff';
+        this.bgColor = this.dealFiveLtPropColor();
     },
 
     methods: {
@@ -67,6 +72,33 @@ export default defineComponent({
         },
         changeColor() {
             console.log('change change color');
+            const obj = this.dealColor(this.bgColor);
+            console.log(`ML ~ file: ColorPicker.vue ~ line 71 ~ changeColor ~ obj`, obj);
+            setPickerColor(this.$props.cardData,obj)
+        },
+        dealFiveLtPropColor(){
+            if(!this.$props.cardData) return '#000000';
+            const { params, uiid } = this.$props.cardData as any;
+            console.log(`ML ~ file: ColorPicker.vue ~ line 82 ~ dealFiveLtPropColor ~ params`, params);
+            if(uiid === 22){
+                const {channel2,channel3,channel4} = params;
+                return `#${channel2.toString(16)}${channel3.toString(16)}${channel4.toString(16)}`;
+            }else if(uiid === 104){
+                const {r,g,b} = params.color;
+                console.log(`ML ~ file: ColorPicker.vue ~ line 89 ~ dealFiveLtPropColor`, `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`);
+                return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+            }else{
+                return '#000000'
+            }
+        },
+        dealColor(color:string){
+            const rgb = color.substring(1,7)
+            const r =parseInt(rgb.substring(0,2),16);
+            const g = parseInt(rgb.substring(2,4),16);
+            const b = parseInt(rgb.substring(4,6),16);
+            return {
+                r,g,b
+            }
         }
     }
 });

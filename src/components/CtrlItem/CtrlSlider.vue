@@ -22,11 +22,11 @@
         </div>
         <div class="action" :style="actionStyle" @click="handleClick">
             <a-slider
-                :value="value"
+                v-model:value="progressValue"
                 :disabled="!cardData.online"
                 :min="min"
                 :max="max"
-                @change="handleChange"
+                @afterChange="handleChange"
             />
         </div>
     </div>
@@ -52,6 +52,11 @@ export default defineComponent({
             required: true
         }
     },
+    data(){
+        return {
+            progressValue:0
+        }
+    },
 
     computed: {
         actionStyle() {
@@ -61,7 +66,7 @@ export default defineComponent({
             };
         },
         title() {
-            const { type, $t } = this as any;
+            const { type, $t, } = this as any;
             if (type === 'brightness') {
                 return $t('card.brightness');
             } else if (type === 'color-temp') {
@@ -73,14 +78,20 @@ export default defineComponent({
             }
         },
         min() {
+            const { uiid } = this.$props.cardData as any;
             if (this.type === 'brightness') {
-                return 1;
+                if(uiid === 22){
+                    return 25
+                }else{
+                    return 1;
+                }
             } else {
                 return 0;
             }
         },
         max() {
-            if (this.type === 'color-temp') {
+            const { uiid } = this.$props.cardData as any;
+            if (this.type === 'color-temp' || uiid === 22) {
                 return 255;
             } else {
                 return 100;
@@ -102,10 +113,26 @@ export default defineComponent({
             }
         }
     },
-
     methods: {
         handleClick(e: any) {
             e.stopPropagation();
+        },
+        setDefaultValue(){
+            const { uiid, params} = this.cardData as any;
+
+            if (this.type === 'brightness') {
+                if (uiid === 103 || uiid === 104) {
+                    this.progressValue = params[params.ltype].br;
+                }else if(uiid === 22){
+                    this.progressValue = Math.max(parseInt(params.channel0),parseInt(params.channel1))
+                }
+            } else if (this.type === 'color-temp') {
+                if (uiid === 103) {
+                    this.progressValue = 255 - params[params.ltype].ct;
+                }
+            } else if (this.type === 'curtain') {
+                this.progressValue = params.setclose;
+            }
         },
         handleChange(v: number) {
             if (this.type === 'brightness') {
@@ -119,7 +146,7 @@ export default defineComponent({
         async setBrightness(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;
 
-            if (uiid === 103) {
+            if (uiid === 103 || uiid === 104) {
                 await setCloudDevice({
                     apikey,
                     id: deviceId,
@@ -131,12 +158,41 @@ export default defineComponent({
                         }
                     }
                 });
+            }else if(uiid === 22){
+                let obj = {
+                    apikey,
+                    id: deviceId,
+                    params: {}
+                }
+                console.log(`ML ~ file: CtrlSlider.vue ~ line 148 ~ setBrightness ~ params`, params);
+                switch(params.type){
+                    case 'warm':
+                        _.assign(obj.params,{
+                            channel0: '25',
+                            channel1: `${v}`
+                        })
+                        break;
+                    case 'middle':
+                        _.assign(obj.params,{
+                            channel0: `${v}`,
+                            channel1: `${v}`
+                        })
+                        break;
+                    case 'cold':
+                        _.assign(obj.params,{
+                            channel0: `${v}`,
+                            channel1: '25'
+                        })
+                        break;
+                }
+                console.log(`ML ~ file: CtrlSlider.vue ~ line 161 ~ setBrightness ~ obj`, obj);
+                await setCloudDevice(obj);
             }
         },
         async setColorTemp(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;
 
-            if (uiid === 103) {
+            if (uiid === 103 || uiid === 104) {
                 await setCloudDevice({
                     apikey,
                     id: deviceId,
@@ -152,13 +208,14 @@ export default defineComponent({
         },
         async setCurtain(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;
-
+            console.log('set curtain',v);
+            
             await setCloudDevice({
-                apikey,
                 id: deviceId,
+                apikey:apikey,
                 params: {
-                    setClose: v
-                }
+                    setclose:v
+                },
             });
         }
     },
@@ -167,6 +224,7 @@ export default defineComponent({
         this.setBrightness = _.throttle(this.setBrightness, 500, { 'leading': false, 'trailing': true }) as any;
         this.setColorTemp = _.throttle(this.setColorTemp, 500, { 'leading': false, 'trailing': true }) as any;
         this.setCurtain = _.throttle(this.setCurtain, 500, { 'leading': false, 'trailing': true }) as any;
+        this.setDefaultValue()
     }
 });
 </script>
