@@ -9,7 +9,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
     name:'RfGateway',
     props:{
-        params:{
+        tags:{
             required:true
         },
         online:{
@@ -18,8 +18,8 @@ export default defineComponent({
     },
     computed:{
         value(){
-            const { rfList } = this.$props.params as any
-            return rfList ? rfList.length : 0;
+            const { tags } = this.$props as any
+            return tags.zyx_info ? tags.zyx_info.length : 0;
         },
         notOnline(){
             const online = this.$props.online as boolean

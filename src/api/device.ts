@@ -563,28 +563,78 @@ export async function setFiveColorBulbTemp(data:any,type:string) {
         apikey:apikey,
         params: {
             type:type,
+            zyx_mode:1
         },
     };
+    const max = `${Math.max(parseInt(channel0),parseInt(channel1))}`;
     switch(type){
         case 'middle':
             _.assign(params.params,{
-                channel0:Math.max(channel0,channel1),
-                channel1:Math.max(channel0,channel1)
+                channel0: max,
+                channel1: max
             });
             break;
         case 'warm':
             _.assign(params.params,{
-                channel0:0,
-                channel1:Math.max(channel0,channel1)
+                channel0: '0',
+                channel1: max
             });
             break;
         case 'cold':
             _.assign(params.params,{
-                channel0:Math.max(channel0,channel1),
-                channel1:0
+                channel0: max,
+                channel1: '0'
             });
             break;
     }
     console.log(`ML ~ file: device.ts ~ line 570 ~ setFiveColorBulbTemp ~ params`, params);
+    await setCloudDevice(params);
+}
+/**
+ * set color picker
+ */
+export async function setPickerColor(data:any,obj:any) {
+    const { deviceId, apikey,uiid } = data;
+
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {},
+    };
+    if(uiid === 104){
+        _.assign(params.params,{
+            ltype:"color",
+            color:{
+                ...obj
+            }
+        })
+    }else if(uiid === 22){
+        _.assign(params.params,{
+            channel2:obj.r,
+            channel3:obj.g,
+            channel4:obj.b,
+        })
+    }
+    console.log(`ML ~ file: device.ts ~ line 605 ~ setPickerColor ~ params`, params);
+    await setCloudDevice(params);
+}
+
+//  change five light mode
+export async function setFiveLtMode(data:any){
+    const { deviceId, apikey,uiid } = data;
+    let params = {
+        id: deviceId,
+        apikey:apikey,
+        params: {},
+    };
+    if(uiid === 104){
+        _.assign(params.params,{
+            switch:'on'
+        })
+    }else if(uiid === 22){
+        _.assign(params.params,{
+            state:'on'
+        })
+    }
     await setCloudDevice(params);
 }
