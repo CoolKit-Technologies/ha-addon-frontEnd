@@ -33,4 +33,5 @@ export default defineComponent({
     font-size 18px
     color: #212121;
     padding-left 44px
+    padding-top 14px
 </style>
