@@ -106,9 +106,15 @@ export default defineComponent({
                 }
                 if (!_.isEqual(newList, oldList)) {
                     this.setOriginDeviceList(newList);
-                    if (this.modalParams && !(this.modalParams.uiid === 28 && this.modalParams.cardIndex !== -1)) {
-                        // Update device data when modal was opened (NOT INCLUDE RF sub-device)
-                        const res = this.deviceCardList.find((item: any) => item.deviceId === this.modalParams.deviceId);
+                    if (this.modalParams) {
+                        let res: any;
+                        if (this.modalParams.uiid === 28) {
+                            // RF devices are special
+                            res = this.deviceCardList.find((item: any) => item.deviceId === this.modalParams.deviceId && item.cardIndex === this.modalParams.cardIndex);
+                        } else {
+                            // Update device data when modal was opened
+                            res = this.deviceCardList.find((item: any) => item.deviceId === this.modalParams.deviceId);
+                        }
                         this.setModalParams(res);
                     }
                 }

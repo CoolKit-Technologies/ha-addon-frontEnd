@@ -64,7 +64,7 @@
         />
 
         <!-- Set device disable -->
-        <ctrl-switch type="disable" v-if="!isRfSub" />
+        <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
 
         <!-- Upgrade device firmware -->
         <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub" />
