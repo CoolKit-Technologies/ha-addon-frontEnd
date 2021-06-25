@@ -566,7 +566,7 @@ export async function setFiveColorBulbTemp(data:any,type:string) {
             zyx_mode:1
         },
     };
-    const max = `${Math.max(parseInt(channel0),parseInt(channel1))}`;
+    const max = `${Math.max(parseInt(channel0),parseInt(channel1),25)}`;
     switch(type){
         case 'middle':
             _.assign(params.params,{
@@ -609,11 +609,14 @@ export async function setPickerColor(data:any,obj:any) {
             }
         })
     }else if(uiid === 22){
-        _.assign(params.params,{
-            channel2:obj.r,
-            channel3:obj.g,
-            channel4:obj.b,
-        })
+        _.assign(params.params, {
+            zyx_mode: 2,
+            channel0: '0',
+            channel1: '0',
+            channel2: `${obj.r}`,
+            channel3: `${obj.g}`,
+            channel4: `${obj.b}`,
+        });
     }else if(uiid === 59){
         _.assign(params.params,{
             mode:1,
