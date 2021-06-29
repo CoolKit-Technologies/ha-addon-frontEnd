@@ -91,6 +91,7 @@ export default createStore({
         },
         setLocale(state, v) {
             state.locale = v;
+            localStorage.setItem('ewelink-addon-locale', v);
         },
         setOriginDeviceList(state, v) {
             state.originDeviceList = v;

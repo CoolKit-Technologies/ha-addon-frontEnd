@@ -123,11 +123,15 @@ export default defineComponent({
         changeLang() {
             if (this.$root?.$i18n.locale === 'en') {
                 this.$root.$i18n.locale = 'zh';
+                this.setLocale('zh');
+                this.setAntdLocale('zh');
             } else if (this.$root?.$i18n.locale === 'zh') {
                 this.$root.$i18n.locale = 'en';
+                this.setLocale('en');
+                this.setAntdLocale('en');
             }
         },
-        ...mapMutations(['setIsLogin', 'setOriginDeviceList']),
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setLocale', 'setAntdLocale']),
         ...mapActions(['openModal'])
     },
 

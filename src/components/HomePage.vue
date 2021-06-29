@@ -75,15 +75,16 @@ export default defineComponent({
             }
         },
         async initLocale() {
-            const res = await getLocale();
-            if (res.error === 0 && res.data === 'zh-Hans') {
-                this.$root!.$i18n.locale = 'zh';
-                this.setLocale('zh');
-                this.setAntdLocale('zh');
-            } else {
+            // Get locale from localStorage 'ewelink-addon-locale'
+            const locale = localStorage.getItem('ewelink-addon-locale');
+            if (!locale) {
                 this.$root!.$i18n.locale = 'en';
                 this.setLocale('en');
                 this.setAntdLocale('en');
+            } else {
+                this.$root!.$i18n.locale = locale;
+                this.setLocale(locale);
+                this.setAntdLocale(locale);
             }
         },
         initSse() {
