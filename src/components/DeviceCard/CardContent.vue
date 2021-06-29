@@ -99,7 +99,7 @@
             </div>
             <!--  RF Brige  -->
             <div v-else-if="isRFGateway">
-                <!-- <rf-gateway :tags="cardData.tags" :online="cardData.online" /> -->
+                <rf-gateway :tags="cardData.tags" :online="cardData.online" />
             </div>
             <!--  zigbee temprature and humidity -->
             <div class="zigbee-th" v-else-if="isZigbeeTempAndHumi">

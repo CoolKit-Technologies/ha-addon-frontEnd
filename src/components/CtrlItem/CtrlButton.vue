@@ -56,7 +56,7 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import moment from 'moment';
 
-import { setCloudDevice } from '@/api/device';
+import { setCloudDevice, setLanDevice } from '@/api/device';
 
 export default defineComponent({
     name: 'CtrlButton',
@@ -105,16 +105,26 @@ export default defineComponent({
             if (this.type === 6) {
                 return;
             }
-            const { deviceId, apikey } = this.cardData;
+            const { deviceId, apikey, type } = this.cardData;
             const { rfChl } = this.channelData;
-            setCloudDevice({
-                id: deviceId,
-                apikey,
-                params: {
-                    cmd: 'transmit',
-                    rfChl,
-                },
-            });
+            if (type === 4) {
+                setCloudDevice({
+                    id: deviceId,
+                    apikey,
+                    params: {
+                        cmd: 'transmit',
+                        rfChl,
+                    },
+                });
+            } else if(type===2) {
+                setLanDevice({
+                    id: deviceId,
+                    apikey,
+                    params: {
+                        rfChl,
+                    },
+                })
+            }
         },
     },
 });
