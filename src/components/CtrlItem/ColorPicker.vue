@@ -7,11 +7,12 @@
                 alt="color palette"
             />
         </div>
-        <p class="title">颜色</p>
+        <p class="title">{{ $t('card.color') }}</p>
         <input
             ref="color-input"
             class="color-input-hide"
             type="color"
+            disabled="!cardData.online"
         />
         <div class="color-box" @click.stop="firePickColor">
             <div class="color" :style="{ backgroundColor: bgColor }"></div>

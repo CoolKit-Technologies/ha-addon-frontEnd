@@ -61,6 +61,7 @@ export const en = {
         manual: 'Manual',
         curtainallon:'All On',
         curtainalloff:'All Off',
+        color: 'Color',
         zigbee:{
             doorlock:'Close',
             dooropen:'Open',

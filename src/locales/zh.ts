@@ -61,6 +61,7 @@ export const zh = {
         manual: '手动',
         curtainallon:'全开',
         curtainalloff:'全关',
+        color: '颜色',
         zigbee:{
             doorlock:'关闭',
             dooropen:'打开',

@@ -37,6 +37,12 @@ export default defineComponent({
         IntroCarousel
     },
 
+    watch: {
+        async locale(newVal) {
+            await this.getContentList(newVal);
+        }
+    },
+
     computed: {
         smallScreen() {
             const { windowSize } = this as any;
@@ -45,15 +51,22 @@ export default defineComponent({
         ...mapState(['locale', 'windowSize'])
     },
 
+    methods: {
+        async getContentList(locale: string) {
+            const res = await getContent(locale);
+            if (res.error === 0) {
+                this.cardList = [];
+                const { top, push } = res.data;
+                this.cardList.push(top);
+                this.cardList.push(...push);
+            } else {
+                message.error(this.$t('common.error.getcontent'));
+            }
+        },
+    },
+
     async created() {
-        const res = await getContent(this.locale);
-        if (res.error === 0) {
-            const { top, push } = res.data;
-            this.cardList.push(top);
-            this.cardList.push(...push);
-        } else {
-            message.error(this.$t('common.error.getcontent'));
-        }
+        await this.getContentList(this.locale);
     }
 });
 </script>
