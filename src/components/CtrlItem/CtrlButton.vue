@@ -116,14 +116,14 @@ export default defineComponent({
                         rfChl,
                     },
                 });
-            } else if(type===2) {
+            } else if (type === 2) {
                 setLanDevice({
                     id: deviceId,
                     apikey,
                     params: {
                         rfChl,
                     },
-                })
+                });
             }
         },
     },
@@ -153,4 +153,13 @@ export default defineComponent({
         text-align center
         img
             width 18px
+    .action
+        padding 0 10px
+        transition all 0.2s
+        &:hover
+            img
+                filter brightness(1.2)
+        &:active
+            img
+                filter brightness(0.8)
 </style>
