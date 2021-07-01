@@ -250,26 +250,31 @@ export default defineComponent({
                 return 100;
             }
         },
-        value() {
-            const { uiid, params} = this.cardData as any;
-
-            if (this.type === 'brightness') {
-                if (uiid === 103) {
-                    return params[params.ltype].br;
-                }
-            } else if (this.type === 'color-temp') {
-                if (uiid === 103) {
-                    return 255 - params[params.ltype].ct;
-                }
-            } else if (this.type === 'curtain') {
-                return params.setclose;
-            }
-        }
     },
     watch:{
         '$props.cardData':function (newV,oldV) {
-            if(newV.uiid === 11){
-                this.progressValue = newV.params.setclose;
+            const { uiid, params} = newV;
+            if (this.type === 'brightness') {
+                if (uiid === 103 || uiid === 104) {
+                    this.progressValue = params[params.ltype].br;
+                }else if(uiid === 22){
+                    this.progressValue = Math.max(parseInt(params.channel0),parseInt(params.channel1));
+                }else if(uiid === 59){
+                    this.progressValue = params.bright;
+                }
+            } else if (this.type === 'color-temp') {
+                if (uiid === 103) {
+                    this.progressValue = 255 - params[params.ltype].ct;
+                }else if(uiid === 59){
+                    const { colorR, colorG, colorB } = params;
+                    const rgb = `${colorR},${colorG},${colorB}`;
+                    console.log(`ML ~ file: CtrlSlider.vue ~ line 293 ~ setDefaultValue ~ rgb`, rgb);
+                    const value = fakeTempList.indexOf(rgb);
+                    console.log(`ML ~ file: CtrlSlider.vue ~ line 295 ~ setDefaultValue ~ value`, value);
+                    this.progressValue = value ? value : 0;
+                }
+            } else if (this.type === 'curtain') {
+                this.progressValue = params.setclose;
             }
         }
     },
