@@ -7,7 +7,7 @@
             />
         </div>
         <div class="text">
-            <span>Rhythm</span>
+            <span>{{ $t('card.rhythm') }}</span>
         </div>
         <div class="action">
             <a-switch

@@ -74,9 +74,13 @@ export default defineComponent({
             mode: 'color'
         };
     },
-    mounted(){
-        // console.log(this.$props.cardData);
+
+    watch: {
+        cardData() {
+            this.setMode();
+        }
     },
+
     computed:{
         // 五色球泡灯(已停产)
         isFiveBulbLt(){
@@ -97,6 +101,17 @@ export default defineComponent({
         handleClick(e: any) {
             e.stopPropagation();
         },
+        setMode() {
+            const { uiid, params } = this.cardData as any;
+            if ((uiid === 22 && params.zyx_mode === 1) || (uiid === 104 && params.ltype === 'white')) {
+                this.mode = 'white';
+            } else {
+                this.mode = 'color';
+            }
+        }
+    },
+    created() {
+        this.setMode();
     }
 });
 </script>

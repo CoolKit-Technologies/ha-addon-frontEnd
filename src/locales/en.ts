@@ -33,6 +33,7 @@ export const en = {
     },
 
     card: {
+        rhythm: 'Rhythm',
         status: 'Status',
         remotenum: 'Number of remotes',
         unsupport: 'Device is not supported currently',

@@ -12,7 +12,7 @@
             ref="color-input"
             class="color-input-hide"
             type="color"
-            disabled="!cardData.online"
+            :disabled="!cardData.online"
         />
         <div class="color-box" @click.stop="firePickColor">
             <div class="color" :style="{ backgroundColor: bgColor }"></div>

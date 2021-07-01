@@ -33,6 +33,7 @@ export const zh = {
     },
 
     card: {
+        rhythm: '声源',
         status: '状态',
         remotenum: '遥控器数量',
         unsupport: '设备暂不支持',
