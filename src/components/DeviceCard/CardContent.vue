@@ -88,7 +88,7 @@
             </div>
             <!-- rhythm light strip -->
             <div v-else-if="isRhythmLtStrip && cardData.params.switch === 'on'">
-                <color-picker class="mg-14" :cardData="cardData"/>
+                <color-picker class="mg-14" :cardData="cardData" />
                 <ctrl-slider class="mg-14" type="brightness" :cardData="cardData" />
                 <ctrl-slider class="mg-14" type="color-temp" :cardData="cardData" />
                 <rhythm-switch class="mg-14" :cardData="cardData" />
@@ -106,16 +106,8 @@
                 <div class="gauge" v-if="cardData.params.humidity !== 'unavailable' || cardData.params.temperature !== 'unavailable'">
                     <!-- <humi-gauge v-if="cardData.params.humidity !== 'unavailable'" :value="cardData.params.humidity / 100" />
                     <temp-gauge v-if="cardData.params.temperature !== 'unavailable'" :value="cardData.params.temperature / 100" /> -->
-                    <humi-gauge
-                        v-if="cardData.params.humidity !== 'unavailable'"
-                        :value="(cardData.params.humidity / 100)"
-                        />
-                    <temp-gauge
-                        v-if="cardData.params.temperature !== 'unavailable'"
-                        :value="(cardData.params.temperature / 100)"
-                        tempUnit="c"
-                    />
-
+                    <humi-gauge v-if="cardData.params.humidity !== 'unavailable'" :value="cardData.params.humidity / 100" />
+                    <temp-gauge v-if="cardData.params.temperature !== 'unavailable'" :value="cardData.params.temperature / 100" tempUnit="c" />
                 </div>
             </div>
             <!--  other zigbee  -->
@@ -123,9 +115,9 @@
                 <other-zigbee-item class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
             </div>
 
-            <!--  rf-bridge  -->
-            <div v-else-if="isRFBridge">
-                <r-f-bridge-content class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
+            <!-- fan-light -->
+            <div v-else-if="isFanLight">
+                <fan class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
             </div>
         </div>
     </div>
@@ -158,6 +150,7 @@ import RhythmSwitch from '@/components/CtrlItem/RhythmSwitch.vue';
 import OtherZigbeeItem from '@/components/CtrlItem/OtherZigbeeItem.vue';
 import RfGateway from '@/components/CtrlItem/RfGateway.vue';
 import RFBridgeContent from '@/components/CtrlItem/RFBridgeContent.vue';
+import Fan from '@/components/CtrlItem/Fan.vue';
 export default defineComponent({
     name: 'CardContent',
 
@@ -177,6 +170,7 @@ export default defineComponent({
         OtherZigbeeItem,
         RFBridgeContent,
         RfGateway,
+        Fan,
     },
 
     props: {
@@ -303,6 +297,10 @@ export default defineComponent({
         isRhythmLtStrip() {
             const { uiid } = this.cardData as any;
             return uiid === 59;
+        },
+        isFanLight() {
+            const { uiid } = this.cardData as any;
+            return uiid === 34;
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;

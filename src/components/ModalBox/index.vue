@@ -1,34 +1,15 @@
 <template>
-    <a-modal
-        :visible="modalVisible"
-        :footer="null"
-        :destroyOnClose="true"
-        :maskClosable="false"
-        @cancel="handleClose"
-        class="modal-box"
-    >
+    <a-modal :visible="modalVisible" :footer="null" :destroyOnClose="true" :maskClosable="false" @cancel="handleClose" class="modal-box">
         <!-- modal title -->
         <template #title v-if="modalType && modalType !== 'login'">
             <span class="title">{{ modalParams && modalParams.deviceName }}</span>
-            <span
-                class="more"
-                v-if="modalType !== 'device'"
-                @click="() => setModalType('device')"
-            >
+            <span class="more" v-if="modalType !== 'device'" @click="() => setModalType('device')">
                 {{ $t('modal.deviceSettings') }}
             </span>
-            <span
-                class="more"
-                v-else-if="showChannelSettings()"
-                @click="() => setModalType('channelSettings')"
-            >
+            <span class="more" v-else-if="showChannelSettings()" @click="() => setModalType('channelSettings')">
                 {{ $t('modal.channelSettings') }}
             </span>
-            <span
-                class="more"
-                v-else-if="showStats()"
-                @click="() => setModalType('stats')"
-            >
+            <span class="more" v-else-if="showStats()" @click="() => setModalType('stats')">
                 {{ $t('modal.stats') }}
             </span>
         </template>
@@ -45,7 +26,6 @@
 import { defineComponent } from 'vue';
 import _ from 'lodash';
 import { mapState, mapMutations, mapActions } from 'vuex';
-
 import LoginForm from './LoginForm.vue';
 import DeviceCtrl from './DeviceCtrl.vue';
 import ChannelSettings from './ChannelSettings.vue';

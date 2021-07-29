@@ -23,7 +23,7 @@ import ControlCircle from '@/components/CtrlItem/ControlCircle.vue';
 import SlideControl from '@/components/CtrlItem/SlideControl.vue';
 import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 
-import { curtainControl } from '@/api/device'
+import { curtainControl } from '@/api/device';
 
 export default defineComponent({
     name:'Curtain',

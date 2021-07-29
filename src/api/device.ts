@@ -192,16 +192,16 @@ export async function toggleAllChannels(v: boolean, data: any) {
                 apikey,
                 id: deviceId,
                 params: {
-                    state: v ? 'on' : 'off'
-                }
+                    state: v ? 'on' : 'off',
+                },
             });
         } else {
             await setCloudDevice({
                 apikey,
                 id: deviceId,
                 params: {
-                    switch: v ? 'on' : 'off'
-                }
+                    switch: v ? 'on' : 'off',
+                },
             });
         }
     } else {
@@ -354,8 +354,8 @@ export async function toggleInchingMode(v: boolean, data: any, value: number, in
             type: 'pulse',
             params: {
                 state: v ? 'on' : 'off',
-                width: v ? value : 500
-            }
+                width: v ? value : 500,
+            },
         });
         return;
     } else if (isOneChannelSPDevice(uiid)) {
@@ -364,8 +364,8 @@ export async function toggleInchingMode(v: boolean, data: any, value: number, in
             id: deviceId,
             params: {
                 pulse: v ? 'on' : 'off',
-                pulseWidth: v ? value : 500
-            }
+                pulseWidth: v ? value : 500,
+            },
         });
         return;
     } else if (uiid === 126) {
@@ -379,8 +379,8 @@ export async function toggleInchingMode(v: boolean, data: any, value: number, in
         apikey,
         id: deviceId,
         params: {
-	        pulses
-        }
+            pulses,
+        },
     });
 }
 
@@ -401,7 +401,7 @@ export async function setPowerOnState(v: string, data: any, i: number) {
             },
         });
         return;
-    } else if (isMultiChannelDevice(uiid) || isOneChannelSwOrSockCPDevice(uiid) || uiid === 126) {
+    } else if (isMultiChannelDevice(uiid) || isOneChannelSwOrSockCPDevice(uiid) || uiid === 126 || uiid === 34) {
         // Multi-channel + OneChannelSwOrSock + DualR3
         const configure = _.get(data, ['params', 'configure'], []);
         _.set(configure, [i, 'startup'], v);
@@ -433,13 +433,11 @@ export async function startStatistic(startTime: string, data: any) {
     const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {},
     };
     if (uiid === 126) {
-        cardIndex === 1
-            ? _.assign(params.params, { startTime_01: startTime, endTime_01: '' })
-            : _.assign(params.params, { startTime_00: startTime, endTime_00: '' });
+        cardIndex === 1 ? _.assign(params.params, { startTime_01: startTime, endTime_01: '' }) : _.assign(params.params, { startTime_00: startTime, endTime_00: '' });
     } else {
         _.assign(params.params, {
             onKwh: 'start',
@@ -460,16 +458,14 @@ export async function endStatistic(startTime: string, endTime: string, data: any
     const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {},
     };
     if (uiid === 126) {
-        cardIndex === 1
-            ? _.assign(params.params, { startTime_01: startTime, endTime_01: endTime })
-            : _.assign(params.params, { startTime_00: startTime, endTime_00: endTime });
+        cardIndex === 1 ? _.assign(params.params, { startTime_01: startTime, endTime_01: endTime }) : _.assign(params.params, { startTime_00: startTime, endTime_00: endTime });
     } else {
         _.assign(params.params, {
-            onKwh: "stop",
+            onKwh: 'stop',
             startTime: startTime,
             endTime: endTime,
         });
@@ -485,15 +481,13 @@ export async function refreshStatistic(data: any) {
     const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {},
     };
     if (uiid === 126) {
-        cardIndex === 1
-            ? _.assign(params.params, { getKwh_01: 1 })
-            : _.assign(params.params, { getKwh_00: 1 });
+        cardIndex === 1 ? _.assign(params.params, { getKwh_01: 1 }) : _.assign(params.params, { getKwh_00: 1 });
     } else {
-        _.assign(params.params, { oneKwh: "get" });
+        _.assign(params.params, { oneKwh: 'get' });
     }
     return await setCloudDevice(params);
 }
@@ -501,23 +495,23 @@ export async function refreshStatistic(data: any) {
 /**
  * get history use power data
  */
-export async function getHistoryData(data:any) {
-    const {deviceId,apikey,uiid,cardIndex} = data
+export async function getHistoryData(data: any) {
+    const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {},
     };
-    if(uiid === 126){
-        cardIndex === 1 ? _.assign(params.params,{getKwh_01: 2}) : _.assign(params.params,{getKwh_00: 2})
-    }else{
-        _.assign(params.params,{ hundredDaysKwh: 'get' })
+    if (uiid === 126) {
+        cardIndex === 1 ? _.assign(params.params, { getKwh_01: 2 }) : _.assign(params.params, { getKwh_00: 2 });
+    } else {
+        _.assign(params.params, { hundredDaysKwh: 'get' });
     }
     const res = await setCloudDevice(params);
-    if(res.error === 0 && res.data && res.data.config){
-        if(uiid === 126){
+    if (res.error === 0 && res.data && res.data.config) {
+        if (uiid === 126) {
             return cardIndex === 1 ? res.data.config.kwhHistories_01 : res.data.config.kwhHistories_00;
-        }else{
+        } else {
             return res.data.config.hundredDaysKwhData;
         }
     }
@@ -526,13 +520,13 @@ export async function getHistoryData(data:any) {
 /**
  * curtain control button
  */
-export async function curtainControl(data:any,action:string) {
-    const {deviceId,apikey} = data;
+export async function curtainControl(data: any, action: string) {
+    const { deviceId, apikey } = data;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {
-            switch:action
+            switch: action,
         },
     };
     await setCloudDevice(params);
@@ -540,13 +534,13 @@ export async function curtainControl(data:any,action:string) {
 /**
  *  set curtain value slider
  */
-export async function setCurtainValue(data:any,value:number) {
-    const {deviceId,apikey} = data;
+export async function setCurtainValue(data: any, value: number) {
+    const { deviceId, apikey } = data;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {
-            setclose:value
+            setclose: value,
         },
     };
     console.log(`ML ~ file: device.ts ~ line 529 ~ setCurtainValue ~ params`, params);
@@ -555,35 +549,35 @@ export async function setCurtainValue(data:any,value:number) {
 /**
  * set five bulb color temp
  */
-export async function setFiveColorBulbTemp(data:any,type:string) {
+export async function setFiveColorBulbTemp(data: any, type: string) {
     const { deviceId, apikey } = data;
-    const { channel0,channel1 } = data.params;
+    const { channel0, channel1 } = data.params;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {
-            type:type,
-            zyx_mode:1
+            type: type,
+            zyx_mode: 1,
         },
     };
-    const max = `${Math.max(parseInt(channel0),parseInt(channel1),25)}`;
-    switch(type){
+    const max = `${Math.max(parseInt(channel0), parseInt(channel1), 25)}`;
+    switch (type) {
         case 'middle':
-            _.assign(params.params,{
+            _.assign(params.params, {
                 channel0: max,
-                channel1: max
+                channel1: max,
             });
             break;
         case 'warm':
-            _.assign(params.params,{
+            _.assign(params.params, {
                 channel0: '0',
-                channel1: max
+                channel1: max,
             });
             break;
         case 'cold':
-            _.assign(params.params,{
+            _.assign(params.params, {
                 channel0: max,
-                channel1: '0'
+                channel1: '0',
             });
             break;
     }
@@ -593,22 +587,22 @@ export async function setFiveColorBulbTemp(data:any,type:string) {
 /**
  * set color picker
  */
-export async function setPickerColor(data:any,obj:any) {
-    const { deviceId, apikey,uiid } = data;
+export async function setPickerColor(data: any, obj: any) {
+    const { deviceId, apikey, uiid } = data;
 
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {},
     };
-    if(uiid === 104){
-        _.assign(params.params,{
-            ltype:"color",
-            color:{
-                ...obj
-            }
-        })
-    }else if(uiid === 22){
+    if (uiid === 104) {
+        _.assign(params.params, {
+            ltype: 'color',
+            color: {
+                ...obj,
+            },
+        });
+    } else if (uiid === 22) {
         _.assign(params.params, {
             zyx_mode: 2,
             channel0: '0',
@@ -617,35 +611,35 @@ export async function setPickerColor(data:any,obj:any) {
             channel3: `${obj.g}`,
             channel4: `${obj.b}`,
         });
-    }else if(uiid === 59){
-        _.assign(params.params,{
-            mode:1,
+    } else if (uiid === 59) {
+        _.assign(params.params, {
+            mode: 1,
             colorR: obj.r,
             colorG: obj.g,
             colorB: obj.b,
-            light_type: 1
-        })
+            light_type: 1,
+        });
     }
     console.log(`ML ~ file: device.ts ~ line 605 ~ setPickerColor ~ params`, params);
     await setCloudDevice(params);
 }
 
 //  change five light mode
-export async function setFiveLtMode(data:any){
-    const { deviceId, apikey,uiid } = data;
+export async function setFiveLtMode(data: any) {
+    const { deviceId, apikey, uiid } = data;
     let params = {
         id: deviceId,
-        apikey:apikey,
+        apikey: apikey,
         params: {},
     };
-    if(uiid === 104){
-        _.assign(params.params,{
-            switch:'on'
-        })
-    }else if(uiid === 22){
-        _.assign(params.params,{
-            state:'on'
-        })
+    if (uiid === 104) {
+        _.assign(params.params, {
+            switch: 'on',
+        });
+    } else if (uiid === 22) {
+        _.assign(params.params, {
+            state: 'on',
+        });
     }
     await setCloudDevice(params);
 }
@@ -668,6 +662,6 @@ export async function updateRemoteOrButtonName(nameType: 'remote' | 'button', da
     }
     await setTags({
         id: deviceId,
-        tags
+        tags,
     });
 }

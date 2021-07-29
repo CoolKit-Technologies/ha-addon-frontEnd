@@ -6,62 +6,44 @@
         <!-- Set remote and button name -->
         <template v-if="isRfSub">
             <device-name type="remote" />
-            <device-name
-                type="button"
-                v-for="(item, i) in modalParams.tags.zyx_info[modalParams.cardIndex].buttonName"
-                :key="i"
-                :index="i"
-            />
+            <device-name type="button" v-for="(item, i) in modalParams.tags.zyx_info[modalParams.cardIndex].buttonName" :key="i" :index="i" />
         </template>
 
         <!-- Toggle device network LED -->
-        <ctrl-switch
-            v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub)"
-            type="led"
-        />
+        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight)" type="led" />
 
         <!-- Toggle multi-channel device interlock -->
-        <ctrl-switch
-            v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub"
-            type="lock"
-        />
+        <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub" type="lock" />
 
         <!-- Set device inching mode -->
         <inching-mode
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5 || isZigbee || isWifiDoorSensor || isRfGw || isRfSub)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5 || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight)"
         />
 
         <!-- Set device power on state -->
         <ctrl-select
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight)"
             type="power-on-state"
         />
+        <!-- fanlight power on state -->
+        <template v-if="isFanLight">
+            <ctrl-select :index="0" type="power-on-state" />
+            <ctrl-select :index="1" type="power-on-state" />
+        </template>
 
         <!-- Set temperature unit -->
         <temperature-unit v-if="modalParams.uiid === 15 && hasCurTempFunc" />
 
         <!-- Set rhythm light strip mode -->
-        <ctrl-select
-            v-if="modalParams.uiid === 59"
-            type="rhythm-light-strip"
-        />
+        <ctrl-select v-if="modalParams.uiid === 59" type="rhythm-light-strip" />
 
         <!-- Set five color bulb light mode -->
-        <ctrl-select
-            v-if="modalParams.uiid === 22"
-            type="five-color-bulb-light"
-        />
+        <ctrl-select v-if="modalParams.uiid === 22" type="five-color-bulb-light" />
 
-        <ctrl-select
-            v-if="modalParams.uiid === 103"
-            type="two-color-light"
-        />
+        <ctrl-select v-if="modalParams.uiid === 103" type="two-color-light" />
 
         <!-- Set five color light mode -->
-        <ctrl-select
-            v-if="modalParams.uiid === 104"
-            type="five-color-light"
-        />
+        <ctrl-select v-if="modalParams.uiid === 104" type="five-color-light" />
 
         <!-- Set device disable -->
         <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
@@ -92,13 +74,13 @@ export default defineComponent({
         TemperatureUnit,
         InchingMode,
         FirmwareUpgrade,
-        CtrlSelect
+        CtrlSelect,
     },
 
     computed: {
         isDiyDevice() {
             const { type, uiid } = this.modalParams as any;
-            return (type === 1 && uiid === 1);
+            return type === 1 && uiid === 1;
         },
         hasCurTempFunc() {
             const { params } = this.modalParams as any;
@@ -110,7 +92,7 @@ export default defineComponent({
         },
         isOldUiid15Device() {
             const { params } = this.modalParams as any;
-            return (params.currentHumidity === 'unavailable' && params.currentTemperature === 'unavailable');
+            return params.currentHumidity === 'unavailable' && params.currentTemperature === 'unavailable';
         },
         isMultiChannel() {
             const { uiid } = this.modalParams as any;
@@ -118,9 +100,9 @@ export default defineComponent({
         },
         isLight() {
             const { uiid } = this.modalParams as any;
-            return (uiid === 59 || uiid === 22 || uiid === 103 || uiid === 104);
+            return uiid === 59 || uiid === 22 || uiid === 103 || uiid === 104;
         },
-        isCurtain(){
+        isCurtain() {
             const { uiid } = this.modalParams as any;
             return uiid === 11;
         },
@@ -131,6 +113,10 @@ export default defineComponent({
         isWifiDoorSensor() {
             const { uiid } = this.modalParams as any;
             return uiid === 102;
+        },
+        isFanLight() {
+            const { uiid } = this.modalParams as any;
+            return uiid === 34;
         },
         // is RF gateway
         isRfGw() {

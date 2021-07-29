@@ -473,6 +473,7 @@ export function isSupportedDevice(uiid: number) {
         22,
         28,
         32,
+        34,
         59,
         77,
         78,
@@ -484,6 +485,7 @@ export function isSupportedDevice(uiid: number) {
         113,
         114,
         126,
+        138,
         1000,
         1009,
         1256,
@@ -528,6 +530,7 @@ export function isPureSwOrSockDevice(uiid: number) {
         112,
         113,
         114,
+        138,
         1009,
         1256
     ];
@@ -629,7 +632,8 @@ export function isOneChannelSwOrSockCPDevice(uiid: number) {
         77,
         78,
         107,
-        112
+        112,
+        138,
     ];
     return uiids.indexOf(uiid) !== -1;
 }

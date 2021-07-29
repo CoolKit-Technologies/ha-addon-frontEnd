@@ -10,6 +10,7 @@
         "ant-design-vue": "^2.1.6",
         "axios": "^0.21.1",
         "core-js": "^3.6.5",
+        "crypto-js": "^4.1.1",
         "echarts": "^5.1.1",
         "lodash": "^4.17.21",
         "vue": "^3.0.0",
@@ -19,6 +20,7 @@
         "vuex": "^4.0.0-0"
     },
     "devDependencies": {
+        "@types/crypto-js": "^4.0.2",
         "@vue/cli-plugin-babel": "~4.5.0",
         "@vue/cli-plugin-router": "~4.5.0",
         "@vue/cli-plugin-typescript": "~4.5.0",

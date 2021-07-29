@@ -15,7 +15,7 @@ export default createStore({
         windowSize: 'lg',
 
         // Hold on until page complete
-        pageLoading: true,
+        pageLoading: false,
 
         // Component 'ModalBox' visibility
         modalVisible: false,
