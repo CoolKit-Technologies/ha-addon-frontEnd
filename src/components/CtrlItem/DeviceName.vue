@@ -3,7 +3,7 @@
         <div class="title">{{ title }}</div>
         <div class="input-box">
             <a-input v-model:value="value" v-if="editable" :maxlength="14" />
-            <p class="text" v-else>{{ value }}</p>
+            <p class="text" v-else>{{ value ? value : `${$t('card.channel')}${index + 1}` }}</p>
             <div class="action" @click="handleSave">
                 <SaveOutlined v-if="editable" />
                 <EditOutlined v-else />
@@ -45,8 +45,8 @@ export default defineComponent({
             required: false,
         },
         index: {
-            default: 0
-        }
+            default: 0,
+        },
     },
 
     computed: {
@@ -86,7 +86,7 @@ export default defineComponent({
         if (this.type === 'device') {
             this.value = this.modalParams.deviceName;
         } else if (this.type === 'channel') {
-            this.value = this.modalParams.tags[this.index];
+            this.value = this.modalParams.tags ? this.modalParams.tags[this.index] : '';
         } else if (this.type === 'remote') {
             this.value = this.modalParams.tags.zyx_info[this.modalParams.cardIndex].name;
         } else if (this.type === 'button') {
@@ -112,6 +112,7 @@ export default defineComponent({
         .text
             margin 0
             width 100%
+            height 29px
             padding 4px 11px
             border-bottom 1px solid #e8e8e8
     .ant-input

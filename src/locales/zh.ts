@@ -63,6 +63,7 @@ export const zh = {
         curtainallon: '全开',
         curtainalloff: '全关',
         color: '颜色',
+        darkest: '最暗值',
         zigbee: {
             doorlock: '关闭',
             dooropen: '打开',
@@ -125,6 +126,7 @@ export const zh = {
             soft: '柔光',
             vivid: '缤纷',
             computer: '工作',
+            work: '工作',
             nightlight: '夜灯',
             read: '阅读',
 
@@ -139,6 +141,12 @@ export const zh = {
             diybre: 'DIY 跳变',
             diygra: 'DIY 渐变',
             diystr: 'DIY 频闪',
+        },
+        miniR3: {
+            on: '打开',
+            off: '关闭',
+            remove:'删除',
+            scene: '轻智能场景',
         },
     },
 };

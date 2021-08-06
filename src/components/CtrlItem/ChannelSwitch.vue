@@ -13,7 +13,7 @@
             />
         </div>
         <div class="text">
-            <p class="title">{{ title }}</p>
+            <p class="title">{{ title ? title : `${$t('card.channel')}${index + 1}` }}</p>
         </div>
         <div class="action">
             <a-switch

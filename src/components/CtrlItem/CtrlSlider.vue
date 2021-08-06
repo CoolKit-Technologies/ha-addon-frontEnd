@@ -1,33 +1,18 @@
 <template>
     <div class="ctrl-slider">
-        <div class="icon">
-            <img
-                v-if="type === 'brightness'"
-                src="@/assets/light-brightness.png"
-                alt="Light brightness"
-            />
-            <img
-                v-else-if="type === 'color-temp'"
-                src="@/assets/color-temp.png"
-                alt="Color temperature"
-            />
-            <img
-                v-else-if="type === 'curtain'"
-                src="@/assets/curtain.png"
-                alt="Curtain"
-            />
+        <div class="text-in-modal" v-if="type === 'darkest'">
+            <span class="title">{{ title }}</span>
         </div>
-        <div class="text">
+        <div class="icon">
+            <img v-if="type === 'brightness' || type === 'darkest'" src="@/assets/light-brightness.png" alt="Light brightness" />
+            <img v-else-if="type === 'color-temp'" src="@/assets/color-temp.png" alt="Color temperature" />
+            <img v-else-if="type === 'curtain'" src="@/assets/curtain.png" alt="Curtain" />
+        </div>
+        <div class="text" v-if="type !== 'darkest'">
             <span class="title">{{ title }}</span>
         </div>
         <div class="action" :style="actionStyle" @click="handleClick">
-            <a-slider
-                v-model:value="progressValue"
-                :disabled="!cardData.online"
-                :min="min"
-                :max="max"
-                @afterChange="handleChange"
-            />
+            <a-slider v-model:value="progressValue" :disabled="!cardData.online" :min="min" :max="max" @afterChange="handleChange" />
         </div>
     </div>
 </template>
@@ -195,33 +180,35 @@ export default defineComponent({
         // 'color-temp'
         // 'curtain'
         type: {
-            required: true
+            required: true,
         },
         cardData: {
-            required: true
-        }
+            required: true,
+        },
     },
-    data(){
+    data() {
         return {
-            progressValue:0
-        }
+            progressValue: 0,
+        };
     },
 
     computed: {
         actionStyle() {
             const { type } = this as any;
             return {
-                background: type === 'color-temp' ? 'linear-gradient(to right, #AAD3FF 0%, #FBFDFF 50%, #FFA205 100%)' : 'auto'
+                background: type === 'color-temp' ? 'linear-gradient(to right, #AAD3FF 0%, #FBFDFF 50%, #FFA205 100%)' : 'auto',
             };
         },
         title() {
-            const { type, $t, } = this as any;
+            const { type, $t } = this as any;
             if (type === 'brightness') {
                 return $t('card.brightness');
             } else if (type === 'color-temp') {
                 return $t('card.colortemp');
             } else if (type === 'curtain') {
                 return $t('card.manual');
+            } else if (type === 'darkest') {
+                return $t('card.darkest');
             } else {
                 return '';
             }
@@ -229,9 +216,9 @@ export default defineComponent({
         min() {
             const { uiid } = this.$props.cardData as any;
             if (this.type === 'brightness') {
-                if(uiid === 22){
-                    return 25
-                }else{
+                if (uiid === 22) {
+                    return 25;
+                } else {
                     return 1;
                 }
             } else {
@@ -241,31 +228,33 @@ export default defineComponent({
         max() {
             const { uiid } = this.$props.cardData as any;
             if (this.type === 'color-temp') {
-                if(uiid === 22 || uiid === 103 || uiid === 104){
+                if (uiid === 22 || uiid === 103 || uiid === 104) {
                     return 255;
-                }else if(uiid === 59){
+                } else if (uiid === 59) {
                     return 142;
                 }
-            }else {
+            } else if (this.type === 'darkest') {
+                return 255;
+            } else {
                 return 100;
             }
         },
     },
-    watch:{
-        '$props.cardData':function (newV,oldV) {
-            const { uiid, params} = newV;
+    watch: {
+        '$props.cardData': function(newV, oldV) {
+            const { uiid, params } = newV;
             if (this.type === 'brightness') {
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = params[params.ltype].br;
-                }else if(uiid === 22){
-                    this.progressValue = Math.max(parseInt(params.channel0),parseInt(params.channel1));
-                }else if(uiid === 59){
+                } else if (uiid === 22) {
+                    this.progressValue = Math.max(parseInt(params.channel0), parseInt(params.channel1));
+                } else if (uiid === 59) {
                     this.progressValue = params.bright;
                 }
             } else if (this.type === 'color-temp') {
                 if (uiid === 103) {
                     this.progressValue = 255 - params[params.ltype].ct;
-                }else if(uiid === 59){
+                } else if (uiid === 59) {
                     const { colorR, colorG, colorB } = params;
                     const rgb = `${colorR},${colorG},${colorB}`;
                     console.log(`ML ~ file: CtrlSlider.vue ~ line 293 ~ setDefaultValue ~ rgb`, rgb);
@@ -275,37 +264,41 @@ export default defineComponent({
                 }
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose;
+            } else if (this.type === 'Darkest') {
+                this.progressValue = params.brightMin;
             }
-        }
+        },
     },
     methods: {
         handleClick(e: any) {
             e.stopPropagation();
         },
-        setDefaultValue(){
-            const { uiid, params} = this.cardData as any;
+        setDefaultValue() {
+            const { uiid, params } = this.cardData as any;
             console.log(`ML ~ file: CtrlSlider.vue ~ line 127 ~ setDefaultValue ~ params`, params);
             if (this.type === 'brightness') {
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = params[params.ltype].br;
-                }else if(uiid === 22){
-                    this.progressValue = Math.max(parseInt(params.channel0),parseInt(params.channel1));
-                }else if(uiid === 59){
+                } else if (uiid === 22) {
+                    this.progressValue = Math.max(parseInt(params.channel0), parseInt(params.channel1));
+                } else if (uiid === 59) {
                     this.progressValue = params.bright;
+                } else if (uiid === 44) {
+                    this.progressValue = params.brightness;
                 }
             } else if (this.type === 'color-temp') {
                 if (uiid === 103) {
                     this.progressValue = 255 - params[params.ltype].ct;
-                }else if(uiid === 59){
+                } else if (uiid === 59) {
                     const { colorR, colorG, colorB } = params;
                     const rgb = `${colorR},${colorG},${colorB}`;
-                    console.log(`ML ~ file: CtrlSlider.vue ~ line 293 ~ setDefaultValue ~ rgb`, rgb);
                     const value = fakeTempList.indexOf(rgb);
-                    console.log(`ML ~ file: CtrlSlider.vue ~ line 295 ~ setDefaultValue ~ value`, value);
                     this.progressValue = value ? value : 0;
                 }
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose;
+            } else if (this.type === 'darkest') {
+                this.progressValue = params.brightMin;
             }
         },
         handleChange(v: number) {
@@ -315,6 +308,8 @@ export default defineComponent({
                 this.setColorTemp(v);
             } else if (this.type === 'curtain') {
                 this.setCurtain(v);
+            } else if (this.type === 'darkest') {
+                this.setDarkest(v);
             }
         },
         async setBrightness(v: number) {
@@ -328,47 +323,57 @@ export default defineComponent({
                         ltype: 'white',
                         white: {
                             br: v,
-                            ct: params.white.ct
-                        }
-                    }
+                            ct: params.white.ct,
+                        },
+                    },
                 });
-            }else if(uiid === 22){
+            } else if (uiid === 22) {
                 let obj = {
                     apikey,
                     id: deviceId,
-                    params: {}
-                }
+                    params: {},
+                };
                 console.log(`ML ~ file: CtrlSlider.vue ~ line 148 ~ setBrightness ~ params`, params);
-                switch(params.type){
+                switch (params.type) {
                     case 'warm':
-                        _.assign(obj.params,{
+                        _.assign(obj.params, {
                             channel0: '25',
-                            channel1: `${v}`
-                        })
+                            channel1: `${v}`,
+                        });
                         break;
                     case 'middle':
-                        _.assign(obj.params,{
+                        _.assign(obj.params, {
                             channel0: `${v}`,
-                            channel1: `${v}`
-                        })
+                            channel1: `${v}`,
+                        });
                         break;
                     case 'cold':
-                        _.assign(obj.params,{
+                        _.assign(obj.params, {
                             channel0: `${v}`,
-                            channel1: '25'
-                        })
+                            channel1: '25',
+                        });
                         break;
                 }
                 console.log(`ML ~ file: CtrlSlider.vue ~ line 161 ~ setBrightness ~ obj`, obj);
                 await setCloudDevice(obj);
-            }else if(uiid === 59){
+            } else if (uiid === 59) {
                 await setCloudDevice({
                     apikey,
                     id: deviceId,
                     params: {
                         mode: 1,
-                        bright: v
-                    }
+                        bright: v,
+                    },
+                });
+            } else if (uiid === 44) {
+                // dimming
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+                        mode: 0,
+                        brightness: v,
+                    },
                 });
             }
         },
@@ -383,46 +388,62 @@ export default defineComponent({
                         ltype: 'white',
                         white: {
                             br: params.white.br,
-                            ct: 255 - v
-                        }
-                    }
+                            ct: 255 - v,
+                        },
+                    },
                 });
-            }else if(uiid === 59){
+            } else if (uiid === 59) {
                 const rgb = fakeTempList[v].split(',');
                 console.log(`ML ~ file: CtrlSlider.vue ~ line 387 ~ setColorTemp ~ rgb`, rgb);
                 await setCloudDevice({
                     apikey,
                     id: deviceId,
                     params: {
-                        mode:1,
-                        light_type:2,
+                        mode: 1,
+                        light_type: 2,
                         colorR: parseInt(rgb[0]),
                         colorG: parseInt(rgb[1]),
-                        colorB: parseInt(rgb[2])
-                    }
+                        colorB: parseInt(rgb[2]),
+                    },
                 });
             }
         },
         async setCurtain(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;
-            console.log('set curtain',v);
-            
+            console.log('set curtain', v);
+
             await setCloudDevice({
                 id: deviceId,
-                apikey:apikey,
+                apikey: apikey,
                 params: {
-                    setclose:v
+                    setclose: v,
                 },
             });
-        }
+        },
+        async setDarkest(v: number) {
+            const { uiid, params, deviceId, apikey } = this.cardData as any;
+            console.log('set curtain', v);
+
+            await setCloudDevice({
+                id: deviceId,
+                apikey: apikey,
+                params: {
+                    switch: 'on',
+                    brightMin: v,
+                    brightMax: 255,
+                    brightness: 1,
+                    mode: 0,
+                },
+            });
+        },
     },
 
     mounted() {
-        this.setBrightness = _.throttle(this.setBrightness, 500, { 'leading': false, 'trailing': true }) as any;
-        this.setColorTemp = _.throttle(this.setColorTemp, 500, { 'leading': false, 'trailing': true }) as any;
-        this.setCurtain = _.throttle(this.setCurtain, 500, { 'leading': false, 'trailing': true }) as any;
-        this.setDefaultValue()
-    }
+        this.setBrightness = _.throttle(this.setBrightness, 500, { leading: false, trailing: true }) as any;
+        this.setColorTemp = _.throttle(this.setColorTemp, 500, { leading: false, trailing: true }) as any;
+        this.setCurtain = _.throttle(this.setCurtain, 500, { leading: false, trailing: true }) as any;
+        this.setDefaultValue();
+    },
 });
 </script>
 
@@ -435,16 +456,19 @@ export default defineComponent({
         display flex
         justify-content center
         align-items center
-        width 32px
-        height 32px
         & > img
             width 22px
             height 22px
 
+    .icon-right
+        width 22px
+        height 22px
+
     .text
         margin 0 14px
         min-width 80px
-
+    .text-in-modal
+        margin 0 48px 0 0;
     .action
         flex 1
         height 26px

@@ -119,6 +119,11 @@
             <div v-else-if="isFanLight">
                 <fan class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
             </div>
+
+            <!-- dimming -->
+            <div v-else-if="isDimming">
+                <ctrl-slider type="brightness" class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
+            </div>
         </div>
     </div>
 </template>
@@ -301,6 +306,10 @@ export default defineComponent({
         isFanLight() {
             const { uiid } = this.cardData as any;
             return uiid === 34;
+        },
+        isDimming() {
+            const { uiid } = this.cardData as any;
+            return uiid === 44;
         },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;

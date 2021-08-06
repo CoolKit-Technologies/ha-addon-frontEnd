@@ -10,14 +10,28 @@
         </template>
 
         <!-- Toggle device network LED -->
-        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight)" type="led" />
+        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming)" type="led" />
 
         <!-- Toggle multi-channel device interlock -->
-        <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub" type="lock" />
+        <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3" type="lock" />
 
         <!-- Set device inching mode -->
         <inching-mode
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || modalParams.uiid === 5 || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight)"
+            v-if="
+                !(
+                    isMultiChannel ||
+                    isOldUiid15Device ||
+                    isLight ||
+                    isCurtain ||
+                    modalParams.uiid === 5 ||
+                    isZigbee ||
+                    isWifiDoorSensor ||
+                    isRfGw ||
+                    isRfSub ||
+                    isFanLight ||
+                    isDimming
+                )
+            "
         />
 
         <!-- Set device power on state -->
@@ -25,6 +39,7 @@
             v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight)"
             type="power-on-state"
         />
+
         <!-- fanlight power on state -->
         <template v-if="isFanLight">
             <ctrl-select :index="0" type="power-on-state" />
@@ -40,10 +55,21 @@
         <!-- Set five color bulb light mode -->
         <ctrl-select v-if="modalParams.uiid === 22" type="five-color-bulb-light" />
 
+        <!-- Set Dimming mode -->
+        <ctrl-select v-if="isDimming" type="dimming" />
+
+        <!-- Set Dimming Darkest -->
+        <ctrl-slider v-if="isDimming" type="darkest" :cardData="modalParams" />
+
         <ctrl-select v-if="modalParams.uiid === 103" type="two-color-light" />
 
         <!-- Set five color light mode -->
         <ctrl-select v-if="modalParams.uiid === 104" type="five-color-light" />
+
+        <!-- single-switch mini-R3 -->
+        <scenes-item v-if="modalParams.uiid === 138" />
+
+        <mulit-lock v-if="isMiniR3" />
 
         <!-- Set device disable -->
         <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
@@ -61,8 +87,11 @@ import DeviceName from '@/components/CtrlItem/DeviceName.vue';
 import InchingMode from '@/components/CtrlItem/InchingMode.vue';
 import TemperatureUnit from '@/components/CtrlItem/TemperatureUnit.vue';
 import CtrlSwitch from '@/components/CtrlItem/CtrlSwitch.vue';
+import CtrlSlider from '@/components/CtrlItem/CtrlSlider.vue';
 import FirmwareUpgrade from '@/components/CtrlItem/FirmwareUpgrade.vue';
 import CtrlSelect from '@/components/CtrlItem/CtrlSelect.vue';
+import ScenesItem from '@/components/CtrlItem/ScenesItem.vue';
+import MulitLock from '@/components/CtrlItem/MulitLock/MulitLock.vue';
 import { isMultiChannelDevice, isZigbeeDevice } from '@/utils/etc';
 
 export default defineComponent({
@@ -75,6 +104,9 @@ export default defineComponent({
         InchingMode,
         FirmwareUpgrade,
         CtrlSelect,
+        CtrlSlider,
+        ScenesItem,
+        MulitLock,
     },
 
     computed: {
@@ -117,6 +149,15 @@ export default defineComponent({
         isFanLight() {
             const { uiid } = this.modalParams as any;
             return uiid === 34;
+        },
+        isDimming() {
+            const { uiid } = this.modalParams as any;
+            return uiid === 44;
+        },
+
+        isMiniR3() {
+            const { uiid } = this.modalParams as any;
+            return uiid > 138 && uiid <= 141;
         },
         // is RF gateway
         isRfGw() {

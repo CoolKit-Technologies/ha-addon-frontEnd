@@ -182,6 +182,18 @@ const fiveColorLightMap: any = {
     },
 };
 
+const dimmingMap: { mode: number; switch: string; brightness: number }[] = [
+    // useless-params
+    { mode: 0, switch: 'on', brightness: 5 },
+    // night
+    { mode: 1, switch: 'on', brightness: 5 },
+    // work
+    { mode: 2, switch: 'on', brightness: 20 },
+    // reading
+    { mode: 3, switch: 'on', brightness: 50 },
+    // bright
+    { mode: 4, switch: 'on', brightness: 100 },
+];
 export default defineComponent({
     name: 'CtrlSelect',
 
@@ -380,6 +392,29 @@ export default defineComponent({
                         text: $t('modal.modeOps.nightlight'),
                     },
                 ];
+            } else if (type === 'dimming') {
+                return [
+                    {
+                        id: 0,
+                        value: 4,
+                        text: $t('modal.modeOps.bright'),
+                    },
+                    {
+                        id: 1,
+                        value: 3,
+                        text: $t('modal.modeOps.read'),
+                    },
+                    {
+                        id: 2,
+                        value: 2,
+                        text: $t('modal.modeOps.work'),
+                    },
+                    {
+                        id: 3,
+                        value: 1,
+                        text: $t('modal.modeOps.nightlight'),
+                    },
+                ];
             }
             return [];
         },
@@ -417,6 +452,12 @@ export default defineComponent({
                     apikey,
                     id: deviceId,
                     params: fiveColorLightMap[this.value],
+                });
+            } else if (this.type === 'dimming') {
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: dimmingMap[+this.value],
                 });
             }
         },
@@ -456,6 +497,11 @@ export default defineComponent({
                 this.value = this.modalParams.params.ltype;
             }
         },
+        initDimmingValue() {
+            if (this.modalParams.params.mode !== 0) {
+                this.value = this.modalParams.params.mode;
+            }
+        },
         initValue() {
             if (this.type === 'power-on-state') {
                 this.initPowerOnStateValue();
@@ -467,6 +513,8 @@ export default defineComponent({
                 this.initFiveColorBulbLightValue();
             } else if (this.type === 'five-color-light') {
                 this.initFiveColorLightValue();
+            } else if (this.type === 'dimming') {
+                this.initDimmingValue();
             }
         },
     },

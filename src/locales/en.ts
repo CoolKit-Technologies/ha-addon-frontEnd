@@ -63,6 +63,7 @@ export const en = {
         curtainallon: 'All On',
         curtainalloff: 'All Off',
         color: 'Color',
+        darkest: 'Darkest',
         zigbee: {
             doorlock: 'Close',
             dooropen: 'Open',
@@ -125,6 +126,7 @@ export const en = {
             soft: 'Soft',
             vivid: 'Vivid',
             computer: 'Computer',
+            work: 'Work',
             nightlight: 'Night Light',
             read: 'Read',
 
@@ -139,6 +141,12 @@ export const en = {
             diybre: 'DIY Breath',
             diygra: 'DIY Gradient',
             diystr: 'DIY Strobe',
+        },
+        miniR3: {
+            on: 'On',
+            off: 'Off',
+            remove: 'Delete',
+            scene: 'Scene',
         },
     },
 };

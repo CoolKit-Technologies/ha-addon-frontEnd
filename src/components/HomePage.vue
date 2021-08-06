@@ -101,9 +101,10 @@ export default defineComponent({
                 const oldList = _.cloneDeep(this.originDeviceList);
                 if (debug) {
                     console.log('SSE message received, event data:');
-                    console.log('new', newList);
-                    console.log('old', oldList);
-                    console.log('new list === old list:', _.isEqual(newList, oldList));
+                    if(!_.isEqual(newList, oldList)) {
+                        console.log('new', newList);
+                        console.log('old', oldList);
+                    }
                 }
                 if (!_.isEqual(newList, oldList)) {
                     this.setOriginDeviceList(newList);
