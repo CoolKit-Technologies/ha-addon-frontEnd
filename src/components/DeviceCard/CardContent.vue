@@ -101,6 +101,10 @@
             <div v-else-if="isRFGateway">
                 <rf-gateway :tags="cardData.tags" :online="cardData.online" />
             </div>
+            <!-- rf-bridge-child-device -->
+            <div v-else-if="isRFBridge">
+                <r-f-bridge-content :cardData="cardData" />
+            </div>
             <!--  zigbee temprature and humidity -->
             <div class="zigbee-th" v-else-if="isZigbeeTempAndHumi">
                 <div class="gauge" v-if="cardData.params.humidity !== 'unavailable' || cardData.params.temperature !== 'unavailable'">
@@ -258,8 +262,8 @@ export default defineComponent({
             return uiid === 1770;
         },
         isRFBridge() {
-            const { uiid } = this.cardData as any;
-            return uiid === 28;
+            const { uiid, cardIndex } = this.cardData as any;
+            return uiid === 28 && cardIndex !== -1;
         },
         isRFGateway() {
             const { uiid, cardIndex } = this.cardData as any;

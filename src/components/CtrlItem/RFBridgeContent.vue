@@ -25,10 +25,6 @@ export default defineComponent({
         };
     },
     props: {
-        uiid: {
-            required: true,
-            type: Number,
-        },
         cardData: {
             required: true,
         },
@@ -70,6 +66,7 @@ export default defineComponent({
                     });
                 });
             }
+            console.log("Jia ~ file: RFBridgeContent.vue ~ line 75 ~ curRemotes ~ result", result);
             return result;
         },
     },
