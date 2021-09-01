@@ -12,6 +12,11 @@ export const zh = {
         },
         slogan: '一切从连接开始 又连接一切',
         downloadapp: '马上下载易微联 App',
+        syncLovelace: '同步概览卡片',
+        sync: {
+            success: '同步成功',
+            failed: '同步失败',
+        },
     },
 
     form: {
@@ -145,7 +150,7 @@ export const zh = {
         miniR3: {
             on: '打开',
             off: '关闭',
-            remove:'删除',
+            remove: '删除',
             scene: '轻智能场景',
         },
     },

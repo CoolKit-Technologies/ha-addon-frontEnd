@@ -12,6 +12,11 @@ export const en = {
         },
         slogan: 'Works with everything',
         downloadapp: 'Download eWeLink App now',
+        syncLovelace: 'Sync Lovelace Card',
+        sync: {
+            success: 'Sync success',
+            failed: 'Sync failed',
+        },
     },
 
     form: {

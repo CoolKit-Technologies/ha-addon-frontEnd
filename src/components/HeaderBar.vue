@@ -2,19 +2,14 @@
     <div class="header-bar">
         <h1 class="header-bar__title">eWeLink Smart Home</h1>
         <div class="header-bar__action">
-            <a-button
-                v-if="!isLogin"
-                class="signin-btn"
-                size="large"
-                shape="round"
-                @click="openModalBox"
-            >
+            <a-button v-if="!isLogin" class="signin-btn" size="large" shape="round" @click="openModalBox">
                 <template #icon>
                     <user-outlined />
                 </template>
                 {{ $t('common.text.signin') }}
             </a-button>
-            <a-button style="margin-right:10px;" @click="changeLang">{{ lang }}</a-button>
+            <a-button style="margin-right: 10px;" @click="changeLang">{{ lang }}</a-button>
+            <a-button :loading="syncing" style="margin-right: 10px;" @click="syncLovelace">{{ $t('common.syncLovelace') }}</a-button>
             <sync-outlined class="action-icon" :spin="spin" @click="refresh" />
             <a-dropdown>
                 <more-outlined class="action-icon" />
@@ -47,18 +42,13 @@
 import { defineComponent } from 'vue';
 import { mapState, mapMutations, mapActions } from 'vuex';
 import { message } from 'ant-design-vue';
-import {
-    UserOutlined,
-    SyncOutlined,
-    MoreOutlined,
-    ExportOutlined,
-    QuestionOutlined
-} from '@ant-design/icons-vue';
+import { UserOutlined, SyncOutlined, MoreOutlined, ExportOutlined, QuestionOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash';
 
 import { getConfig } from '@/utils/config';
 import { openWindow } from '@/utils/etc';
 import { logout } from '@/api/user';
+import { syncLovelaceCard } from '@/api/util';
 import { getDeviceListRefresh } from '@/api/device';
 
 export default defineComponent({
@@ -69,12 +59,13 @@ export default defineComponent({
         SyncOutlined,
         MoreOutlined,
         ExportOutlined,
-        QuestionOutlined
+        QuestionOutlined,
     },
 
     data() {
         return {
-            spin: false
+            spin: false,
+            syncing: false,
         };
     },
 
@@ -86,7 +77,7 @@ export default defineComponent({
                 return 'English';
             }
         },
-        ...mapState(['isLogin'])
+        ...mapState(['isLogin']),
     },
 
     methods: {
@@ -117,7 +108,7 @@ export default defineComponent({
         openModalBox() {
             this.openModal({
                 type: 'login',
-                params: null
+                params: null,
             });
         },
         changeLang() {
@@ -131,13 +122,24 @@ export default defineComponent({
                 this.setAntdLocale('en');
             }
         },
+        async syncLovelace() {
+            // todo
+            this.$data.syncing = true;
+            const { error } = await syncLovelaceCard();
+            this.$data.syncing = false;
+            if (error) {
+                message.error(this.$t('common.sync.failed'));
+            } else {
+                message.success(this.$t('common.sync.success'));
+            }
+        },
         ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setLocale', 'setAntdLocale']),
-        ...mapActions(['openModal'])
+        ...mapActions(['openModal']),
     },
 
     mounted() {
-        this.refresh = _.throttle(this.refresh, 2200, { 'leading': true, 'trailing': false }) as any;
-    }
+        this.refresh = _.throttle(this.refresh, 2200, { leading: true, trailing: false }) as any;
+    },
 });
 </script>
 
