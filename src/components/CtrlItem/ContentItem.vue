@@ -25,6 +25,12 @@
                 class="door"
                 v-else-if="$props.type === 'zigbeeButtons'"
             />
+            <img
+                alt="zigbee-water-sensor icon"
+                src="@/assets/zigbee-water-leak.png"
+                class="door"
+                v-else-if="$props.type === 'zigbeeWaterSensor'"
+            />
         </div>
         <div class="text">
             <span>
@@ -64,6 +70,8 @@ export default defineComponent({
                     return params && params.lock === 1 ? $t('card.zigbee.dooropen') : $t('card.zigbee.doorlock');
                 case 'zigbeeMobileSensor':
                     return params && params.motion === 1 ? $t('card.zigbee.motion1') : $t('card.zigbee.motion0');
+                case 'zigbeeWaterSensor':
+                    return params && params.water === 1 ? $t('card.zigbee.waterleak') : $t('card.zigbee.waternoleak');
                 case 'zigbeeButtons':
                     switch (params && params.key){
                         case 1:
@@ -82,6 +90,7 @@ export default defineComponent({
                     return params && params.switch === 'on' ? $t('card.doorsensoropen') : $t('card.doorsensorclose');
                 case 'zigbeeDoorSensor':
                 case 'zigbeeMobileSensor':
+                case 'zigbeeWaterSensor':
                 case 'zigbeeButtons':
                     return params.trigTime ? moment(parseInt(params.trigTime)).format('YYYY-MM-DD HH:mm:ss') : moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
                 default:

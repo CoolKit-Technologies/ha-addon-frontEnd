@@ -77,6 +77,8 @@ export const en = {
             longclick: 'Long Press',
             motion0: 'Clear',
             motion1: 'Motion Detected',
+            waterleak: 'Leak detected',
+            waternoleak: 'No leak detected',
         },
         fanSwitch: 'Fan',
         lightSwitch: 'Light',

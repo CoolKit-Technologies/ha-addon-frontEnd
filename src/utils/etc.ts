@@ -495,7 +495,8 @@ export function isSupportedDevice(uiid: number) {
         1256,
         1770,
         2026,
-        3026
+        3026,
+        4026
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -669,7 +670,8 @@ export function isZigbeeDevice(uiid: number) {
         1256,
         1770,
         2026,
-        3026
+        3026,
+        4026
     ];
     return uiids.indexOf(uiid) !== -1;
 }

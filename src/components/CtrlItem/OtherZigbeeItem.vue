@@ -9,6 +9,9 @@
         <template v-if="$props.uiid === 3026">
             <content-item type="zigbeeDoorSensor" :params="$props.cardData.params"/>
         </template>
+        <template v-if="$props.uiid === 4026">
+            <content-item type="zigbeeWaterSensor" :params="$props.cardData.params"/>
+        </template>
     </div>
 </template>
 <script lang="ts">
@@ -23,6 +26,7 @@ export default defineComponent({
         //  1000
         //  2026
         //  3026
+        //  4026
         uiid:{
             required:true
         }

@@ -255,7 +255,7 @@ export default defineComponent({
         },
         isZigbeeOther() {
             const { uiid } = this.cardData as any;
-            return uiid === 1000 || uiid === 2026 || uiid === 3026;
+            return uiid === 1000 || uiid === 2026 || uiid === 3026 || uiid === 4026;
         },
         isZigbeeTempAndHumi() {
             const { uiid } = this.cardData as any;

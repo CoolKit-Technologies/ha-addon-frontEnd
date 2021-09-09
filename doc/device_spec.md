@@ -87,3 +87,5 @@
 * `uiid == 2026` - ZigBee 移动传感器
 
 * `uiid == 3026` - ZigBee 门磁
+
+* `uiid == 4026` - ZigBee 水浸传感器

@@ -77,6 +77,8 @@ export const zh = {
             longclick: '长按',
             motion0: '无人',
             motion1: '有人',
+            waterleak: '检测到有水',
+            waternoleak: '未检测到有水',
         },
         fanSwitch: '风扇开关',
         lightSwitch: '灯开关',
