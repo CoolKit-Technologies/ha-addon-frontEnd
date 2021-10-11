@@ -38,10 +38,14 @@ export const zh = {
     },
 
     card: {
+        unsupport: {
+            needsignin: '已在局域网中发现设备，请登录查看更多信息',
+            notbelong: '该设备不在你的帐号下',
+            notsupport: '暂不支持该设备',
+        },
         rhythm: '声源',
         status: '状态',
         remotenum: '遥控器数量',
-        unsupport: '设备暂不支持',
         channel: '通道',
         humidity: '湿度',
         temperature: '温度',

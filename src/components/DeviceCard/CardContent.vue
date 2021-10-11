@@ -1,7 +1,7 @@
 <template>
     <div class="card-content">
         <div v-if="isUnsupport" class="unsupport">
-            <p>{{ $t('card.unsupport') }}</p>
+            <p>{{ unsupportText }}</p>
         </div>
         <div v-else class="content">
             <!-- switch or socket devices -->
@@ -134,6 +134,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 
 import {
     isSupportedDevice,
@@ -189,6 +190,18 @@ export default defineComponent({
     },
 
     computed: {
+        unsupportText() {
+            const { uiid } = this.cardData as any;
+            const userIsLogin = this.isLogin;
+
+            if (!userIsLogin) {
+                return this.$t('card.unsupport.needsignin');
+            } else if (!uiid) {
+                return this.$t('card.unsupport.notbelong');
+            } else {
+                return this.$t('card.unsupport.notsupport');
+            }
+        },
         isUnsupport() {
             const { uiid } = this.cardData as any;
             return !isSupportedDevice(uiid);
@@ -351,6 +364,7 @@ export default defineComponent({
 
             return result;
         },
+        ...mapState(['isLogin']),
     },
 });
 </script>

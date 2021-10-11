@@ -38,10 +38,14 @@ export const en = {
     },
 
     card: {
+        unsupport: {
+            needsignin: 'Device has been discovered on the LAN, please sign in for more information',
+            notbelong: 'Device is not under your account',
+            notsupport: 'Device is not supported currently',
+        },
         rhythm: 'Rhythm',
         status: 'Status',
         remotenum: 'Number of remotes',
-        unsupport: 'Device is not supported currently',
         channel: 'Channel',
         humidity: 'Humidity',
         temperature: 'Temperature',
