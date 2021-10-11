@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ 'device-card': true, 'disabled': !cardData.online }" @click="openModalBox">
+    <div :class="{ 'device-card': true, 'disabled': !deviceOnline }" @click="openModalBox">
         <card-header :cardData="cardData" />
         <card-content :cardData="cardData" />
     </div>
@@ -27,10 +27,28 @@ export default defineComponent({
         }
     },
 
+    computed: {
+        deviceOnline() {
+            const { uiid, online } = this.cardData as any;
+            if (uiid === 102) {
+                // WiFi 门磁判断在线或不在线的逻辑不同于其它设备
+                const { params } = this.cardData as any;
+                const now = Date.now();
+                const timeout = 7500000;
+                let { actionTime, lastUpdateTime } = params;
+                actionTime = new Date(actionTime).valueOf();
+                lastUpdateTime = new Date(lastUpdateTime).valueOf();
+                return (now - actionTime < timeout) || (now - lastUpdateTime < timeout);
+            } else {
+                return online;
+            }
+        }
+    },
+
     methods: {
         openModalBox() {
-            const { uiid, online } = this.cardData as any;
-            if (isSupportedDevice(uiid) && online) {
+            const { uiid } = this.cardData as any;
+            if (isSupportedDevice(uiid) && this.deviceOnline) {
                 this.openModal({
                     type: 'device',
                     params: this.cardData
