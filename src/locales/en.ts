@@ -1,4 +1,4 @@
-export const en = {
+ const en = {
     common: {
         error: {
             getcontent: 'Get content failed',
@@ -161,3 +161,4 @@ export const en = {
         },
     },
 };
+export default en

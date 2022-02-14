@@ -1,4 +1,4 @@
-export const zh = {
+ const zh = {
     common: {
         error: {
             getcontent: '获取内容出错',
@@ -161,3 +161,4 @@ export const zh = {
         },
     },
 };
+export default zh
