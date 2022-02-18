@@ -1,7 +1,8 @@
 <template>
     <div class="home-page">
-        <header-bar />
-        <main-content />
+        <header-bar @changeMainShow="changeMainShow"/>
+        <main-content v-if="mainShow"/>
+        <home-assist v-else/>
         <modal-box />
     </div>
 </template>
@@ -16,7 +17,9 @@ import { getLocale } from '@/api/content';
 import { isLogin as userIsLogin } from '@/api/user';
 import HeaderBar from '@/components/HeaderBar.vue';
 import MainContent from '@/components/MainContent.vue';
+import HomeAssist from '@/components/HomeAssist.vue';
 import ModalBox from '@/components/ModalBox/index.vue';
+
 
 export default defineComponent({
     name: 'HomePage',
@@ -24,14 +27,17 @@ export default defineComponent({
     components: {
         HeaderBar,
         MainContent,
-        ModalBox
+        ModalBox,
+        HomeAssist
     },
 
     data() {
         return {
+            mainShow:true,//展示易微联设备
             source: null,   // SSE source
             windowResizeHandler: null
         } as {
+            mainShow:boolean;
             source: any;
             windowResizeHandler: any;
         };
@@ -121,6 +127,9 @@ export default defineComponent({
                     }
                 }
             });
+        },
+        changeMainShow(isMainShow:boolean){
+            this.mainShow = isMainShow
         },
         ...mapMutations(['setIsLogin', 'setLocale', 'setOriginDeviceList', 'setWindowSize', 'setModalParams', 'setAntdLocale'])
     }

@@ -2,6 +2,9 @@ import { createStore } from 'vuex';
 import enUS from 'ant-design-vue/es/locale/en_US';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import _ from 'lodash';
+import { getContent } from '@/api/content';
+import { message } from 'ant-design-vue';
+import { i18n } from '@/locales';
 
 import { getRegionMap } from '@/utils/etc';
 
@@ -32,6 +35,9 @@ export default createStore({
 
         // Origin device list
         originDeviceList: [],
+
+        //cms infomation
+        cmsInfo:{}
     },
 
     getters: {
@@ -117,6 +123,9 @@ export default createStore({
                 state.antdLocale = enUS as any;
             }
         },
+        setCmsInfo(state,v){
+            state.cmsInfo = v
+        }
     },
 
     actions: {
@@ -133,5 +142,15 @@ export default createStore({
             context.commit('setModalType', '');
             context.commit('setModalParams', null);
         },
+       async getCmsInfo(context){
+
+        const res = await getContent(context.rootState.locale);
+        console.log('res-------' ,res)
+        if (res.error === 0) {
+            context.commit('setCmsInfo', res.data);
+        } else {
+            message.error(i18n.global.t('common.error.getcontent'));
+        }
+        }
     },
 });

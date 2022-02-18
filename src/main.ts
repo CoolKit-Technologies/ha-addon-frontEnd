@@ -19,6 +19,7 @@ import {
     ConfigProvider,
     Carousel,
     Slider,
+    Tooltip
 } from 'ant-design-vue';
 import store from '@/store';
 import App from '@/App.vue';
@@ -54,5 +55,6 @@ app.use(Statistic);
 app.use(ConfigProvider);
 app.use(Carousel);
 app.use(Slider);
+app.use(Tooltip);
 
 app.mount('#app');

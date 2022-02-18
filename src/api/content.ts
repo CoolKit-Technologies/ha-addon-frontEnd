@@ -11,9 +11,9 @@ export interface Content {
     title: string;
 }
 
-const BASE_URL = 'https://appcms.coolkit.cn/appcms-service/v2/batch.json';
+const BASE_URL = 'https://appcms-test.coolkit.cn/appcms-service/v2/batch.json';
 const PROJECT = 'home-assistant';
-const CATEGORY = '[%22top%22,%22push%22]';
+const CATEGORY = '[%22top%22,%22push%22,%22thirdPlatform%22,%22ewelinkUserAgreement%22,%22thirdPlatformAgreement%22]';
 
 const { apiPrefix } = getConfig();
 
@@ -32,6 +32,7 @@ export async function getContent(v: string) {
         + 'category=' + CATEGORY;
 
     try {
+        console.log('url-----',url)
         const res = await axios.get(url);
         if (res.status === 200 && res.data.err === 0) {
             return {
