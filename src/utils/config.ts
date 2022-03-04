@@ -16,7 +16,7 @@ export function getConfig() {
         return {
             baseUrl: '',
             sseUrl: 'api/stream',
-            timeout: 10000,
+            timeout: 20000,
             downloadAppUrl: 'http://www.ewelink.cc/',
             apiPrefix: 'api',
             feedbackUrl: 'https://t.me/joinchat/RkXAHh47kmI2Y2Nl',
