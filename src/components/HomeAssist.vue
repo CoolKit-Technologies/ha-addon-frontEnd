@@ -20,8 +20,8 @@
     <header>
       <h1 class="title">
         {{ $t("haDevice.controlHaInEWeLink") }}
-        <button @click="getHaDevice">点击获取列表</button>
-        <button @click="getHaGatewayStatus">点击获取状态</button>
+        <!-- <button @click="getHaDevice">点击获取列表</button>
+        <button @click="getHaGatewayStatus">点击获取状态</button> -->
       </h1>
 
       <div class="tip">
@@ -72,16 +72,16 @@
         <div>
           <div class="text-wrap">
             <div class="img-info-wrap">
-              <div class="img-wrap"><img :src="amazonAlexa.logo" /></div>
+              <div class="img-wrap"><img :src="amazonAlexa?.logo" /></div>
               <div class="info-wrap">
-                <div class="title">{{ amazonAlexa.title }}</div>
+                <div class="title">{{ amazonAlexa?.title }}</div>
                 <div class="content">
-                  {{ amazonAlexa.description }}
+                  {{ amazonAlexa?.description }}
                 </div>
               </div>
             </div>
             <div class="text-help">
-              <a-button type="link" @click="toHelpHtml(amazonAlexa.link)">{{
+              <a-button type="link" @click="toHelpHtml(amazonAlexa.link)" style="padding:0;">{{
                 $t("haDevice.helpText")
               }}</a-button>
             </div>
@@ -89,16 +89,16 @@
 
           <div class="text-wrap">
             <div class="img-info-wrap">
-              <div class="img-wrap"><img :src="googleHome.logo" /></div>
+              <div class="img-wrap"><img :src="googleHome?.logo" /></div>
               <div class="info-wrap">
-                <div class="title">{{ googleHome.title }}</div>
+                <div class="title">{{ googleHome?.title }}</div>
                 <div class="content">
-                  {{ googleHome.description }}
+                  {{ googleHome?.description }}
                 </div>
               </div>
             </div>
             <div class="text-help">
-              <a-button type="link" @click="toHelpHtml(googleHome.link)">{{
+              <a-button type="link" @click="toHelpHtml(googleHome.link)" style="padding:0;">{{
                 $t("haDevice.helpText")
               }}</a-button>
             </div>
@@ -362,7 +362,8 @@ export default defineComponent({
 .main-content {
   margin: 0 auto;
   padding: 20px 40px;
-  height: calc(100vh - 133px);
+  height: calc(100vh - 87px);
+  max-width :1200px;
 }
 
 .alert-wrap {
@@ -397,21 +398,21 @@ export default defineComponent({
 
 header {
   .title {
-    font-size: 24px;
-    font-family: PingFang SC;
-    font-weight: 500;
-    color: #000000;
-    line-height: 24px;
-    opacity: 0.8;
-  }
-
-  .tip {
     font-size: 18px;
     font-family: PingFang SC;
     font-weight: 500;
     color: #000000;
-    line-height: 24px;
+    line-height: 18px;
+    opacity: 0.8;
+  }
+
+  .tip {
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+    line-height: 16px;
     opacity: 0.5;
+    margin-top:4px;
   }
 
   margin-bottom: 27px;
@@ -419,7 +420,7 @@ header {
 
 section {
   display: flex;
-  height: calc(100% - 30px);
+  height: calc(100% - 66px);
 
   .list-wrap {
     flex: 1;
@@ -437,12 +438,12 @@ section {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 70px;
+      height: 50px;
       background: #FAFAFA;
       border-bottom: 1px solid #E1E1E1;
 
       .title {
-        font-size: 24px;
+        font-size: 18px;
         font-family: PingFang SC;
         font-weight: bold;
         color: #000000;
@@ -454,7 +455,7 @@ section {
       padding: 0 40px 0 20px;
       align-items: center;
       justify-content: space-between;
-      height: 100px;
+      height: 70px;
       border-bottom: 1px solid #E1E1E1;
 
       .list-item-left {
@@ -474,14 +475,14 @@ section {
         }
 
         .title {
-          font-size: 24px;
+          font-size: 18px;
           font-family: PingFang SC;
           font-weight: 500;
           color: #000000;
         }
 
         .content {
-          font-size: 18px;
+          font-size: 14px;
           font-family: PingFang SC;
           font-weight: 500;
           color: #999999;
@@ -491,7 +492,7 @@ section {
   }
 
   .help-wrap {
-    width: 500px;
+    width: 380px;
     height: 100%;
     padding: 0 10px 10px 10px;
     display: flex;
@@ -503,7 +504,7 @@ section {
       background: #FAFAFA;
       border: 1px solid #E1E1E1;
       border-radius: 12px;
-      padding: 20px 20px 10px 20px;
+      padding: 20px 20px 4px 20px;
       margin-bottom: 20px;
 
       .img-info-wrap {
@@ -512,8 +513,8 @@ section {
       }
 
       .img-wrap {
-        width: 100px;
-        height: 100px;
+        width: 73px;
+        height: 73px;
         overflow: hidden;
 
         img {
@@ -527,14 +528,14 @@ section {
         padding-left: 20px;
 
         .title {
-          font-size: 24px;
+          font-size: 18px;
           font-family: PingFang SC;
           font-weight: bold;
           color: #000000;
         }
 
         .content {
-          font-size: 18px;
+          font-size: 14px;
           font-family: PingFang SC;
           font-weight: 500;
           color: #000000;
