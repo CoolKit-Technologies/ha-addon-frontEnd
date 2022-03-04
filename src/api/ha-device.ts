@@ -1,7 +1,7 @@
 // user api
 import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
-import { number } from 'echarts/core';
+
 
 const { apiPrefix } = getConfig();
 
@@ -18,6 +18,7 @@ export async function getHaDeviceList() {
 export async function syncHa2ck(params: {
     haDeviceId: number;
     state: boolean;
+    deviceUiid:number;
 }[]) {
     return await sendHttpRequest('POST', apiPrefix + '/ha-devices/sync2ck', params);
 }

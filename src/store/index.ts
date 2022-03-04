@@ -145,7 +145,7 @@ export default createStore({
        async getCmsInfo(context){
 
         const res = await getContent(context.rootState.locale);
-        console.log('res-------' ,res)
+        console.log('cmsInfoRes-----------' ,res)
         if (res.error === 0) {
             context.commit('setCmsInfo', res.data);
         } else {

@@ -17,6 +17,10 @@
             success: '同步成功',
             failed: '同步失败',
         },
+        tab:{
+            ewelinkTab:'易微联智能设备',
+            haDeviceTab:'Home Assistant设备同步管理'
+        }
     },
 
     form: {
@@ -160,5 +164,19 @@
             scene: '轻智能场景',
         },
     },
+    haDevice:{
+        status:{
+            disconnect:'与服务器断开连接',
+            connectError:'连接异常'
+        },
+        controlHaInEWeLink:'在易微联使用您的Home Assistant设备',
+        controlWay:'打开开关，将您的Home Assistant设备同步到易微联生态，即可以通过易微联APP，中控屏控制您的设备，在场景中联动您的易微联设备。',
+        deviceList:'设备列表',
+        helpText:'帮助文档',
+        termsService:'服务协议',
+        allSync:'一键同步',
+        agree:'同意',
+        disAgree:'不同意'
+    }
 };
 export default zh

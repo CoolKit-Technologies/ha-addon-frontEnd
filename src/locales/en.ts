@@ -17,6 +17,10 @@
             success: 'Sync success',
             failed: 'Sync failed',
         },
+        tab:{
+            ewelinkTab:'eWeLink Devices',
+            haDeviceTab:'Sync Home Assistant Devices'
+        }
     },
 
     form: {
@@ -160,5 +164,19 @@
             scene: 'Scene',
         },
     },
+    haDevice:{
+        status:{
+            disconnect:'Disconnecting',
+            connectError:'Connection Error'
+        },
+        controlHaInEWeLink:'Control your Home Assistant devices in eWeLink APP',
+        controlWay:'Enable sliding buttons to sync your Home Assistant devices to eWeLink, then control all your devices via eWeLink APP and NSpanel and customize scenes with eWeLink supported devices.',
+        deviceList:'Devices List',
+        helpText:'Help',
+        termsService:'Terms of Service',
+        allSync:'All devices sync to eWeLink APP',
+        agree:'Agree',
+        disAgree:'Disagree'
+    }
 };
 export default en

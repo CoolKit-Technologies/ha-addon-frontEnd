@@ -9,7 +9,7 @@
           :style="{ opacity: mainShow ? 1 : 0.5 }"
         >
           <div class="tab-icon"><img src="@/assets/ewlink.png" /></div>
-          <div>易微联智能设备</div>
+          <div>{{ $t("common.tab.ewelinkTab") }}</div>
         </div>
         <div
           class="tab-wrap"
@@ -17,7 +17,7 @@
           :style="{ opacity: mainShow ? 0.5 : 1 }"
         >
           <div class="tab-icon"><img src="@/assets/home-assist.png" /></div>
-          <div>Home Assistant设备同步管理</div>
+          <div>{{ $t("common.tab.haDeviceTab") }}</div>
         </div>
       </div>
     </div>

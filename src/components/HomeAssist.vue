@@ -1,32 +1,40 @@
 <template>
-  <div class="alert-wrap" style="background: #fdeed9" v-if="true">
+  <div class="alert-wrap" style="background: #fdeed9" v-if="false">
     <div class="alert">
       <div class="img-wrap"><img src="@/assets/warning.png" /></div>
-      <div class="info" style="color: #f0961c">连接异常</div>
+      <div class="info" style="color: #f0961c">
+        {{ $t("haDevice.status.connectError") }}
+      </div>
     </div>
   </div>
 
   <div class="alert-wrap" style="background: #fce2e2" v-if="false">
     <div class="alert">
       <div class="img-wrap"><img src="@/assets/net-error.png" /></div>
-      <div class="info" style="color: #f00909">与服务器断开连接</div>
+      <div class="info" style="color: #f00909">
+        {{ $t("haDevice.status.disconnect") }}
+      </div>
     </div>
   </div>
   <div class="main-content">
     <header>
-      <h1 class="title">在易微联使用你的Home Assistant设备</h1>
+      <h1 class="title">
+        {{ $t("haDevice.controlHaInEWeLink") }}
+        <button @click="getHaDevice">点击获取列表</button>
+        <button @click="getHaGatewayStatus">点击获取状态</button>
+      </h1>
+
       <div class="tip">
-        打开开关，将你的Home
-        Assistant设备同步到易微联生态，即可以通过易微联App，中控屏控制你的设备，在场景中联动你的易微联设备
+        {{ $t("haDevice.controlWay") }}
       </div>
     </header>
     <section>
       <div class="list-wrap">
         <div class="box-wrap">
           <div class="list-header">
-            <div class="title">设备列表</div>
+            <div class="title">{{ $t("haDevice.deviceList") }}</div>
             <a-tooltip>
-              <template #title>一键同步</template>
+              <template #title>{{ $t("haDevice.allSync") }}</template>
               <a-switch
                 class="operate"
                 :checked="isAllAsync"
@@ -49,58 +57,60 @@
                 <div class="content">{{ item.deviceNameCk }}</div>
               </div>
             </div>
-
-            <a-tooltip>
-              <template #title>一键同步</template>
-              <a-switch
-                class="operate"
-                @change="toAllAsync(item.haDeviceId, item.syncState)"
-                :checked="item.syncState"
-              />
-            </a-tooltip>
+            <a-switch
+              class="operate"
+              @change="
+                toAllAsync(item.haDeviceId, item.deviceUiid, item.syncState)
+              "
+              :checked="item.syncState"
+            />
           </div>
         </div>
       </div>
 
       <div class="help-wrap">
-        <div class="text-wrap">
-          <div class="img-info-wrap">
-            <div class="img-wrap"><img :src="amazonAlexa.logo" /></div>
-            <div class="info-wrap">
-              <div class="title">{{ amazonAlexa.title }}</div>
-              <div class="content">
-                {{ amazonAlexa.description }}
+        <div>
+          <div class="text-wrap">
+            <div class="img-info-wrap">
+              <div class="img-wrap"><img :src="amazonAlexa.logo" /></div>
+              <div class="info-wrap">
+                <div class="title">{{ amazonAlexa.title }}</div>
+                <div class="content">
+                  {{ amazonAlexa.description }}
+                </div>
               </div>
             </div>
+            <div class="text-help">
+              <a-button type="link" @click="toHelpHtml(amazonAlexa.link)">{{
+                $t("haDevice.helpText")
+              }}</a-button>
+            </div>
           </div>
-          <div class="text-help">
-            <a-button type="link" @click="toHelpHtml(amazonAlexa.link)"
-              >帮助文档</a-button
-            >
-          </div>
-        </div>
 
-        <div class="text-wrap">
-          <div class="img-info-wrap">
-            <div class="img-wrap"><img :src="googleHome.logo" /></div>
-            <div class="info-wrap">
-              <div class="title">{{ googleHome.title }}</div>
-              <div class="content">
-                {{ googleHome.description }}
+          <div class="text-wrap">
+            <div class="img-info-wrap">
+              <div class="img-wrap"><img :src="googleHome.logo" /></div>
+              <div class="info-wrap">
+                <div class="title">{{ googleHome.title }}</div>
+                <div class="content">
+                  {{ googleHome.description }}
+                </div>
               </div>
             </div>
-          </div>
-          <div class="text-help">
-            <a-button type="link" @click="toHelpHtml(googleHome.link)"
-              >帮助文档</a-button
-            >
+            <div class="text-help">
+              <a-button type="link" @click="toHelpHtml(googleHome.link)">{{
+                $t("haDevice.helpText")
+              }}</a-button>
+            </div>
           </div>
         </div>
 
         <footer>
           <div class="protocol-wrap">
-            <div @click="showModal('ewlink')">《易微联服务协议》</div>
-            <div @click="showModal('voice')">《第三方语音控制服务协议》</div>
+            <div @click="showModal('ewlink')">
+              《 {{ $t("haDevice.termsService") }}》
+            </div>
+            <!-- <div @click="showModal('voice')">《第三方语音控制服务协议》</div> -->
           </div>
         </footer>
       </div>
@@ -120,8 +130,12 @@
     </div>
     <template #footer>
       <div class="modal-footer" v-if="buttonShow">
-        <a-button key="back" type="text" @click="handleCancel">不同意</a-button>
-        <a-button key="submit" type="link" @click="handleOk">同意</a-button>
+        <a-button key="back" type="text" @click="handleCancel">{{
+          $t("haDevice.disAgree")
+        }}</a-button>
+        <a-button key="submit" type="link" @click="handleOk">{{
+          $t("haDevice.agree")
+        }}</a-button>
       </div>
       <div v-else></div>
     </template>
@@ -138,6 +152,7 @@ import {
   getHaGatewayStatus,
 } from "@/api/ha-device";
 import { message } from "ant-design-vue";
+import { i18n } from "@/locales";
 
 interface IcmsInfo {
   thirdPlatform: {
@@ -185,18 +200,22 @@ export default defineComponent({
       visible: false,
       serveTitle: "",
       serveContent: "",
-      isAllAsync: false,
       deviceList: [],
       isNewGw: true, //是否第一次同步ha设备
-      buttonShow:false,
+      buttonShow: false,
+      syncParams: { haDeviceId: 0, deviceUiid: 0, state: true },
     } as {
       visible: boolean;
       serveTitle: string;
       serveContent: string;
-      isAllAsync: boolean;
       deviceList: IDeviceInfo[];
       isNewGw: boolean;
-      buttonShow:boolean;
+      buttonShow: boolean;
+      syncParams: {
+        haDeviceId: number;
+        deviceUiid: number;
+        state: boolean;
+      };
     };
   },
   computed: {
@@ -211,58 +230,81 @@ export default defineComponent({
     },
     whichImg() {
       return function (deviceUiid: number) {
-        if (deviceUiid >= 20001 || deviceUiid <= 20004) {
+        if (deviceUiid >= 20001 && deviceUiid <= 20004) {
           return require("@/assets/switch.png");
-        } else if (deviceUiid >= 20005 || deviceUiid <= 20008) {
+        } else if (deviceUiid >= 20005 && deviceUiid <= 20008) {
           return require("@/assets/light.png");
         }
       };
     },
+    isAllAsync() {
+      const deviceList = this.deviceList as IDeviceInfo[];
+      if (deviceList && deviceList.length > 0) {
+        const isAllSync = deviceList.every((item) => item.syncState === true);
+        return isAllSync;
+      }
+      return false;
+    },
   },
   methods: {
-    async toAllAsync(haDeviceId?: number, state?: boolean) {
+    async toAllAsync(
+      haDeviceId?: number,
+      deviceUiid?: number,
+      state?: boolean
+    ) {
+      console.log("jjjjjjjjjjjjj");
+
+      // //第一次点击同步的时候，保存参数，同意协议后触发
+      if (deviceUiid && haDeviceId && state !== undefined) {
+        this.syncParams = {
+          haDeviceId,
+          deviceUiid,
+          state,
+        };
+      }
+
       if (this.isNewGw) {
         this.visible = true;
-        this.buttonShow = true
+        this.buttonShow = true;
         return;
       }
-      let params:{haDeviceId:number,state:boolean}[] = [];
-      if (haDeviceId&&state!==undefined) {
-        //同步单个
+      let params: {
+        haDeviceId: number;
+        state: boolean;
+        deviceUiid: number;
+      }[] = [];
+
+      //有传参数时，同步单个，没有参数时同步全部
+      if (deviceUiid && haDeviceId && state !== undefined) {
+        //同步（取消同步）单个
         params = [
           {
+            deviceUiid,
             haDeviceId,
-            state,
+            state: !state,
           },
         ];
       } else {
-        //同步所有设备
+        //同步（取消同步）所有设备
 
         if (this.deviceList && this.deviceList.length > 0) {
-          params = this.deviceList.map((item) => {
+          //去除不用同步的，
+          let toSyncList = this.deviceList.filter(
+            (item) => item.syncState == this.isAllAsync
+          );
+
+          params = toSyncList.map((item: IDeviceInfo) => {
             return {
+              deviceUiid: item.deviceUiid,
               haDeviceId: item.haDeviceId,
-              state: true,
+              state: !this.isAllAsync,
             };
           });
         }
       }
       const res = await syncHa2ck(params);
 
-      if (res.error !== 0) {
-        return;
-      }
-
-      this.deviceList = this.deviceList.map((item) => {
-        let list = res.data as { haDeviceId: number; state: boolean }[];
-        let thisItem = list.find((it) => it.haDeviceId == item.haDeviceId);
-        if (thisItem) {
-          item.syncState = thisItem.state;
-          return item;
-        } else {
-          return item;
-        }
-      });
+      this.getHaDevice();
     },
     async getHaDevice() {
       const res = await getHaDeviceList();
@@ -271,8 +313,6 @@ export default defineComponent({
         return;
       }
       this.deviceList = res.data as IDeviceInfo[];
-
-      console.log(res, "rrrrrrrrrrrrrressssssss");
     },
     toHelpHtml(url: string) {
       window.open(url, "_blank");
@@ -282,27 +322,32 @@ export default defineComponent({
     },
     handleOk() {
       this.visible = false;
+      this.isNewGw = false;
+
+      const { haDeviceId, deviceUiid, state } = this.syncParams;
+
+      this.toAllAsync(haDeviceId, deviceUiid, state);
     },
     showModal(type: string) {
       if (type == "ewlink") {
-        this.serveTitle = "易微联服务协议";
+        this.serveTitle = i18n.global.t("haDevice.termsService");
         this.serveContent = this.cmsInfo.ewelinkUserAgreement.link;
       } else {
-        this.serveTitle = "第三方语音控制服务协议";
-        this.serveContent = this.cmsInfo.thirdPlatformAgreement.link;
+        // this.serveTitle = "第三方语音控制服务协议";
+        // this.serveContent = this.cmsInfo.thirdPlatformAgreement.link;
       }
-      this.buttonShow = false
+      this.buttonShow = false;
       this.visible = true;
     },
     async getHaGatewayStatus() {
       const res = await getHaGatewayStatus();
       this.isNewGw = res.data.isNewGw;
-      console.log(res, "rrrrrrrrrrrrrrrrr");
     },
   },
   async mounted() {
     this.getHaDevice();
     this.getHaGatewayStatus();
+    this.toAllAsync = _.debounce(this.toAllAsync, 1000) as any;
   },
 });
 </script>
@@ -316,8 +361,8 @@ export default defineComponent({
 <style lang="stylus" scoped>
 .main-content {
   margin: 0 auto;
-  padding: 40px;
-  height: calc(100vh - 80px);
+  padding: 20px 40px;
+  height: calc(100vh - 133px);
 }
 
 .alert-wrap {
@@ -365,7 +410,7 @@ header {
     font-family: PingFang SC;
     font-weight: 500;
     color: #000000;
-    line-height: 18px;
+    line-height: 24px;
     opacity: 0.5;
   }
 
@@ -374,7 +419,7 @@ header {
 
 section {
   display: flex;
-  height: calc(100% - 80px);
+  height: calc(100% - 30px);
 
   .list-wrap {
     flex: 1;
@@ -448,16 +493,17 @@ section {
   .help-wrap {
     width: 500px;
     height: 100%;
-    padding: 0 10px;
-    position: relative;
+    padding: 0 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .text-wrap {
       width: 100%;
-      height: 180px;
       background: #FAFAFA;
       border: 1px solid #E1E1E1;
       border-radius: 12px;
-      padding: 20px;
+      padding: 20px 20px 10px 20px;
       margin-bottom: 20px;
 
       .img-info-wrap {
@@ -503,15 +549,13 @@ section {
     }
 
     footer {
-      position: absolute;
-      bottom: 0;
       color: #03A9F4;
       width: 100%;
 
       .protocol-wrap {
         width: 100%;
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-end;
 
         div {
           cursor: pointer;
