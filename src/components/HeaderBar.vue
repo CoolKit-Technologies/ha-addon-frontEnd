@@ -164,7 +164,6 @@ export default defineComponent({
       this.getCmsInfo();
     },
     async syncLovelace() {
-      // todo
       this.$data.syncing = true;
       const { error } = await syncLovelaceCard();
       this.$data.syncing = false;
@@ -175,10 +174,10 @@ export default defineComponent({
       }
     },
     changeMainShow(mainShow: boolean) {
-      // if (!this.isLogin&&mainShow==false) {
-      //   message.warning("请先登录易微联账号");
-      //   return;
-      // }
+      if (!this.isLogin&&mainShow==false) {
+        message.warning("请先登录易微联账号");
+        return;
+      }
       this.mainShow = mainShow;
       this.$emit("changeMainShow", mainShow);
     },
