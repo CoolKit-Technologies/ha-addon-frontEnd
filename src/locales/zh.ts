@@ -176,7 +176,8 @@
         termsService:'服务协议',
         allSync:'一键同步',
         agree:'同意',
-        disAgree:'不同意'
+        disAgree:'不同意',
+        loginFirst:'请先登录易微联账号'
     }
 };
 export default zh

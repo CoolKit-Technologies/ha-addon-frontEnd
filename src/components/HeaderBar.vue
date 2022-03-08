@@ -175,7 +175,7 @@ export default defineComponent({
     },
     changeMainShow(mainShow: boolean) {
       if (!this.isLogin&&mainShow==false) {
-        message.warning("请先登录易微联账号");
+        message.warning(this.$t("haDevice.loginFirst"));
         return;
       }
       this.mainShow = mainShow;

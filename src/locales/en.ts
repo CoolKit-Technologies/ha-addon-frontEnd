@@ -176,7 +176,8 @@
         termsService:'Terms of Service',
         allSync:'All devices sync to eWeLink APP',
         agree:'Agree',
-        disAgree:'Disagree'
+        disAgree:'Disagree',
+        loginFirst:'Please log in to your eWeLink  account first'
     }
 };
 export default en
