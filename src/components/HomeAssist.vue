@@ -264,6 +264,8 @@ export default defineComponent({
       }
 
       if (this.isNewGw) {
+        this.serveTitle = i18n.global.t("haDevice.termsService");
+        this.serveContent = this.cmsInfo.ewelinkUserAgreement.link;
         this.visible = true;
         this.buttonShow = true;
         return;
