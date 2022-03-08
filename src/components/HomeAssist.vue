@@ -252,7 +252,7 @@ export default defineComponent({
       deviceUiid?: number,
       state?: boolean
     ) {
-      console.log("jjjjjjjjjjjjj");
+
 
       // //第一次点击同步的时候，保存参数，同意协议后触发
       if (deviceUiid && haDeviceId && state !== undefined) {
