@@ -174,7 +174,8 @@ export default defineComponent({
       }
     },
     changeMainShow(mainShow: boolean) {
-      if (!this.isLogin&&mainShow==false) {
+      //未登录时点击ha设备同步导航栏
+      if (!this.isLogin && mainShow == false) {
         message.warning(this.$t("haDevice.loginFirst"));
         return;
       }
@@ -196,6 +197,12 @@ export default defineComponent({
       leading: true,
       trailing: false,
     }) as any;
+  },
+  watch: {
+    isLogin(newVal, oldVal) {
+      console.log("loginStatus----------", newVal, oldVal);
+      this.changeMainShow(true)
+    },
   },
 });
 </script>
