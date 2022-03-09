@@ -541,7 +541,7 @@ section {
           font-family: PingFang SC;
           font-weight: 500;
           color: #000000;
-          line-height: 30px;
+          line-height: 1.6;
           opacity: 0.7;
         }
       }
