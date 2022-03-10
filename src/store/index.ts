@@ -143,9 +143,10 @@ export default createStore({
             context.commit('setModalParams', null);
         },
        async getCmsInfo(context){
+        const locale = localStorage.getItem('ewelink-addon-locale')??'en';
 
-        const res = await getContent(context.rootState.locale);
-        console.log('cmsInfoRes-----------' ,res)
+        const res = await getContent(locale);
+        console.log('locale---------',locale,'cmsInfoRes-----------' ,res)
         if (res.error === 0) {
             context.commit('setCmsInfo', res.data);
         } else {
