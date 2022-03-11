@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { getContent } from '@/api/content';
 import { message } from 'ant-design-vue';
 import { i18n } from '@/locales';
+import { getHaDeviceList } from "@/api/ha-device";
 
 import { getRegionMap } from '@/utils/etc';
 
@@ -37,7 +38,10 @@ export default createStore({
         originDeviceList: [],
 
         //cms infomation
-        cmsInfo:{}
+        cmsInfo:{},
+
+        //ha deviceList
+        haDeviceList:[]
     },
 
     getters: {
@@ -125,6 +129,9 @@ export default createStore({
         },
         setCmsInfo(state,v){
             state.cmsInfo = v
+        },
+        setHaDeviceList(state,v){
+            state.haDeviceList = v
         }
     },
 
@@ -152,6 +159,14 @@ export default createStore({
         } else {
             message.error(i18n.global.t('common.error.getcontent'));
         }
+        },
+       async getHaDeviceList(context){
+            const res = await getHaDeviceList();
+            if (res.error !== 0) {
+                message.warning(i18n.global.t("common.error.getdevice"));
+                return;
+            }
+            context.commit('setHaDeviceList',res.data)
         }
     },
 });
