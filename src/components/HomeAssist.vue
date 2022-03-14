@@ -74,9 +74,17 @@
                         />
                     </div>
                 </div>
+                <footer>
+                    <div class="protocol-wrap">
+                        <div @click="showModal('ewlink')">
+                            《 {{ $t("haDevice.termsService") }}》
+                        </div>
+                        <!-- <div @click="showModal('voice')">《第三方语音控制服务协议》</div> -->
+                    </div>
+                </footer>
             </div>
 
-            <div class="help-wrap">
+            <!-- <div class="help-wrap">
                 <div>
                     <div class="text-wrap">
                         <div class="img-info-wrap">
@@ -130,10 +138,10 @@
                         <div @click="showModal('ewlink')">
                             《 {{ $t("haDevice.termsService") }}》
                         </div>
-                        <!-- <div @click="showModal('voice')">《第三方语音控制服务协议》</div> -->
+                        <div @click="showModal('voice')">《第三方语音控制服务协议》</div>
                     </div>
                 </footer>
-            </div>
+            </div> -->
         </section>
     </div>
 
@@ -374,7 +382,7 @@ export default defineComponent({
     margin: 0 auto;
     padding: 20px 40px;
     height: calc(100vh - 87px);
-    max-width: 1200px;
+    max-width: 1000px;
 }
 
 .alert-wrap {
@@ -432,16 +440,21 @@ header {
 section {
     display: flex;
     height: calc(100% - 66px);
+    
 
     .list-wrap {
         flex: 1;
         padding-right: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+       
 
         .box-wrap {
             background: #FFFFFF;
             border: 1px solid #E1E1E1;
             border-radius: 12px;
-            overflow: hidden;
         }
 
         .list-header {
@@ -497,6 +510,22 @@ section {
                     font-family: PingFang SC;
                     font-weight: 500;
                     color: #999999;
+                }
+            }
+        }
+
+         footer {
+            color: #03A9F4;
+            width: 100%;
+            padding:20px 0;
+
+            .protocol-wrap {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+
+                div {
+                    cursor: pointer;
                 }
             }
         }
