@@ -128,6 +128,22 @@
             <div v-else-if="isDimming">
                 <ctrl-slider type="brightness" class="mg-14" :uiid="cardData.uiid" :cardData="cardData" />
             </div>
+
+            <!-- NSPanel -->
+            <div class="nspanel" v-else-if="isNSPanel">
+                <div class="gauge">
+                    <temp-gauge :value="nspanelTempValue" :tempUnit="nspanelTempUnit"></temp-gauge>
+                </div>
+                <channel-switch
+                    v-for="item in channels"
+                    :key="item.key"
+                    :index="item.key"
+                    :title="item.name"
+                    :stat="item.stat === 'on' ? true : false"
+                    :cardData="cardData"
+                    class="mg-14"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -328,6 +344,18 @@ export default defineComponent({
             const { uiid } = this.cardData as any;
             return uiid === 44;
         },
+        isNSPanel() {
+            const { uiid } = this.cardData as any;
+            return uiid === 133;
+        },
+        nspanelTempValue() {
+            const { params } = this.cardData as any;
+            return params.temperature;
+        },
+        nspanelTempUnit() {
+            const { params } = this.cardData as any;
+            return params.tempUnit === 0 ? 'c' : 'f';
+        },
         channels() {
             const { uiid, type, params, tags } = this.cardData as any;
             const channelName = this.$t('card.channel');
@@ -371,6 +399,11 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .card-content
+
+    .nspanel .gauge
+        display flex
+        justify-content center
+        align-items center
 
     .unsupport > p
         font-size 18px

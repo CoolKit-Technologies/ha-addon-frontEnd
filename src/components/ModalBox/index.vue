@@ -3,13 +3,13 @@
         <!-- modal title -->
         <template #title v-if="modalType && modalType !== 'login'">
             <span class="title">{{ modalParams && modalParams.deviceName }}</span>
-            <span class="more" v-if="modalType !== 'device'" @click="() => setModalType('device')">
+            <span class="more" v-if="modalType !== 'device'" @click.stop="() => setModalType('device')">
                 {{ $t('modal.deviceSettings') }}
             </span>
-            <span class="more" v-else-if="showChannelSettings()" @click="() => setModalType('channelSettings')">
+            <span class="more" v-else-if="showChannelSettings()" @click.stop="() => setModalType('channelSettings')">
                 {{ $t('modal.channelSettings') }}
             </span>
-            <span class="more" v-else-if="showStats()" @click="() => setModalType('stats')">
+            <span class="more" v-else-if="showStats()" @click.stop="() => setModalType('stats')">
                 {{ $t('modal.stats') }}
             </span>
         </template>
@@ -80,6 +80,8 @@ export default defineComponent({
                     filter brightness(0.8)
     .ant-modal-content
         border-radius 4px
+    button
+        width 56px
     button.ant-modal-close
         left 0
 </style>

@@ -10,7 +10,7 @@
         </template>
 
         <!-- Toggle device network LED -->
-        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming)" type="led" />
+        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming || isNSPanel)" type="led" />
 
         <!-- Toggle multi-channel device interlock -->
         <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3" type="lock" />
@@ -168,6 +168,10 @@ export default defineComponent({
         isRfSub() {
             const { uiid, cardIndex } = this.modalParams as any;
             return uiid === 28 && cardIndex !== -1;
+        },
+        isNSPanel() {
+            const { uiid, cardIndex } = this.modalParams as any;
+            return uiid === 133;
         },
         ...mapState(['modalParams']),
     },

@@ -496,7 +496,8 @@ export function isSupportedDevice(uiid: number) {
         1770,
         2026,
         3026,
-        4026
+        4026,
+        133
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -540,7 +541,7 @@ export function isPureSwOrSockDevice(uiid: number) {
         140,
         141,
         1009,
-        1256
+        1256,
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -572,6 +573,7 @@ export function isMultiChannelDevice(uiid: number) {
         139,
         140,
         141,
+        133,
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -582,7 +584,8 @@ export function isTwoChannelDevice(uiid: number) {
         2,
         7,
         113,
-        139
+        139,
+        133
     ];
     return uiids.indexOf(uiid) !== -1;
 }

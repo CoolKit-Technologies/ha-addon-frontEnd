@@ -104,7 +104,7 @@ export default defineComponent({
                 }
             });
             this.source.addEventListener("message", (e: any) => {
-                console.log(e.data, "stream data----------");
+                // console.log(e.data, "stream data----------");
 
                 const msgData = JSON.parse(e.data);
                 if (msgData.type === "ha-device") {
@@ -114,6 +114,7 @@ export default defineComponent({
                     }
                 } else if (msgData.type === "ck-device") {
                     const newList = msgData.data;
+                    // console.log('message data:', msgData);
 
                     const oldList = _.cloneDeep(this.originDeviceList);
                     if (debug) {
