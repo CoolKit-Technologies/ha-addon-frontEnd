@@ -3,7 +3,7 @@
         <device-name type="channel" :index="index - 1" />
         <inching-mode v-if="showInchingMode" :index="index - 1" />
         <ctrl-select type="power-on-state" v-if="showPowerOnState" :index="index - 1" />
-        <scenes-item v-if="isMiniR3" :index="index - 1" />
+        <!-- <scenes-item v-if="isMiniR3" :index="index - 1" /> -->
     </div>
 </template>
 

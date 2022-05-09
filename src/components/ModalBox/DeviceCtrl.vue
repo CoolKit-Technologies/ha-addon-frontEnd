@@ -66,8 +66,11 @@
         <!-- Set five color light mode -->
         <ctrl-select v-if="modalParams.uiid === 104" type="five-color-light" />
 
+        <!-- NS Panel 温度单位控制 -->
+        <ctrl-temp v-if="isNSPanel" :cardData="modalParams"></ctrl-temp>
+
         <!-- single-switch mini-R3 -->
-        <scenes-item v-if="modalParams.uiid === 138" />
+        <!-- <scenes-item v-if="modalParams.uiid === 138" /> -->
 
         <mulit-lock v-if="isMiniR3" />
 
@@ -93,6 +96,7 @@ import CtrlSelect from '@/components/CtrlItem/CtrlSelect.vue';
 import ScenesItem from '@/components/CtrlItem/ScenesItem.vue';
 import MulitLock from '@/components/CtrlItem/MulitLock/MulitLock.vue';
 import { isMultiChannelDevice, isZigbeeDevice } from '@/utils/etc';
+import CtrlTemp from '@/components/CtrlItem/CtrlTemp.vue';
 
 export default defineComponent({
     name: 'DeviceCtrl',
@@ -107,6 +111,7 @@ export default defineComponent({
         CtrlSlider,
         ScenesItem,
         MulitLock,
+        CtrlTemp,
     },
 
     computed: {
