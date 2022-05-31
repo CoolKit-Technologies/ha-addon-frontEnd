@@ -9,6 +9,17 @@ import { isLightDevice } from '@/utils/etc';
 const { apiPrefix } = getConfig();
 
 /**
+ * 获取设备温湿度历史数据
+ */
+export async function getDeviceTempHumHistory(params: {
+    deviceid: string;
+    last?: string;
+    format?: string;
+}) {
+    return await sendHttpRequest('POST', apiPrefix + '/devices/device/tempHumHistory', params);
+}
+
+/**
  * Get device list when page loading
  * @returns Device List
  */

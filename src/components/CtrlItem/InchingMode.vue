@@ -59,6 +59,8 @@ export default defineComponent({
                 return params.pulse === 'on';
             } else if (uiid === 126) {
                 return params.pulses[cardIndex].pulse === 'on';
+            } else if (uiid === 181) {
+                return params.pulseConfig.pulse === 'on';
             } else {
                 return params.pulses[index].pulse === 'on';
             }
@@ -77,6 +79,8 @@ export default defineComponent({
 
             if (type === 1 && uiid === 1) {
                 ms = params.data1.pulseWidth;
+            } else if (uiid === 181) {
+                ms = params.pulseConfig.pulseWidth;
             } else if (isOneChannelSPDevice(uiid)) {
                 ms = params.pulseWidth;
             } else if (uiid === 126) {

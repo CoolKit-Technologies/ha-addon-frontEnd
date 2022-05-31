@@ -42,6 +42,11 @@
     },
 
     card: {
+        uiid181mode: {
+            manual: '手动模式',
+            temp: '温度模式',
+            humi: '湿度模式',
+        },
         unsupport: {
             needsignin: '已在局域网中发现设备，请登录查看更多信息',
             notbelong: '该设备不在你的帐号下',
@@ -93,6 +98,20 @@
     },
 
     modal: {
+        mo_day: '(月/日)',
+        yr_mo: '(年/月)',
+        day: '天',
+        mo: '月',
+        half_yr: '半年',
+        highest: '最高',
+        lowest: '最低',
+        download: '下载',
+        temp: '温度',
+        hum: '湿度',
+        time: '时间',
+        date: '日期',
+        curTemp: '当前温度',
+        curHumd: '当前湿度',
         netled: '网络指示灯',
         interlock: '互锁',
         interlocktip: '启用后，不支持定时器、点动等功能',

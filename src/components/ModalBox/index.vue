@@ -12,6 +12,9 @@
             <span class="more" v-else-if="showStats()" @click.stop="() => setModalType('stats')">
                 {{ $t('modal.stats') }}
             </span>
+            <span class="more" v-else-if="showLineChartHistory()" @click.stop="() => setModalType('uiid181-history')">
+                {{ $t('modal.history') }}
+            </span>
         </template>
 
         <!-- modal content -->
@@ -19,6 +22,7 @@
         <device-ctrl v-else-if="modalType === 'device'" />
         <channel-settings v-else-if="modalType === 'channelSettings'" />
         <stats v-else-if="modalType === 'stats'" />
+        <line-chart-history v-else-if="modalType === 'uiid181-history'"></line-chart-history>
     </a-modal>
 </template>
 
@@ -31,6 +35,7 @@ import DeviceCtrl from './DeviceCtrl.vue';
 import ChannelSettings from './ChannelSettings.vue';
 import Stats from './Stats.vue';
 import { isMultiChannelDevice, hasStatDevice } from '@/utils/etc';
+import LineChartHistory from './LineChartHistory.vue';
 
 export default defineComponent({
     name: 'ModalBox',
@@ -40,6 +45,7 @@ export default defineComponent({
         DeviceCtrl,
         ChannelSettings,
         Stats,
+        LineChartHistory,
     },
 
     computed: {
@@ -55,6 +61,9 @@ export default defineComponent({
         },
         showChannelSettings() {
             return this.modalType !== 'channelSettings' && isMultiChannelDevice(this.modalParams.uiid);
+        },
+        showLineChartHistory() {
+            return this.modalType !== 'uiid181-history' && (this.modalParams.uiid === 181);
         },
         ...mapMutations(['setModalType']),
         ...mapActions(['closeModal']),
@@ -80,8 +89,7 @@ export default defineComponent({
                     filter brightness(0.8)
     .ant-modal-content
         border-radius 4px
-    button
-        width 56px
     button.ant-modal-close
+        width 56px
         left 0
 </style>

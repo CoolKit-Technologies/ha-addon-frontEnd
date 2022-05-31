@@ -497,7 +497,9 @@ export function isSupportedDevice(uiid: number) {
         2026,
         3026,
         4026,
-        133
+        133,
+        181,
+        190,
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -554,7 +556,8 @@ export function isOneChannelSPDevice(uiid: number) {
         6,
         14,
         15,
-        32
+        32,
+        181,
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -616,7 +619,8 @@ export function hasRefreshUiDevice(uiid: number) {
     const uiids = [
         5,
         32,
-        126
+        126,
+        181,
     ];
     return uiids.indexOf(uiid) !== -1;
 }

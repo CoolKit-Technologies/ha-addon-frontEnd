@@ -144,6 +144,24 @@
                     class="mg-14"
                 />
             </div>
+
+            <!-- UIID 181 -->
+            <div class="uiid-181" v-else-if="isUiid181" style="padding-top: 20px;">
+                <constant-tem-and-hum :cardData="cardData" />
+                <channel-mode class="mg-14" :mode="uiid181Mode" />
+                <channel-switch
+                    class="mg-14"
+                    :title="`${$t('card.channel')} 1`"
+                    :stat="cardData.params.switch === 'on' ? true : false"
+                    :cardData="cardData"
+                    :index="cardData.cardIndex"
+                />
+            </div>
+
+            <!-- UIID 190 -->
+            <div class="uiid-190" v-else>
+                <span>uiid 190</span>
+            </div>
         </div>
     </div>
 </template>
@@ -151,6 +169,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
+import _ from 'lodash';
 
 import {
     isSupportedDevice,
@@ -177,10 +196,14 @@ import OtherZigbeeItem from '@/components/CtrlItem/OtherZigbeeItem.vue';
 import RfGateway from '@/components/CtrlItem/RfGateway.vue';
 import RFBridgeContent from '@/components/CtrlItem/RFBridgeContent.vue';
 import Fan from '@/components/CtrlItem/Fan.vue';
+import ConstantTemAndHum from '@/components/CtrlItem/ConstantTemAndHum.vue';
+import { i18n } from '@/locales';
+
 export default defineComponent({
     name: 'CardContent',
 
     components: {
+        ConstantTemAndHum,
         ChannelSwitch,
         ChannelMode,
         HumiGauge,
@@ -206,6 +229,10 @@ export default defineComponent({
     },
 
     computed: {
+        isUiid181() {
+            const { uiid } = this.cardData as any;
+            return uiid === 181;
+        },
         unsupportText() {
             const { uiid } = this.cardData as any;
             const userIsLogin = this.isLogin;
@@ -391,6 +418,75 @@ export default defineComponent({
             }
 
             return result;
+        },
+        uiid181Mode() {
+            function getTimezone() {
+                const offset = new Date().getTimezoneOffset() / 60;
+                return -parseFloat(offset.toFixed(2));
+            }
+            const { params } = this.cardData as any;
+            const autoControlEnabled = _.get(params, 'autoControlEnabled');
+            if (autoControlEnabled === 0)
+                return i18n.global.t('card.uiid181mode.manual');
+
+            interface IAutoControl {
+                deviceType: 'temperature' | 'humidity';
+                effTime: {
+                    days: number[];
+                    spanType: 'any' | 'range';
+                    from: string;
+                    to: string;
+                };
+            }
+            const autoControl = _.get(params, 'autoControl') as IAutoControl[];
+            const date = new Date();
+            const nowWeekDay = date.getDay();
+            const nowTime = date.getTime();
+            //把小时分钟转换成时间戳
+            const changeHourMinuToTimeStamp = (hhmm: string) => {
+                const hh = Number(hhmm.split(':')[0]) + getTimezone();
+                const mm = Number(hhmm.split(':')[1]);
+                const date = new Date();
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const day = date.getDate();
+
+                return new Date(year, month, day, hh, mm, 0).getTime();
+            };
+
+            let mode = '';
+            autoControl.forEach((item) => {
+                if (item.effTime.days.includes(nowWeekDay)) {
+                    if (item.effTime.spanType === 'any') {
+                        mode = item.deviceType;
+                    } else {
+                        const fromTime = changeHourMinuToTimeStamp(item.effTime.from);
+                        const toTime = changeHourMinuToTimeStamp(item.effTime.to);
+                        //跨天情况用一天的结束时间
+                        const endTime = changeHourMinuToTimeStamp('23:59');
+                        //跨天情况
+                        if (fromTime > toTime) {
+                            if (nowTime > fromTime && nowTime < endTime) {
+                                mode = item.deviceType;
+                            }
+                        } else {
+                            //当前处于自动模式的生效时间
+                            if (nowTime > fromTime && nowTime < toTime) {
+                                mode = item.deviceType;
+                            }
+                        }
+                    }
+                }
+            });
+
+            //没匹配对应的自动模式，显示手动模式
+            if (mode === 'temperature') {
+                return i18n.global.t('card.uiid181mode.temp');
+            } else if (mode === 'humidity') {
+                return i18n.global.t('card.uiid181mode.humi');
+            } else {
+                return i18n.global.t('card.uiid181mode.manual');
+            }
         },
         ...mapState(['isLogin']),
     },

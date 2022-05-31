@@ -42,6 +42,11 @@
     },
 
     card: {
+        uiid181mode: {
+            manual: 'Manual',
+            temp: 'Temperature',
+            humi: 'Humidity',
+        },
         unsupport: {
             needsignin: 'Device has been discovered on the LAN, please sign in for more information',
             notbelong: 'Device is not under your account',
@@ -93,6 +98,20 @@
     },
 
     modal: {
+        mo_day: 'MO/DAY',
+        yr_mo: '(YR/MO)',
+        day: 'DAY',
+        mo: 'MO',
+        half_yr: 'Half YR',
+        highest: 'Highest',
+        lowest: 'Lowest',
+        download: 'DOWNLOAD',
+        temp: 'Temp.',
+        hum: 'Humidity',
+        time: 'Time',
+        date: 'Date',
+        curTemp: 'Current Temp.',
+        curHumd: 'Current Humidity',
         netled: 'Network Indicator',
         interlock: 'Interlock Mode',
         interlocktip: 'Inching mode & Power-on state will be disabled',
