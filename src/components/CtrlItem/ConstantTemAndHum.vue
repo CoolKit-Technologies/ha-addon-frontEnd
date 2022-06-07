@@ -210,10 +210,23 @@ export default defineComponent({
             if (res && res.data) {
                 temHumData.value = res.data as ITemHumData;
                 if (temHumData.value.tempHistory) {
+                    const hourly = temHumData.value.tempHistory.hourly
+                    //补全到24个数据
+                    if (hourly.length < 24) {
+                        temHumData.value.tempHistory.hourly = [...hourly, ...Array(24 - hourly.length).fill(null)]
+                    }
+
                     temHumData.value.tempHistory.hourly = temHumData.value.tempHistory.hourly.reverse()
                 }
 
                 if (temHumData.value.humHistory) {
+
+                    const hourly = temHumData.value.humHistory.hourly
+                    //补全到24个数据
+                    if (hourly.length < 24) {
+                        temHumData.value.humHistory.hourly = [...hourly, ...Array(24 - hourly.length).fill(null)]
+                    }
+
                     temHumData.value.humHistory.hourly = temHumData.value.humHistory.hourly.reverse()
                 }
             }

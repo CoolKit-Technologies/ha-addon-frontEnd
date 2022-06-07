@@ -42,6 +42,11 @@
     },
 
     card: {
+        uiid190chart: {
+            today: '今日电量',
+            currentMonth: '本月电量',
+            power: '实时功率'
+        },
         uiid181mode: {
             manual: '手动模式',
             temp: '温度模式',
@@ -98,6 +103,10 @@
     },
 
     modal: {
+        feeRate: '费率',
+        kwh: '度',
+        usage: '用电量',
+        energyOverview: '电量统计',
         mo_day: '(月/日)',
         yr_mo: '(年/月)',
         day: '天',

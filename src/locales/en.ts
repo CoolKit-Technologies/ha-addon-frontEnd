@@ -42,6 +42,11 @@
     },
 
     card: {
+        uiid190chart: {
+            today: 'Today',
+            currentMonth: 'Current Month',
+            power: 'Power'
+        },
         uiid181mode: {
             manual: 'Manual',
             temp: 'Temperature',
@@ -98,6 +103,10 @@
     },
 
     modal: {
+        feeRate: 'Rate',
+        kwh: 'kWh',
+        usage: 'Usage',
+        energyOverview: 'Energy Overview',
         mo_day: 'MO/DAY',
         yr_mo: '(YR/MO)',
         day: 'DAY',

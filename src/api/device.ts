@@ -242,6 +242,25 @@ export async function toggleAllChannels(v: boolean, data: any) {
 }
 
 /**
+ * UIID 190 设备使用，获取电量历史
+ */
+export async function getPowerHistory(data: any, start: number, end: number) {
+    const { apikey, deviceId } = data;
+    const params = {
+        id: deviceId,
+        apikey,
+        params: {
+            getHoursKwh: {
+                start,
+                end
+            }
+        }
+    };
+    const res = await setCloudDevice(params);
+    return res.data.config.hoursKwhData;
+}
+
+/**
  * Refresh UI
  * @param data Device data
  */

@@ -160,7 +160,42 @@
 
             <!-- UIID 190 -->
             <div class="uiid-190" v-else>
-                <span>uiid 190</span>
+                <div class="chart-grp">
+                    <div class="chart">
+                        <circle-chart
+                            width="110px"
+                            height="110px"
+                            color="blue"
+                        />
+                        <span class="title">{{ $t('card.uiid190chart.today') }}</span>
+                        <span class="value">{{ uiid190DayConsumption }}kWh</span>
+                    </div>
+                    <div class="chart">
+                        <circle-chart
+                            width="110px"
+                            height="110px"
+                            color="green"
+                        />
+                        <span class="title">{{ $t('card.uiid190chart.currentMonth') }}</span>
+                        <span class="value">{{ uiid190MonConsumption }}kWh</span>
+                    </div>
+                    <div class="chart">
+                        <circle-chart
+                            width="110px"
+                            height="110px"
+                            color="yellow"
+                        />
+                        <span class="title">{{ $t('card.uiid190chart.power') }}</span>
+                        <span class="value">{{ uiid190Power }}W</span>
+                    </div>
+                </div>
+                <channel-switch
+                    class="mg-14"
+                    :title="`${$t('card.channel')} 1`"
+                    :stat="cardData.params.switches[0].switch === 'on' ? true : false"
+                    :cardData="cardData"
+                    :index="cardData.cardIndex"
+                />
             </div>
         </div>
     </div>
@@ -229,6 +264,18 @@ export default defineComponent({
     },
 
     computed: {
+        uiid190Power() {
+            const { power } = this.cardData as any;
+            return power / 100 || 0;
+        },
+        uiid190DayConsumption() {
+            const { dayKwh } = this.cardData as any;
+            return dayKwh / 100 || 0;
+        },
+        uiid190MonConsumption() {
+            const { monthKwh } = this.cardData as any;
+            return monthKwh / 100 || 0;
+        },
         isUiid181() {
             const { uiid } = this.cardData as any;
             return uiid === 181;

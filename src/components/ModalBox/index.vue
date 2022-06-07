@@ -15,6 +15,9 @@
             <span class="more" v-else-if="showLineChartHistory()" @click.stop="() => setModalType('uiid181-history')">
                 {{ $t('modal.history') }}
             </span>
+            <span class="more" v-else-if="showConsumptionStat()" @click.stop="() => setModalType('uiid190-consumption')">
+                {{ $t('modal.energyOverview') }}
+            </span>
         </template>
 
         <!-- modal content -->
@@ -23,6 +26,7 @@
         <channel-settings v-else-if="modalType === 'channelSettings'" />
         <stats v-else-if="modalType === 'stats'" />
         <line-chart-history v-else-if="modalType === 'uiid181-history'"></line-chart-history>
+        <ConsumptionStat v-else-if="modalType === 'uiid190-consumption'" />
     </a-modal>
 </template>
 
@@ -36,6 +40,7 @@ import ChannelSettings from './ChannelSettings.vue';
 import Stats from './Stats.vue';
 import { isMultiChannelDevice, hasStatDevice } from '@/utils/etc';
 import LineChartHistory from './LineChartHistory.vue';
+import ConsumptionStat from './ConsumptionStat.vue';
 
 export default defineComponent({
     name: 'ModalBox',
@@ -46,6 +51,7 @@ export default defineComponent({
         ChannelSettings,
         Stats,
         LineChartHistory,
+        ConsumptionStat,
     },
 
     computed: {
@@ -64,6 +70,9 @@ export default defineComponent({
         },
         showLineChartHistory() {
             return this.modalType !== 'uiid181-history' && (this.modalParams.uiid === 181);
+        },
+        showConsumptionStat() {
+            return this.modalType !== 'uiid190-consumption' && (this.modalParams.uiid === 190);
         },
         ...mapMutations(['setModalType']),
         ...mapActions(['closeModal']),
