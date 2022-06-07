@@ -205,7 +205,8 @@
         allSync:'一键同步',
         agree:'同意',
         disAgree:'不同意',
-        loginFirst:'请先登录易微联账号'
+        loginFirst:'请先登录易微联账号',
+        noDevice: '暂无可用的设备'
     }
 };
 export default zh

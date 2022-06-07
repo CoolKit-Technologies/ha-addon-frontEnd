@@ -205,7 +205,8 @@
         allSync:'All devices sync to eWeLink APP',
         agree:'Agree',
         disAgree:'Disagree',
-        loginFirst:'Please log in to your eWeLink  account first'
+        loginFirst:'Please log in to your eWeLink  account first',
+        noDevice: 'No available device'
     }
 };
 export default en

@@ -38,11 +38,19 @@
                                 $t("haDevice.allSync")
                             }}</template>
                             <a-switch
+                                v-if="haDeviceList.length !== 0"
                                 class="operate"
                                 :checked="isAllAsync"
                                 @change="toAllAsync"
                             />
                         </a-tooltip>
+                    </div>
+
+                    <div v-if="haDeviceList.length === 0" class="empty-list">
+                        <div class="wrap">
+                            <img class="img" src="@/assets/no-sync-device.png" />
+                            <span class="text">{{ $t('haDevice.noDevice') }}</span>
+                        </div>
                     </div>
 
                     <div
@@ -74,17 +82,19 @@
                         />
                     </div>
                 </div>
+                <!--
                 <footer>
                     <div class="protocol-wrap">
                         <div @click="showModal('ewlink')">
                             《 {{ $t("haDevice.termsService") }}》
                         </div>
-                        <!-- <div @click="showModal('voice')">《第三方语音控制服务协议》</div> -->
+                        <div @click="showModal('voice')">《第三方语音控制服务协议》</div>
                     </div>
                 </footer>
+                -->
             </div>
 
-            <!-- <div class="help-wrap">
+            <div class="help-wrap">
                 <div>
                     <div class="text-wrap">
                         <div class="img-info-wrap">
@@ -138,10 +148,10 @@
                         <div @click="showModal('ewlink')">
                             《 {{ $t("haDevice.termsService") }}》
                         </div>
-                        <div @click="showModal('voice')">《第三方语音控制服务协议》</div>
+                        <!-- <div @click="showModal('voice')">《第三方语音控制服务协议》</div> -->
                     </div>
                 </footer>
-            </div> -->
+            </div>
         </section>
     </div>
 
@@ -382,7 +392,7 @@ export default defineComponent({
     margin: 0 auto;
     padding: 20px 40px;
     height: calc(100vh - 87px);
-    max-width: 1000px;
+    max-width: 1200px;
 }
 
 .alert-wrap {
@@ -440,7 +450,7 @@ header {
 section {
     display: flex;
     height: calc(100% - 66px);
-    
+
 
     .list-wrap {
         flex: 1;
@@ -449,7 +459,7 @@ section {
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
-       
+
 
         .box-wrap {
             background: #FFFFFF;
@@ -609,5 +619,27 @@ section {
 .modal-footer {
     display: flex;
     justify-content: space-between;
+}
+
+.empty-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .img {
+            width: 80%;
+        }
+
+        .text {
+            font-size: 20px;
+            transform: translateY(-120px);
+            color: #888888;
+        }
+    }
 }
 </style>
