@@ -277,6 +277,8 @@ export async function refreshUi(data: any) {
             time: 120,
             outlet: cardIndex,
         };
+    } else if (uiid === 190) {
+        params.params.uiActive = 65;
     } else {
         params.params.uiActive = 120;
     }
@@ -388,6 +390,19 @@ export async function toggleInchingMode(v: boolean, data: any, value: number, in
             },
         });
         return;
+    } else if (uiid === 181) {
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                pulseConfig: {
+                    pulse: v ? 'on' : 'off',
+                    switch: 'off',
+                    pulseWidth: value
+                }
+            }
+        });
+        return;
     } else if (isOneChannelSPDevice(uiid)) {
         await setCloudDevice({
             apikey,
@@ -431,6 +446,14 @@ export async function setPowerOnState(v: string, data: any, i: number) {
             },
         });
         return;
+    } else if (uiid === 190) {
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                configure: [{startup: v, outlet: 0}]
+            }
+        });
     } else if (isMultiChannelDevice(uiid) || isOneChannelSwOrSockCPDevice(uiid) || uiid === 126 || uiid === 34) {
         // Multi-channel + OneChannelSwOrSock + DualR3
         const configure = _.get(data, ['params', 'configure'], []);

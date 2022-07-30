@@ -17,6 +17,7 @@ import {
     Statistic,
     ConfigProvider,
     Carousel,
+    Popconfirm,
     Slider,
     Tooltip
 } from 'ant-design-vue';
@@ -50,6 +51,7 @@ app.use(Statistic);
 app.use(ConfigProvider);
 app.use(Carousel);
 app.use(Slider);
+app.use(Popconfirm);
 app.use(Tooltip);
 
 app.mount('#app');

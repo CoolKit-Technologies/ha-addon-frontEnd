@@ -55,7 +55,7 @@ export default defineComponent({
 
             if (type === 1 && uiid === 1) {
                 return params.data1.pulse === 'on';
-            } else if (isOneChannelSPDevice(uiid)) {
+            } else if (isOneChannelSPDevice(uiid) && uiid !== 181) {
                 return params.pulse === 'on';
             } else if (uiid === 126) {
                 return params.pulses[cardIndex].pulse === 'on';

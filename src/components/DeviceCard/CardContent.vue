@@ -265,16 +265,16 @@ export default defineComponent({
 
     computed: {
         uiid190Power() {
-            const { power } = this.cardData as any;
-            return power / 100 || 0;
+            const { params } = this.cardData as any;
+            return params.power / 100 || 0;
         },
         uiid190DayConsumption() {
-            const { dayKwh } = this.cardData as any;
-            return dayKwh / 100 || 0;
+            const { params } = this.cardData as any;
+            return params.dayKwh / 100 || 0;
         },
         uiid190MonConsumption() {
-            const { monthKwh } = this.cardData as any;
-            return monthKwh / 100 || 0;
+            const { params } = this.cardData as any;
+            return params.monthKwh / 100 || 0;
         },
         isUiid181() {
             const { uiid } = this.cardData as any;

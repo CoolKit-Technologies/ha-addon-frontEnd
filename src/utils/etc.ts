@@ -621,6 +621,7 @@ export function hasRefreshUiDevice(uiid: number) {
         32,
         126,
         181,
+        190,
     ];
     return uiids.indexOf(uiid) !== -1;
 }

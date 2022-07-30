@@ -103,6 +103,10 @@
     },
 
     modal: {
+        resetConsumption: '重置总用电量',
+        confirm: '确定',
+        cancel: '取消',
+        confirmToReset: '确认重置设备屏幕上的总用电量为 0kWh？',
         feeRate: '费率',
         kwh: '度',
         usage: '用电量',

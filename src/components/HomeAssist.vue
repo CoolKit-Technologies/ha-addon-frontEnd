@@ -391,7 +391,7 @@ export default defineComponent({
 .main-content {
     margin: 0 auto;
     padding: 20px 40px;
-    height: calc(100vh - 87px);
+    min-height: calc(100vh - 87px);
     max-width: 1200px;
 }
 
@@ -543,7 +543,7 @@ section {
 
     .help-wrap {
         width: 380px;
-        height: 100%;
+        min-height: 100%;
         padding: 0 10px 10px 10px;
         display: flex;
         flex-direction: column;

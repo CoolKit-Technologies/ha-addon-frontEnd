@@ -103,6 +103,10 @@
     },
 
     modal: {
+        resetConsumption: 'Reset Consumption',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        confirmToReset: 'Confirm to reset consumption on device screen to 0 kWh?',
         feeRate: 'Rate',
         kwh: 'kWh',
         usage: 'Usage',

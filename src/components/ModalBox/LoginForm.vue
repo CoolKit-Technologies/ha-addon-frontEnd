@@ -64,6 +64,7 @@ import { message } from 'ant-design-vue';
 
 import { getConfig } from '@/utils/config';
 import { login } from '@/api/user';
+import { getDeviceListRefresh } from '@/api/device';
 
 export default defineComponent({
     name: 'LoginForm',
@@ -128,6 +129,7 @@ export default defineComponent({
                 setTimeout(() => {
                     this.closeModal();
                 }, 1000);
+                await getDeviceListRefresh();
             }
         },
         selectCountry(e: string) {
@@ -153,7 +155,7 @@ export default defineComponent({
 
     .slogan
         margin-top 10px
-    
+
     .login-form
         max-width 404px
         margin auto

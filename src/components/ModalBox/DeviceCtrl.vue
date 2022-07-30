@@ -46,6 +46,9 @@
             <ctrl-select :index="1" type="power-on-state" />
         </template>
 
+        <!-- UIID 190 Reset Consumption -->
+        <reset-consumption v-if="isUiid190" :cardData="modalParams" />
+
         <!-- Set temperature unit -->
         <temperature-unit v-if="modalParams.uiid === 15 && hasCurTempFunc" />
 
@@ -79,6 +82,7 @@
 
         <!-- Upgrade device firmware -->
         <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub" />
+
     </div>
 </template>
 
@@ -97,6 +101,7 @@ import ScenesItem from '@/components/CtrlItem/ScenesItem.vue';
 import MulitLock from '@/components/CtrlItem/MulitLock/MulitLock.vue';
 import { isMultiChannelDevice, isZigbeeDevice } from '@/utils/etc';
 import CtrlTemp from '@/components/CtrlItem/CtrlTemp.vue';
+import ResetConsumption from '@/components/CtrlItem/ResetConsumption.vue';
 
 export default defineComponent({
     name: 'DeviceCtrl',
@@ -112,6 +117,7 @@ export default defineComponent({
         ScenesItem,
         MulitLock,
         CtrlTemp,
+        ResetConsumption
     },
 
     computed: {
@@ -176,7 +182,11 @@ export default defineComponent({
         },
         isNSPanel() {
             const { uiid, cardIndex } = this.modalParams as any;
-            return uiid === 133;
+            return uiid === 133 || uiid === 181;
+        },
+        isUiid190() {
+            const { uiid, cardIndex } = this.modalParams as any;
+            return uiid === 190;
         },
         ...mapState(['modalParams']),
     },

@@ -2,7 +2,7 @@
 <template>
     <div class="ctrl-temp">
         <div class="title">{{ $t('modal.temperatureUnit.name') }}</div>
-        <a-select class="select" :value="tempUnit" @change="handleChange">
+        <a-select class="select" size="small" :value="tempUnit" @change="handleChange">
             <a-select-option v-for="item in options" :key="item.id">{{ item.title }}</a-select-option>
         </a-select>
     </div>

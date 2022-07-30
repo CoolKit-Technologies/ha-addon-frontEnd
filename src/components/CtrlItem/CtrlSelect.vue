@@ -466,6 +466,8 @@ export default defineComponent({
             if (type === 1 && uiid === 1) {
                 // DIY device
                 this.value = params.data1.startup;
+            } else if (uiid === 190) {
+                this.value = params.configure[0].startup;
             } else if (isMultiChannelDevice(uiid) || isOneChannelSwOrSockCPDevice(uiid) || uiid === 34) {
                 // Multi-channel
                 this.value = params.configure[this.index].startup;
