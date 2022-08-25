@@ -25,6 +25,7 @@ export default {
                 // setLocale('en-US');
             } else {
                 setLocale('en-US');
+                setLocale('it-IT');
             }
             yield put({
                 type: 'save',

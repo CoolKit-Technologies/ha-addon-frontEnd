@@ -23,6 +23,7 @@ export async function getCmsContent(language: string): Promise<HttpResponse> {
     } else {
         region = 'eu';
         locale = 'en-us';
+        locale = 'it-it';
     }
     const url = `https://appcms.coolkit.cn/appcms-service/v2/batch.json?project=home-assistant&category=[%22top%22,%22push%22]&region=${region}&locale=${locale}&country=CL`;
     return await sendRequest('GET', url);
