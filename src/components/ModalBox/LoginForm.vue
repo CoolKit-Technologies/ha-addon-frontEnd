@@ -129,7 +129,12 @@ export default defineComponent({
                 setTimeout(() => {
                     this.closeModal();
                 }, 1000);
-                await getDeviceListRefresh();
+                const deviceRes = await getDeviceListRefresh();
+                if (deviceRes.error === 0) {
+                    this.setOriginDeviceList(deviceRes.data);
+                } else {
+                    message.error(this.$t('common.error.getdevice'));
+                }
             }
         },
         selectCountry(e: string) {
@@ -137,7 +142,7 @@ export default defineComponent({
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
         },
-        ...mapMutations(['setIsLogin']),
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList']),
         ...mapActions(['closeModal'])
     }
 });
