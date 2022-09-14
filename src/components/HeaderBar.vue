@@ -34,9 +34,16 @@
         </template>
         {{ $t("common.text.signin") }}
       </a-button>
-      <a-button style="margin-right: 10px" @click="changeLang">{{
+      <a-button style="margin-right: 10px;" @click="changeLang">{{
         lang
       }}</a-button>
+      <a-button style="margin-right: 10px;" @click="changeHideDevice">
+        <template #icon>
+          <eye-invisible-outlined v-if="hideUnavaDevice" />
+          <eye-outlined v-else />
+        </template>
+        {{ $t('common.hidedevice') }}
+      </a-button>
       <a-button
         :loading="syncing"
         style="margin-right: 10px"
@@ -87,6 +94,8 @@ import {
   MoreOutlined,
   ExportOutlined,
   QuestionOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
 } from "@ant-design/icons-vue";
 import _ from "lodash";
 
@@ -105,6 +114,8 @@ export default defineComponent({
     MoreOutlined,
     ExportOutlined,
     QuestionOutlined,
+    EyeOutlined,
+    EyeInvisibleOutlined,
   },
 
   data() {
@@ -123,7 +134,7 @@ export default defineComponent({
         return "English";
       }
     },
-    ...mapState(["isLogin", "username"]),
+    ...mapState(["isLogin", "username", "hideUnavaDevice"]),
   },
 
   methods: {
@@ -156,6 +167,9 @@ export default defineComponent({
         type: "login",
         params: null,
       });
+    },
+    changeHideDevice() {
+        this.setHideUnavaDevice(!this.hideUnavaDevice);
     },
     changeLang() {
       if (this.$root?.$i18n.locale === "en") {
@@ -193,6 +207,7 @@ export default defineComponent({
       "setOriginDeviceList",
       "setLocale",
       "setAntdLocale",
+      "setHideUnavaDevice"
     ]),
     ...mapActions(["openModal", "getCmsInfo"]),
   },

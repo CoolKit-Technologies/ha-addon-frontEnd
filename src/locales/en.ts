@@ -20,7 +20,8 @@
         tab:{
             ewelinkTab:'eWeLink Devices',
             haDeviceTab:'Sync Home Assistant Devices'
-        }
+        },
+        hidedevice: 'Hide offline or unsupported devices'
     },
 
     form: {

@@ -20,7 +20,8 @@
         tab:{
             ewelinkTab:'易微联智能设备',
             haDeviceTab:'Home Assistant设备同步管理'
-        }
+        },
+        hidedevice: '隐藏离线及不支持的设备'
     },
 
     form: {
