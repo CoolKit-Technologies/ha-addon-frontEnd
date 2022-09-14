@@ -1,5 +1,8 @@
  const zh = {
     common: {
+        success: {
+            getdevice: '获取设备列表成功'
+        },
         error: {
             getcontent: '获取内容出错',
             getdevice: '获取设备列表出错',

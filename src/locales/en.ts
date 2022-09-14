@@ -1,5 +1,8 @@
  const en = {
     common: {
+        success: {
+            getdevice: 'Get device list success'
+        },
         error: {
             getcontent: 'Get content failed',
             getdevice: 'Get device list failed',

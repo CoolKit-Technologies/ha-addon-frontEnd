@@ -146,6 +146,7 @@ export default defineComponent({
       const res = await getDeviceListRefresh();
       if (res.error === 0) {
         this.setOriginDeviceList(res.data);
+        message.success(this.$t('common.success.getdevice'));
       } else {
         message.error(this.$t("common.error.getdevice"));
       }
