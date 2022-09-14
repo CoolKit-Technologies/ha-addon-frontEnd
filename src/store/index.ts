@@ -14,6 +14,9 @@ export default createStore({
         // If user is login
         isLogin: false,
 
+        // Header bar username (phone number or email)
+        username: '',
+
         // Browser window size, 'lg' for large screen, 'md' for medium screen,
         // 'sm' for small, 'xm' for smartphone
         windowSize: 'lg',
@@ -89,6 +92,9 @@ export default createStore({
     mutations: {
         setIsLogin(state, v) {
             state.isLogin = v;
+        },
+        setUsername(state, v) {
+            state.username = v;
         },
         setModalVisible(state, v) {
             state.modalVisible = v;

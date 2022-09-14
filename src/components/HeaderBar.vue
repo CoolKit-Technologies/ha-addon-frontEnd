@@ -48,6 +48,12 @@
         <more-outlined class="action-icon" />
         <template #overlay>
           <a-menu>
+            <a-menu-item v-if="isLogin">
+              <div class="item-wrapper">
+                <user-outlined class="item-wrapper__icon" />
+                <span class="item-wrapper__text">{{ username }}</span>
+              </div>
+            </a-menu-item>
             <a-menu-item v-if="isLogin" @click="handleSignout">
               <div class="item-wrapper">
                 <export-outlined class="item-wrapper__icon" />
@@ -117,7 +123,7 @@ export default defineComponent({
         return "English";
       }
     },
-    ...mapState(["isLogin"]),
+    ...mapState(["isLogin", "username"]),
   },
 
   methods: {

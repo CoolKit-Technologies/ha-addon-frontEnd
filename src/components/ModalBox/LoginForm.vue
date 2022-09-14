@@ -126,6 +126,7 @@ export default defineComponent({
             } else {
                 message.success(this.$t('form.success.login'));
                 this.setIsLogin(true);
+                this.setUsername(res.data.user.phoneNumber || res.data.user.email);
                 setTimeout(() => {
                     this.closeModal();
                 }, 1000);
@@ -142,7 +143,7 @@ export default defineComponent({
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
         },
-        ...mapMutations(['setIsLogin', 'setOriginDeviceList']),
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername']),
         ...mapActions(['closeModal'])
     }
 });
