@@ -55,34 +55,36 @@
                         </div>
                     </div>
 
-                    <div
-                        class="list-item"
-                        v-for="(item, index) in haDeviceList"
-                        :key="index + 'list'"
-                    >
-                        <div class="list-item-left">
-                            <div class="img-wrap">
-                                <img :src="whichImg(item.deviceUiid)" />
-                            </div>
-                            <div>
-                                <div class="title">{{ item.deviceNameHa }}</div>
-                                <div class="content">
-                                    {{ item.deviceNameCk }}
+                    <a-spin :spinning="listLoading">
+                        <div
+                            class="list-item"
+                            v-for="(item, index) in haDeviceList"
+                            :key="index + 'list'"
+                        >
+                            <div class="list-item-left">
+                                <div class="img-wrap">
+                                    <img :src="whichImg(item.deviceUiid)" />
+                                </div>
+                                <div>
+                                    <div class="title">{{ item.deviceNameHa }}</div>
+                                    <div class="content">
+                                        {{ item.deviceNameCk }}
+                                    </div>
                                 </div>
                             </div>
+                            <a-switch
+                                class="operate"
+                                @change="
+                                    toAllAsync(
+                                        item.haDeviceId,
+                                        item.deviceUiid,
+                                        item.syncState
+                                    )
+                                "
+                                :checked="item.syncState"
+                            />
                         </div>
-                        <a-switch
-                            class="operate"
-                            @change="
-                                toAllAsync(
-                                    item.haDeviceId,
-                                    item.deviceUiid,
-                                    item.syncState
-                                )
-                            "
-                            :checked="item.syncState"
-                        />
-                    </div>
+                    </a-spin>
                 </div>
                 <!--
                 <footer>
@@ -242,6 +244,7 @@ export default defineComponent({
             isNewGw: true, //是否第一次同步ha设备
             buttonShow: false,
             syncParams: { haDeviceId: 0, deviceUiid: 0, state: true },
+            listLoading: false, // 设备列表是否加载中
         } as {
             visible: boolean;
             serveTitle: string;
@@ -253,6 +256,7 @@ export default defineComponent({
                 deviceUiid: number;
                 state: boolean;
             };
+            listLoading: boolean;
         };
     },
     computed: {
@@ -291,6 +295,8 @@ export default defineComponent({
             deviceUiid?: number,
             state?: boolean
         ) {
+            this.listLoading = true;
+
             // //第一次点击同步的时候，保存参数，同意协议后触发
             if (deviceUiid && haDeviceId && state !== undefined) {
                 this.syncParams = {
@@ -353,7 +359,8 @@ export default defineComponent({
 
             const res = await syncHa2ck(params);
 
-            this.getHaDeviceList();
+            await this.getHaDeviceList();
+            this.listLoading = false;
         },
         toHelpHtml(url: string) {
             window.open(url, "_blank");
@@ -389,7 +396,7 @@ export default defineComponent({
     async mounted() {
         this.getHaDeviceList();
         this.getHaGatewayStatus();
-        this.toAllAsync = _.debounce(this.toAllAsync, 1000) as any;
+        this.toAllAsync = _.debounce(this.toAllAsync, 1000, { leading: true, trailing: false }) as any;
     },
 });
 </script>
