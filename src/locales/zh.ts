@@ -22,7 +22,7 @@
         },
         tab:{
             ewelinkTab:'易微联智能设备',
-            haDeviceTab:'Home Assistant设备同步管理'
+            haDeviceTab:'Home Assistant设备同步管理 (Beta)'
         },
         hidedevice: '隐藏离线及不支持的设备'
     },
@@ -214,7 +214,8 @@
         agree:'同意',
         disAgree:'不同意',
         loginFirst:'请先登录易微联账号',
-        noDevice: '暂无可用的设备'
+        noDevice: '暂无可用的设备',
+        syncDeviceLimit: '同步的设备已经到上限'
     }
 };
 export default zh

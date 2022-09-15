@@ -22,7 +22,7 @@
         },
         tab:{
             ewelinkTab:'eWeLink Devices',
-            haDeviceTab:'Sync Home Assistant Devices'
+            haDeviceTab:'Sync Home Assistant Devices (Beta)'
         },
         hidedevice: 'Hide offline or unsupported devices'
     },
@@ -214,7 +214,8 @@
         agree:'Agree',
         disAgree:'Disagree',
         loginFirst:'Please log in to your eWeLink  account first',
-        noDevice: 'No available device'
+        noDevice: 'No available device',
+        syncDeviceLimit: 'The number of synchronized devices reached the upper limit'
     }
 };
 export default en

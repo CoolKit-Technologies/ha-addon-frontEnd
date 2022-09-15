@@ -33,6 +33,7 @@
                 <div class="box-wrap">
                     <div class="list-header">
                         <div class="title">{{ $t("haDevice.deviceList") }}</div>
+                        <!--
                         <a-tooltip>
                             <template #title>{{
                                 $t("haDevice.allSync")
@@ -44,6 +45,7 @@
                                 @change="toAllAsync"
                             />
                         </a-tooltip>
+                        -->
                     </div>
 
                     <div v-if="haDeviceList.length === 0" class="empty-list">
@@ -189,6 +191,7 @@ import {
 } from "@/api/ha-device";
 import { i18n } from "@/locales";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import { message } from "ant-design-vue";
 
 interface IcmsInfo {
     thirdPlatform: {
@@ -338,6 +341,16 @@ export default defineComponent({
                     });
                 }
             }
+
+            // 检查是否到达同步设备上限
+            if (!state) {
+                const limit = 30;    // 同步设备上限
+                if (this.haDeviceList.filter((item: any) => item.syncState).length >= limit) {
+                    message.error(this.$t('haDevice.syncDeviceLimit'));
+                    return;
+                }
+            }
+
             const res = await syncHa2ck(params);
 
             this.getHaDeviceList();
