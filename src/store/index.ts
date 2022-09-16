@@ -7,12 +7,18 @@ import { message } from 'ant-design-vue';
 import { i18n } from '@/locales';
 import { getHaDeviceList } from "@/api/ha-device";
 
-import { getRegionMap } from '@/utils/etc';
+import { getRegionMap, isSupportedDevice } from '@/utils/etc';
 
 export default createStore({
     state: {
         // If user is login
         isLogin: false,
+
+        // Header bar username (phone number or email)
+        username: '',
+
+        // Hide offline or unsupported device
+        hideUnavaDevice: false,
 
         // Browser window size, 'lg' for large screen, 'md' for medium screen,
         // 'sm' for small, 'xm' for smartphone
@@ -56,7 +62,8 @@ export default createStore({
         },
         deviceCardList(state) {
             const origin = state.originDeviceList as any[];
-            const result = [];
+            const result = [];  // 扩展后的设备数据
+            const list = [];    // 过滤后的设备数据
             for (let i = 0; i < origin.length; i++) {
                 if (origin[i].uiid === 126) {
                     // When a device UIID is 126, it should be renderred
@@ -82,13 +89,32 @@ export default createStore({
                     result.push(item);
                 }
             }
-            return result;
+
+            if (state.hideUnavaDevice) {
+                // 隐藏离线及不支持的设备
+                for (const dev of result) {
+                    if (!dev.online || !isSupportedDevice(dev.uiid)) {
+                        continue;
+                    } else {
+                        list.push(dev);
+                    }
+                }
+                return list;
+            } else {
+                return result;
+            }
         },
     },
 
     mutations: {
         setIsLogin(state, v) {
             state.isLogin = v;
+        },
+        setUsername(state, v) {
+            state.username = v;
+        },
+        setHideUnavaDevice(state, v) {
+            state.hideUnavaDevice = v;
         },
         setModalVisible(state, v) {
             state.modalVisible = v;

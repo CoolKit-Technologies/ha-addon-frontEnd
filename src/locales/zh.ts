@@ -1,5 +1,8 @@
  const zh = {
     common: {
+        success: {
+            getdevice: '获取设备列表成功'
+        },
         error: {
             getcontent: '获取内容出错',
             getdevice: '获取设备列表出错',
@@ -19,8 +22,11 @@
         },
         tab:{
             ewelinkTab:'易微联智能设备',
-            haDeviceTab:'Home Assistant设备同步管理'
-        }
+            haDeviceTab:'Home Assistant设备同步管理 (Beta)'
+        },
+        hidedevice: '隐藏离线及不支持的设备',
+        ok: '确认',
+        cancel: '取消'
     },
 
     form: {
@@ -103,6 +109,8 @@
     },
 
     modal: {
+        signoutConfirm: '确认退出',
+        removeEntityCheck: '退出时删除设备在 Home Assistant 里对应的 Entity',
         resetConsumption: '重置总用电量',
         confirm: '确定',
         cancel: '取消',
@@ -212,7 +220,8 @@
         agree:'同意',
         disAgree:'不同意',
         loginFirst:'请先登录易微联账号',
-        noDevice: '暂无可用的设备'
+        noDevice: '暂无可用的设备',
+        syncDeviceLimit: '同步的设备已经到上限'
     }
 };
 export default zh

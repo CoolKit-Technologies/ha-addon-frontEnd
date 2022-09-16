@@ -21,8 +21,8 @@ export async function login(params: {
 /**
  * User logout API
  */
-export async function logout() {
-    return await sendHttpRequest('POST', apiPrefix + '/user/logout');
+export async function logout(params: { removeEntity: boolean; }) {
+    return await sendHttpRequest('POST', apiPrefix + '/user/logout', params);
 }
 
 /**

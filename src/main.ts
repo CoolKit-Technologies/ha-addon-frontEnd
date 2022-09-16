@@ -19,7 +19,8 @@ import {
     Carousel,
     Popconfirm,
     Slider,
-    Tooltip
+    Tooltip,
+    Checkbox,
 } from 'ant-design-vue';
 import store from '@/store';
 import App from '@/App.vue';
@@ -53,5 +54,6 @@ app.use(Carousel);
 app.use(Slider);
 app.use(Popconfirm);
 app.use(Tooltip);
+app.use(Checkbox);
 
 app.mount('#app');
