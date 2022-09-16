@@ -170,8 +170,10 @@ export default defineComponent({
 .history-item
     .divider
         margin 14px 0
-
-    .chart
-        height 400px
-        width 500px
+	.line-item
+		display: flex
+		justify-content: center
+		.chart
+			height 400px
+			width 500px
 </style>

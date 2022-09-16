@@ -194,6 +194,8 @@
             off: 'Off',
             remove: 'Delete',
             scene: 'Scene',
+			inchingOn: 'InchingON',
+			inchingOff: 'InchingOFF'
         },
     },
     haDevice:{

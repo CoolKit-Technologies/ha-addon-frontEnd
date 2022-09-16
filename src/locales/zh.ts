@@ -194,6 +194,8 @@
             off: '关闭',
             remove: '删除',
             scene: '轻智能场景',
+			inchingOn: '点动开',
+			inchingOff: '点动关'
         },
     },
     haDevice:{

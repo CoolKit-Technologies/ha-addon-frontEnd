@@ -59,13 +59,19 @@ export default defineComponent({
                 if (!modalParams.params.locks || modalParams.params.locks.length === 0) {
                     return true;
                 } else {
-                    for (let i = 0; i < modalParams.params.locks.length; i++) {
-                        const lock = modalParams.params.locks[i];
-                        if (lock.enabled && ~lock.outlets.indexOf(this.index)) {
-                            return false;
-                        }
-                    }
-                    return true;
+                    // for (let i = 0; i < modalParams.params.locks.length; i++) {
+                    //     const lock = modalParams.params.locks[i];
+                    //     console.log("🚀 ~ file: ChannelItem.vue ~ line 64", lock, '->>>>>',this.index)
+                    //     if (lock.enabled && lock.outlets.includes(this.index)) {
+                    //         return false;
+                    //     }else{
+					// 		return true
+					// 	}
+                    // }
+					const locks = modalParams.params.locks;
+					locks.forEach((lock: {outlets:Array<number>,enabled:number}) => {
+						return (lock.outlets.includes(this.index) && lock.enabled === 1)
+					})
                 }
             }
             return modalParams.params.lock === 0;

@@ -87,7 +87,7 @@ export default defineComponent({
             if(uiid === 22){
                 const {channel2,channel3,channel4} = params;
                 return this.dealRGBColor({
-                    r:channel2,g:channel3,b:channel4
+                    r:parseInt(channel2),g:parseInt(channel3),b:parseInt(channel4)
                 })
             }else if(uiid === 104){
                 const {r,g,b} = params.color;

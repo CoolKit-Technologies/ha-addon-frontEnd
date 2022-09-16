@@ -95,8 +95,9 @@ export default defineComponent({
     },
     methods: {
         async changeMode(mode: string) {
+			if(mode === this.mode) return;
             this.mode = mode;
-            await setFiveLtMode(this.$props.cardData);
+            await setFiveLtMode(this.$props.cardData,this.mode);
         },
         handleClick(e: any) {
             e.stopPropagation();

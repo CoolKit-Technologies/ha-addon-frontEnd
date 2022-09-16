@@ -376,7 +376,7 @@ export async function toggleLock(v: boolean, data: any) {
  * @param value Millisecond value
  * @param index Channel index
  */
-export async function toggleInchingMode(v: boolean, data: any, value: number, index: number) {
+export async function toggleInchingMode(v: boolean, data: any, value: number, index: number,action?:string) {
     const { type, uiid, deviceId, apikey, params, cardIndex } = data;
     const pulses = _.cloneDeep(params.pulses);
 
@@ -419,6 +419,7 @@ export async function toggleInchingMode(v: boolean, data: any, value: number, in
     } else {
         pulses[index].width = value;
         pulses[index].pulse = v ? 'on' : 'off';
+		action && (pulses[index].switch = action)
     }
     await setCloudDevice({
         apikey,
@@ -641,22 +642,20 @@ export async function setFiveColorBulbTemp(data: any, type: string) {
  * set color picker
  */
 export async function setPickerColor(data: any, obj: any) {
-    const { deviceId, apikey, uiid } = data;
+    const { deviceId, apikey, uiid,params } = data;
 
-    let params = {
+    let tempParams = {
         id: deviceId,
         apikey: apikey,
         params: {},
     };
     if (uiid === 104) {
-        _.assign(params.params, {
+        _.assign(tempParams.params, {
             ltype: 'color',
-            color: {
-                ...obj,
-            },
+            [params['ltype']]: {...params[params['ltype']],...obj},
         });
     } else if (uiid === 22) {
-        _.assign(params.params, {
+        _.assign(tempParams.params, {
             zyx_mode: 2,
             channel0: '0',
             channel1: '0',
@@ -665,7 +664,7 @@ export async function setPickerColor(data: any, obj: any) {
             channel4: `${obj.b}`,
         });
     } else if (uiid === 59) {
-        _.assign(params.params, {
+        _.assign(tempParams.params, {
             mode: 1,
             colorR: obj.r,
             colorG: obj.g,
@@ -673,28 +672,31 @@ export async function setPickerColor(data: any, obj: any) {
             light_type: 1,
         });
     }
-    console.log(`ML ~ file: device.ts ~ line 605 ~ setPickerColor ~ params`, params);
-    await setCloudDevice(params);
+    console.log(`ML ~ file: device.ts ~ line 605 ~ setPickerColor ~ params`, tempParams);
+    await setCloudDevice(tempParams);
 }
 
 //  change five light mode
-export async function setFiveLtMode(data: any) {
-    const { deviceId, apikey, uiid } = data;
-    let params = {
+export async function setFiveLtMode(data: any,mode:string) {
+    const { deviceId, apikey, uiid, params } = data;
+    let tempParams = {
         id: deviceId,
         apikey: apikey,
         params: {},
     };
     if (uiid === 104) {
-        _.assign(params.params, {
-            switch: 'on',
+        _.assign(tempParams.params, {
+            ltype: mode,
+			[mode]:params[mode] || {}
         });
     } else if (uiid === 22) {
-        _.assign(params.params, {
-            state: 'on',
+		const {channel0='0',channel1='0',channel2='0',channel3='0',channel4='0',type,zyx_mode} = params;
+        _.assign(tempParams.params, {
+            channel0,channel1,channel2,channel3,channel4,type,zyx_mode: mode === 'color' ? 2 : 1
         });
     }
-    await setCloudDevice(params);
+	console.log('params',tempParams);
+    await setCloudDevice(tempParams);
 }
 
 /**

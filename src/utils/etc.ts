@@ -665,6 +665,7 @@ export function isLightDevice(uiid: number) {
     const uiids = [
         22,
         59,
+		44,
         103,
         104
     ];

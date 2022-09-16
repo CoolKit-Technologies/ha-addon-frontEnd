@@ -171,7 +171,29 @@ export const fakeTempList = [
     '255,137,18',
     '255,141,11',
 ];
-
+const FIVE_COLOR_BULB_LT_BRIGHTNWSS = [
+    '25',
+    '38',
+    '40',
+    '61',
+    '85',
+    '103',
+    '117',
+    '130',
+    '141',
+    '150',
+    '159',
+    '167',
+    '174',
+    '180',
+    '186',
+    '192',
+    '197',
+    '202',
+    '207',
+    '211',
+    '255',
+];
 export default defineComponent({
     name: 'CtrlSlider',
 
@@ -216,11 +238,7 @@ export default defineComponent({
         min() {
             const { uiid } = this.$props.cardData as any;
             if (this.type === 'brightness') {
-                if (uiid === 22) {
-                    return 25;
-                } else {
-                    return 1;
-                }
+                return 1;    
             } else {
                 return 0;
             }
@@ -235,7 +253,12 @@ export default defineComponent({
                 }
             } else if (this.type === 'darkest') {
                 return 255;
-            } else {
+            } else if(this.type === 'brightness'){
+				if (uiid === 22) {
+                    return 21;
+                }
+				return 100
+			} else {
                 return 100;
             }
         },
@@ -247,12 +270,21 @@ export default defineComponent({
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = params[params.ltype].br;
                 } else if (uiid === 22) {
-                    this.progressValue = Math.max(parseInt(params.channel0), parseInt(params.channel1));
+					const five_color_bulb_brightness = FIVE_COLOR_BULB_LT_BRIGHTNWSS.findIndex((item, index) => {
+                        if (item === `${Math.max(parseInt(params.channel0), parseInt(params.channel1))}`) {
+                            return index;
+                        }
+                    });
+					this.progressValue = typeof five_color_bulb_brightness === 'number' ? five_color_bulb_brightness + 1 : 0;
+                    console.log("🚀 ~ file: CtrlSlider.vue ~ line 278 ~ this.progressValue", this.progressValue)
+                    // this.progressValue = Math.max(parseInt(params.channel0), parseInt(params.channel1));
                 } else if (uiid === 59) {
                     this.progressValue = params.bright;
+                }else if (uiid === 44) {
+                    this.progressValue = params.brightness;
                 }
             } else if (this.type === 'color-temp') {
-                if (uiid === 103) {
+                if (uiid === 103 || uiid === 104) {
                     this.progressValue = 255 - params[params.ltype].ct;
                 } else if (uiid === 59) {
                     const { colorR, colorG, colorB } = params;
@@ -263,7 +295,7 @@ export default defineComponent({
                     this.progressValue = value ? value : 0;
                 }
             } else if (this.type === 'curtain') {
-                this.progressValue = params.setclose;
+                this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'Darkest') {
                 this.progressValue = params.brightMin;
             }
@@ -275,19 +307,25 @@ export default defineComponent({
         },
         setDefaultValue() {
             const { uiid, params } = this.cardData as any;
-            console.log(`ML ~ file: CtrlSlider.vue ~ line 127 ~ setDefaultValue ~ params`, params);
             if (this.type === 'brightness') {
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = params[params.ltype].br;
                 } else if (uiid === 22) {
-                    this.progressValue = Math.max(parseInt(params.channel0), parseInt(params.channel1));
+					const five_color_bulb_brightness = FIVE_COLOR_BULB_LT_BRIGHTNWSS.findIndex((item, index) => {
+                        if (item === `${Math.max(parseInt(params.channel0), parseInt(params.channel1))}`) {
+                            return index;
+                        }
+                    });
+					this.progressValue = typeof five_color_bulb_brightness === 'number' ? five_color_bulb_brightness + 1 : 0;
+                    console.log("🚀 ~ file: CtrlSlider.vue ~ line 317 ~ setDefaultValue ~ this.progressValue", this.progressValue)
+                    // this.progressValue = Math.max(parseInt(params.channel0), parseInt(params.channel1));
                 } else if (uiid === 59) {
                     this.progressValue = params.bright;
                 } else if (uiid === 44) {
                     this.progressValue = params.brightness;
                 }
             } else if (this.type === 'color-temp') {
-                if (uiid === 103) {
+                if (uiid === 103 || uiid === 104) {
                     this.progressValue = 255 - params[params.ltype].ct;
                 } else if (uiid === 59) {
                     const { colorR, colorG, colorB } = params;
@@ -296,7 +334,7 @@ export default defineComponent({
                     this.progressValue = value ? value : 0;
                 }
             } else if (this.type === 'curtain') {
-                this.progressValue = params.setclose;
+                this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'darkest') {
                 this.progressValue = params.brightMin;
             }
@@ -316,40 +354,41 @@ export default defineComponent({
             const { uiid, params, deviceId, apikey } = this.cardData as any;
 
             if (uiid === 103 || uiid === 104) {
-                await setCloudDevice({
-                    apikey,
+				const {ltype} = params;
+				let tempParams = {
+					apikey,
                     id: deviceId,
-                    params: {
-                        ltype: 'white',
-                        white: {
-                            br: v,
-                            ct: params.white.ct,
-                        },
-                    },
-                });
+					params:{
+						ltype,
+						[ltype]: params[ltype] ?? {}
+					}
+				}
+				Object.assign(tempParams.params[ltype],{ br: v })
+                await setCloudDevice(tempParams);
             } else if (uiid === 22) {
                 let obj = {
                     apikey,
                     id: deviceId,
                     params: {},
                 };
-                console.log(`ML ~ file: CtrlSlider.vue ~ line 148 ~ setBrightness ~ params`, params);
+                // console.log(`ML ~ file: CtrlSlider.vue ~ line 148 ~ setBrightness ~ params`, params);
+				const brightness = FIVE_COLOR_BULB_LT_BRIGHTNWSS[v - 1];
                 switch (params.type) {
                     case 'warm':
                         _.assign(obj.params, {
                             channel0: '25',
-                            channel1: `${v}`,
+                            channel1: `${brightness}`,
                         });
                         break;
                     case 'middle':
                         _.assign(obj.params, {
-                            channel0: `${v}`,
-                            channel1: `${v}`,
+                            channel0: `${brightness}`,
+                            channel1: `${brightness}`,
                         });
                         break;
                     case 'cold':
                         _.assign(obj.params, {
-                            channel0: `${v}`,
+                            channel0: `${brightness}`,
                             channel1: '25',
                         });
                         break;

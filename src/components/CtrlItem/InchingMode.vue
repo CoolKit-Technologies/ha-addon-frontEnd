@@ -14,6 +14,10 @@
                     <span style="display:inline-block; text-align:center; width:100%;">{{ $t('modal.minute') }} : {{ $t('modal.second') }}</span>
                 </template>
             </a-time-picker>
+			<a-select style="width: 120px;margin-left: 10px;" size="small" :disabled="!modeStat" :value="action" @select="setInchingAction" v-if="isShowStatus">
+                <a-select-option key="on" value="on">{{ $t('modal.miniR3.inchingOn') }} </a-select-option>
+                <a-select-option key="off" value="off">{{ $t('modal.miniR3.inchingOff') }}</a-select-option>
+            </a-select>
             <a-switch
                 class="switch"
                 :checked="modeStat"
@@ -43,8 +47,10 @@ export default defineComponent({
     data() {
         return {
             modeTime: null,
+			action: 'on'
         } as {
             modeTime: any;
+			action: string
         };
     },
 
@@ -65,6 +71,11 @@ export default defineComponent({
                 return params.pulses[index].pulse === 'on';
             }
         },
+		//	点动是否显示 常开常闭 选项
+		isShowStatus(){
+            const { uiid } = this.modalParams as any;
+            return [138, 139, 140, 141, 190].includes(uiid);
+		},
         ...mapState(['modalParams'])
     },
 
@@ -118,8 +129,12 @@ export default defineComponent({
             }
         },
         async toggle(v: boolean) {
-            await toggleInchingMode(v, this.modalParams, this.getMs(), this.index);
+            await toggleInchingMode(v, this.modalParams, this.getMs(), this.index,this.isShowStatus ? this.action : '');
         },
+		setInchingAction(v:string){
+			this.action = v;
+			this.toggle(true)
+		}
     },
 });
 </script>

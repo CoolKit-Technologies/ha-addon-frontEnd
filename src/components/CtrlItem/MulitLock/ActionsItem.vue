@@ -12,7 +12,7 @@
                 style="width: 150px"
                 @blur="handleBlur"
             />
-            <a-switch v-model:checked="lockData.enabled" @click="handleToggle" class="lock-switcher" />
+            <a-switch :checked="(lockData.enabled === 1)" @click="handleToggle" class="lock-switcher" />
             <a-button type="link" @click="handleRemove">{{ $t('modal.miniR3.remove') }}</a-button>
         </div>
     </div>

@@ -159,7 +159,7 @@
             </div>
 
             <!-- UIID 190 -->
-            <div class="uiid-190" v-else>
+            <div class="uiid-190" v-else-if="cardData.uiid === 190">
                 <div class="chart-grp">
                     <div class="chart">
                         <circle-chart

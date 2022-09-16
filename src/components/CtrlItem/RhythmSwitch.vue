@@ -42,8 +42,10 @@ export default defineComponent({
 
     methods: {
         async toggle(v: boolean, e: any) {
-            const { apikey, deviceId } = this.cardData as any;
             e.stopPropagation();
+			//	律动功能只能开不能主动关闭
+			if(!v) return;
+            const { apikey, deviceId } = this.cardData as any;
             await setCloudDevice({
                 apikey,
                 id: deviceId,
