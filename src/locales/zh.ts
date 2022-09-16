@@ -24,7 +24,9 @@
             ewelinkTab:'易微联智能设备',
             haDeviceTab:'Home Assistant设备同步管理 (Beta)'
         },
-        hidedevice: '隐藏离线及不支持的设备'
+        hidedevice: '隐藏离线及不支持的设备',
+        ok: '确认',
+        cancel: '取消'
     },
 
     form: {
@@ -107,6 +109,8 @@
     },
 
     modal: {
+        signoutConfirm: '确认退出',
+        removeEntityCheck: '退出时删除设备在 Home Assistant 里对应的 Entity',
         resetConsumption: '重置总用电量',
         confirm: '确定',
         cancel: '取消',

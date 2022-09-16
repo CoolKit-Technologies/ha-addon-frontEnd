@@ -24,7 +24,9 @@
             ewelinkTab:'eWeLink Devices',
             haDeviceTab:'Sync Home Assistant Devices (Beta)'
         },
-        hidedevice: 'Hide offline or unsupported devices'
+        hidedevice: 'Hide offline or unsupported devices',
+        ok: 'OK',
+        cancel: 'Cancel'
     },
 
     form: {
@@ -107,6 +109,8 @@
     },
 
     modal: {
+        signoutConfirm: 'Sign out confirm',
+        removeEntityCheck: 'Remove Home Assistant entities when signed out',
         resetConsumption: 'Reset Consumption',
         confirm: 'Confirm',
         cancel: 'Cancel',

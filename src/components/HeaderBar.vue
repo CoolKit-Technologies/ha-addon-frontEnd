@@ -61,7 +61,7 @@
                 <span class="item-wrapper__text">{{ username }}</span>
               </div>
             </a-menu-item>
-            <a-menu-item v-if="isLogin" @click="handleSignout">
+            <a-menu-item v-if="isLogin" @click="openLogoutModal">
               <div class="item-wrapper">
                 <export-outlined class="item-wrapper__icon" />
                 <span class="item-wrapper__text">
@@ -81,6 +81,19 @@
         </template>
       </a-dropdown>
     </div>
+
+    <!-- 退出登录对话框 -->
+    <a-modal
+        v-model:visible="logoutModalVisible"
+        :title="$t('modal.signoutConfirm')"
+        @ok="handleSignout"
+        :okText="$t('common.ok')"
+        :cancelText="$t('common.cancel')"
+    >
+      <div class="content">
+        <a-checkbox v-model:checked="removeEntityChecked">{{ $t('modal.removeEntityCheck') }}</a-checkbox>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -123,6 +136,8 @@ export default defineComponent({
       mainShow: true, //易微联设备展示
       spin: false,
       syncing: false,
+      logoutModalVisible: false,
+      removeEntityChecked: true
     };
   },
 
@@ -152,13 +167,14 @@ export default defineComponent({
       }
     },
     async handleSignout() {
-      const res = await logout();
+      const res = await logout({ removeEntity: this.removeEntityChecked });
       if (res.error !== 0) {
         console.error("logout failed:", res.msg);
       } else {
         this.setIsLogin(false);
         message.success(this.$t("form.success.logout"));
       }
+      this.closeLogoutModal();
     },
     handleFeedback() {
       openWindow(getConfig().feedbackUrl);
@@ -168,6 +184,12 @@ export default defineComponent({
         type: "login",
         params: null,
       });
+    },
+    openLogoutModal() {
+        this.logoutModalVisible = true;
+    },
+    closeLogoutModal() {
+        this.logoutModalVisible = false;
     },
     changeHideDevice() {
         this.setHideUnavaDevice(!this.hideUnavaDevice);
