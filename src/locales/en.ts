@@ -229,7 +229,12 @@
             deviceNameCk: 'Device Name (eWeLink)',
             syncToCk: 'Sync to eWeLink',
             sync: 'Sync',
-            unsync: 'Unsync'
+            unsync: 'Unsync',
+            ok: 'OK',
+            reset: 'Reset',
+            synced: 'Synced',
+            unsynced: 'Unsynced',
+            noData: 'No data'
         }
     }
 };

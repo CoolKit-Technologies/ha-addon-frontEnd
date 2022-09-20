@@ -229,7 +229,12 @@
             deviceNameCk: '易微联名称',
             syncToCk: '同步到易微联',
             sync: '同步',
-            unsync: '取消'
+            unsync: '取消',
+            ok: '确认',
+            reset: '重置',
+            synced: '已同步',
+            unsynced: '未同步',
+            noData: '暂无数据'
         }
     }
 };

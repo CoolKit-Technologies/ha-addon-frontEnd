@@ -32,7 +32,7 @@
             <div class="list-wrap">
 
                 <!-- 设备表格 -->
-                <a-table :columns="tableColumns" :data-source="tableData" rowKey="index" :loading="listLoading">
+                <a-table :columns="tableColumns" :data-source="tableData" rowKey="index" :loading="listLoading" :locale="{ filterConfirm: $t('haDevice.table.ok'), filterReset: $t('haDevice.table.reset'), emptyText: $t('haDevice.table.noData') }">
                     <template #deviceNameHa="{ text, record }">
                         <div style="display: flex; align-items: center;">
                             <img :src="whichImg(record.deviceUiid)" width="32" height="32" style="margin-right: 10px;" />
@@ -45,7 +45,7 @@
                     </template>
 
                     <template #syncState="{ text, record }">
-                        <a-button @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)">
+                        <a-button @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)" :danger="record.syncState">
                             {{ text ? $t('haDevice.table.unsync') : $t('haDevice.table.sync') }}
                         </a-button>
                     </template>
@@ -306,7 +306,18 @@ export default defineComponent({
                     title: this.$t('haDevice.table.syncToCk'),
                     dataIndex: 'syncState',
                     key: 'syncState',
-                    slots: { customRender: 'syncState' }
+                    slots: { customRender: 'syncState' },
+                    filters: [
+                        {
+                            text: this.$t('haDevice.table.synced'),
+                            value: true
+                        },
+                        {
+                            text: this.$t('haDevice.table.unsynced'),
+                            value: false
+                        }
+                    ],
+                    onFilter: (value: any, record: any) => record.syncState === value
                 }
             ];
             return result;
