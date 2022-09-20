@@ -12,6 +12,8 @@ import { mapActions } from 'vuex';
 import { isSupportedDevice } from '@/utils/etc';
 import CardHeader from './CardHeader.vue';
 import CardContent from './CardContent.vue';
+import store from '@/store';
+import { message } from 'ant-design-vue';
 
 export default defineComponent({
     name: 'DeviceCard',
@@ -47,7 +49,12 @@ export default defineComponent({
 
     methods: {
         openModalBox() {
-            const { uiid } = this.cardData as any;
+            const { uiid, apikey = '' } = this.cardData as any;
+			const userApikey = store.state.userApikey;
+			if(userApikey !== apikey){
+				message.warn(this.$t('card.cantOptShareDevice'));
+				return;
+			}
             if (isSupportedDevice(uiid) && this.deviceOnline) {
                 this.openModal({
                     type: 'device',

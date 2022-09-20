@@ -125,6 +125,9 @@ export default defineComponent({
                 message.error(this.$t('form.error.login', { msg: res.msg }));
             } else {
                 message.success(this.$t('form.success.login'));
+				const userData = res.data;
+				const { user: { apikey = '' } } = userData || {};
+				this.setUserApikey(apikey);
                 this.setIsLogin(true);
                 this.setUsername(res.data.user.phoneNumber || res.data.user.email);
                 setTimeout(() => {
@@ -143,7 +146,7 @@ export default defineComponent({
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
         },
-        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername']),
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername', 'setUserApikey']),
         ...mapActions(['closeModal'])
     }
 });

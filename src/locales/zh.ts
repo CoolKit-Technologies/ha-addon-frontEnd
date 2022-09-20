@@ -106,6 +106,7 @@
         },
         fanSwitch: '风扇开关',
         lightSwitch: '灯开关',
+		cantOptShareDevice: '不可编辑被分享的设备'
     },
 
     modal: {
