@@ -125,6 +125,9 @@ export default defineComponent({
                 message.error(this.$t('form.error.login', { msg: res.msg }));
             } else {
                 message.success(this.$t('form.success.login'));
+				const userData = res.data;
+				const { user: { apikey = '' } } = userData || {};
+				this.setUserApikey(apikey);
                 this.setIsLogin(true);
                 setTimeout(() => {
                     this.closeModal();
@@ -137,7 +140,7 @@ export default defineComponent({
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
         },
-        ...mapMutations(['setIsLogin']),
+        ...mapMutations(['setIsLogin','setUserApikey']),
         ...mapActions(['closeModal'])
     }
 });

@@ -100,6 +100,7 @@
         },
         fanSwitch: 'Fan',
         lightSwitch: 'Light',
+		cantOptShareDevice: 'Only the device owner can edit.'
     },
 
     modal: {
