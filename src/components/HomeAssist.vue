@@ -424,6 +424,7 @@ export default defineComponent({
                 const limit = 30;    // 同步设备上限
                 if (this.haDeviceList.filter((item: any) => item.syncState).length >= limit) {
                     message.error(this.$t('haDevice.syncDeviceLimit'));
+                    this.listLoading = false;
                     return;
                 }
             }
