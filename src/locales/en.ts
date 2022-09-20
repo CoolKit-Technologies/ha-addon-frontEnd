@@ -110,8 +110,8 @@
     },
 
     modal: {
-        signoutConfirm: 'Sign out confirm',
-        removeEntityCheck: 'Remove Home Assistant entities when signed out',
+        signoutConfirm: 'Sign out',
+        removeEntityCheck: 'Delete all the entities in Home Assistant when logging out',
         resetConsumption: 'Reset Consumption',
         confirm: 'Confirm',
         cancel: 'Cancel',
@@ -222,7 +222,15 @@
         disAgree:'Disagree',
         loginFirst:'Please log in to your eWeLink  account first',
         noDevice: 'No available device',
-        syncDeviceLimit: 'The number of synchronized devices reached the upper limit'
+        syncDeviceLimit: 'The number of synchronized devices reached the upper limit',
+        table: {
+            no: 'No.',
+            deviceNameHa: 'Device Name',
+            deviceNameCk: 'Device Name (eWeLink)',
+            syncToCk: 'Sync to eWeLink',
+            sync: 'Sync',
+            unsync: 'Unsync'
+        }
     }
 };
 export default en

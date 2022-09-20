@@ -138,7 +138,7 @@ export default defineComponent({
       spin: false,
       syncing: false,
       logoutModalVisible: false,
-      removeEntityChecked: true
+      removeEntityChecked: false
     };
   },
 

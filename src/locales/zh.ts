@@ -222,7 +222,15 @@
         disAgree:'不同意',
         loginFirst:'请先登录易微联账号',
         noDevice: '暂无可用的设备',
-        syncDeviceLimit: '同步的设备已经到上限'
+        syncDeviceLimit: '同步的设备已经到上限',
+        table: {
+            no: '序号',
+            deviceNameHa: '设备名称',
+            deviceNameCk: '易微联名称',
+            syncToCk: '同步到易微联',
+            sync: '同步',
+            unsync: '取消'
+        }
     }
 };
 export default zh
