@@ -129,10 +129,16 @@ export default defineComponent({
 				const { user: { apikey = '' } } = userData || {};
 				this.setUserApikey(apikey);
                 this.setIsLogin(true);
+                this.setUsername(res.data.user.phoneNumber || res.data.user.email);
                 setTimeout(() => {
                     this.closeModal();
                 }, 1000);
-                await getDeviceListRefresh();
+                const deviceRes = await getDeviceListRefresh();
+                if (deviceRes.error === 0) {
+                    this.setOriginDeviceList(deviceRes.data);
+                } else {
+                    message.error(this.$t('common.error.getdevice'));
+                }
             }
         },
         selectCountry(e: string) {
@@ -140,7 +146,7 @@ export default defineComponent({
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
         },
-        ...mapMutations(['setIsLogin','setUserApikey']),
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername','setUserApikey']),
         ...mapActions(['closeModal'])
     }
 });

@@ -34,9 +34,16 @@
         </template>
         {{ $t("common.text.signin") }}
       </a-button>
-      <a-button style="margin-right: 10px" @click="changeLang">{{
+      <a-button style="margin-right: 10px;" @click="changeLang">{{
         lang
       }}</a-button>
+      <a-button style="margin-right: 10px;" @click="changeHideDevice">
+        <template #icon>
+          <eye-invisible-outlined v-if="hideUnavaDevice" />
+          <eye-outlined v-else />
+        </template>
+        {{ $t('common.hidedevice') }}
+      </a-button>
       <a-button
         :loading="syncing"
         style="margin-right: 10px"
@@ -48,7 +55,13 @@
         <more-outlined class="action-icon" />
         <template #overlay>
           <a-menu>
-            <a-menu-item v-if="isLogin" @click="handleSignout">
+            <a-menu-item v-if="isLogin">
+              <div class="item-wrapper">
+                <user-outlined class="item-wrapper__icon" />
+                <span class="item-wrapper__text">{{ username }}</span>
+              </div>
+            </a-menu-item>
+            <a-menu-item v-if="isLogin" @click="openLogoutModal">
               <div class="item-wrapper">
                 <export-outlined class="item-wrapper__icon" />
                 <span class="item-wrapper__text">
@@ -68,6 +81,19 @@
         </template>
       </a-dropdown>
     </div>
+
+    <!-- 退出登录对话框 -->
+    <a-modal
+        v-model:visible="logoutModalVisible"
+        :title="$t('modal.signoutConfirm')"
+        @ok="handleSignout"
+        :okText="$t('common.ok')"
+        :cancelText="$t('common.cancel')"
+    >
+      <div class="content">
+        <a-checkbox v-model:checked="removeEntityChecked">{{ $t('modal.removeEntityCheck') }}</a-checkbox>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -81,6 +107,8 @@ import {
   MoreOutlined,
   ExportOutlined,
   QuestionOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
 } from "@ant-design/icons-vue";
 import _ from "lodash";
 
@@ -99,6 +127,8 @@ export default defineComponent({
     MoreOutlined,
     ExportOutlined,
     QuestionOutlined,
+    EyeOutlined,
+    EyeInvisibleOutlined,
   },
 
   data() {
@@ -106,6 +136,8 @@ export default defineComponent({
       mainShow: true, //易微联设备展示
       spin: false,
       syncing: false,
+      logoutModalVisible: false,
+      removeEntityChecked: true
     };
   },
 
@@ -117,7 +149,7 @@ export default defineComponent({
         return "English";
       }
     },
-    ...mapState(["isLogin"]),
+    ...mapState(["isLogin", "username", "hideUnavaDevice"]),
   },
 
   methods: {
@@ -129,18 +161,20 @@ export default defineComponent({
       const res = await getDeviceListRefresh();
       if (res.error === 0) {
         this.setOriginDeviceList(res.data);
+        message.success(this.$t('common.success.getdevice'));
       } else {
         message.error(this.$t("common.error.getdevice"));
       }
     },
     async handleSignout() {
-      const res = await logout();
+      const res = await logout({ removeEntity: this.removeEntityChecked });
       if (res.error !== 0) {
         console.error("logout failed:", res.msg);
       } else {
         this.setIsLogin(false);
         message.success(this.$t("form.success.logout"));
       }
+      this.closeLogoutModal();
     },
     handleFeedback() {
       openWindow(getConfig().feedbackUrl);
@@ -150,6 +184,15 @@ export default defineComponent({
         type: "login",
         params: null,
       });
+    },
+    openLogoutModal() {
+        this.logoutModalVisible = true;
+    },
+    closeLogoutModal() {
+        this.logoutModalVisible = false;
+    },
+    changeHideDevice() {
+        this.setHideUnavaDevice(!this.hideUnavaDevice);
     },
     changeLang() {
       if (this.$root?.$i18n.locale === "en") {
@@ -187,6 +230,7 @@ export default defineComponent({
       "setOriginDeviceList",
       "setLocale",
       "setAntdLocale",
+      "setHideUnavaDevice"
     ]),
     ...mapActions(["openModal", "getCmsInfo"]),
   },

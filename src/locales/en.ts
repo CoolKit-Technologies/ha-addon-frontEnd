@@ -1,5 +1,8 @@
  const en = {
     common: {
+        success: {
+            getdevice: 'Get device list success'
+        },
         error: {
             getcontent: 'Get content failed',
             getdevice: 'Get device list failed',
@@ -19,8 +22,11 @@
         },
         tab:{
             ewelinkTab:'eWeLink Devices',
-            haDeviceTab:'Sync Home Assistant Devices'
-        }
+            haDeviceTab:'Sync Home Assistant Devices (Beta)'
+        },
+        hidedevice: 'Hide offline or unsupported devices',
+        ok: 'OK',
+        cancel: 'Cancel'
     },
 
     form: {
@@ -104,6 +110,8 @@
     },
 
     modal: {
+        signoutConfirm: 'Sign out confirm',
+        removeEntityCheck: 'Remove Home Assistant entities when signed out',
         resetConsumption: 'Reset Consumption',
         confirm: 'Confirm',
         cancel: 'Cancel',
@@ -213,7 +221,8 @@
         agree:'Agree',
         disAgree:'Disagree',
         loginFirst:'Please log in to your eWeLink  account first',
-        noDevice: 'No available device'
+        noDevice: 'No available device',
+        syncDeviceLimit: 'The number of synchronized devices reached the upper limit'
     }
 };
 export default en

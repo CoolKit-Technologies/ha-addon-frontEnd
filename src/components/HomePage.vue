@@ -77,8 +77,10 @@ export default defineComponent({
             const res = await userIsLogin();
             if (res.error === 0 && res.data.isLogin) {
                 this.setIsLogin(true);
+                this.setUsername(res.data.username);
             } else {
                 this.setIsLogin(false);
+                this.setUsername('');
             }
         },
         async initLocale() {
@@ -161,6 +163,7 @@ export default defineComponent({
             "setWindowSize",
             "setModalParams",
             "setAntdLocale",
+            "setUsername"
         ]),
         ...mapActions(["getHaDeviceList"]),
     },
