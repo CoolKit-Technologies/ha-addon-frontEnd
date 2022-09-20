@@ -37,7 +37,7 @@
       <a-button style="margin-right: 10px;" @click="changeLang">{{
         lang
       }}</a-button>
-      <a-button style="margin-right: 10px;" @click="changeHideDevice">
+      <a-button v-if="mainShow" style="margin-right: 10px;" @click="changeHideDevice">
         <template #icon>
           <eye-invisible-outlined v-if="hideUnavaDevice" />
           <eye-outlined v-else />
@@ -45,12 +45,13 @@
         {{ $t('common.hidedevice') }}
       </a-button>
       <a-button
+        v-if="mainShow"
         :loading="syncing"
         style="margin-right: 10px"
         @click="syncLovelace"
         >{{ $t("common.syncLovelace") }}</a-button
       >
-      <sync-outlined class="action-icon" :spin="spin" @click="refresh" />
+      <sync-outlined v-if="mainShow" class="action-icon" :spin="spin" @click="refresh" />
       <a-dropdown>
         <more-outlined class="action-icon" />
         <template #overlay>
