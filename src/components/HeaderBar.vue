@@ -90,6 +90,7 @@
         @ok="handleSignout"
         :okText="$t('common.ok')"
         :cancelText="$t('common.cancel')"
+        centered
     >
       <div class="content">
         <a-checkbox v-model:checked="removeEntityChecked">{{ $t('modal.removeEntityCheck') }}</a-checkbox>
