@@ -40,14 +40,14 @@ export default defineComponent({
     computed:{
         status(){
             const { $t, cardData } = this as any;
-            if(!cardData) return ''
+            if(!cardData) return '';
             switch (cardData.params.setclose){
                 case 100:
                     return $t('card.curtainalloff')
                 case 0:
                     return $t('card.curtainallon')
                 default:
-                    return `${cardData.params.setclose}%`
+                    return typeof cardData.params.setclose === 'number' ? `${cardData.params.setclose}%` : '50%'
             }
         },
         curtainValue():number{

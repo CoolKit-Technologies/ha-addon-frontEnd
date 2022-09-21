@@ -147,6 +147,7 @@ export default defineComponent({
             this.country = e.slice(start + 1, end);
         },
         ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername', 'setUserApikey']),
+
         ...mapActions(['closeModal'])
     }
 });
