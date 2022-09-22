@@ -48,9 +48,6 @@ export default createStore({
 
         //ha deviceList
         haDeviceList:[],
-
-		// user Apikey
-		userApikey: ''
     },
 
     getters: {
@@ -162,9 +159,6 @@ export default createStore({
         setHaDeviceList(state,v){
             state.haDeviceList = v
         },
-		setUserApikey(state,v){
-			state.userApikey = v;
-		}
     },
 
     actions: {

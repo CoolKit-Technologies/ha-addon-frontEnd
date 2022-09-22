@@ -127,7 +127,8 @@ export default defineComponent({
                 message.success(this.$t('form.success.login'));
 				const userData = res.data;
 				const { user: { apikey = '' } } = userData || {};
-				this.setUserApikey(apikey);
+                // 保存用户的 apikey
+                localStorage.setItem('userApikey', apikey);
                 this.setIsLogin(true);
                 this.setUsername(res.data.user.phoneNumber || res.data.user.email);
                 setTimeout(() => {
@@ -146,7 +147,7 @@ export default defineComponent({
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
         },
-        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername', 'setUserApikey']),
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername']),
         ...mapActions(['closeModal'])
     }
 });

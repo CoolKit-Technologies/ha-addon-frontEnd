@@ -50,7 +50,7 @@ export default defineComponent({
     methods: {
         openModalBox() {
             const { uiid, apikey = '' } = this.cardData as any;
-			const userApikey = store.state.userApikey;
+            const userApikey = localStorage.getItem('userApikey');
 			if(userApikey !== apikey){
 				message.warn(this.$t('card.cantOptShareDevice'));
 				return;
