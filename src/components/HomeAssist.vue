@@ -30,10 +30,31 @@
         </header>
         <section>
             <div class="list-wrap">
+
+                <!-- 设备表格 -->
+                <a-table :columns="tableColumns" :data-source="tableData" rowKey="index" :loading="listLoading" :locale="{ filterConfirm: $t('haDevice.table.ok'), filterReset: $t('haDevice.table.reset'), emptyText: $t('haDevice.table.noData') }">
+                    <template #deviceNameHa="{ text, record }">
+                        <div style="display: flex; align-items: center;">
+                            <img :src="whichImg(record.deviceUiid)" width="32" height="32" style="margin-right: 10px;" />
+                            <span>{{ text }}</span>
+                        </div>
+                    </template>
+
+                    <template #deviceNameCk="{ text }">
+                        <span>{{ text || '--' }}</span>
+                    </template>
+
+                    <template #syncState="{ text, record }">
+                        <a-button @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)" :danger="record.syncState">
+                            {{ text ? $t('haDevice.table.unsync') : $t('haDevice.table.sync') }}
+                        </a-button>
+                    </template>
+                </a-table>
+
+                <!--
                 <div class="box-wrap">
                     <div class="list-header">
                         <div class="title">{{ $t("haDevice.deviceList") }}</div>
-                        <!--
                         <a-tooltip>
                             <template #title>{{
                                 $t("haDevice.allSync")
@@ -45,7 +66,6 @@
                                 @change="toAllAsync"
                             />
                         </a-tooltip>
-                        -->
                     </div>
 
                     <div v-if="haDeviceList.length === 0" class="empty-list">
@@ -86,6 +106,8 @@
                         </div>
                     </a-spin>
                 </div>
+                -->
+
                 <!--
                 <footer>
                     <div class="protocol-wrap">
@@ -159,7 +181,7 @@
         </section>
     </div>
 
-    <a-modal v-model:visible="visible" class="modal-box">
+    <a-modal v-model:visible="visible" class="modal-box" @cancel="handleCancel">
         <template #title>
             <div style="text-align: center">{{ serveTitle }}</div>
         </template>
@@ -261,6 +283,55 @@ export default defineComponent({
     },
     computed: {
         ...mapState(["cmsInfo","haDeviceList"]),
+        tableColumns() {
+            const result = [
+                {
+                    title: this.$t('haDevice.table.no'),
+                    dataIndex: 'index',
+                    key: 'index',
+                },
+                {
+                    title: this.$t('haDevice.table.deviceNameHa'),
+                    dataIndex: 'deviceNameHa',
+                    key: 'deviceNameHa',
+                    slots: { customRender: 'deviceNameHa' }
+                },
+                {
+                    title: this.$t('haDevice.table.deviceNameCk'),
+                    dataIndex: 'deviceNameCk',
+                    key: 'deviceNameCk',
+                    slots: { customRender: 'deviceNameCk' }
+                },
+                {
+                    title: this.$t('haDevice.table.syncToCk'),
+                    dataIndex: 'syncState',
+                    key: 'syncState',
+                    slots: { customRender: 'syncState' },
+                    filters: [
+                        {
+                            text: this.$t('haDevice.table.synced'),
+                            value: true
+                        },
+                        {
+                            text: this.$t('haDevice.table.unsynced'),
+                            value: false
+                        }
+                    ],
+                    onFilter: (value: any, record: any) => record.syncState === value
+                }
+            ];
+            return result;
+        },
+        tableData() {
+            const result: any = [];
+            for (let i = 0; i < this.haDeviceList.length; i++) {
+                result.push({
+                    index: i+1,
+                    ...this.haDeviceList[i]
+                })
+            }
+            return result;
+        },
         amazonAlexa() {
             const cmsInfo = this.cmsInfo as IcmsInfo;
             return cmsInfo?.thirdPlatform["Amazon Alexa"];
@@ -353,6 +424,7 @@ export default defineComponent({
                 const limit = 30;    // 同步设备上限
                 if (this.haDeviceList.filter((item: any) => item.syncState).length >= limit) {
                     message.error(this.$t('haDevice.syncDeviceLimit'));
+                    this.listLoading = false;
                     return;
                 }
             }
@@ -367,6 +439,7 @@ export default defineComponent({
         },
         handleCancel() {
             this.visible = false;
+            this.listLoading = false;
         },
         handleOk() {
             this.visible = false;
