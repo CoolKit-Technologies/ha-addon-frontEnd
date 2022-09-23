@@ -694,7 +694,26 @@ export async function setFiveLtMode(data: any,mode:string) {
         _.assign(tempParams.params, {
             channel0,channel1,channel2,channel3,channel4,type,zyx_mode: mode === 'color' ? 2 : 1
         });
-    }
+    } else if(uiid === 3258) {
+		const {cctBrightness,colorTemp,hue,rgbBrightness,saturation} = params;
+		if(mode === 'white'){
+			Object.assign(tempParams.params,{
+				switch: 'on',
+				colorMode: 'cct',
+				colorTemp,
+				cctBrightness
+			})
+		}
+		if(mode === 'color'){
+			Object.assign(tempParams.params,{
+				switch: 'on',
+				colorMode: 'rgb',
+				hue,
+				saturation,
+				rgbBrightness
+			})
+		}
+	}
 	console.log('params',tempParams);
     await setCloudDevice(tempParams);
 }

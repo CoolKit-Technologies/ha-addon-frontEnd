@@ -74,7 +74,7 @@
                 />
             </div>
             <!-- five color bulb light or five color light -->
-            <div v-else-if="(isFiveColorBulbLt && cardData.params.state === 'on') || (isFiveColorLt && cardData.params.switch === 'on')">
+            <div v-else-if="(isFiveColorBulbLt && cardData.params.state === 'on') || (isFiveColorLt && cardData.params.switch === 'on') || (isZigbeeFiveColorLt && cardData.params.switch === 'on')">
                 <five-color-light-content :cardData="cardData" />
             </div>
             <!-- wifi door sensor  -->
@@ -160,7 +160,7 @@
 
             <!-- UIID 190 -->
             <div class="uiid-190" v-else-if="cardData.uiid === 190">
-                <div class="chart-grp">
+				<div class="chart-grp">
                     <div class="chart">
                         <circle-chart
                             width="110px"
@@ -352,6 +352,10 @@ export default defineComponent({
             const { uiid } = this.cardData as any;
             return uiid === 104;
         },
+		isZigbeeFiveColorLt(){
+            const { uiid } = this.cardData as any;
+            return uiid === 3258;
+		},
         isCurtain() {
             const { uiid } = this.cardData as any;
             return uiid === 11;
@@ -403,7 +407,7 @@ export default defineComponent({
         // Current device is two color light
         isTwoColorLt() {
             const { uiid } = this.cardData as any;
-            return uiid === 103;
+            return uiid === 103 || uiid === 1258;
         },
         // Current device is rhythm light strip
         isRhythmLtStrip() {

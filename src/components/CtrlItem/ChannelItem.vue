@@ -1,8 +1,8 @@
 <template>
     <div class="channel-item">
         <device-name type="channel" :index="index - 1" />
-        <inching-mode v-if="showInchingMode" :index="index - 1" />
-        <ctrl-select type="power-on-state" v-if="showPowerOnState" :index="index - 1" />
+        <inching-mode v-if="showInchingMode && !isZigbeeMultiSwitch" :index="index - 1" />
+        <ctrl-select type="power-on-state" v-if="showPowerOnState && !isZigbeeMultiSwitch" :index="index - 1" />
         <!-- <scenes-item v-if="isMiniR3" :index="index - 1" /> -->
     </div>
 </template>
@@ -76,6 +76,10 @@ export default defineComponent({
             }
             return modalParams.params.lock === 0;
         },
+		isZigbeeMultiSwitch(){
+			const { uiid } = this.modalParams as any;
+            return uiid === 2256 || uiid === 3256 || uiid === 4256;
+		},
     },
     methods: {
         isMiniR3() {

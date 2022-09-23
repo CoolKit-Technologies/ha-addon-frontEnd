@@ -282,7 +282,12 @@ export default defineComponent({
                     this.progressValue = params.bright;
                 }else if (uiid === 44) {
                     this.progressValue = params.brightness;
-                }
+                } else if (uiid === 1258){
+					this.progressValue = params.brightness;
+				} else if (uiid === 3258){
+					const { colorMode } = params;
+					this.progressValue = params[`${colorMode}Brightness`] ?? 1
+				}
             } else if (this.type === 'color-temp') {
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = 255 - params[params.ltype].ct;
@@ -293,7 +298,12 @@ export default defineComponent({
                     const value = fakeTempList.indexOf(rgb);
                     console.log(`ML ~ file: CtrlSlider.vue ~ line 295 ~ setDefaultValue ~ value`, value);
                     this.progressValue = value ? value : 0;
-                }
+                } else if(uiid === 1258){
+					this.progressValue = 100 - params.colorTemp
+				} else if(uiid === 3258){
+					const { colorTemp } = params;
+					return 100 - colorTemp;
+				}
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'Darkest') {
@@ -321,9 +331,12 @@ export default defineComponent({
                     // this.progressValue = Math.max(parseInt(params.channel0), parseInt(params.channel1));
                 } else if (uiid === 59) {
                     this.progressValue = params.bright;
-                } else if (uiid === 44) {
+                } else if (uiid === 44 || uiid === 1258) {
                     this.progressValue = params.brightness;
-                }
+                } else if(uiid === 3258){
+					const { colorMode } = params;
+					this.progressValue = params[`${colorMode}Brightness`] ?? 1
+				}
             } else if (this.type === 'color-temp') {
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = 255 - params[params.ltype].ct;
@@ -332,7 +345,12 @@ export default defineComponent({
                     const rgb = `${colorR},${colorG},${colorB}`;
                     const value = fakeTempList.indexOf(rgb);
                     this.progressValue = value ? value : 0;
-                }
+                } else if(uiid === 1258){
+					this.progressValue = 100 - params.colorTemp
+				} else if(uiid === 3258){
+					const { colorTemp } = params;
+					return 100 - colorTemp;
+				}
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'darkest') {
@@ -414,7 +432,27 @@ export default defineComponent({
                         brightness: v,
                     },
                 });
-            }
+            } else if(uiid === 1258){
+				await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+						switch: 'on',
+                        brightness: v,
+                    },
+                });
+			}else if(uiid === 3258){
+				const colorMode = params['colorMode'];
+				await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+						switch: 'on',
+						colorMode,
+                        [`${colorMode}Brightness`]: v,
+                    },
+                });
+			}
         },
         async setColorTemp(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;
@@ -445,7 +483,26 @@ export default defineComponent({
                         colorB: parseInt(rgb[2]),
                     },
                 });
-            }
+            } else if(uiid === 1258){
+				await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+						switch: 'on',
+                        colorTemp: 100 - v,
+						colorMode: params['colorMode']
+                    },
+                });
+			} else if(uiid === 3258){
+				await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+						switch: 'on',
+                        colorTemp: 100 - v
+                    },
+                });
+			}
         },
         async setCurtain(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;

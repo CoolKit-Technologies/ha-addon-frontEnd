@@ -90,7 +90,7 @@ export default defineComponent({
         // 五色灯
         isFiveLt(){
             const { uiid } = this.$props.cardData as any;
-            return uiid === 104
+            return uiid === 104 || uiid === 3258;
         }
     },
     methods: {
@@ -106,7 +106,9 @@ export default defineComponent({
             const { uiid, params } = this.cardData as any;
             if ((uiid === 22 && params.zyx_mode === 1) || (uiid === 104 && params.ltype === 'white')) {
                 this.mode = 'white';
-            } else {
+            } else if(uiid === 3258){
+				this.mode = params.colorMode === 'cct' ? 'white' : 'color'
+			} else {
                 this.mode = 'color';
             }
         }

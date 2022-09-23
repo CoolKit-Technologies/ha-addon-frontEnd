@@ -10,10 +10,10 @@
         </template>
 
         <!-- Toggle device network LED -->
-        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming || isNSPanel)" type="led" />
+        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming || isNSPanel || isZigbeeMultiSwitch)" type="led" />
 
         <!-- Toggle multi-channel device interlock -->
-        <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3" type="lock" />
+        <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
 
         <!-- Set device inching mode -->
         <inching-mode
@@ -81,7 +81,7 @@
         <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
 
         <!-- Upgrade device firmware -->
-        <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub" />
+        <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub && !isZigbeeMultiSwitch" />
 
     </div>
 </template>
@@ -188,6 +188,10 @@ export default defineComponent({
             const { uiid, cardIndex } = this.modalParams as any;
             return uiid === 190;
         },
+		isZigbeeMultiSwitch(){
+			const { uiid } = this.modalParams as any;
+            return uiid === 2256 || uiid === 3256 || uiid === 4256;
+		},
         ...mapState(['modalParams']),
     },
 });

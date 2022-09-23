@@ -146,8 +146,7 @@ export default defineComponent({
             const end = e.indexOf(')');
             this.country = e.slice(start + 1, end);
         },
-        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername', 'setUserApikey']),
-
+        ...mapMutations(['setIsLogin', 'setOriginDeviceList', 'setUsername','setUserApikey']),
         ...mapActions(['closeModal'])
     }
 });
