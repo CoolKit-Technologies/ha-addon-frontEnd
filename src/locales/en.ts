@@ -235,7 +235,8 @@
             synced: 'Synced',
             unsynced: 'Unsynced',
             noData: 'No data'
-        }
+        },
+        descText: 'Current version only support light and switch'
     }
 };
 export default en

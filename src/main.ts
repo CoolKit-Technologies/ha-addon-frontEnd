@@ -22,6 +22,7 @@ import {
     Tooltip,
     Checkbox,
     Table,
+    Pagination,
 } from 'ant-design-vue';
 import store from '@/store';
 import App from '@/App.vue';
@@ -57,5 +58,6 @@ app.use(Popconfirm);
 app.use(Tooltip);
 app.use(Checkbox);
 app.use(Table);
+app.use(Pagination);
 
 app.mount('#app');
