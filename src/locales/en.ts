@@ -106,7 +106,8 @@
         },
         fanSwitch: 'Fan',
         lightSwitch: 'Light',
-		cantOptShareDevice: 'Only the device owner can edit.'
+		cantOptShareDevice: 'Only the device owner can edit.',
+		saturation: 'Saturation'
     },
 
     modal: {

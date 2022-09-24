@@ -7,6 +7,7 @@
             <img v-if="type === 'brightness' || type === 'darkest'" src="@/assets/light-brightness.png" alt="Light brightness" />
             <img v-else-if="type === 'color-temp'" src="@/assets/color-temp.png" alt="Color temperature" />
             <img v-else-if="type === 'curtain'" src="@/assets/curtain.png" alt="Curtain" />
+            <img v-else-if="type === 'saturation'" src="@/assets/color-saturation.png" alt="Saturation" />
         </div>
         <div class="text" v-if="type !== 'darkest'">
             <span class="title">{{ title }}</span>
@@ -201,6 +202,7 @@ export default defineComponent({
         // 'brightness'
         // 'color-temp'
         // 'curtain'
+		// 'saturation'
         type: {
             required: true,
         },
@@ -231,7 +233,9 @@ export default defineComponent({
                 return $t('card.manual');
             } else if (type === 'darkest') {
                 return $t('card.darkest');
-            } else {
+            } else if (type === 'saturation') {
+                return $t('card.saturation');
+            }  else {
                 return '';
             }
         },
@@ -294,20 +298,22 @@ export default defineComponent({
                 } else if (uiid === 59) {
                     const { colorR, colorG, colorB } = params;
                     const rgb = `${colorR},${colorG},${colorB}`;
-                    console.log(`ML ~ file: CtrlSlider.vue ~ line 293 ~ setDefaultValue ~ rgb`, rgb);
                     const value = fakeTempList.indexOf(rgb);
-                    console.log(`ML ~ file: CtrlSlider.vue ~ line 295 ~ setDefaultValue ~ value`, value);
                     this.progressValue = value ? value : 0;
                 } else if(uiid === 1258){
-					this.progressValue = 100 - params.colorTemp
+					const { colorTemp = 1 } = params;
+					this.progressValue = 100 - colorTemp
 				} else if(uiid === 3258){
-					const { colorTemp } = params;
-					return 100 - colorTemp;
+					const { colorTemp = 1 } = params;
+					this.progressValue =  100 - colorTemp;
 				}
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'Darkest') {
                 this.progressValue = params.brightMin;
+            } else if (this.type === 'saturation') {
+				const { saturation = 1 } = params;
+                this.progressValue = saturation;
             }
         },
     },
@@ -346,15 +352,19 @@ export default defineComponent({
                     const value = fakeTempList.indexOf(rgb);
                     this.progressValue = value ? value : 0;
                 } else if(uiid === 1258){
-					this.progressValue = 100 - params.colorTemp
+					const { colorTemp = 1 } = params;
+					this.progressValue = 100 - colorTemp
 				} else if(uiid === 3258){
-					const { colorTemp } = params;
-					return 100 - colorTemp;
+					const { colorTemp = 1 } = params;
+					this.progressValue = 100 - colorTemp
 				}
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'darkest') {
                 this.progressValue = params.brightMin;
+            } else if (this.type === 'saturation') {
+				const { saturation = 1 } = params;
+                this.progressValue = saturation;
             }
         },
         handleChange(v: number) {
@@ -366,6 +376,8 @@ export default defineComponent({
                 this.setCurtain(v);
             } else if (this.type === 'darkest') {
                 this.setDarkest(v);
+            } else if (this.type === 'saturation') {
+                this.setSaturation(v);
             }
         },
         async setBrightness(v: number) {
@@ -532,6 +544,19 @@ export default defineComponent({
                 },
             });
         },
+		async setSaturation(v:number){
+            const { params, deviceId, apikey } = this.cardData as any;
+			const { hue = 1 } = params;
+			await setCloudDevice({
+                id: deviceId,
+                apikey: apikey,
+                params: {
+                    switch: 'on',
+					hue,
+					saturation: v
+                },
+            });
+		}
     },
 
     mounted() {
@@ -552,6 +577,8 @@ export default defineComponent({
         display flex
         justify-content center
         align-items center
+        width 32px
+        height 32px
         & > img
             width 22px
             height 22px

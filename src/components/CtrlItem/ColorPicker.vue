@@ -24,6 +24,9 @@
 import { defineComponent } from 'vue';
 import _ from 'lodash';
 import { setPickerColor }from '@/api/device'
+import convert from 'color-convert'
+
+type RGB = [number,number,number];
 
 export default defineComponent({
     name: 'ColorPicker',
@@ -96,13 +99,13 @@ export default defineComponent({
                 })
             }else if(uiid === 59){
                 const { colorR, colorG, colorB } = params;
-                console.log(`ML ~ file: ColorPicker.vue ~ line 99 ~ dealPropColor ~ `, this.dealRGBColor({
-                    r:colorR,g:colorG,b:colorB
-                }));
                 return this.dealRGBColor({
                     r:colorR,g:colorG,b:colorB
                 })         
-            }else{
+            }else if(uiid === 3258){
+				const { hue = 1 } = params;
+				return this.hsvToString(hue);
+			}else{
                 return '#000000'
             }
         },
@@ -111,14 +114,28 @@ export default defineComponent({
             return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`
         },
         deal16Color(color:string){
+            const { uiid } = this.$props.cardData as any;
+			if(uiid === 3258){
+				return this.hexToHsv(color)
+			}
             const rgb = color.substring(1,7)
-            const r =parseInt(rgb.substring(0,2),16);
+            const r = parseInt(rgb.substring(0,2),16);
             const g = parseInt(rgb.substring(2,4),16);
             const b = parseInt(rgb.substring(4,6),16);
             return {
                 r,g,b
             }
-        }
+        },
+		hsvToString(h:number){
+			let hsv = [h,100,100] as RGB;
+			return `#${convert.hsv.hex(hsv)}`;
+		},
+		hexToHsv(hex:string){
+			const [hue,s,v] = convert.hex.hsv(hex)
+			return{
+				hue,
+			}
+		}
     }
 });
 </script>

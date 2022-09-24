@@ -4,6 +4,7 @@
             <div class="color" v-if="mode === 'color'">
                 <color-picker class="mg-14" :cardData="cardData" />
                 <ctrl-slider class="mg-14" type="brightness" v-if="isFiveLt" :cardData="cardData"/>
+                <ctrl-slider class="mg-14" type="saturation" v-if="isZigbeeColorLT" :cardData="cardData" />
             </div>
             <div class="white" v-else-if="mode === 'white'">
                 <five-bulb-light class="mg-14" v-if="isFiveBulbLt" :cardData="cardData"/>
@@ -91,7 +92,12 @@ export default defineComponent({
         isFiveLt(){
             const { uiid } = this.$props.cardData as any;
             return uiid === 104 || uiid === 3258;
-        }
+        },
+		//	zigbee五色灯
+		isZigbeeColorLT(){
+            const { uiid } = this.$props.cardData as any;
+            return uiid === 3258;
+		}
     },
     methods: {
         async changeMode(mode: string) {

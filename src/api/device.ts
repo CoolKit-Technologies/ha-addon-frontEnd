@@ -642,8 +642,7 @@ export async function setFiveColorBulbTemp(data: any, type: string) {
  * set color picker
  */
 export async function setPickerColor(data: any, obj: any) {
-    const { deviceId, apikey, uiid,params } = data;
-
+    const { deviceId, apikey, uiid, params } = data;
     let tempParams = {
         id: deviceId,
         apikey: apikey,
@@ -671,8 +670,15 @@ export async function setPickerColor(data: any, obj: any) {
             colorB: obj.b,
             light_type: 1,
         });
+    } else if (uiid === 3258) {
+		const {saturation} = params;
+		const {hue = 1} = obj;
+		_.assign(tempParams.params,{
+			switch: 'on',
+			hue,
+			saturation
+		})
     }
-    console.log(`ML ~ file: device.ts ~ line 605 ~ setPickerColor ~ params`, tempParams);
     await setCloudDevice(tempParams);
 }
 
