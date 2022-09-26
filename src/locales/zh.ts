@@ -236,7 +236,8 @@
             synced: '已同步',
             unsynced: '未同步',
             noData: '暂无数据'
-        }
+        },
+        descText: '当前版本仅支持同步 Light、Switch'
     }
 };
 export default zh
