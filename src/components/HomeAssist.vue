@@ -50,9 +50,13 @@
                     </template>
 
                     <template #syncState="{ text, record }">
+                        <!--
                         <a-button @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)" :danger="record.syncState">
                             {{ text ? $t('haDevice.table.unsync') : $t('haDevice.table.sync') }}
                         </a-button>
+                        -->
+                        <button v-if="text" class="sync-btn unsync" @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)">{{ $t('haDevice.table.unsync') }}</button>
+                        <button v-else class="sync-btn sync" @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)">{{ $t('haDevice.table.sync') }}</button>
                     </template>
                 </a-table>
                 <div class="table-pagination" style="text-align: right; margin-top: 20px;">
@@ -782,5 +786,22 @@ section {
             color: #888888;
         }
     }
+}
+
+.sync-btn {
+    width: 80px;
+    border: none;
+    border-radius: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    cursor: pointer;
+}
+.sync-btn.unsync {
+    color: #ff5c5b;
+    background-color: rgba(255, 92, 91, 0.2);
+}
+.sync-btn.sync {
+    color: #20d814;
+    background-color: rgba(161, 255, 171, 0.2);
 }
 </style>
