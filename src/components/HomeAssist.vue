@@ -27,12 +27,17 @@
             <div class="tip">
                 {{ $t("haDevice.controlWay") }}
             </div>
+
+            <div class="desc">
+                <div class="icon">?</div>
+                <div class="text">{{ $t('haDevice.descText') }}</div>
+            </div>
         </header>
         <section>
             <div class="list-wrap">
 
                 <!-- 设备表格 -->
-                <a-table :columns="tableColumns" :data-source="tableData" rowKey="index" :loading="listLoading" :locale="{ filterConfirm: $t('haDevice.table.ok'), filterReset: $t('haDevice.table.reset'), emptyText: $t('haDevice.table.noData') }">
+                <a-table :columns="tableColumns" :data-source="curPageData" rowKey="index" :loading="listLoading" :locale="{ filterConfirm: $t('haDevice.table.ok'), filterReset: $t('haDevice.table.reset'), emptyText: $t('haDevice.table.noData') }" :pagination="false">
                     <template #deviceNameHa="{ text, record }">
                         <div style="display: flex; align-items: center;">
                             <img :src="whichImg(record.deviceUiid)" width="32" height="32" style="margin-right: 10px;" />
@@ -45,11 +50,26 @@
                     </template>
 
                     <template #syncState="{ text, record }">
+                        <!--
                         <a-button @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)" :danger="record.syncState">
                             {{ text ? $t('haDevice.table.unsync') : $t('haDevice.table.sync') }}
                         </a-button>
+                        -->
+                        <button v-if="text" class="sync-btn unsync" @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)">{{ $t('haDevice.table.unsync') }}</button>
+                        <button v-else class="sync-btn sync" @click="toAllAsync(record.haDeviceId, record.deviceUiid, record.syncState)">{{ $t('haDevice.table.sync') }}</button>
                     </template>
                 </a-table>
+                <div class="table-pagination" style="text-align: right; margin-top: 20px;">
+                    <a-config-provider :locale="antdLocale">
+                        <a-pagination
+                            v-model:current="curPage"
+                            v-model:pageSize="pageSize"
+                            :total="haDeviceList.length"
+                            showSizeChanger
+                            showQuickJumper
+                        />
+                    </a-config-provider>
+                </div>
 
                 <!--
                 <div class="box-wrap">
@@ -267,6 +287,8 @@ export default defineComponent({
             buttonShow: false,
             syncParams: { haDeviceId: 0, deviceUiid: 0, state: true },
             listLoading: false, // 设备列表是否加载中
+            pageSize: 10,
+            curPage: 1,
         } as {
             visible: boolean;
             serveTitle: string;
@@ -279,16 +301,18 @@ export default defineComponent({
                 state: boolean;
             };
             listLoading: boolean;
+            pageSize: number;
+            curPage: number;
         };
     },
     computed: {
-        ...mapState(["cmsInfo","haDeviceList"]),
         tableColumns() {
             const result = [
                 {
                     title: this.$t('haDevice.table.no'),
                     dataIndex: 'index',
                     key: 'index',
+                    width: 80
                 },
                 {
                     title: this.$t('haDevice.table.deviceNameHa'),
@@ -317,7 +341,8 @@ export default defineComponent({
                             value: false
                         }
                     ],
-                    onFilter: (value: any, record: any) => record.syncState === value
+                    onFilter: (value: any, record: any) => record.syncState === value,
+                    width: 160
                 }
             ];
             return result;
@@ -331,6 +356,15 @@ export default defineComponent({
                 })
             }
             return result;
+        },
+        // 当前页的表格数据
+        curPageData() {
+            // @ts-ignore
+            const start = (this.curPage - 1) * this.pageSize;
+            // @ts-ignore
+            const end = start + this.pageSize;
+            // @ts-ignore
+            return this.tableData.slice(start, end);
         },
         amazonAlexa() {
             const cmsInfo = this.cmsInfo as IcmsInfo;
@@ -359,6 +393,7 @@ export default defineComponent({
             }
             return false;
         },
+        ...mapState(["cmsInfo", "haDeviceList", "antdLocale"]),
     },
     methods: {
         async toAllAsync(
@@ -483,9 +518,26 @@ export default defineComponent({
 <style lang="stylus" scoped>
 .main-content {
     margin: 0 auto;
-    padding: 20px 40px;
+    padding: 20px 40px 80px;
     min-height: calc(100vh - 87px);
-    max-width: 1200px;
+    max-width: 1600px;
+
+    .desc {
+        margin-top: 10px;
+        display: flex;
+        .icon {
+            background: orange;
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .text {
+            color: #ababab;
+        }
+    }
 }
 
 .alert-wrap {
@@ -734,5 +786,22 @@ section {
             color: #888888;
         }
     }
+}
+
+.sync-btn {
+    width: 80px;
+    border: none;
+    border-radius: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    cursor: pointer;
+}
+.sync-btn.unsync {
+    color: #ff5c5b;
+    background-color: rgba(255, 92, 91, 0.2);
+}
+.sync-btn.sync {
+    color: #20d814;
+    background-color: rgba(161, 255, 171, 0.2);
 }
 </style>
