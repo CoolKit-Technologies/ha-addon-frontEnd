@@ -258,7 +258,8 @@ export default defineComponent({
                     title: this.$t('haDevice.table.deviceNameHa'),
                     dataIndex: 'deviceNameHa',
                     key: 'deviceNameHa',
-                    slots: { customRender: 'deviceNameHa' }
+                    slots: { customRender: 'deviceNameHa' },
+                    width: '45%'
                 },
                 {
                     title: this.$t('haDevice.table.deviceNameCk'),
