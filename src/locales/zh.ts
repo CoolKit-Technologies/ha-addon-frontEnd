@@ -214,7 +214,7 @@
             connectError:'连接异常'
         },
         controlHaInEWeLink:'在易微联使用您的Home Assistant设备',
-        controlWay:'打开开关，将您的Home Assistant设备同步到易微联生态，即可以通过易微联APP，中控屏控制您的设备，在场景中联动您的易微联设备。',
+        controlWay:'选择将您的 Home Assistant 设备同步到易微联生态，即可以通过易微联 APP，NsPanel、NSPanel Pro 控制已同步的设备',
         deviceList:'设备列表',
         helpText:'帮助文档',
         termsService:'服务协议',
