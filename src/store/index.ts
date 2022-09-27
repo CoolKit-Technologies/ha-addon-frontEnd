@@ -6,6 +6,7 @@ import { getContent } from '@/api/content';
 import { message } from 'ant-design-vue';
 import { i18n } from '@/locales';
 import { getHaDeviceList } from "@/api/ha-device";
+import createPersistedState from 'vuex-persistedstate';
 
 import { getRegionMap, isSupportedDevice } from '@/utils/etc';
 
@@ -195,4 +196,6 @@ export default createStore({
             context.commit('setHaDeviceList',res.data)
         }
     },
+
+    plugins: [createPersistedState()]
 });

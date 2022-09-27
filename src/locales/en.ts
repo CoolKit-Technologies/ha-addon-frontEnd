@@ -214,7 +214,7 @@
             connectError:'Connection Error'
         },
         controlHaInEWeLink:'Control your Home Assistant devices in eWeLink APP',
-        controlWay:'Enable sliding buttons to sync your Home Assistant devices to eWeLink, then control all your devices via eWeLink APP and NSpanel and customize scenes with eWeLink supported devices.',
+        controlWay:'Sync your Home Assistant devices to the eWeLink ecosystem, and then control them via eWeLink APP, NSPanel, and NSPanel Pro.',
         deviceList:'Devices List',
         helpText:'Help',
         termsService:'Terms of Service',
@@ -226,18 +226,18 @@
         syncDeviceLimit: 'The number of synchronized devices reached the upper limit',
         table: {
             no: 'No.',
-            deviceNameHa: 'Device Name',
-            deviceNameCk: 'Device Name (eWeLink)',
-            syncToCk: 'Sync to eWeLink',
+            deviceNameHa: 'Device name',
+            deviceNameCk: 'Name in eWeLink',
+            syncToCk: 'Sorting',
             sync: 'Sync',
-            unsync: 'Unsync',
+            unsync: 'Cancel',
             ok: 'OK',
             reset: 'Reset',
             synced: 'Synced',
-            unsynced: 'Unsynced',
+            unsynced: 'Not synced',
             noData: 'No data'
         },
-        descText: 'Current version only support light and switch'
+        descText: 'Only support Light and Switch'
     }
 };
 export default en

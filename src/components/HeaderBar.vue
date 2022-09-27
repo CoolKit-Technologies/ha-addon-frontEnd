@@ -93,8 +93,13 @@
         centered
     >
       <div class="content">
+        {{ $t('modal.signoutConfirm') }}?
+      </div>
+      <!--
+      <div class="content">
         <a-checkbox v-model:checked="removeEntityChecked">{{ $t('modal.removeEntityCheck') }}</a-checkbox>
       </div>
+      -->
     </a-modal>
   </div>
 </template>
