@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ 'device-card': true, 'disabled': !deviceOnline }" @click="openModalBox">
+    <div :class="{ 'device-card': true, 'disabled': !online }" @click="openModalBox">
         <card-header :cardData="cardData" />
         <card-content :cardData="cardData" />
     </div>
@@ -14,7 +14,7 @@ import CardHeader from './CardHeader.vue';
 import CardContent from './CardContent.vue';
 import store from '@/store';
 import { message } from 'ant-design-vue';
-
+import { isDeviceOnline } from '@/utils/etc';
 export default defineComponent({
     name: 'DeviceCard',
 
@@ -30,32 +30,23 @@ export default defineComponent({
     },
 
     computed: {
-        deviceOnline() {
-            const { uiid, online } = this.cardData as any;
-            if (uiid === 102) {
-                // WiFi 门磁判断在线或不在线的逻辑不同于其它设备
-                const { params } = this.cardData as any;
-                const now = Date.now();
-                const timeout = 7500000;
-                let { actionTime, lastUpdateTime } = params;
-                actionTime = new Date(actionTime).valueOf();
-                lastUpdateTime = new Date(lastUpdateTime).valueOf();
-                return (now - actionTime < timeout) || (now - lastUpdateTime < timeout);
-            } else {
-                return online;
-            }
-        }
+		online(){
+			return isDeviceOnline(this.cardData)
+		}
     },
 
     methods: {
         openModalBox() {
+			//	设备不在线
+			if(!this.online) return;
+			//	设备是否属于当前用户
             const { uiid, apikey = '' } = this.cardData as any;
             const userApikey = localStorage.getItem('userApikey');
 			if(userApikey !== apikey){
 				message.warn(this.$t('card.cantOptShareDevice'));
 				return;
 			}
-            if (isSupportedDevice(uiid) && this.deviceOnline) {
+            if (isSupportedDevice(uiid) && this.online) {
                 this.openModal({
                     type: 'device',
                     params: this.cardData

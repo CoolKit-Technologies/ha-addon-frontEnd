@@ -705,3 +705,19 @@ export function isZigbeeDevice(uiid: number) {
     ];
     return uiids.indexOf(uiid) !== -1;
 }
+
+export function isDeviceOnline(device:any) {
+	const { uiid, online } = device;
+	if (uiid === 102) {
+		// WiFi 门磁判断在线或不在线的逻辑不同于其它设备
+		const { params } = device;
+		const now = Date.now();
+		const timeout = 7500000;
+		let { actionTime, lastUpdateTime } = params;
+		actionTime = new Date(actionTime).valueOf();
+		lastUpdateTime = new Date(lastUpdateTime).valueOf();
+		return (now - actionTime < timeout) || (now - lastUpdateTime < timeout);
+	} else {
+		return online;
+	}
+}

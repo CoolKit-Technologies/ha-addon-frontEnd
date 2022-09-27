@@ -603,3 +603,9 @@ export default defineComponent({
         & > div
             flex 1
 </style>
+
+<style>
+.ant-slider-disabled >.ant-slider-rail{
+	background-color: #E4E4E4 !important
+}
+</style>
