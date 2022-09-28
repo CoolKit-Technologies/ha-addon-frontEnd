@@ -78,7 +78,9 @@
         <mulit-lock v-if="isMiniR3" />
 
         <!-- Set device disable -->
+        <!-- v1.3.2 版本移除该功能
         <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
+        -->
 
         <!-- Upgrade device firmware -->
         <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub && !isZigbeeMultiSwitch" />
