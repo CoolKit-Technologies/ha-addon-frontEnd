@@ -227,7 +227,6 @@ export default defineComponent({
             visible: false,
             serveTitle: "",
             serveContent: "",
-            isNewGw: true, //是否第一次同步ha设备
             buttonShow: false,
             syncParams: { haDeviceId: 0, deviceUiid: 0, state: true },
             listLoading: false, // 设备列表是否加载中
@@ -235,7 +234,6 @@ export default defineComponent({
             visible: boolean;
             serveTitle: string;
             serveContent: string;
-            isNewGw: boolean;
             buttonShow: boolean;
             syncParams: {
                 haDeviceId: number;
@@ -327,7 +325,7 @@ export default defineComponent({
             }
             return false;
         },
-        ...mapState(["cmsInfo", "haDeviceList", "antdLocale"]),
+        ...mapState(["cmsInfo", "haDeviceList", "antdLocale", "isNewGw"]),
     },
     methods: {
         async toAllAsync(
@@ -412,7 +410,7 @@ export default defineComponent({
         },
         handleOk() {
             this.visible = false;
-            this.isNewGw = false;
+            this.setIsNewGw(false);
 
             const { haDeviceId, deviceUiid, state } = this.syncParams;
 
@@ -429,11 +427,8 @@ export default defineComponent({
             this.buttonShow = false;
             this.visible = true;
         },
-        async getHaGatewayStatus() {
-            const res = await getHaGatewayStatus();
-            this.isNewGw = res.data.isNewGw;
-        },
-        ...mapActions(["getHaDeviceList"]),
+        ...mapMutations(["setIsNewGw"]),
+        ...mapActions(["getHaDeviceList", "getHaGatewayStatus"]),
     },
     async mounted() {
         this.getHaDeviceList();

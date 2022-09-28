@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { getContent } from '@/api/content';
 import { message } from 'ant-design-vue';
 import { i18n } from '@/locales';
-import { getHaDeviceList } from "@/api/ha-device";
+import { getHaDeviceList, getHaGatewayStatus } from "@/api/ha-device";
 import createPersistedState from 'vuex-persistedstate';
 
 import { getRegionMap, isSupportedDevice } from '@/utils/etc';
@@ -49,6 +49,9 @@ export default createStore({
 
         //ha deviceList
         haDeviceList:[],
+
+        // 同步 HA 设备页面使用，表示是否第一次同步设备
+        isNewGw: false
     },
 
     getters: {
@@ -160,9 +163,16 @@ export default createStore({
         setHaDeviceList(state,v){
             state.haDeviceList = v
         },
+        setIsNewGw(state, v) {
+            state.isNewGw = v;
+        },
     },
 
     actions: {
+        async getHaGatewayStatus(context) {
+            const res = await getHaGatewayStatus();
+            context.commit('setIsNewGw', res.data.isNewGw);
+        },
         openModal(context, v) {
             // type - modal box type, 'login' or 'device'
             // params - modal box params, used when type is 'device'

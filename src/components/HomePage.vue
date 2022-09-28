@@ -113,6 +113,7 @@ export default defineComponent({
                     if (this.isLogin) {
                         console.log("get ha-device list-------");
                         this.getHaDeviceList();
+                        this.getHaGatewayStatus();
                     }
                 } else if (msgData.type === "ck-device") {
                     const newList = msgData.data;
@@ -165,7 +166,7 @@ export default defineComponent({
             "setAntdLocale",
             "setUsername"
         ]),
-        ...mapActions(["getHaDeviceList"]),
+        ...mapActions(["getHaDeviceList", "getHaGatewayStatus"]),
     },
 });
 </script>
