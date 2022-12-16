@@ -26,7 +26,8 @@
         },
         hidedevice: 'Hide offline or unsupported devices',
         ok: 'OK',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
+        langSwitch: 'Language switch'
     },
 
     form: {

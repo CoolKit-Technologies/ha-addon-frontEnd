@@ -80,7 +80,7 @@ export default createStore({
                     }
                 } else if (origin[i].uiid === 28) {
                     // RF bridge
-                    const len = origin[i].tags.zyx_info.length;
+                    const len = origin[i].tags.zyx_info?.length;
                     for (let j = -1; j < len; j++) {
                         const item = _.cloneDeep(origin[i]);
                         item.cardId = `${i}_${origin[i].key}_${j}`;

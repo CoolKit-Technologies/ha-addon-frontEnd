@@ -22,46 +22,69 @@
       </div>
     </div>
     <div class="header-bar__action">
+      <!-- 登录按钮 -->
       <a-button
-        v-if="!isLogin"
         class="signin-btn"
         size="large"
         shape="round"
         @click="openModalBox"
+        :disabled="isLogin"
+        :style="{ 'cursor': isLogin ? 'default' : 'pointer' }"
       >
-        <template #icon>
-          <user-outlined />
-        </template>
-        {{ $t("common.text.signin") }}
+        <template #icon><user-outlined /></template>
+        <span v-if="!isLogin">{{ $t("common.text.signin") }}</span>
+        <span v-else style="color: #fff;">{{ username }}</span>
       </a-button>
-      <a-button style="margin-right: 10px;" @click="changeLang">{{
-        lang
-      }}</a-button>
-      <a-button v-if="mainShow" style="margin-right: 10px;" @click="changeHideDevice">
-        <template #icon>
-          <eye-invisible-outlined v-if="hideUnavaDevice" />
-          <eye-outlined v-else />
-        </template>
-        {{ $t('common.hidedevice') }}
-      </a-button>
-      <a-button
-        v-if="mainShow"
-        :loading="syncing"
-        style="margin-right: 10px"
-        @click="syncLovelace"
-        >{{ $t("common.syncLovelace") }}</a-button
-      >
-      <sync-outlined v-if="mainShow" class="action-icon" :spin="spin" @click="refresh" />
-      <a-dropdown>
-        <more-outlined class="action-icon" />
+
+      <!-- 下拉菜单 -->
+      <a-dropdown trigger="click" v-model:visible="dropDownVisible">
+        <div style="margin-right: 18px; cursor: pointer;">
+          <caret-down-outlined class="action-icon" @click.prevent />
+        </div>
+
         <template #overlay>
-          <a-menu>
-            <a-menu-item v-if="isLogin">
+          <a-menu class="drop-down-menu">
+            <!-- Hidden offline device -->
+            <a-menu-item v-if="isLogin" @click="changeHideDevice">
               <div class="item-wrapper">
-                <user-outlined class="item-wrapper__icon" />
-                <span class="item-wrapper__text">{{ username }}</span>
+                <eye-invisible-outlined class="item-wrapper__icon" v-if="hideUnavaDevice" />
+                <eye-outlined class="item-wrapper__icon" v-else />
+                <span class="item-wrapper__text">{{ $t('common.hidedevice') }}</span>
               </div>
             </a-menu-item>
+
+            <!-- Language -->
+            <a-menu-item>
+              <div class="item-wrapper" @click.stop="changeLang">
+                <global-outlined class="item-wrapper__icon" />
+                <span class="item-wrapper__text">{{ $t('common.langSwitch') }}</span>
+                <div :class="['lang-switch', lang === 'English' ? 'en' : 'cn']">
+                  <span class="block cn">中文</span>
+                  <span class="block en">EN</span>
+                </div>
+              </div>
+            </a-menu-item>
+
+            <!-- Sync Card -->
+            <a-menu-item v-if="isLogin" @click="syncLovelace">
+              <div class="item-wrapper">
+                <span class="item-wrapper__icon text-icon" icon-text="Sync"></span>
+                <span class="item-wrapper__text">{{ $t("common.syncLovelace") }}</span>
+                <a-spin v-show="syncing" :indicator="indicator"/>
+              </div>
+            </a-menu-item>
+
+            <!-- Feedback -->
+            <a-menu-item @click="handleFeedback">
+              <div class="item-wrapper">
+                <question-circle-outlined class="item-wrapper__icon" />
+                <span class="item-wrapper__text">
+                  {{ $t("common.text.feedback") }}
+                </span>
+              </div>
+            </a-menu-item>
+
+            <!-- Logout -->
             <a-menu-item v-if="isLogin" @click="openLogoutModal">
               <div class="item-wrapper">
                 <export-outlined class="item-wrapper__icon" />
@@ -70,17 +93,12 @@
                 </span>
               </div>
             </a-menu-item>
-            <a-menu-item @click="handleFeedback">
-              <div class="item-wrapper">
-                <question-outlined class="item-wrapper__icon" />
-                <span class="item-wrapper__text">
-                  {{ $t("common.text.feedback") }}
-                </span>
-              </div>
-            </a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
+
+      <!-- 同步按钮 -->
+      <sync-outlined v-if="mainShow" class="action-icon" :spin="spin" @click="refresh" />
     </div>
 
     <!-- 退出登录对话框 -->
@@ -105,17 +123,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, h } from "vue";
 import { mapState, mapMutations, mapActions } from "vuex";
 import { message } from "ant-design-vue";
 import {
   UserOutlined,
   SyncOutlined,
-  MoreOutlined,
   ExportOutlined,
   QuestionOutlined,
   EyeOutlined,
   EyeInvisibleOutlined,
+  CaretDownOutlined,
+  GlobalOutlined,
+  QuestionCircleOutlined,
+  LoadingOutlined
 } from "@ant-design/icons-vue";
 import _ from "lodash";
 
@@ -125,17 +146,24 @@ import { logout } from "@/api/user";
 import { syncLovelaceCard } from "@/api/util";
 import { getDeviceListRefresh } from "@/api/device";
 
+const indicator = h(LoadingOutlined, {
+  style: { fontSize: '24px' },
+  spin: true,
+})
+
 export default defineComponent({
   name: "HeaderBar",
 
   components: {
     UserOutlined,
     SyncOutlined,
-    MoreOutlined,
     ExportOutlined,
     QuestionOutlined,
     EyeOutlined,
     EyeInvisibleOutlined,
+    CaretDownOutlined,
+    GlobalOutlined,
+    QuestionCircleOutlined
   },
 
   data() {
@@ -144,7 +172,9 @@ export default defineComponent({
       spin: false,
       syncing: false,
       logoutModalVisible: false,
-      removeEntityChecked: false
+      removeEntityChecked: false,
+      dropDownVisible: false,
+      indicator
     };
   },
 
@@ -184,22 +214,29 @@ export default defineComponent({
       this.closeLogoutModal();
     },
     handleFeedback() {
+      this.dropDownVisible = false;
       openWindow(getConfig().feedbackUrl);
     },
-    openModalBox() {
+    openModalBox() { 
+      // 已登录，不再打开登录弹框
+      if (this.isLogin) {
+        return;
+      }
       this.openModal({
         type: "login",
         params: null,
       });
     },
     openLogoutModal() {
-        this.logoutModalVisible = true;
+      this.dropDownVisible = false
+      this.logoutModalVisible = true;
     },
     closeLogoutModal() {
         this.logoutModalVisible = false;
     },
     changeHideDevice() {
-        this.setHideUnavaDevice(!this.hideUnavaDevice);
+      this.setHideUnavaDevice(!this.hideUnavaDevice);
+      this.dropDownVisible = false;
     },
     changeLang() {
       if (this.$root?.$i18n.locale === "en") {
@@ -217,6 +254,7 @@ export default defineComponent({
       this.$data.syncing = true;
       const { error } = await syncLovelaceCard();
       this.$data.syncing = false;
+      this.dropDownVisible = false
       if (error) {
         message.error(this.$t("common.sync.failed"));
       } else {
@@ -309,6 +347,24 @@ $color-white = #ffffff;
 
     .signin-btn {
       margin-right: 18px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      ::v-deep(.anticon) {
+
+        border: 2px solid #fff;
+        border-radius: 50%;
+        padding: 2px;
+        width: 40px;
+        height: 40px;
+        > svg {
+          font-size: 28px;
+        }
+      }
     }
 
     .action-icon {
@@ -330,20 +386,102 @@ $color-white = #ffffff;
   }
 }
 
-.item-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
+.drop-down-menu {
+  background: #d7d7d7;
+  ::v-deep(.ant-dropdown-menu-item) {
+    padding: 10px 12px;
 
-  .item-wrapper__icon {
-    margin-right: 16px;
-    margin-left: 6px;
-  }
+    &.no-hover-action:hover {
+      cursor: default;
+      background: none;
+    }
 
-  .item-wrapper__text {
-    flex: 1;
-    margin-right: 14px;
+    .item-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      width: 300px;
+
+      .item-wrapper__icon {
+        margin-right: 16px;
+        margin-left: 6px;
+        padding: 3px;
+        font-size: 24px;
+
+        &.text-icon {
+          width: 30px;
+          height: 30px;
+          &::before {
+            content: attr(icon-text);
+            font-size: 12px;
+            display: block;
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+
+      .item-wrapper__text {
+        flex: 1;
+        margin-right: 14px;
+      }
+
+      .lang-switch {
+        position: relative;
+        width: 80px;
+        height: 30px;
+        background: #797979;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 14px;
+        line-height: 30px;
+        color: #fff;
+        overflow: hidden;
+        cursor: pointer;
+        &:hover {
+          
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 50%;
+          height: 100%;
+          background: #fff;
+          border-radius: 8px;
+          top: 0;
+          left: 0;
+          transition: left .25s;
+        }
+
+        .block {
+          position: relative;
+          display: inline-block;
+          width: 50%;
+          height: 100%;
+          background: transparent;
+        }
+
+        &.en {
+          .block.cn {
+            color: #282828; 
+          }
+          &::before {
+            left: 0;
+          }
+        }
+
+        &.cn {
+          .block.en {
+            color: #282828; 
+          }
+          &::before {
+            left: 50%;
+          }
+        }
+      }
+    }
   }
 }
 </style>

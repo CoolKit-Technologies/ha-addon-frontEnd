@@ -26,7 +26,8 @@
         },
         hidedevice: '隐藏离线及不支持的设备',
         ok: '确认',
-        cancel: '取消'
+        cancel: '取消',
+        langSwitch: '语言切换'
     },
 
     form: {
