@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { SyncOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash';
 
@@ -29,12 +29,14 @@ import {
     hasRefreshUiDevice,
     isLightDevice
 } from '@/utils/etc';
+import type { CardData } from '@/types'
 
 export default defineComponent({
     name: 'CardAction',
 
     props: {
         cardData: {
+            type: Object as PropType<CardData>,
             required: true
         }
     },

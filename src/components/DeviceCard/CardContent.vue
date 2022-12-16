@@ -202,7 +202,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { mapState } from 'vuex';
 import _ from 'lodash';
 
@@ -233,6 +233,7 @@ import RFBridgeContent from '@/components/CtrlItem/RFBridgeContent.vue';
 import Fan from '@/components/CtrlItem/Fan.vue';
 import ConstantTemAndHum from '@/components/CtrlItem/ConstantTemAndHum.vue';
 import { i18n } from '@/locales';
+import type { CardData } from '@/types'
 
 export default defineComponent({
     name: 'CardContent',
@@ -259,6 +260,7 @@ export default defineComponent({
 
     props: {
         cardData: {
+            type: Object as PropType<CardData>,
             required: true,
         },
     },

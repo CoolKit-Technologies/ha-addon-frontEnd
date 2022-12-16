@@ -8,10 +8,11 @@
 
 <script lang="ts">
 import _ from 'lodash';
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 import CardIcon from './CardIcon.vue';
 import CardAction from './CardAction.vue';
+import type { CardData } from '@/types'
 
 export default defineComponent({
     name: 'CardHeader',
@@ -23,6 +24,7 @@ export default defineComponent({
 
     props: {
         cardData: {
+            type: Object as PropType<CardData>,
             required: true,
         },
     },

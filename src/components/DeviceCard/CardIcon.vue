@@ -61,13 +61,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { isDeviceOnline } from '@/utils/etc';
+import type { CardData } from '@/types' 
+
 export default defineComponent({
     name: 'CardIcon',
 
     props: {
         cardData: {
+            type: Object as PropType<CardData>,
             required: true
         }
     },

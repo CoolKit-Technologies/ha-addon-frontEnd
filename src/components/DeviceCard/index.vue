@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { mapActions } from 'vuex';
 
 import { isSupportedDevice } from '@/utils/etc';
@@ -15,6 +15,8 @@ import CardContent from './CardContent.vue';
 import store from '@/store';
 import { message } from 'ant-design-vue';
 import { isDeviceOnline } from '@/utils/etc';
+import type { CardData } from '@/types'
+
 export default defineComponent({
     name: 'DeviceCard',
 
@@ -25,6 +27,7 @@ export default defineComponent({
 
     props: {
         cardData: {
+            type: Object as PropType<CardData>,
             required: true
         }
     },
