@@ -447,7 +447,7 @@ export async function setPowerOnState(v: string, data: any, i: number) {
             },
         });
         return;
-    } else if (uiid === 190) {
+    } else if ([160, 190].includes(uiid)) { // 单通道，多协议
         await setCloudDevice({
             apikey,
             id: deviceId,

@@ -9,6 +9,7 @@
                 v-model:value="modeTime"
                 size="small"
                 @change="changeTime"
+                :disabled="!modeStat"
             >
                 <template #addon>
                     <span style="display:inline-block; text-align:center; width:100%;">{{ $t('modal.minute') }} : {{ $t('modal.second') }}</span>
@@ -136,6 +137,12 @@ export default defineComponent({
 			this.toggle(true)
 		}
     },
+
+    watch: {
+        'modalParams.params': function() {
+            this.initTime();
+        }
+    }
 });
 </script>
 

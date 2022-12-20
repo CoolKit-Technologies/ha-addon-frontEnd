@@ -108,6 +108,9 @@ export default createStore({
                 return result;
             }
         },
+        getModalParams(state) {
+            return state.modalParams;
+        }
     },
 
     mutations: {

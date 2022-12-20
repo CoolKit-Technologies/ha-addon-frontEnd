@@ -474,6 +474,8 @@ export default defineComponent({
             } else if (uiid === 126) {
                 // Dual R3
                 this.value = params.configure[cardIndex].startup;
+            } else if (uiid === 160) {
+                this.value = params.configure[0].startup;
             } else {
                 // Single channel
                 this.value = params.startup;
@@ -524,6 +526,12 @@ export default defineComponent({
     created() {
         this.initValue();
     },
+
+    watch: {
+        'modalParams.params': function() {
+            this.initValue();
+        }
+    }
 });
 </script>
 

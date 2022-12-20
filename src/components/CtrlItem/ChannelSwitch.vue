@@ -26,9 +26,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 import { toggleChannel } from '@/api/device';
+import { CardData } from '@/types';
 
 export default defineComponent({
     name: 'ChannelSwitch',
@@ -44,6 +45,7 @@ export default defineComponent({
             required: true
         },
         cardData: {
+            type: Object as PropType<CardData>,
             required: true
         }
     },

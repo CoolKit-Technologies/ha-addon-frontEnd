@@ -197,6 +197,16 @@
                     :index="cardData.cardIndex"
                 />
             </div>
+
+            <!-- UIID 160 -->
+            <div class="uiid-160" v-else-if="uiid === 160">
+                <channel-switch
+                    class="mg-14"
+                    :title="$t('card.channel')"
+                    :stat="cardData.params.switches[0].switch === 'on' ? true : false"
+                    :cardData="cardData"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -266,6 +276,9 @@ export default defineComponent({
     },
 
     computed: {
+        uiid() {
+            return this.cardData.uiid;
+        },
         uiid190Power() {
             const { params } = this.cardData as any;
             return params.power / 100 || 0;
