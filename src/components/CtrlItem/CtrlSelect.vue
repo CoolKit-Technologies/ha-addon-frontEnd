@@ -528,8 +528,8 @@ export default defineComponent({
     },
 
     watch: {
-        'modalParams.params': function() {
-            this.initValue();
+        'modalParams.params': function(params) {
+            params && this.initValue();
         }
     }
 });

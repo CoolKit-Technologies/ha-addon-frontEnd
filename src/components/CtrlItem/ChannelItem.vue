@@ -36,6 +36,12 @@ export default defineComponent({
         ...mapState(['modalParams']),
         showInchingMode() {
             const modalParams = this.modalParams as any;
+            const uiid = modalParams.uiid
+
+            if ([161].includes(uiid)) {
+                return true;
+            }
+
             if (this.isMiniR3()) {
                 // 没有设置过互锁
                 if (!modalParams.params.locks || modalParams.params.locks.length === 0) {
@@ -54,6 +60,12 @@ export default defineComponent({
         },
         showPowerOnState() {
             const modalParams = this.modalParams as any;
+            const uiid = modalParams.uiid
+
+            if ([161].includes(uiid)) {
+                return true;
+            }
+
             if (this.isMiniR3()) {
                 // 没有设置过互锁
                 if (!modalParams.params.locks || modalParams.params.locks.length === 0) {

@@ -5,6 +5,7 @@ import { isOneChannelSPDevice, isMultiChannelDevice, isOneChannelSwOrSockCPDevic
 import { sendHttpRequest } from '@/utils/http';
 import { getConfig } from '@/utils/config';
 import { isLightDevice } from '@/utils/etc';
+import { CardData } from '@/types';
 
 const { apiPrefix } = getConfig();
 
@@ -179,6 +180,11 @@ export async function toggleChannel(v: boolean, data: any, index: number) {
         };
     }
 
+    if ([160, 161, 162].includes(uiid)) {
+        await setCloudDevice(params);
+        return;
+    }
+
     if (type === 2) {
         // LAN device
         await setLanDevice(params);
@@ -230,6 +236,11 @@ export async function toggleAllChannels(v: boolean, data: any) {
                 switches,
             },
         };
+
+        if ([160, 161, 162].includes(uiid)) {
+            await setCloudDevice(params);
+            return;
+        }
 
         if (type === 2) {
             // LAN device
@@ -355,6 +366,20 @@ export async function toggleNetworkLed(v: boolean, data: any) {
     }
 }
 
+export async function controlButtonIndicatorLight(offBrightness: number, device: CardData) {
+    const { type, uiid, deviceId, apikey } = device;
+
+    if ([160, 161, 162].includes(uiid)) {
+        await setCloudDevice({
+            apikey,
+            id: deviceId,
+            params: {
+                offBrightness
+            }
+        });
+    }
+}
+
 /**
  * Toggle device interlock
  * @param v State value
@@ -378,7 +403,7 @@ export async function toggleLock(v: boolean, data: any) {
  */
 export async function toggleInchingMode(v: boolean, data: any, value: number, index: number,action?:string) {
     const { type, uiid, deviceId, apikey, params, cardIndex } = data;
-    const pulses = _.cloneDeep(params.pulses);
+    let pulses: any[] = _.cloneDeep(params.pulses);
 
     if (type === 1 && uiid === 1) {
         await setDiyDevice({
@@ -417,10 +442,14 @@ export async function toggleInchingMode(v: boolean, data: any, value: number, in
         pulses[cardIndex].width = value;
         pulses[cardIndex].pulse = v ? 'on' : 'off';
     } else {
-        pulses[index].width = value;
+        pulses[index].width = value ? value : 500;
         pulses[index].pulse = v ? 'on' : 'off';
 		action && (pulses[index].switch = action)
     }
+
+    // 当存在 width 为 0 的项时，开启点动模式会失败
+    pulses = pulses.filter((pulse: any) => pulse.width !== 0)
+
     await setCloudDevice({
         apikey,
         id: deviceId,

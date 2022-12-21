@@ -9,11 +9,17 @@
             <device-name type="button" v-for="(item, i) in modalParams.tags.zyx_info[modalParams.cardIndex].buttonName" :key="i" :index="i" />
         </template>
 
-        <!-- Toggle device network LED -->
+        <!-- disable entity -->
         <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming || isNSPanel || isZigbeeMultiSwitch)" type="led" />
 
+        <!-- Control Button indicator light -->
+        <ButtonIndicatorLight v-if="[160, 161, 162].includes(uiid)" />
+
+        <!-- UIID 160 161 162 disable entity -->
+        <ctrl-switch type="disable" v-if="[160, 161, 162].includes(uiid)" />
+
         <!-- Toggle multi-channel device interlock -->
-        <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
+        <ctrl-switch v-show="![161].includes(uiid)" v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
 
         <!-- Set device inching mode -->
         <inching-mode
@@ -104,6 +110,7 @@ import MulitLock from '@/components/CtrlItem/MulitLock/MulitLock.vue';
 import { isMultiChannelDevice, isZigbeeDevice } from '@/utils/etc';
 import CtrlTemp from '@/components/CtrlItem/CtrlTemp.vue';
 import ResetConsumption from '@/components/CtrlItem/ResetConsumption.vue';
+import ButtonIndicatorLight from '@/components/CtrlItem/ButtonIndicatorLight.vue'
 
 export default defineComponent({
     name: 'DeviceCtrl',
@@ -119,10 +126,15 @@ export default defineComponent({
         ScenesItem,
         MulitLock,
         CtrlTemp,
-        ResetConsumption
+        ResetConsumption,
+        ButtonIndicatorLight
     },
 
     computed: {
+        uiid() {
+            const { uiid } = this.modalParams as any;
+            return uiid;
+        },
         isDiyDevice() {
             const { type, uiid } = this.modalParams as any;
             return type === 1 && uiid === 1;

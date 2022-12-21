@@ -75,13 +75,14 @@ export default defineComponent({
 		//	点动是否显示 常开常闭 选项
 		isShowStatus(){
             const { uiid } = this.modalParams as any;
-            return [138, 139, 140, 141, 190].includes(uiid);
+            return [138, 139, 140, 141, 160, 161, 190].includes(uiid);
 		},
         ...mapState(['modalParams'])
     },
 
     created() {
         this.initTime();
+        this.initAction();
     },
 
     methods: {
@@ -101,6 +102,16 @@ export default defineComponent({
                 ms = params.pulses[this.index].width;
             }
             this.modeTime = this.ms2time(ms);
+        },
+        initAction() {
+            const { type, uiid, params, cardIndex } = this.modalParams as any;
+            let action = ''
+
+            if ([160, 161, 162].includes(uiid)) {
+                action = params.pulses[this.index].switch;
+            }
+
+            this.action = action;
         },
         // Convert time format (ms => min:sec)
         // 1000ms => 00:01, 1500ms => 00:02
@@ -139,8 +150,9 @@ export default defineComponent({
     },
 
     watch: {
-        'modalParams.params': function() {
-            this.initTime();
+        'modalParams.params': function(params) {
+            params && this.initTime();
+            params && this.initAction();
         }
     }
 });

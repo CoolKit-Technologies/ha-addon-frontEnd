@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { mapState } from 'vuex';
 
 import { disableDevice, toggleNetworkLed, toggleLock } from '@/api/device';
@@ -23,7 +23,8 @@ export default defineComponent({
     name: 'CtrlSwitch',
 
     props: {
-        type: {     // 'led', 'lock', 'enable'
+        type: {
+            type: String as PropType<'led' | 'lock' | 'enable' | 'disable'>,
             required: true
         }
     },

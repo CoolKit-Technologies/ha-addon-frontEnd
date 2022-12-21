@@ -588,6 +588,7 @@ export function isMultiChannelDevice(uiid: number) {
         140,
         141,
         133,
+        161,
 		2256,
 		3256,
 		4256
@@ -603,6 +604,7 @@ export function isTwoChannelDevice(uiid: number) {
         113,
         139,
         133,
+        161,
 		2256
     ];
     return uiids.indexOf(uiid) !== -1;

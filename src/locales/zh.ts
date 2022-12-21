@@ -1,4 +1,4 @@
- const zh = {
+const zh = {
     common: {
         success: {
             getdevice: '获取设备列表成功'
@@ -137,6 +137,8 @@
         curTemp: '当前温度',
         curHumd: '当前湿度',
         netled: '网络指示灯',
+        btnled: '按键指示灯',
+        btnledTip: '设备处于关闭状态下，可调节指示灯亮度',
         interlock: '互锁',
         interlocktip: '启用后，不支持定时器、点动等功能',
         entitydisable: '禁用实体',
@@ -208,6 +210,7 @@
 			inchingOn: '点动开',
 			inchingOff: '点动关'
         },
+
     },
     haDevice:{
         status:{

@@ -1,4 +1,4 @@
- const en = {
+const en = {
     common: {
         success: {
             getdevice: 'Get device list success'
@@ -137,6 +137,8 @@
         curTemp: 'Current Temp.',
         curHumd: 'Current Humidity',
         netled: 'Network Indicator',
+        btnled: 'Button Indicator',
+        btnledTip: 'The brightness of button backlight is only adjustable when the device is turned off.',
         interlock: 'Interlock Mode',
         interlocktip: 'Inching mode & Power-on state will be disabled',
         entitydisable: 'Disable Entity',

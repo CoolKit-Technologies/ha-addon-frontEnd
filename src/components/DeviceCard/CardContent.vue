@@ -199,13 +199,20 @@
             </div>
 
             <!-- UIID 160 -->
-            <div class="uiid-160" v-else-if="uiid === 160">
-                <channel-switch
-                    class="mg-14"
-                    :title="$t('card.channel')"
-                    :stat="cardData.params.switches[0].switch === 'on' ? true : false"
-                    :cardData="cardData"
-                />
+            <div class="uiid-160" v-else-if="[160, 161].includes(uiid)">
+                <template v-for="i in {
+                    160: 1,
+                    161: 2,
+                    162: 4
+                }[uiid]" :key="i">
+                    <channel-switch
+                        class="mg-14"
+                        :title="$t('card.channel') + i"
+                        :stat="cardData.params.switches[i-1].switch === 'on' ? true : false"
+                        :cardData="cardData"
+                        :index="i-1"
+                    />
+                </template>
             </div>
         </div>
     </div>
