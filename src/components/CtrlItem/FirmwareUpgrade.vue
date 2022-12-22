@@ -15,23 +15,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, Ref } from 'vue';
 import { mapState } from 'vuex';
 import _ from 'lodash';
 import { getOtaInfo, upgradeDeviceFw } from '@/api/device';
 
+interface Data {
+    otaInfo: {
+        version?: Ref<string>
+    }
+}
+
 export default defineComponent({
     name: 'FirmwareUpgrade',
 
-    data() {
+    data(): Data {
         return {
-            otaInfo: {},
-        };
+            otaInfo: {}
+        }
     },
 
     computed: {
         ...mapState(['modalParams']),
-        isNonLatest() {
+        isNonLatest(): boolean {
             const _this = this as any;
             const oldVersion = _.get(this, 'modalParams.params.fwVersion');
             const newVersion = _.get(this, 'otaInfo.version');
@@ -87,12 +93,13 @@ export default defineComponent({
     .text-box
         flex 1
         display flex
-        justify-content space-between
+        justify-content flex-start
         align-items center
         .title
             color #212121
             font-size 14px
         .desc
+            margin-left: 30px
             margin-right 20px
             font-size 12px
             color #727272

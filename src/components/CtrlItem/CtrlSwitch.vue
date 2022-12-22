@@ -109,14 +109,14 @@ export default defineComponent({
     .text
         flex 1
         display flex
-        justify-content space-between
+        justify-content flex-start
         align-items center
         & > p
             margin 0
         .title
-            margin-right 10px
             color #212121
         .desc
+            margin-left 30px
             margin-right 20px
             font-size 12px
             color #727272

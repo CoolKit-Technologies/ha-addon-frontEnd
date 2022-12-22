@@ -15,11 +15,14 @@
         <!-- Control Button indicator light -->
         <ButtonIndicatorLight v-if="[160, 161, 162].includes(uiid)" />
 
-        <!-- UIID 160 161 162 disable entity -->
-        <ctrl-switch type="disable" v-if="[160, 161, 162].includes(uiid)" />
-
         <!-- Toggle multi-channel device interlock -->
         <ctrl-switch v-show="![161, 162].includes(uiid)" v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
+
+        <!-- Set device power on state -->
+        <ctrl-select
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight)"
+            type="power-on-state"
+        />
 
         <!-- Set device inching mode -->
         <inching-mode
@@ -40,11 +43,8 @@
             "
         />
 
-        <!-- Set device power on state -->
-        <ctrl-select
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight)"
-            type="power-on-state"
-        />
+        <!-- UIID 160 161 162 disable entity -->
+        <ctrl-switch type="disable" v-if="[160, 161, 162, 138].includes(uiid)" />
 
         <!-- fanlight power on state -->
         <template v-if="isFanLight">

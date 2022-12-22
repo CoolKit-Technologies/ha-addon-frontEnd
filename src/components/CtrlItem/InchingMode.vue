@@ -156,7 +156,7 @@ export default defineComponent({
             const { type, uiid, params, cardIndex } = this.modalParams as any;
             let action = ''
 
-            if ([160, 161, 162].includes(uiid)) {
+            if ([138, 160, 161, 162].includes(uiid)) {
                 action = params.pulses[this.index].switch;
             }
 

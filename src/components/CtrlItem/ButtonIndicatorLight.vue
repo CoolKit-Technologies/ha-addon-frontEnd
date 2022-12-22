@@ -2,7 +2,13 @@
     <div class="btn-indicator-light">
         <span class="text">{{ text }}</span>
         <div class="control">
-            <a-slider v-model:value="offBrightness" :disabled="disabled" class="slider" style="width: 200px" @change="controlOffBrightness"></a-slider>
+            <a-slider
+                v-model:value="offBrightness"
+                :disabled="disabled"
+                class="slider"
+                style="width: 200px"
+                @change="controlOffBrightness"
+            ></a-slider>
             <a-tooltip>
                 <template #title>{{ tip }}</template>
                 <question-circle-outlined style="font-size: 16px;" />
@@ -17,14 +23,7 @@ import { useStore } from 'vuex'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import _ from 'lodash'
 import { controlButtonIndicatorLight } from '@/api/device'
-import { CardData } from '@/types'
 import { useI18n } from 'vue-i18n'
-
-const _controlOffBrightness = _.debounce(
-    (offBrightness: number, device: CardData) => { controlButtonIndicatorLight(offBrightness, device) },
-    500,
-    { leading: false, trailing: true }
-)
 
 export default defineComponent({
     name: 'ButtonIndicatorLight',
@@ -79,9 +78,13 @@ export default defineComponent({
 
             offBrightness.value = brightness
         }
-        const controlOffBrightness = (offBrightness: number) => {
-            _controlOffBrightness(offBrightness, modalParams.value)
-        }
+        const controlOffBrightness = _.debounce(
+            (offBrightness: number) => {
+                controlButtonIndicatorLight(offBrightness, modalParams.value)
+            },
+            500,
+            { leading: false, trailing: true }
+        )
 
         // created
         initOffBrightness()

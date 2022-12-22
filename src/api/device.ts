@@ -448,7 +448,9 @@ export async function toggleInchingMode(v: boolean, data: any, value: number, in
     }
 
     // 当存在 width 为 0 的项时，开启点动模式会失败
-    pulses = pulses.filter((pulse: any) => pulse.width !== 0)
+    pulses.forEach((pulse: any) => {
+        pulse.width = pulse.width || 500
+    })
 
     await setCloudDevice({
         apikey,
