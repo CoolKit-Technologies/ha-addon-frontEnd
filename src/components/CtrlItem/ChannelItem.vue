@@ -38,7 +38,7 @@ export default defineComponent({
             const modalParams = this.modalParams as any;
             const uiid = modalParams.uiid
 
-            if ([161].includes(uiid)) {
+            if ([161, 162].includes(uiid)) {
                 return true;
             }
 
@@ -62,7 +62,7 @@ export default defineComponent({
             const modalParams = this.modalParams as any;
             const uiid = modalParams.uiid
 
-            if ([161].includes(uiid)) {
+            if ([161, 162].includes(uiid)) {
                 return true;
             }
 

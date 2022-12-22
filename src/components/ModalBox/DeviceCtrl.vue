@@ -19,7 +19,7 @@
         <ctrl-switch type="disable" v-if="[160, 161, 162].includes(uiid)" />
 
         <!-- Toggle multi-channel device interlock -->
-        <ctrl-switch v-show="![161].includes(uiid)" v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
+        <ctrl-switch v-show="![161, 162].includes(uiid)" v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
 
         <!-- Set device inching mode -->
         <inching-mode

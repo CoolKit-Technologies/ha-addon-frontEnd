@@ -1,5 +1,5 @@
 <template>
-    <a-modal :visible="modalVisible" :footer="null" :destroyOnClose="true" :maskClosable="false" @cancel="handleClose" class="modal-box">
+    <a-modal :visible="modalVisible" :footer="null" :destroyOnClose="true" :maskClosable="false" @cancel="handleClose" class="modal-box" :width="650">
         <!-- modal title -->
         <template #title v-if="modalType && modalType !== 'login'">
             <span class="title">{{ modalParams && modalParams.deviceName }}</span>

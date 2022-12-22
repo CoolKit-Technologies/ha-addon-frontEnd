@@ -4,7 +4,7 @@
             {{ $t('modal.inchingmode') }}
         </div>
         <div class="control">
-            <a-time-picker
+            <!-- <a-time-picker
                 format="mm:ss"
                 v-model:value="modeTime"
                 size="small"
@@ -14,7 +14,42 @@
                 <template #addon>
                     <span style="display:inline-block; text-align:center; width:100%;">{{ $t('modal.minute') }} : {{ $t('modal.second') }}</span>
                 </template>
-            </a-time-picker>
+            </a-time-picker> -->
+
+            <!-- 分钟选择器 -->
+            <a-select
+                style="width: 120px; margin-left: 10px;"
+                size="small"
+                v-model:value="minutes"
+                :disabled="!modeStat"
+                @change="handleMinOrSecChange"
+            >
+                <a-select-option
+                    v-for="minute in 60"
+                    :value="minute-1"
+                    :key="minute-1"
+                >
+                    {{ (minute-1) + $t('modal.minute') }}
+                </a-select-option>
+            </a-select>
+
+            <!-- 秒钟选择器 -->
+            <a-select
+                style="width: 120px; margin-left: 10px;"
+                size="small"
+                v-model:value="seconds"
+                :disabled="!modeStat"
+                @change="handleMinOrSecChange"
+            >
+                <a-select-option
+                    v-for="second in 60"
+                    :value="second-1"
+                    :key="second-1"
+                >
+                    {{ (second-1) + $t('modal.second') }}
+                </a-select-option>
+            </a-select>
+
 			<a-select style="width: 120px;margin-left: 10px;" size="small" :disabled="!modeStat" :value="action" @select="setInchingAction" v-if="isShowStatus">
                 <a-select-option key="on" value="on">{{ $t('modal.miniR3.inchingOn') }} </a-select-option>
                 <a-select-option key="off" value="off">{{ $t('modal.miniR3.inchingOff') }}</a-select-option>
@@ -47,9 +82,13 @@ export default defineComponent({
 
     data() {
         return {
+            minutes: null,
+            seconds: null,
             modeTime: null,
 			action: 'on'
         } as {
+            minutes: number | null,
+            seconds: number | null,
             modeTime: any;
 			action: string
         };
@@ -75,7 +114,7 @@ export default defineComponent({
 		//	点动是否显示 常开常闭 选项
 		isShowStatus(){
             const { uiid } = this.modalParams as any;
-            return [138, 139, 140, 141, 160, 161, 190].includes(uiid);
+            return [138, 139, 140, 141, 160, 161, 162, 190].includes(uiid);
 		},
         ...mapState(['modalParams'])
     },
@@ -86,7 +125,14 @@ export default defineComponent({
     },
 
     methods: {
-        initTime() {
+        initTime(min?: number | null, sec?: number | null) {
+
+            if ((min !== null && min !== undefined) && (sec !== null && sec !== undefined)) {
+                const ms = (min * 60 * 1000) + sec * 1000;
+                this.modeTime = this.ms2time(ms);
+                return;
+            }
+
             const { type, uiid, params, cardIndex } = this.modalParams as any;
             let ms = 0;
 
@@ -102,6 +148,9 @@ export default defineComponent({
                 ms = params.pulses[this.index].width;
             }
             this.modeTime = this.ms2time(ms);
+
+            this.minutes = moment(this.modeTime).get('minute');
+            this.seconds = moment(this.modeTime).get('second');
         },
         initAction() {
             const { type, uiid, params, cardIndex } = this.modalParams as any;
@@ -128,6 +177,10 @@ export default defineComponent({
                     return moment(`${mm}:${ss}`, 'mm:ss');
                 }
             }
+        },
+        handleMinOrSecChange(val: string) {
+            this.initTime(this.minutes, this.seconds)
+            this.changeTime()
         },
         getMs() {
             const min = moment(this.modeTime).get('minute');

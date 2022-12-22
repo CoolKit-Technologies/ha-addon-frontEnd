@@ -199,11 +199,11 @@
             </div>
 
             <!-- UIID 160 -->
-            <div class="uiid-160" v-else-if="[160, 161].includes(uiid)">
+            <div v-else-if="[160, 161, 162].includes(uiid)">
                 <template v-for="i in {
                     160: 1,
                     161: 2,
-                    162: 4
+                    162: 3
                 }[uiid]" :key="i">
                     <channel-switch
                         class="mg-14"

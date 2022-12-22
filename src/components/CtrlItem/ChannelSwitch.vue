@@ -13,7 +13,7 @@
             />
         </div>
         <div class="text">
-            <p class="title">{{ title ? title : `${$t('card.channel')}${index + 1}` }}</p>
+            <p class="title">{{ getTitle }}</p>
         </div>
         <div class="action">
             <a-switch
@@ -54,6 +54,14 @@ export default defineComponent({
         async toggle(v: boolean, e: any) {
             e.stopPropagation();
             await toggleChannel(v, this.cardData, this.index);
+        }
+    },
+
+    computed: {
+        getTitle() {
+            const channelName = this.cardData?.tags ? this.cardData?.tags[this.index] : ''
+            const commonName = `${this.$t('card.channel')}${this.index + 1}`
+            return channelName ? channelName : commonName
         }
     }
 });
