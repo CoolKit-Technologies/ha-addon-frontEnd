@@ -12,12 +12,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { mapState } from 'vuex'
+import { defineComponent, ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import _ from 'lodash'
 import { controlButtonIndicatorLight } from '@/api/device'
 import { CardData } from '@/types'
+import { useI18n } from 'vue-i18n'
 
 const _controlOffBrightness = _.debounce(
     (offBrightness: number, device: CardData) => { controlButtonIndicatorLight(offBrightness, device) },
@@ -30,65 +31,72 @@ export default defineComponent({
     components: {
         QuestionCircleOutlined
     },
-    data() {
-        return {
-            offBrightness: 0
-        }
-    },
-    methods: {
-        initOffBrightness() {
-            let offBrightness = 0
+    setup() {
+        const offBrightness = ref(0)
 
-            if ([160, 161, 162].includes(this.uiid)) {
-                offBrightness = this.modalParams.params.offBrightness
-            }
+        const store = useStore()
+        const { t } = useI18n()
 
-            this.offBrightness = offBrightness
-        },
-        controlOffBrightness(offBrightness: number) {
-            _controlOffBrightness(offBrightness, this.modalParams)
-        }
-    },
-    computed: {
-        ...mapState(['modalParams']),
-        uiid() {
-            return this.modalParams.uiid
-        },
-        disabled() {
-            const { params } = this.modalParams
+        // computed
+        const modalParams = computed(() => store.state.modalParams)
+        const uiid = computed(() => modalParams.value.uiid)
+        const disabled = computed(() => {
+            const { params } = modalParams.value
             let disabled = false
 
-            if ([160, 161, 162].includes(this.uiid)) {
+            if ([160, 161, 162].includes(uiid.value)) {
                 disabled = params.switches.some((s: { outlet: number, switch: 'off' | 'on' }) => s.switch === 'on')
             }
 
             return disabled
-        },
-        text() {
+        })
+        const text = computed(() => {
             let text = ''
 
-            if ([160, 161, 162].includes(this.uiid)) {
-                text = this.$t('modal.btnled')
+            if ([160, 161, 162].includes(uiid.value)) {
+                text = t('modal.btnled')
             }
 
             return text
-        },
-        tip() {
+        })
+        const tip = computed(() => {
             let tip = ''
 
-            if ([160, 161, 162].includes(this.uiid)) {
-                tip = this.$t('modal.btnledTip')
+            if ([160, 161, 162].includes(uiid.value)) {
+                tip = t('modal.btnledTip')
             }
 
             return tip
+        })
+
+        // methods
+        const initOffBrightness = () => {
+            let brightness = 0
+
+            if ([160, 161, 162].includes(uiid.value)) {
+                brightness = modalParams.value?.params?.offBrightness
+            }
+
+            offBrightness.value = brightness
         }
-    },
-    created() {
-        this.initOffBrightness()
-    },
-    watch: {
-        'modalParams.params': function(params) {
-            params && this.initOffBrightness()
+        const controlOffBrightness = (offBrightness: number) => {
+            _controlOffBrightness(offBrightness, modalParams.value)
+        }
+
+        // created
+        initOffBrightness()
+
+        // watch
+        watch(modalParams, (params) => {
+            params && initOffBrightness()
+        })
+
+        return {
+            disabled,
+            text,
+            tip,
+            controlOffBrightness,
+            offBrightness
         }
     }
 })
