@@ -12,6 +12,7 @@
             ref="color-input"
             class="color-input-hide"
             type="color"
+            :value="bgColor"
             :disabled="!cardData.online"
         />
         <div class="color-box" @click.stop="firePickColor">
@@ -21,10 +22,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import _ from 'lodash';
 import { setPickerColor }from '@/api/device'
 import convert from 'color-convert'
+import { CardData } from '@/types';
 
 type RGB = [number,number,number];
 
@@ -38,6 +40,7 @@ export default defineComponent({
     },
     props:{
         cardData:{
+            type: Object as PropType<CardData>,
             required:true
         }
     },
@@ -97,11 +100,11 @@ export default defineComponent({
                 return this.dealRGBColor({
                     r,g,b
                 })
-            }else if(uiid === 59){
+            }else if([59, 137, 173].includes(uiid)){
                 const { colorR, colorG, colorB } = params;
                 return this.dealRGBColor({
                     r:colorR,g:colorG,b:colorB
-                })         
+                })
             }else if(uiid === 3258){
 				const { hue = 1 } = params;
 				return this.hsvToString(hue);

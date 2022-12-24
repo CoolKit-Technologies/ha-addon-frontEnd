@@ -21,6 +21,7 @@ import {
     Slider,
     Tooltip,
     Checkbox,
+    Cascader,
     Table,
     Pagination,
 } from 'ant-design-vue';
@@ -57,6 +58,7 @@ app.use(Slider);
 app.use(Popconfirm);
 app.use(Tooltip);
 app.use(Checkbox);
+app.use(Cascader);
 app.use(Table);
 app.use(Pagination);
 

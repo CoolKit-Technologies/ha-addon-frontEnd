@@ -88,10 +88,15 @@
             </div>
             <!-- rhythm light strip -->
             <div v-else-if="isRhythmLtStrip && cardData.params.switch === 'on'">
-                <color-picker class="mg-14" :cardData="cardData" />
-                <ctrl-slider class="mg-14" type="brightness" :cardData="cardData" />
-                <ctrl-slider class="mg-14" type="color-temp" :cardData="cardData" />
-                <rhythm-switch class="mg-14" :cardData="cardData" />
+                <template v-if="uiid === 59">
+                    <color-picker class="mg-14" :cardData="cardData" />
+                    <ctrl-slider class="mg-14" type="brightness" :cardData="cardData" />
+                    <ctrl-slider class="mg-14" type="color-temp" :cardData="cardData" />
+                    <rhythm-switch class="mg-14" :cardData="cardData" />
+                </template>
+                <template v-else-if="[137, 173].includes(uiid) && online">
+                    <ctrl-light-mode class="mg-14" :card-data="cardData" />
+                </template>
             </div>
             <!-- elec curtain -->
             <div v-else-if="isCurtain">
@@ -198,7 +203,7 @@
                 />
             </div>
 
-            <!-- UIID 160 -->
+            <!-- UIID 160,161,162 -->
             <div v-else-if="[160, 161, 162].includes(uiid)">
                 <template v-for="i in {
                     160: 1,
@@ -249,6 +254,7 @@ import RfGateway from '@/components/CtrlItem/RfGateway.vue';
 import RFBridgeContent from '@/components/CtrlItem/RFBridgeContent.vue';
 import Fan from '@/components/CtrlItem/Fan.vue';
 import ConstantTemAndHum from '@/components/CtrlItem/ConstantTemAndHum.vue';
+import CtrlLightMode from '../CtrlItem/CtrlLightMode.vue';
 import { i18n } from '@/locales';
 import type { CardData } from '@/types'
 
@@ -273,6 +279,7 @@ export default defineComponent({
         RFBridgeContent,
         RfGateway,
         Fan,
+        CtrlLightMode
     },
 
     props: {
@@ -285,6 +292,9 @@ export default defineComponent({
     computed: {
         uiid() {
             return this.cardData.uiid;
+        },
+        online() {
+            return this.cardData.online;
         },
         uiid190Power() {
             const { params } = this.cardData as any;
@@ -433,8 +443,7 @@ export default defineComponent({
         },
         // Current device is rhythm light strip
         isRhythmLtStrip() {
-            const { uiid } = this.cardData as any;
-            return uiid === 59;
+            return [59, 137, 173].includes(this.uiid);
         },
         isFanLight() {
             const { uiid } = this.cardData as any;

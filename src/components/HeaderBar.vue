@@ -33,12 +33,12 @@
       >
         <template #icon><user-outlined /></template>
         <span v-if="!isLogin">{{ $t("common.text.signin") }}</span>
-        <span v-else style="color: #fff;">{{ username }}</span>
       </a-button>
 
       <!-- 下拉菜单 -->
-      <a-dropdown trigger="click" v-model:visible="dropDownVisible">
-        <div style="margin-right: 18px; cursor: pointer;">
+      <a-dropdown trigger="hover" v-model:visible="dropDownVisible">
+        <div style="margin-right: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center;">
+          <span v-if="isLogin" style="color: #fff; margin-right: 10px;">{{ username }}</span>
           <caret-down-outlined class="action-icon" @click.prevent />
         </div>
 
@@ -217,7 +217,7 @@ export default defineComponent({
       this.dropDownVisible = false;
       openWindow(getConfig().feedbackUrl);
     },
-    openModalBox() { 
+    openModalBox() {
       // 已登录，不再打开登录弹框
       if (this.isLogin) {
         return;
@@ -387,9 +387,14 @@ $color-white = #ffffff;
 }
 
 .drop-down-menu {
-  background: #d7d7d7;
+  background: rgba(#000, .9);
   ::v-deep(.ant-dropdown-menu-item) {
     padding: 10px 12px;
+    color: #fff;
+
+    &:hover {
+      color: rgba(#000, .85);
+    }
 
     &.no-hover-action:hover {
       cursor: default;
@@ -404,8 +409,7 @@ $color-white = #ffffff;
       width: 300px;
 
       .item-wrapper__icon {
-        margin-right: 16px;
-        margin-left: 6px;
+        margin-right: 10px;
         padding: 3px;
         font-size: 24px;
 
@@ -424,36 +428,20 @@ $color-white = #ffffff;
 
       .item-wrapper__text {
         flex: 1;
-        margin-right: 14px;
       }
 
       .lang-switch {
         position: relative;
-        width: 80px;
+        width: 120px;
         height: 30px;
-        background: #797979;
-        border-radius: 8px;
+        background: #a1a1a1;
+        border-radius: 10px;
         text-align: center;
         font-size: 14px;
         line-height: 30px;
-        color: #fff;
+        color: #424242;
         overflow: hidden;
         cursor: pointer;
-        &:hover {
-          
-        }
-
-        &::before {
-          content: '';
-          position: absolute;
-          width: 50%;
-          height: 100%;
-          background: #fff;
-          border-radius: 8px;
-          top: 0;
-          left: 0;
-          transition: left .25s;
-        }
 
         .block {
           position: relative;
@@ -461,23 +449,30 @@ $color-white = #ffffff;
           width: 50%;
           height: 100%;
           background: transparent;
+          border-radius: 8px;
         }
 
         &.en {
-          .block.cn {
-            color: #282828; 
-          }
-          &::before {
-            left: 0;
+          .block {
+            &.en {
+              color: #282828;
+            }
+            &.cn {
+              color: #fff;
+              background: #5192fd;
+            }
           }
         }
 
         &.cn {
-          .block.en {
-            color: #282828; 
-          }
-          &::before {
-            left: 50%;
+          .block {
+            &.cn {
+              color: #282828;
+            }
+            &.en {
+              color: #fff;
+              background: #5192fd;
+            }
           }
         }
       }

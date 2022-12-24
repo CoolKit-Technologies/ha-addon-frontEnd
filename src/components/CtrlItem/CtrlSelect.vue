@@ -6,14 +6,28 @@
             <img class="fan-light-icon" v-if="modalParams.uiid === 34 && index === 1" src="@/assets/fan.png" alt="fan" />
             {{ title }}
         </div>
-        <a-select v-model:value="value" style="min-width:120px;" size="small" @change="handleChange">
+
+        <!-- 单选选择 -->
+        <a-select v-if="selectType === 'radio'" v-model:value="value" style="min-width:120px;" size="small" @change="handleChange">
             <a-select-option v-for="item in options" :key="item.id" :value="item.value">{{ item.text }}</a-select-option>
         </a-select>
+
+        <!-- 级联选择 -->
+        <a-cascader
+            v-else-if="selectType === 'cascader'"
+            style="min-width:120px;"
+            size="small"
+            v-model:value="cascaderValue"
+            :options="cascaderOptions"
+            expand-trigger="hover"
+            :disabled="cascaderDisabled"
+            @change="handleChange"
+        />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { mapState } from 'vuex';
 
 import { isMultiChannelDevice, isOneChannelSwOrSockCPDevice } from '@/utils/etc';
@@ -198,12 +212,17 @@ export default defineComponent({
     name: 'CtrlSelect',
 
     props: {
-        // 'power-on-state'
-        // 'five-color-light'
-        // 'five-color-bulb-light'
-        // 'rhythm-light-strip'
-        // 'two-color-light'
         type: {
+            type: String as PropType<
+                | 'power-on-state' // 开关类设备的通电反应设置
+                | 'five-color-light' // UIID104 五色灯
+                | 'five-color-bulb-light' // UIID22 五色电灯泡
+                | 'rhythm-light-strip' // UIID59 律动灯带
+                | 'rhythm-light-strip-bluetooth' // UIID137 律动灯带-蓝牙版
+                | 'rhythm-light-strip-vivid' // UIID173 律动灯带-炫彩版
+                | 'two-color-light' // UIID103 双色灯
+                | 'dimming' // UIID44 单路调光灯
+            >,
             required: true,
         },
         index: {
@@ -211,13 +230,27 @@ export default defineComponent({
         },
     },
 
-    data() {
+    data(): {
+        value: string,
+        cascaderValue: any[]
+    } {
         return {
             value: '',
+            cascaderValue: ['', -1],
         };
     },
 
     computed: {
+        selectType() {
+            const { uiid } = this.modalParams;
+            if ([173].includes(uiid)) {
+                return 'cascader';
+            }
+            return 'radio';
+        },
+        cascaderDisabled() {
+            return this.modalParams.params?.switch !== 'on';
+        },
         title() {
             const { type, $t } = this as any;
             if (type === 'power-on-state') {
@@ -326,6 +359,30 @@ export default defineComponent({
                         text: $t('modal.modeOps.diystr'),
                     },
                 ];
+            } else if (type === 'rhythm-light-strip-bluetooth') {
+                return [
+                    { id: 0, value: 7, text: $t('modal.modeOps.reading') },
+                    { id: 1, value: 18, text: $t('modal.modeOps.work') },
+                    { id: 2, value: 20, text: $t('modal.modeOps.creek') },
+                    { id: 3, value: 19, text: $t('modal.modeOps.ocean') },
+                    { id: 4, value: 13, text: $t('modal.modeOps.candle') },
+                    { id: 5, value: 25, text: $t('modal.modeOps.moonlight') },
+                    { id: 6, value: 14, text: $t('modal.modeOps.goodnight') },
+                    { id: 7, value: 6, text: $t('modal.modeOps.vivid') },
+                    { id: 8, value: 8, text: $t('modal.modeOps.relax') },
+                    { id: 9, value: 9, text: $t('modal.modeOps.sunrise') },
+                    { id: 10, value: 10, text: $t('modal.modeOps.sunshine') },
+                    { id: 11, value: 11, text: $t('modal.modeOps.radiant') },
+                    { id: 12, value: 12, text: $t('modal.modeOps.dreamy') },
+                    { id: 13, value: 15, text: $t('modal.modeOps.sunny') },
+                    { id: 14, value: 16, text: $t('modal.modeOps.festive') },
+                    { id: 15, value: 17, text: $t('modal.modeOps.gorgeous') },
+                    { id: 16, value: 21, text: $t('modal.modeOps.gentle') },
+                    { id: 17, value: 22, text: $t('modal.modeOps.passion') },
+                    { id: 18, value: 23, text: $t('modal.modeOps.joy') },
+                    { id: 19, value: 24, text: $t('modal.modeOps.rainbow') },
+                    { id: 20, value: 26, text: $t('modal.modeOps.sunset') },
+                ];
             } else if (type === 'five-color-light') {
                 return [
                     {
@@ -418,6 +475,107 @@ export default defineComponent({
             }
             return [];
         },
+        cascaderOptions() {
+            if (this.type === 'rhythm-light-strip-vivid') {
+                return [
+                    {
+                        value: 'colorStripe',
+                        label: this.$t('modal.modeOps.scene_ble_magic'),
+                        children: [
+                            { value: 7, label: this.$t('modal.modeOps.scene_ble_rhy2') },
+                            { value: 8, label: this.$t('modal.modeOps.scene_ble_rhy3') },
+                        ],
+                    },
+                    {
+                        value: 'wave',
+                        label: this.$t('modal.modeOps.scene_ble_wave'),
+                        children: [
+                            { value: 35, label: this.$t('modal.modeOps.scene_ble_rhy30') },
+                            { value: 36, label: this.$t('modal.modeOps.scene_ble_rhy31') },
+                            { value: 37, label: this.$t('modal.modeOps.scene_ble_rhy32') },
+                            { value: 38, label: this.$t('modal.modeOps.scene_ble_rhy33') },
+                            { value: 39, label: this.$t('modal.modeOps.scene_ble_rhy34') },
+                            { value: 40, label: this.$t('modal.modeOps.scene_ble_rhy35') },
+                        ],
+                    },
+                    {
+                        value: 'followSpot',
+                        label: this.$t('modal.modeOps.scene_ble_race'),
+                        children: [
+                            { value: 29, label: this.$t('modal.modeOps.scene_ble_rhy24') },
+                            { value: 30, label: this.$t('modal.modeOps.scene_ble_rhy25') },
+                            { value: 31, label: this.$t('modal.modeOps.scene_ble_rhy26') },
+                            { value: 32, label: this.$t('modal.modeOps.scene_ble_rhy27') },
+                            { value: 33, label: this.$t('modal.modeOps.scene_ble_rhy28') },
+                            { value: 34, label: this.$t('modal.modeOps.scene_ble_rhy29') },
+                        ],
+                    },
+                    {
+                        value: 'colorWash',
+                        label: this.$t('modal.modeOps.scene_ble_flush'),
+                        children: [
+                            { value: 41, label: this.$t('modal.modeOps.scene_ble_rhy36') },
+                            { value: 42, label: this.$t('modal.modeOps.scene_ble_rhy37') },
+                            { value: 43, label: this.$t('modal.modeOps.scene_ble_rhy38') },
+                            { value: 44, label: this.$t('modal.modeOps.scene_ble_rhy39') },
+                            { value: 45, label: this.$t('modal.modeOps.scene_ble_rhy40') },
+                            { value: 46, label: this.$t('modal.modeOps.scene_ble_rhy41') },
+                            { value: 47, label: this.$t('modal.modeOps.scene_ble_rhy42') },
+                            { value: 48, label: this.$t('modal.modeOps.scene_ble_rhy43') },
+                            { value: 49, label: this.$t('modal.modeOps.scene_ble_rhy44') },
+                            { value: 50, label: this.$t('modal.modeOps.scene_ble_rhy45') },
+                            { value: 51, label: this.$t('modal.modeOps.scene_ble_rhy46') },
+                            { value: 52, label: this.$t('modal.modeOps.scene_ble_rhy47') },
+                        ],
+                    },
+                    {
+                        value: 'loop',
+                        label: this.$t('modal.modeOps.scene_ble_marquee'),
+                        children: [
+                            { value: 22, label: this.$t('modal.modeOps.scene_ble_rhy17') },
+                            { value: 23, label: this.$t('modal.modeOps.scene_ble_rhy18') },
+                            { value: 24, label: this.$t('modal.modeOps.scene_ble_rhy19') },
+                            { value: 25, label: this.$t('modal.modeOps.scene_ble_rhy20') },
+                            { value: 26, label: this.$t('modal.modeOps.scene_ble_rhy21') },
+                            { value: 27, label: this.$t('modal.modeOps.scene_ble_rhy22') },
+                            { value: 28, label: this.$t('modal.modeOps.scene_ble_rhy23') },
+                        ],
+                    },
+                    {
+                        value: 'jump',
+                        label: this.$t('modal.modeOps.scene_ble_jump'),
+                        children: [
+                            { value: 10, label: this.$t('modal.modeOps.scene_ble_rhy5') },
+                            { value: 11, label: this.$t('modal.modeOps.scene_ble_rhy6') },
+                            { value: 12, label: this.$t('modal.modeOps.scene_ble_rhy7') },
+                        ],
+                    },
+                    {
+                        value: 'gradualChange',
+                        label: this.$t('modal.modeOps.scene_ble_gradual'),
+                        children: [
+                            { value: 16, label: this.$t('modal.modeOps.scene_ble_rhy11') },
+                            { value: 17, label: this.$t('modal.modeOps.scene_ble_rhy12') },
+                            { value: 18, label: this.$t('modal.modeOps.scene_ble_rhy13') },
+                            { value: 19, label: this.$t('modal.modeOps.scene_ble_rhy14') },
+                            { value: 20, label: this.$t('modal.modeOps.scene_ble_rhy15') },
+                            { value: 21, label: this.$t('modal.modeOps.scene_ble_rhy16') },
+                        ],
+                    },
+                    {
+                        value: 'strobe',
+                        label: this.$t('modal.modeOps.scene_ble_strobe'),
+                        children: [
+                            { value: 13, label: this.$t('modal.modeOps.scene_ble_rhy8') },
+                            { value: 14, label: this.$t('modal.modeOps.scene_ble_rhy9') },
+                            { value: 15, label: this.$t('modal.modeOps.scene_ble_rhy10') },
+                        ],
+                    },
+                ];
+            }
+
+            return []
+        },
         ...mapState(['modalParams']),
     },
 
@@ -459,6 +617,24 @@ export default defineComponent({
                     id: deviceId,
                     params: dimmingMap[+this.value],
                 });
+            } else if (this.type === 'rhythm-light-strip-bluetooth') {
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+                        mode: this.value,
+                        switch: 'on'
+                    }
+                });
+            } else if (this.type === 'rhythm-light-strip-vivid') {
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: {
+                        mode: this.cascaderValue[1],
+                        switch: 'on'
+                    }
+                })
             }
         },
         initPowerOnStateValue() {
@@ -506,6 +682,20 @@ export default defineComponent({
                 this.value = this.modalParams.params.mode;
             }
         },
+        initRhythmLightStripBluetoothValue() {
+            const { mode } = this.modalParams.params;
+            if (![1, 2, 3].includes(mode)) {
+                this.value = this.modalParams.params.mode;
+            }
+        },
+        initRhythmLightStripVividValue() {
+            const { mode } = this.modalParams.params
+            const o = this.cascaderOptions.find(option => option.children.some(child => child.value === mode))
+            if (o) {
+               this.cascaderValue[0] = o.value
+               this.cascaderValue[1] = (o.children.find(c => c.value === mode))!.value
+            }
+        },
         initValue() {
             if (this.type === 'power-on-state') {
                 this.initPowerOnStateValue();
@@ -519,8 +709,12 @@ export default defineComponent({
                 this.initFiveColorLightValue();
             } else if (this.type === 'dimming') {
                 this.initDimmingValue();
+            } else if (this.type === 'rhythm-light-strip-bluetooth') {
+                this.initRhythmLightStripBluetoothValue();
+            } else if (this.type === 'rhythm-light-strip-vivid') {
+                this.initRhythmLightStripVividValue()
             }
-        },
+        }
     },
 
     created() {

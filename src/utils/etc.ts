@@ -486,6 +486,7 @@ export function isSupportedDevice(uiid: number) {
         113,
         114,
         126,
+        137,
         138,
         139,
         140,
@@ -493,6 +494,7 @@ export function isSupportedDevice(uiid: number) {
         160,
         161,
         162,
+        173,
         1000,
         1009,
         1256,
@@ -689,6 +691,8 @@ export function isLightDevice(uiid: number) {
 		44,
         103,
         104,
+        137,
+        173,
 		1258,
 		3258
     ];

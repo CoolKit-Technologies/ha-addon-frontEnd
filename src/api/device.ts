@@ -709,6 +709,15 @@ export async function setPickerColor(data: any, obj: any) {
 			hue,
 			saturation
 		})
+    } else if ([137, 173].includes(uiid)) {
+        const { mode, bright } = params;
+        _.assign(tempParams.params, {
+            mode,
+            bright,
+            colorR: obj.r,
+            colorG: obj.g,
+            colorB: obj.b,
+        });
     }
     await setCloudDevice(tempParams);
 }

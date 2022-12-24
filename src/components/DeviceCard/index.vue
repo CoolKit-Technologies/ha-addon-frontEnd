@@ -41,7 +41,10 @@ export default defineComponent({
     methods: {
         openModalBox() {
 			//	设备不在线
-			if(!this.online) return;
+            if (!this.online) {
+                message.warn(this.$t('card.offlineTip'));
+                return;
+            }
 			//	设备是否属于当前用户
             const { uiid, apikey = '' } = this.cardData as any;
             const userApikey = localStorage.getItem('userApikey');
@@ -79,4 +82,5 @@ $color-grey-light = #f5f5f5
     &.disabled
         background-color $color-grey-light
         box-shadow none
+        cursor not-allowed
 </style>

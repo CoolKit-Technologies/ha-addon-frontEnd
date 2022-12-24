@@ -9,11 +9,11 @@
             <device-name type="button" v-for="(item, i) in modalParams.tags.zyx_info[modalParams.cardIndex].buttonName" :key="i" :index="i" />
         </template>
 
-        <!-- disable entity -->
+        <!-- Toggle device network LED -->
         <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming || isNSPanel || isZigbeeMultiSwitch)" type="led" />
 
         <!-- Control Button indicator light -->
-        <ButtonIndicatorLight v-if="[160, 161, 162].includes(uiid)" />
+        <button-indicator-light v-if="[160, 161, 162].includes(uiid)" />
 
         <!-- Toggle multi-channel device interlock -->
         <ctrl-switch v-show="![161, 162].includes(uiid)" v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
@@ -43,9 +43,6 @@
             "
         />
 
-        <!-- UIID 160 161 162 disable entity -->
-        <ctrl-switch type="disable" v-if="[160, 161, 162, 138].includes(uiid)" />
-
         <!-- fanlight power on state -->
         <template v-if="isFanLight">
             <ctrl-select :index="0" type="power-on-state" />
@@ -59,7 +56,14 @@
         <temperature-unit v-if="modalParams.uiid === 15 && hasCurTempFunc" />
 
         <!-- Set rhythm light strip mode -->
-        <ctrl-select v-if="modalParams.uiid === 59" type="rhythm-light-strip" />
+        <ctrl-select v-if="[59, 137, 173].includes(uiid)" :type="(function() {
+            switch (uiid) {
+                case 59: return 'rhythm-light-strip'
+                case 137: return 'rhythm-light-strip-bluetooth'
+                case 173: return 'rhythm-light-strip-vivid'
+                default: return 'rhythm-light-strip'
+            }
+        }())" />
 
         <!-- Set five color bulb light mode -->
         <ctrl-select v-if="modalParams.uiid === 22" type="five-color-bulb-light" />
@@ -87,6 +91,10 @@
         <!-- v1.3.2 版本移除该功能
         <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
         -->
+
+        <!-- v1.4.0 -->
+        <!-- UIID 137, 138, 160, 161, 162, 173 disable entity -->
+        <ctrl-switch type="disable" v-if="[137, 138, 160, 161, 162, 173].includes(uiid)" />
 
         <!-- Upgrade device firmware -->
         <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub && !isZigbeeMultiSwitch" />
@@ -131,7 +139,7 @@ export default defineComponent({
     },
 
     computed: {
-        uiid() {
+        uiid(): number {
             const { uiid } = this.modalParams as any;
             return uiid;
         },
@@ -157,7 +165,7 @@ export default defineComponent({
         },
         isLight() {
             const { uiid } = this.modalParams as any;
-            return uiid === 59 || uiid === 22 || uiid === 103 || uiid === 104;
+            return [22, 59, 103, 104, 137, 173].includes(uiid)
         },
         isCurtain() {
             const { uiid } = this.modalParams as any;

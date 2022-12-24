@@ -19,9 +19,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import _ from 'lodash';
 import { setCloudDevice } from '@/api/device';
+import { CardData } from '@/types';
 
 /**
  * @description 灯带通过改变颜色来伪实现调节色温的功能
@@ -207,6 +208,7 @@ export default defineComponent({
             required: true,
         },
         cardData: {
+            type: Object as PropType<CardData>,
             required: true,
         },
     },
@@ -242,7 +244,7 @@ export default defineComponent({
         min() {
             const { uiid } = this.$props.cardData as any;
             if (this.type === 'brightness') {
-                return 1;    
+                return 1;
             } else {
                 return 0;
             }
@@ -342,7 +344,10 @@ export default defineComponent({
                 } else if(uiid === 3258){
 					const { colorMode } = params;
 					this.progressValue = params[`${colorMode}Brightness`] ?? 1
-				}
+				} else if ([137, 173].includes(uiid)) {
+                    const { bright } = params;
+                    this.progressValue = bright;
+                }
             } else if (this.type === 'color-temp') {
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = 255 - params[params.ltype].ct;
@@ -357,7 +362,10 @@ export default defineComponent({
 				} else if(uiid === 3258){
 					const { colorTemp = 1 } = params;
 					this.progressValue = 100 - colorTemp
-				}
+				} else if ([137, 173].includes(uiid)) {
+                    const { colorTemp = 1 } = params;
+                    this.progressValue = colorTemp;
+                }
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'darkest') {
@@ -464,7 +472,14 @@ export default defineComponent({
                         [`${colorMode}Brightness`]: v,
                     },
                 });
-			}
+			} else if ([137, 173].includes(uiid)) {
+                const { mode, colorTemp } = params
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: { mode, colorTemp, bright: v }
+                })
+            }
         },
         async setColorTemp(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;
@@ -514,7 +529,14 @@ export default defineComponent({
                         colorTemp: 100 - v
                     },
                 });
-			}
+			} else if ([137, 173].includes(uiid)) {
+                const { mode, bright } = params
+                await setCloudDevice({
+                    apikey,
+                    id: deviceId,
+                    params: { mode, bright, colorTemp: v }
+                })
+            }
         },
         async setCurtain(v: number) {
             const { uiid, params, deviceId, apikey } = this.cardData as any;
