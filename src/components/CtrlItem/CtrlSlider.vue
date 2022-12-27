@@ -293,7 +293,9 @@ export default defineComponent({
 				} else if (uiid === 3258){
 					const { colorMode } = params;
 					this.progressValue = params[`${colorMode}Brightness`] ?? 1
-				}
+				} else if ([137, 173].includes(uiid)) {
+                    this.progressValue = params.bright;
+                }
             } else if (this.type === 'color-temp') {
                 if (uiid === 103 || uiid === 104) {
                     this.progressValue = 255 - params[params.ltype].ct;
@@ -308,7 +310,10 @@ export default defineComponent({
 				} else if(uiid === 3258){
 					const { colorTemp = 1 } = params;
 					this.progressValue =  100 - colorTemp;
-				}
+				} else if ([137, 173].includes(uiid)) {
+                    const { colorTemp = 1 } = params;
+                    this.progressValue = 100 - colorTemp;
+                }
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
             } else if (this.type === 'Darkest') {
@@ -364,7 +369,7 @@ export default defineComponent({
 					this.progressValue = 100 - colorTemp
 				} else if ([137, 173].includes(uiid)) {
                     const { colorTemp = 1 } = params;
-                    this.progressValue = colorTemp;
+                    this.progressValue = 100 - colorTemp;
                 }
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
