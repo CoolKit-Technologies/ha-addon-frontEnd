@@ -92,10 +92,6 @@
         <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
         -->
 
-        <!-- v1.4.0 -->
-        <!-- UIID 137, 138, 160, 161, 162, 173 disable entity -->
-        <ctrl-switch type="disable" v-if="[137, 138, 160, 161, 162, 173].includes(uiid)" />
-
         <!-- Upgrade device firmware -->
         <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub && !isZigbeeMultiSwitch" />
 

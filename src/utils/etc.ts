@@ -509,7 +509,8 @@ export function isSupportedDevice(uiid: number) {
 		3256,
 		4256,
 		1258,
-		3258
+		3258,
+        7004
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -556,7 +557,8 @@ export function isPureSwOrSockDevice(uiid: number) {
         1256,
 		2256,
 		3256,
-		4256
+		4256,
+        7004
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -571,6 +573,7 @@ export function isOneChannelSPDevice(uiid: number) {
         15,
         32,
         181,
+        7004
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -666,7 +669,8 @@ export function isOneChannelSwOrSockSPDevice(uiid: number) {
         6,
         14,
         1009,
-        1256
+        1256,
+        7004
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -712,7 +716,8 @@ export function isZigbeeDevice(uiid: number) {
 		3256,
 		4256,
 		1258,
-		3258
+		3258,
+        7004
     ];
     return uiids.indexOf(uiid) !== -1;
 }
