@@ -486,6 +486,7 @@ export function isSupportedDevice(uiid: number) {
         113,
         114,
         126,
+        130,
         137,
         138,
         139,
@@ -589,6 +590,7 @@ export function isMultiChannelDevice(uiid: number) {
         9,
         113,
         114,
+        130,
         139,
         140,
         141,
@@ -646,6 +648,7 @@ export function hasRefreshUiDevice(uiid: number) {
         5,
         32,
         126,
+        130,
         181,
         190,
     ];

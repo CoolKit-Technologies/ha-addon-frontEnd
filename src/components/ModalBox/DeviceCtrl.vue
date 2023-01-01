@@ -10,13 +10,13 @@
         </template>
 
         <!-- Toggle device network LED -->
-        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming || isNSPanel || isZigbeeMultiSwitch)" type="led" />
+        <ctrl-switch v-if="!(isDiyDevice || isOldUiid15Device || isLight || isZigbee || isWifiDoorSensor || isRfSub || isFanLight || isDimming || isNSPanel || isZigbeeMultiSwitch || [130].includes(uiid))" type="led" />
 
         <!-- Control Button indicator light -->
         <button-indicator-light v-if="[160, 161, 162].includes(uiid)" />
 
         <!-- Toggle multi-channel device interlock -->
-        <ctrl-switch v-show="![161, 162].includes(uiid)" v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch" type="lock" />
+        <ctrl-switch v-if="isMultiChannel && !isZigbee && !isWifiDoorSensor && !isRfGw && !isRfSub && !isMiniR3 && !isZigbeeMultiSwitch && ![130, 161, 162].includes(uiid)" type="lock" />
 
         <!-- Set device power on state -->
         <ctrl-select

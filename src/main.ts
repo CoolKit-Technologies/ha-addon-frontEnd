@@ -24,6 +24,7 @@ import {
     Cascader,
     Table,
     Pagination,
+    InputNumber
 } from 'ant-design-vue';
 import store from '@/store';
 import App from '@/App.vue';
@@ -61,5 +62,6 @@ app.use(Checkbox);
 app.use(Cascader);
 app.use(Table);
 app.use(Pagination);
+app.use(InputNumber);
 
 app.mount('#app');

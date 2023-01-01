@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { mapState } from "vuex";
 import {
     PlayCircleTwoTone,
@@ -40,6 +40,7 @@ import {
 } from "@ant-design/icons-vue";
 import moment from "moment";
 import _ from "lodash";
+import { message } from 'ant-design-vue';
 
 import { startStatistic, endStatistic, refreshStatistic } from "@/api/device";
 import CircleChart from "@/components/CircleChart.vue";
@@ -52,6 +53,13 @@ export default defineComponent({
         PlayCircleTwoTone,
         SyncOutlined,
         CheckCircleTwoTone,
+    },
+
+    props: {
+        channelIndex: {
+            type: Number,
+            default: 0
+        }
     },
 
     data() {
@@ -104,16 +112,19 @@ export default defineComponent({
             const now = new Date();
             this.startTime = moment(now);
             this.utcStartTime = moment(now).utc().format(this.utcTimeFormat);
+            this.endTime = null;
+            this.utcEndTime = '';
             this.hasStartTime = true;
-            await startStatistic(this.utcStartTime, this.modalParams);
+            await startStatistic(this.utcStartTime, this.modalParams, this.channelIndex);
+            this.modalParams.uiid === 130 && message.warn(this.$t('modal.statsMsg'));
         },
         async endRecord() {
             const now = new Date();
             this.endTime = moment(now);
             this.utcEndTime = moment(now).utc().format(this.utcTimeFormat);
             this.hasStartTime = false;
-            await endStatistic(this.utcStartTime, this.utcEndTime, this.modalParams);
-            await this.refresh();
+            await endStatistic(this.utcStartTime, this.utcEndTime, this.modalParams, this.channelIndex);
+            this.modalParams.uiid !== 130 && (await this.refresh());
         },
         async refresh() {
             this.spin = true;
@@ -121,19 +132,37 @@ export default defineComponent({
                 this.spin = false;
             }, 2000);
 
-            const res = await refreshStatistic(this.modalParams);
+            const res = await refreshStatistic(this.modalParams, this.channelIndex);
             if (res.error === 0 && res.data && res.data.config) {
                 if (this.modalParams.uiid === 126) {
                     this.statisticValue = parseFloat(
                         this.modalParams.cardIndex === 1
                             ? res.data.config.oneKwhData_01
                             : res.data.config.oneKwhData_00);
+                } else if (this.modalParams.uiid === 130) {
+                    this.statisticValue = parseFloat(
+                        res.data.config[`oneKwhData_0${this.channelIndex}`]
+                            ? res.data.config[`oneKwhData_0${this.channelIndex}`]
+                            : 0
+                    );
                 } else {
                     this.statisticValue = parseFloat(res.data.config.oneKwhData);
                 }
             }
         }
     },
+
+    watch: {
+        channelIndex: function() {
+            this.startTime = null;
+            this.utcStartTime = '';
+            this.hasStartTime = false;
+            this.endTime = null;
+            this.utcEndTime = '';
+            this.spin = false;
+            this.statisticValue = 0;
+        }
+    }
 });
 </script>
 

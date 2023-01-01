@@ -80,19 +80,29 @@ export default defineComponent({
             }
             this.editable = !this.editable;
         },
+        initValue() {
+            if (this.type === 'device') {
+                this.value = this.modalParams.deviceName;
+            } else if (this.type === 'channel') {
+                this.value = (this.modalParams.tags && this.modalParams.tags[this.index]) ? this.modalParams.tags[this.index] : '';
+            } else if (this.type === 'remote') {
+                this.value = this.modalParams.tags.zyx_info[this.modalParams.cardIndex].name;
+            } else if (this.type === 'button') {
+                this.value = Object.values(this.modalParams.tags.zyx_info[this.modalParams.cardIndex].buttonName[this.index])[0] as string;
+            }
+        }
     },
 
     created() {
-        if (this.type === 'device') {
-            this.value = this.modalParams.deviceName;
-        } else if (this.type === 'channel') {
-            this.value = this.modalParams.tags ? this.modalParams.tags[this.index] : '';
-        } else if (this.type === 'remote') {
-            this.value = this.modalParams.tags.zyx_info[this.modalParams.cardIndex].name;
-        } else if (this.type === 'button') {
-            this.value = Object.values(this.modalParams.tags.zyx_info[this.modalParams.cardIndex].buttonName[this.index])[0] as string;
-        }
+        this.initValue()
     },
+
+    watch: {
+        'index': function() {
+            this.initValue();
+            this.editable = false;
+        }
+    }
 });
 </script>
 

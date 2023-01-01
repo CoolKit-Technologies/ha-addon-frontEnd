@@ -219,6 +219,51 @@
                     />
                 </template>
             </div>
+
+            <div class="uiid130" v-else-if="130 === uiid">
+                <div v-for="(item, index) in uiid130Data" :key="index" :class="`channel_${index-1}`">
+                    <div class="chart-grp">
+                        <!-- 有功功率 -->
+                        <div class="chart">
+                            <circle-chart width="110px" height="110px" color="blue" />
+                            <span class="title">{{ $t('card.realpower') }}</span>
+                            <span class="value">{{ item.actPow }}</span>
+                        </div>
+                        <!-- 无功功率 -->
+                        <div class="chart">
+                            <circle-chart width="110px" height="110px" color="green" />
+                            <span class="title">{{ $t('card.reactivepower')}}</span>
+                            <span class="value">{{ item.reactPow }}</span>
+                        </div>
+                        <!-- 视在功率 -->
+                        <div class="chart">
+                            <circle-chart width="110px" height="110px" color="yellow" />
+                            <span class="title">{{ $t('card.apparentpower') }}</span>
+                            <span class="value">{{ item.apparentPow }}</span>
+                        </div>
+                    </div>
+                    <div class="data-stat">
+                        <div class="vol" style="display: flex; justify-content: flex-end; align-items: center;">
+                            <span class="key" style="font-size: 20px; margin-right: 10px;">{{ $t('card.voltage') + ':' }}</span>
+                            <span class="value">{{ item.voltage / 100 }}V</span>
+                        </div>
+                        <div class="divided"></div>
+                        <div class="cur" style="display: flex; justify-content: flex-start; align-items: center;">
+                            <span class="key" style="font-size: 20px; margin-right: 10px;">{{ $t('card.current') + ':' }}</span>
+                            <span class="value">{{ item.current / 100 }}A</span>
+                        </div>
+                    </div>
+                    <channel-switch
+                        class="mg-14"
+                        :title="`${$t('card.channel')} ${index + 1}`"
+                        :stat="cardData.params.switches[index].switch === 'on'"
+                        :cardData="cardData"
+                        :index="index"
+                    />
+                </div>
+            </div>
+
+
         </div>
     </div>
 </template>
@@ -570,6 +615,22 @@ export default defineComponent({
                 return i18n.global.t('card.uiid181mode.manual');
             }
         },
+        uiid130Data() {
+            const getChannelData = (index: number) => ({
+                actPow: _.get(this.cardData.params, `actPow_0${index}`, 0),
+                reactPow: _.get(this.cardData.params, `reactPow_0${index}`, 0),
+                apparentPow: _.get(this.cardData.params, `apparentPow_0${index}`, 0),
+                current: _.get(this.cardData.params, `current_0${index}`, 0),
+                voltage: _.get(this.cardData.params, `voltage_0${index}`, 0)
+            })
+
+            return [
+                getChannelData(0),
+                getChannelData(1),
+                getChannelData(2),
+                getChannelData(3)
+            ]
+        },
         ...mapState(['isLogin']),
     },
 });
@@ -616,7 +677,7 @@ export default defineComponent({
                 font-size 26px
                 color #222222
 
-    .dual-pw-sw
+    .dual-pw-sw, .uiid130
         .data-stat
             display flex
             margin 20px 0

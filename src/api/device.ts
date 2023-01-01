@@ -290,6 +290,13 @@ export async function refreshUi(data: any) {
         };
     } else if (uiid === 190) {
         params.params.uiActive = 65;
+    } else if (uiid === 130) {
+        for(let i = 0; i < 4; i ++) {
+            const uiActive = { outlet: i, time: 60 };
+            params.params.uiActive = uiActive;
+            setCloudDevice(params);
+        }
+        return;
     } else {
         params.params.uiActive = 120;
     }
@@ -514,7 +521,7 @@ export async function setPowerOnState(v: string, data: any, i: number) {
  * @param startTime Statistic start time
  * @param data Device data
  */
-export async function startStatistic(startTime: string, data: any) {
+export async function startStatistic(startTime: string, data: any, channelIndex?: number) {
     const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
@@ -523,6 +530,11 @@ export async function startStatistic(startTime: string, data: any) {
     };
     if (uiid === 126) {
         cardIndex === 1 ? _.assign(params.params, { startTime_01: startTime, endTime_01: '' }) : _.assign(params.params, { startTime_00: startTime, endTime_00: '' });
+    } else if (uiid === 130) {
+        _.assign(params.params, {
+            [`startTime_0${channelIndex ? channelIndex : 0}`]: startTime,
+            [`endTime_0${channelIndex ? channelIndex : 0}`]: ''
+        })
     } else {
         _.assign(params.params, {
             onKwh: 'start',
@@ -539,7 +551,7 @@ export async function startStatistic(startTime: string, data: any) {
  * @param endTime Statistic end time
  * @param data Device data
  */
-export async function endStatistic(startTime: string, endTime: string, data: any) {
+export async function endStatistic(startTime: string, endTime: string, data: any, channelIndex?: number) {
     const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
@@ -548,6 +560,11 @@ export async function endStatistic(startTime: string, endTime: string, data: any
     };
     if (uiid === 126) {
         cardIndex === 1 ? _.assign(params.params, { startTime_01: startTime, endTime_01: endTime }) : _.assign(params.params, { startTime_00: startTime, endTime_00: endTime });
+    } else if (uiid === 130) {
+        _.assign(params.params, {
+            [`startTime_0${channelIndex ? channelIndex : 0}`]: startTime,
+            [`endTime_0${channelIndex ? channelIndex : 0}`]: endTime
+        })
     } else {
         _.assign(params.params, {
             onKwh: 'stop',
@@ -562,7 +579,7 @@ export async function endStatistic(startTime: string, endTime: string, data: any
  * Refresh statistic
  * @param data Device data
  */
-export async function refreshStatistic(data: any) {
+export async function refreshStatistic(data: any, channelIndex?: number) {
     const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
@@ -571,6 +588,10 @@ export async function refreshStatistic(data: any) {
     };
     if (uiid === 126) {
         cardIndex === 1 ? _.assign(params.params, { getKwh_01: 1 }) : _.assign(params.params, { getKwh_00: 1 });
+    } else if (uiid === 130) {
+        _.assign(params.params, {
+            [`getKwh_0${channelIndex ? channelIndex : 0}`]: 1
+        })
     } else {
         _.assign(params.params, { oneKwh: 'get' });
     }
@@ -580,7 +601,7 @@ export async function refreshStatistic(data: any) {
 /**
  * get history use power data
  */
-export async function getHistoryData(data: any) {
+export async function getHistoryData(data: any, index?: number) {
     const { deviceId, apikey, uiid, cardIndex } = data;
     let params = {
         id: deviceId,
@@ -589,6 +610,8 @@ export async function getHistoryData(data: any) {
     };
     if (uiid === 126) {
         cardIndex === 1 ? _.assign(params.params, { getKwh_01: 2 }) : _.assign(params.params, { getKwh_00: 2 });
+    } else if (uiid === 130) {
+        _.assign(params.params, { [`getKwh_0${index}`]: 2 });
     } else {
         _.assign(params.params, { hundredDaysKwh: 'get' });
     }
@@ -596,10 +619,14 @@ export async function getHistoryData(data: any) {
     if (res.error === 0 && res.data && res.data.config) {
         if (uiid === 126) {
             return cardIndex === 1 ? res.data.config.kwhHistories_01 : res.data.config.kwhHistories_00;
+        } else if (uiid === 130) {
+            return res.data.config[`kwhHistories_0${index}`];
         } else {
             return res.data.config.hundredDaysKwhData;
         }
     }
+
+    return '';
 }
 
 /**
@@ -784,4 +811,20 @@ export async function updateRemoteOrButtonName(nameType: 'remote' | 'button', da
         id: deviceId,
         tags,
     });
+}
+
+/**
+ * 130 设置过载保护
+ */
+export async function setSubdeviceOverloadService(data: any, params: any, index: number) {
+    const { deviceId, apikey } = data;
+    const obj = {
+        id: deviceId,
+        apikey,
+        params: {
+            [`overload_0${index}`]: params
+        }
+    }
+
+    return await setCloudDevice(obj)
 }

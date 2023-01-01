@@ -283,6 +283,23 @@ const en = {
 			inchingOn: 'InchingON',
 			inchingOff: 'InchingOFF'
         },
+        statsMsg: ' Please tap the Refresh icon to get the latest power metering data.',
+        operationFailed: 'Failed. Please try again.',
+        minPower: 'Min.power',
+        maxPower: 'Max.power',
+        minVoltage: 'Min.voltage',
+        maxVoltage: 'Max.voltage',
+        maxCurrent: 'Max.current',
+        ops: 'OPS',
+        opsTip: 'Any conditions met ,the device will turn itself off.Set parameters based on user manual.',
+        opsDelayClose: 'Delay to switch off',
+        opsDelayDesc: 'Only takes effect under overpower and overcurrent protection.Overvoltage protection turns off the device instantaneously by default.',
+        minPowerRange: 'Min.powerrange0.1~4800',
+        maxPowerRange: 'Max.powerrange0.1~4800',
+        minVoltageRange: 'Min.voltagerange90~264',
+        maxVoltageRange: 'Max.voltagerange90~264',
+        maxCurrentRange: 'Max.currentrange0.1~20',
+        minExceedMax: 'The minimum threshold cannot exceed the maximum threshold',
     },
     haDevice:{
         status:{

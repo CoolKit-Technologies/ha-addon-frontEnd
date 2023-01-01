@@ -47,6 +47,13 @@ export default defineComponent({
             }
 			//	设备是否属于当前用户
             const { uiid, apikey = '' } = this.cardData as any;
+
+            // 暂不支持的设备
+            if (!isSupportedDevice(uiid)) {
+                message.warn(this.$t('card.unsupport.notsupport'));
+				return;
+            }
+
             const userApikey = localStorage.getItem('userApikey');
 			if(userApikey !== apikey){
 				message.warn(this.$t('card.cantOptShareDevice'));

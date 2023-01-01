@@ -1,6 +1,12 @@
 <template>
     <div class="channel-settings">
+
+        <channel-status-setting
+            v-if="[130].includes(modalParams.uiid)"
+        />
+
         <channel-item
+            v-else
             v-for="item in getMaxChannel"
             :key="item"
             :index="item"
@@ -13,6 +19,7 @@ import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 
 import ChannelItem from '@/components/CtrlItem/ChannelItem.vue';
+import ChannelStatusSetting from '../CtrlItem/ChannelStatusSetting.vue';
 import {
     isTwoChannelDevice,
     isThreeChannelDevice,
@@ -24,6 +31,7 @@ export default defineComponent({
 
     components: {
         ChannelItem,
+        ChannelStatusSetting
     },
 
     computed: {
