@@ -572,7 +572,7 @@ export async function endStatistic(startTime: string, endTime: string, data: any
             endTime: endTime,
         });
     }
-    await setCloudDevice(params);
+    return await setCloudDevice(params);
 }
 
 /**

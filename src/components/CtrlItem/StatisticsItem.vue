@@ -25,7 +25,7 @@
                 class="play-icon"
                 @click="startRecord"
             />
-            <sync-outlined class="action-icon" :spin="spin" @click="refresh" />
+            <sync-outlined v-if="hasStartTime" class="action-icon" :spin="spin" @click="refresh" />
         </div>
     </div>
 </template>
@@ -123,8 +123,16 @@ export default defineComponent({
             this.endTime = moment(now);
             this.utcEndTime = moment(now).utc().format(this.utcTimeFormat);
             this.hasStartTime = false;
-            await endStatistic(this.utcStartTime, this.utcEndTime, this.modalParams, this.channelIndex);
+            const endRecordRes = await endStatistic(this.utcStartTime, this.utcEndTime, this.modalParams, this.channelIndex);
+
             this.modalParams.uiid !== 130 && (await this.refresh());
+
+            if (endRecordRes.error === 0) {
+                if (this.modalParams.uiid === 130) {
+                    this.statisticValue = parseFloat(_.get(endRecordRes, ['data', 'config', `oneKwhData_0${this.channelIndex}`], 0));
+                }
+            }
+
         },
         async refresh() {
             this.spin = true;
@@ -140,11 +148,7 @@ export default defineComponent({
                             ? res.data.config.oneKwhData_01
                             : res.data.config.oneKwhData_00);
                 } else if (this.modalParams.uiid === 130) {
-                    this.statisticValue = parseFloat(
-                        res.data.config[`oneKwhData_0${this.channelIndex}`]
-                            ? res.data.config[`oneKwhData_0${this.channelIndex}`]
-                            : 0
-                    );
+                    this.statisticValue = parseFloat(_.get(res, ['data', 'config', `oneKwhData_0${this.channelIndex}`], 0));
                 } else {
                     this.statisticValue = parseFloat(res.data.config.oneKwhData);
                 }

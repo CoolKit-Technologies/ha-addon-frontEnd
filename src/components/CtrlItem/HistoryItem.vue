@@ -292,7 +292,7 @@ export default defineComponent({
     },
 
     watch: {
-        index: async function() {
+        'channelIndex': async function() {
             this.historyData = await getHistoryData(this.modalParams, this.channelIndex);
         }
     }
