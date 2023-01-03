@@ -93,7 +93,7 @@ export default defineComponent({
                 }
 
                 const channels = params.switches.slice(0, cnt) as any[];
-                return channels.some((channel) => channel.switch === 'on');
+                return channels.every((channel) => channel.switch === 'on');
             }
         }
     },

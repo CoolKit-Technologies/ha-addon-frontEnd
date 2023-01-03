@@ -8,7 +8,7 @@
         </div>
 
         <!-- 单选选择 -->
-        <a-select v-if="selectType === 'radio'" v-model:value="value" style="min-width:120px;" size="small" @change="handleChange">
+        <a-select v-if="selectType === 'radio'" v-model:value="value" style="min-width:120px;" size="small" @change="handleChange" :disabled="disabled">
             <a-select-option v-for="item in options" :key="item.id" :value="item.value">{{ item.text }}</a-select-option>
         </a-select>
 
@@ -241,6 +241,9 @@ export default defineComponent({
     },
 
     computed: {
+        uiid() {
+            return this.modalParams.uiid
+        },
         selectType() {
             const { uiid } = this.modalParams;
             if ([173].includes(uiid)) {
@@ -575,6 +578,15 @@ export default defineComponent({
             }
 
             return []
+        },
+        disabled() {
+
+            if ([137].includes(this.uiid)) {
+                // 137灯带关闭的时，不允许修改模式
+                return this.modalParams.params.switch === 'off'
+            }
+
+            return false
         },
         ...mapState(['modalParams']),
     },

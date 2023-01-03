@@ -9,7 +9,7 @@ const zh = {
         },
         text: {
             signin: '登录',
-            signout: '登出',
+            signout: '退出登录',
             feedback: '反馈',
             loading: '正在处理中，请稍候...',
         },
