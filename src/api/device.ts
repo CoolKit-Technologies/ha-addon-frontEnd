@@ -542,7 +542,7 @@ export async function startStatistic(startTime: string, data: any, channelIndex?
             endTime: '',
         });
     }
-    await setCloudDevice(params);
+    return await setCloudDevice(params);
 }
 
 /**
@@ -827,4 +827,18 @@ export async function setSubdeviceOverloadService(data: any, params: any, index:
     }
 
     return await setCloudDevice(obj)
+}
+
+/**
+ * UIID182 更新费率
+ */
+export async function updateElectricRate(data: any, rate: number) {
+    const { deviceId, apikey } = data
+    return await sendHttpRequest('POST', apiPrefix + '/devices/electricRate', {
+        id: deviceId,
+        apikey,
+        tags: {
+            rate
+        }
+    })
 }

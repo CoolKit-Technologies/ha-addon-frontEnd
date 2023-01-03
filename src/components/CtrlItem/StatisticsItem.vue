@@ -25,7 +25,7 @@
                 class="play-icon"
                 @click="startRecord"
             />
-            <sync-outlined v-if="hasStartTime" class="action-icon" :spin="spin" @click="refresh" />
+            <sync-outlined v-if="showRefresh" class="action-icon" :spin="spin" @click="refresh" />
         </div>
     </div>
 </template>
@@ -91,6 +91,18 @@ export default defineComponent({
     },
 
     computed: {
+        uiid() {
+            return this.modalParams.uiid
+        },
+        showRefresh() {
+            if (this.uiid === 130) {
+                return this.hasStartTime
+            }
+
+            if (this.uiid === 182) {
+                return true
+            }
+        },
         ...mapState(["modalParams"])
     },
 
@@ -115,8 +127,12 @@ export default defineComponent({
             this.endTime = null;
             this.utcEndTime = '';
             this.hasStartTime = true;
-            await startStatistic(this.utcStartTime, this.modalParams, this.channelIndex);
+            const startRecordRes = await startStatistic(this.utcStartTime, this.modalParams, this.channelIndex);
             this.modalParams.uiid === 130 && message.warn(this.$t('modal.statsMsg'));
+
+            if (startRecordRes.error !== 0) {
+                message.error(this.$t('modal.operationFailed'))
+            }
         },
         async endRecord() {
             const now = new Date();
@@ -131,6 +147,8 @@ export default defineComponent({
                 if (this.modalParams.uiid === 130) {
                     this.statisticValue = parseFloat(_.get(endRecordRes, ['data', 'config', `oneKwhData_0${this.channelIndex}`], 0));
                 }
+            } else {
+                message.error(this.$t('modal.operationFailed'))
             }
 
         },

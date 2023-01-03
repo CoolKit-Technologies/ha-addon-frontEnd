@@ -496,6 +496,7 @@ export function isSupportedDevice(uiid: number) {
         161,
         162,
         173,
+        182,
         1000,
         1009,
         1256,
@@ -650,6 +651,7 @@ export function hasRefreshUiDevice(uiid: number) {
         126,
         130,
         181,
+        182,
         190,
     ];
     return uiids.indexOf(uiid) !== -1;
@@ -660,7 +662,8 @@ export function hasStatDevice(uiid: number) {
     const uiids = [
         5,
         32,
-        126
+        126,
+        182
     ];
     return uiids.indexOf(uiid) !== -1;
 }
@@ -686,6 +689,7 @@ export function isOneChannelSwOrSockCPDevice(uiid: number) {
         107,
         112,
         138,
+        182
     ];
     return uiids.indexOf(uiid) !== -1;
 }

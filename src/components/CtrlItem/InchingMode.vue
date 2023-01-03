@@ -114,7 +114,7 @@ export default defineComponent({
 		//	点动是否显示 常开常闭 选项
 		isShowStatus(){
             const { uiid } = this.modalParams as any;
-            return [138, 139, 140, 141, 160, 161, 162, 190].includes(uiid);
+            return [138, 139, 140, 141, 160, 161, 162, 182, 190].includes(uiid);
 		},
         ...mapState(['modalParams'])
     },
@@ -156,7 +156,7 @@ export default defineComponent({
             const { type, uiid, params, cardIndex } = this.modalParams as any;
             let action = ''
 
-            if ([138, 160, 161, 162].includes(uiid)) {
+            if ([138, 160, 161, 162, 182].includes(uiid)) {
                 action = params.pulses[this.index].switch;
             }
 

@@ -92,6 +92,8 @@
         <ctrl-switch type="disable" v-if="!isRfSub && !isRfGw" />
         -->
 
+        <electric-rate v-if="[182].includes(uiid)" />
+
         <!-- Upgrade device firmware -->
         <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub && !isZigbeeMultiSwitch" />
 
@@ -114,7 +116,8 @@ import MulitLock from '@/components/CtrlItem/MulitLock/MulitLock.vue';
 import { isMultiChannelDevice, isZigbeeDevice } from '@/utils/etc';
 import CtrlTemp from '@/components/CtrlItem/CtrlTemp.vue';
 import ResetConsumption from '@/components/CtrlItem/ResetConsumption.vue';
-import ButtonIndicatorLight from '@/components/CtrlItem/ButtonIndicatorLight.vue'
+import ButtonIndicatorLight from '@/components/CtrlItem/ButtonIndicatorLight.vue';
+import ElectricRate from '../CtrlItem/ElectricRate.vue';
 
 export default defineComponent({
     name: 'DeviceCtrl',
@@ -131,7 +134,8 @@ export default defineComponent({
         MulitLock,
         CtrlTemp,
         ResetConsumption,
-        ButtonIndicatorLight
+        ButtonIndicatorLight,
+        ElectricRate
     },
 
     computed: {

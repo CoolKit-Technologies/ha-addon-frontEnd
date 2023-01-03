@@ -7,6 +7,7 @@ import { message } from 'ant-design-vue';
 import { i18n } from '@/locales';
 import { getHaDeviceList, getHaGatewayStatus } from "@/api/ha-device";
 import createPersistedState from 'vuex-persistedstate';
+import { isDeviceOnline } from '@/utils/etc'
 
 import { getRegionMap, isSupportedDevice } from '@/utils/etc';
 
@@ -97,7 +98,7 @@ export default createStore({
             if (state.hideUnavaDevice) {
                 // 隐藏离线及不支持的设备
                 for (const dev of result) {
-                    if (!dev.online || !isSupportedDevice(dev.uiid)) {
+                    if (!isDeviceOnline(dev) || !isSupportedDevice(dev.uiid)) {
                         continue;
                     } else {
                         list.push(dev);

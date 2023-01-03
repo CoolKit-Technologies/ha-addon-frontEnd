@@ -68,7 +68,7 @@
                 <channel-switch
                     class="mg-14"
                     :title="`${$t('card.channel')} ${cardData.cardIndex + 1}`"
-                    :stat="cardData.params.switches[cardData.cardIndex].switch === 'on' ? true : false"
+                    :stat="dualR3Stat(cardData.cardIndex) === 'on' ? true : false"
                     :cardData="cardData"
                     :index="cardData.cardIndex"
                 />
@@ -220,6 +220,7 @@
                 </template>
             </div>
 
+            <!-- UIID 130 -->
             <div class="uiid130" v-else-if="130 === uiid">
                 <div v-for="(item, index) in uiid130Data" :key="index" :class="`channel_${index-1}`">
                     <div class="chart-grp">
@@ -261,6 +262,37 @@
                         :index="index"
                     />
                 </div>
+            </div>
+
+            <!-- UIID 182 -->
+            <div class="uiid182" v-else-if="182 === uiid">
+                <div class="chart-grp">
+                    <!-- 功率 -->
+                    <div class="chart">
+                        <circle-chart width="110px" height="110px" color="blue" />
+                        <span class="title">{{ $t('card.power') }}</span>
+                        <span class="value">{{ uiid182Data.power }}</span>
+                    </div>
+                    <!-- 电压 -->
+                    <div class="chart">
+                        <circle-chart width="110px" height="110px" color="green" />
+                        <span class="title">{{ $t('card.voltage')}}</span>
+                        <span class="value">{{ uiid182Data.voltage }}</span>
+                    </div>
+                    <!-- 电流 -->
+                    <div class="chart">
+                        <circle-chart width="110px" height="110px" color="yellow" />
+                        <span class="title">{{ $t('card.current') }}</span>
+                        <span class="value">{{ uiid182Data.current }}</span>
+                    </div>
+                </div>
+                <channel-switch
+                        class="mg-14"
+                        :title="`${$t('card.channel')}1`"
+                        :stat="cardData.params.switches[0].switch === 'on'"
+                        :cardData="cardData"
+                        :index="0"
+                    />
             </div>
 
 
@@ -630,6 +662,18 @@ export default defineComponent({
                 getChannelData(2),
                 getChannelData(3)
             ]
+        },
+        uiid182Data() {
+            return {
+                power: this.cardData.params.power,
+                voltage: this.cardData.params.voltage,
+                current: this.cardData.params.current
+            }
+        },
+        dualR3Stat() {
+            return (cardIndex: number) => {
+                return _.get(this.cardData, ['params', 'switches', cardIndex, 'switch'], 'off')
+            }
         },
         ...mapState(['isLogin']),
     },
