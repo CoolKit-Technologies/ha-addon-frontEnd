@@ -130,7 +130,6 @@ export default defineComponent({
 
 <style lang="stylus">
 .ctrl-light-mode
-    color #fff
 
     .wrapper
         display flex

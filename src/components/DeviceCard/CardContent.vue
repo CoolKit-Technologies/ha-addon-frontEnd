@@ -94,7 +94,7 @@
                     <ctrl-slider class="mg-14" type="color-temp" :cardData="cardData" />
                     <rhythm-switch class="mg-14" :cardData="cardData" />
                 </template>
-                <template v-else-if="[137, 173].includes(uiid) && online">
+                <template v-else-if="[137, 173].includes(uiid)">
                     <ctrl-light-mode class="mg-14" :card-data="cardData" />
                 </template>
             </div>
@@ -228,19 +228,19 @@
                         <div class="chart">
                             <circle-chart width="110px" height="110px" color="blue" />
                             <span class="title">{{ $t('card.realpower') }}</span>
-                            <span class="value">{{ item.actPow }}</span>
+                            <span class="value">{{ item.actPow / 100 }}W</span>
                         </div>
                         <!-- 无功功率 -->
                         <div class="chart">
                             <circle-chart width="110px" height="110px" color="green" />
                             <span class="title">{{ $t('card.reactivepower')}}</span>
-                            <span class="value">{{ item.reactPow }}</span>
+                            <span class="value">{{ item.reactPow / 100 }}W</span>
                         </div>
                         <!-- 视在功率 -->
                         <div class="chart">
                             <circle-chart width="110px" height="110px" color="yellow" />
                             <span class="title">{{ $t('card.apparentpower') }}</span>
-                            <span class="value">{{ item.apparentPow }}</span>
+                            <span class="value">{{ item.apparentPow / 100 }}W</span>
                         </div>
                     </div>
                     <div class="data-stat">

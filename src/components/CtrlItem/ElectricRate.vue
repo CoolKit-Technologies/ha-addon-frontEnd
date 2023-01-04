@@ -24,6 +24,7 @@ import { useStore } from 'vuex'
 import DeviceNameVue from './DeviceName.vue'
 import { EditOutlined, SaveOutlined } from '@ant-design/icons-vue'
 import { updateElectricRate } from '@/api/device'
+import { getDeviceListInit } from '@/api/device'
 
 export default defineComponent({
     name: 'ElectricRate',
@@ -43,6 +44,10 @@ export default defineComponent({
         const handleSave = async () => {
             editable.value = !editable.value
             await updateElectricRate(modalParams.value, rate.value)
+            const res = await getDeviceListInit();
+            if (res.error === 0) {
+                store.commit('setOriginDeviceList', res.data);
+            }
         }
 
         rate.value = realTimeRate.value
