@@ -293,7 +293,7 @@ const zh = {
         ops: '过载保护',
         opsTip: '满足任一条件，将自动关闭设备,设置前请参考产品说明书上的技术参数',
         opsDelayClose: '延迟关闭设备',
-        opsDelayDesc: '延时时间仅在功率和电压保护下生效.电压保护默认瞬时关闭设备',
+        opsDelayDesc: '延时时间仅在功率和电流保护下生效.电压保护默认瞬时关闭设备',
         minPowerRange: '最小实时功率范围0.1~4800',
         maxPowerRange: '最大实时功率范围0.1~4800',
         minVoltageRange: '最小实时电压范围90~264',

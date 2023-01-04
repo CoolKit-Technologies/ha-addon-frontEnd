@@ -21,7 +21,6 @@
 <script lang="ts" scoped>
 import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import DeviceNameVue from './DeviceName.vue'
 import { EditOutlined, SaveOutlined } from '@ant-design/icons-vue'
 import { updateElectricRate } from '@/api/device'
 import { getDeviceListInit } from '@/api/device'
@@ -38,19 +37,30 @@ export default defineComponent({
         const editable = ref(false)
         const rate = ref(0)
 
+        const deviceId = computed(() => store.state.modalParams.deviceId)
         const modalParams = computed(() => store.state.modalParams)
         const realTimeRate = computed(() => modalParams.value.eRate)
+
+        const getDeviceList = async () => {
+            const res = await getDeviceListInit()
+            if (res.error === 0) {
+                store.commit('setOriginDeviceList', res.data);
+                const device = res.data.find((item: any) => item.deviceId === deviceId.value)
+                if (device) {
+                    store.commit('setModalParams', device)
+                    rate.value = device.eRate
+                }
+            }
+        }
 
         const handleSave = async () => {
             editable.value = !editable.value
             await updateElectricRate(modalParams.value, rate.value)
-            const res = await getDeviceListInit();
-            if (res.error === 0) {
-                store.commit('setOriginDeviceList', res.data);
-            }
+            getDeviceList()
         }
 
         rate.value = realTimeRate.value
+        getDeviceList()
 
         return {
             rate,

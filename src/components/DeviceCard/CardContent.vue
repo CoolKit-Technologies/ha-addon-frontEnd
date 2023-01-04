@@ -271,19 +271,19 @@
                     <div class="chart">
                         <circle-chart width="110px" height="110px" color="blue" />
                         <span class="title">{{ $t('card.power') }}</span>
-                        <span class="value">{{ uiid182Data.power }}</span>
+                        <span class="value">{{ uiid182Data.power }}W</span>
                     </div>
                     <!-- 电压 -->
                     <div class="chart">
                         <circle-chart width="110px" height="110px" color="green" />
                         <span class="title">{{ $t('card.voltage')}}</span>
-                        <span class="value">{{ uiid182Data.voltage }}</span>
+                        <span class="value">{{ uiid182Data.voltage }}V</span>
                     </div>
                     <!-- 电流 -->
                     <div class="chart">
                         <circle-chart width="110px" height="110px" color="yellow" />
                         <span class="title">{{ $t('card.current') }}</span>
-                        <span class="value">{{ uiid182Data.current }}</span>
+                        <span class="value">{{ uiid182Data.current }}A</span>
                     </div>
                 </div>
                 <channel-switch

@@ -20,7 +20,7 @@
 
         <!-- Set device power on state -->
         <ctrl-select
-            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight)"
+            v-if="!(isMultiChannel || isOldUiid15Device || isLight || isCurtain || isZigbee || isWifiDoorSensor || isRfGw || isRfSub || isFanLight) || [7004].includes(uiid)"
             type="power-on-state"
         />
 
@@ -95,7 +95,7 @@
         <electric-rate v-if="[182].includes(uiid)" />
 
         <!-- Upgrade device firmware -->
-        <firmware-upgrade v-if="!isDiyDevice && !isZigbee && !isRfSub && !isZigbeeMultiSwitch" />
+        <firmware-upgrade v-if="(!isDiyDevice && !isZigbee && !isRfSub && !isZigbeeMultiSwitch) || [7004].includes(uiid)" />
 
     </div>
 </template>
