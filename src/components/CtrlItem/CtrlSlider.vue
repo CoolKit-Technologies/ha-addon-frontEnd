@@ -479,16 +479,21 @@ export default defineComponent({
                 });
 			} else if ([137, 173].includes(uiid)) {
                 const { mode, colorR, colorG, colorB } = params
+                const p: any = {
+                    mode: [1, 2, 3].includes(mode) ? mode : 1,
+                    bright: v
+                }
+
+                if (mode === 1) {
+                    p.colorR = colorR
+                    p.colorG = colorG
+                    p.colorB = colorB
+                }
+
                 await setCloudDevice({
                     apikey,
                     id: deviceId,
-                    params: {
-                        mode: 1,
-                        bright: v,
-                        colorR,
-                        colorG,
-                        colorB
-                    }
+                    params: p
                 })
             }
         },

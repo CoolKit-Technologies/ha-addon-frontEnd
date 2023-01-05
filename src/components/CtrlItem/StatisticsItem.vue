@@ -174,17 +174,17 @@ export default defineComponent({
         }
     },
 
-    // watch: {
-    //     channelIndex: function() {
-    //         this.startTime = null;
-    //         this.utcStartTime = '';
-    //         this.hasStartTime = false;
-    //         this.endTime = null;
-    //         this.utcEndTime = '';
-    //         this.spin = false;
-    //         this.statisticValue = 0;
-    //     }
-    // }
+    watch: {
+        channelIndex: function() {
+            this.startTime = null;
+            this.utcStartTime = '';
+            this.hasStartTime = false;
+            this.endTime = null;
+            this.utcEndTime = '';
+            this.spin = false;
+            this.statisticValue = 0;
+        }
+    }
 });
 </script>
 
