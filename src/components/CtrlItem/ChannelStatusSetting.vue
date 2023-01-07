@@ -223,7 +223,6 @@ export default defineComponent({
 
             params.delayTime = minu.value * 60 + second.value;
             const resp = await setSubdeviceOverloadService(modalParams.value, params, channelIndex.value);
-            console.log(resp)
 
             if (resp.error !== 0) {
                 message.error(t('modal.operationFailed'))

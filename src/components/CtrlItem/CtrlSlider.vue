@@ -312,7 +312,7 @@ export default defineComponent({
 					this.progressValue =  100 - colorTemp;
 				} else if ([137, 173].includes(uiid)) {
                     const { colorTemp = 1 } = params;
-                    this.progressValue = 100 - colorTemp;
+                    this.progressValue = colorTemp;
                 }
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
@@ -369,7 +369,7 @@ export default defineComponent({
 					this.progressValue = 100 - colorTemp
 				} else if ([137, 173].includes(uiid)) {
                     const { colorTemp = 1 } = params;
-                    this.progressValue = 100 - colorTemp;
+                    this.progressValue = colorTemp;
                 }
             } else if (this.type === 'curtain') {
                 this.progressValue = params.setclose ?? 50;
@@ -478,7 +478,7 @@ export default defineComponent({
                     },
                 });
 			} else if ([137, 173].includes(uiid)) {
-                const { mode, colorR, colorG, colorB } = params
+                const { mode, colorR, colorG, colorB, colorTemp } = params
                 const p: any = {
                     mode: [1, 2, 3].includes(mode) ? mode : 1,
                     bright: v
@@ -488,6 +488,10 @@ export default defineComponent({
                     p.colorR = colorR
                     p.colorG = colorG
                     p.colorB = colorB
+                }
+
+                if (mode === 2) {
+                    p.colorTemp = colorTemp
                 }
 
                 await setCloudDevice({
@@ -550,7 +554,7 @@ export default defineComponent({
                 await setCloudDevice({
                     apikey,
                     id: deviceId,
-                    params: { mode, bright, colorTemp: 100 - v }
+                    params: { mode, bright, colorTemp: v }
                 })
             }
         },

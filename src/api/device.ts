@@ -535,6 +535,12 @@ export async function startStatistic(startTime: string, data: any, channelIndex?
             [`startTime_0${channelIndex ? channelIndex : 0}`]: startTime,
             [`endTime_0${channelIndex ? channelIndex : 0}`]: ''
         })
+    } else if (uiid === 182) {
+        _.assign(params.params, {
+            oneKwh: 'start',
+            endTime: '',
+            startTime: startTime
+        })
     } else {
         _.assign(params.params, {
             onKwh: 'start',
@@ -564,6 +570,12 @@ export async function endStatistic(startTime: string, endTime: string, data: any
         _.assign(params.params, {
             [`startTime_0${channelIndex ? channelIndex : 0}`]: startTime,
             [`endTime_0${channelIndex ? channelIndex : 0}`]: endTime
+        })
+    } else if (uiid === 182) {
+        _.assign(params.params, {
+            oneKwh: 'stop',
+            endTime: endTime,
+            startTime: startTime
         })
     } else {
         _.assign(params.params, {
@@ -739,7 +751,7 @@ export async function setPickerColor(data: any, obj: any) {
     } else if ([137, 173].includes(uiid)) {
         const { mode, bright } = params;
         _.assign(tempParams.params, {
-            mode,
+            mode: 1,
             bright,
             colorR: obj.r,
             colorG: obj.g,
