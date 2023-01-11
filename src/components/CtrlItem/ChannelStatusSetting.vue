@@ -11,16 +11,27 @@
         <div class="stats">
             <a-tabs type="line">
 
-                <!-- 实时统计 -->
                 <a-tab-pane key="1" :tab="$t('modal.realtimeStats')">
+
+                    <!-- 实时统计 -->
                     <StatisticsItem :channelIndex="channelIndex" />
 
+                    <!-- 过载保护 -->
                     <div class="text-box">
-                        <div class="title">{{ $t('modal.ops') }}</div>
-                        <div class="desc">{{ $t('modal.opsTip') }}</div>
+                        <div>
+                            <div class="title">{{ $t('modal.ops') }}</div>
+                            <div class="desc">{{ $t('modal.opsTip') }}</div>
+                        </div>
+                        <div class="edit-box">
+                            <SaveOutlined @click="handleSave" v-if="editable" />
+                            <EditOutlined @click="() => { editable = true }" v-else />
+                        </div>
                     </div>
                     <div class="text-box" v-for="(item, oIndex) in overloadList" :key="item.key">
-                        <a-checkbox :checked="item.en" @change="changeCheck(oIndex)">{{ $t(item.title) }}</a-checkbox>
+                        <div class="text-wrapper">
+                            <a-checkbox :checked="item.en" @change="changeCheck(oIndex)" :disabled="!editable"></a-checkbox>
+                            <span style="margin-left: 10px">{{ $t(item.title) }}</span>
+                        </div>
                         <div class="input-box">
                             <a-input-number
                                 class="input"
@@ -28,25 +39,20 @@
                                 default-value="0"
                                 :formatter="(value: any) => formatter(value, item.unit)"
                                 :parser="(value: any) => parser(value, item.unit)"
-                                v-if="item.editable"
-                                @pressEnter="handleSave(oIndex)"
+                                v-if="editable"
                             ></a-input-number>
                             <p class="text" v-else>{{ item.val }} {{ item.unit }}</p>
-                            <div class="action" @click="handleSave(oIndex)">
-                                <SaveOutlined v-if="item.editable" />
-                                <EditOutlined v-else />
-                            </div>
                         </div>
                     </div>
 
                     <div class="text-box">
                         <div class="title">{{ $t('modal.opsDelayClose') }}</div>
                         <div>
-                            <a-select v-model:value="minu" style="width: 100px; margin-right: 10px" @select="updateData">
+                            <a-select v-model:value="minu" style="width: 100px; margin-right: 10px" @select="updateData" :disabled="!editable">
                                 <a-select-option v-for="(minute, index) in 3" :key="minute" :value="index">{{ index + ' ' + $t('modal.minute') }}</a-select-option>
                             </a-select>
 
-                            <a-select @select="updateData" v-model:value="second" style="width: 100px">
+                            <a-select @select="updateData" v-model:value="second" style="width: 100px" :disabled="!editable">
                                 <a-select-option v-for="(second, index) in 60" :key="second" :value="index">{{ index }} {{ $t('modal.second') }}</a-select-option>
                             </a-select>
                         </div>
@@ -107,6 +113,10 @@ export default defineComponent({
 
         const minu = ref(0);
         const second = ref(0);
+
+        // 编辑控制
+        const editable = ref(false);
+
         const overloadConfig = ref([
             {
                 title: 'modal.minPower',
@@ -184,11 +194,6 @@ export default defineComponent({
         async function changeCheck(index: number) {
             let thisItem = overloadList.value[index];
             thisItem.en = !thisItem.en;
-            const isSuccess = await updateData();
-            //失败撤回原来的
-            if (!isSuccess) {
-                thisItem.en = !thisItem.en;
-            }
         }
 
         async function updateData() {
@@ -232,23 +237,11 @@ export default defineComponent({
         }
 
         //保存
-        async function handleSave(index: number) {
-            let editable = overloadConfig.value[index].editable;
-
-            //点击保存
-            if (editable) {
-                let isSuccess = false;
-                isSuccess = await updateData();
-
-                //失败撤回原来的
-                if (isSuccess) {
-                    let thisItem = overloadConfig.value[index];
-                    thisItem.editable = !thisItem.editable;
-                }
-            } else {
-                //点击编辑
-                let thisItem = overloadConfig.value[index];
-                thisItem.editable = !thisItem.editable;
+        async function handleSave() {
+            let isSuccess = false;
+            isSuccess = await updateData();
+            if (isSuccess) {
+                editable.value = false
             }
         }
 
@@ -266,6 +259,7 @@ export default defineComponent({
             channelIndex,
             channelList,
             overloadList,
+            editable,
             minu,
             second,
             changeCheck,
@@ -324,6 +318,12 @@ export default defineComponent({
             .input {
                 width: 150px;
             }
+        }
+
+        .edit-box {
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 11px;
         }
     }
 }
