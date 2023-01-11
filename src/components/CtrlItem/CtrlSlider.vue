@@ -484,13 +484,13 @@ export default defineComponent({
                     bright: v
                 }
 
-                if (mode === 1) {
+                if (p.mode === 1) {
                     p.colorR = colorR
                     p.colorG = colorG
                     p.colorB = colorB
                 }
 
-                if (mode === 2) {
+                if (p.mode === 2) {
                     p.colorTemp = colorTemp
                 }
 
