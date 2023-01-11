@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import _ from 'lodash'
@@ -98,6 +98,9 @@ export default defineComponent({
         const store = useStore()
 
         const channelIndex = ref(0)
+        watch(() => channelIndex.value, () => {
+            editable.value = false
+        })
 
         const modalParams = computed(() => store.state.modalParams)
         const channelList = computed(() => {
@@ -117,6 +120,17 @@ export default defineComponent({
         // 编辑控制
         const editable = ref(false);
 
+        interface OverloadConfigItem {
+            title: string,
+            key: string,
+            unit: string,
+            en: boolean,
+            val: number,
+            editable: boolean,
+            min: number,
+            max: number,
+            message: string,
+        }
         const overloadConfig = ref([
             {
                 title: 'modal.minPower',
@@ -175,20 +189,38 @@ export default defineComponent({
             },
         ]);
         //过载保护配置
-        const overloadList = computed(() => {
-            const overloadData = _.get(modalParams.value.params, `overload_0${channelIndex.value}`, {});
+        const _overloadList = computed(() => {
+            const overloadData = _.get(modalParams.value?.params, `overload_0${channelIndex.value}`, {});
 
             const list = overloadConfig.value.map((item) => {
                 item.val = _.get(overloadData, [`${item.key}`, 'val'], 0) / 100;
-                item.en = !!overloadData[item.key].en;
+                item.en = !!overloadData[item.key]?.en;
                 return item;
             });
 
-            minu.value = Math.floor(overloadData.delayTime / 60);
-            second.value = overloadData.delayTime % 60;
-
             return list;
         });
+
+        // 初始化过载保护数据
+        const overloadList = ref<OverloadConfigItem[]>(JSON.parse(JSON.stringify(_overloadList.value)))
+
+        // 初始化延迟关闭时间
+        const overloadData = _.get(modalParams.value.params, `overload_0${channelIndex.value}`, {});
+        minu.value = Math.floor(overloadData.delayTime / 60);
+        second.value = overloadData.delayTime % 60;
+
+        // 用户处于编辑状态时，不实时更新当前数据，以当前编辑的状态为主
+        watch(_overloadList, (newVal) => {
+            if (editable.value !== true) {
+                overloadList.value = JSON.parse(JSON.stringify(_overloadList.value))
+
+                // 更新时间
+                const overloadData = _.get(modalParams.value?.params, `overload_0${channelIndex.value}`, {});
+                const delayTime = _.get(overloadData, 'delayTime', undefined)
+                delayTime !== undefined && (minu.value = Math.floor(overloadData.delayTime / 60));
+                delayTime !== undefined && (second.value = overloadData.delayTime % 60);
+            }
+        })
 
         //选择复选框
         async function changeCheck(index: number) {
