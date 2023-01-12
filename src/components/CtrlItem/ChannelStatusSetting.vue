@@ -23,8 +23,8 @@
                             <div class="desc">{{ $t('modal.opsTip') }}</div>
                         </div>
                         <div class="edit-box">
-                            <SaveOutlined @click="handleSave" v-if="editable" />
-                            <EditOutlined @click="() => { editable = true }" v-else />
+                            <SaveOutlined style="cursor: pointer;" @click="handleSave" v-if="editable" />
+                            <EditOutlined style="cursor: pointer;" @click="() => { editable = true }" v-else />
                         </div>
                     </div>
                     <div class="text-box" v-for="(item, oIndex) in overloadList" :key="item.key">
@@ -221,6 +221,11 @@ export default defineComponent({
                 delayTime !== undefined && (second.value = overloadData.delayTime % 60);
             }
         })
+        watch(() => editable.value, () => {
+            if (editable.value === false) {
+                overloadList.value = JSON.parse(JSON.stringify(_overloadList.value))
+            }
+        })
 
         //选择复选框
         async function changeCheck(index: number) {
@@ -354,7 +359,6 @@ export default defineComponent({
 
         .edit-box {
             font-size: 18px;
-            cursor: pointer;
             padding: 4px 11px;
         }
     }
